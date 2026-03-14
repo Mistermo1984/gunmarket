@@ -475,7 +475,6 @@ const PLZ_COORDS: Record<number, [number, number]> = {
   9700: [47.3400, 9.4700], // Altstätten area
   9800: [47.3400, 9.4700], // Thal
   // Genève extras
-  1228: [46.1626, 6.1336], // Plan-les-Ouates
   1231: [46.1503, 6.1053], // Conches
   1232: [46.1503, 6.1053], // Confignon
   1233: [46.1503, 6.1053], // Bernex

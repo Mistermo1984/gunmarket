@@ -1,0 +1,685 @@
+import { getDb } from "./db";
+import { v4 as uuidv4 } from "uuid";
+import bcrypt from "bcryptjs";
+
+const ADMIN_USER = {
+  email: "admin@gunmarket.ch",
+  vorname: "Admin",
+  nachname: "GunMarket",
+  anbieter_typ: "Privat",
+  kanton: "Bern",
+  is_admin: 1,
+};
+
+const USERS = [
+  {
+    email: "hans.mueller@bluewin.ch",
+    vorname: "Hans",
+    nachname: "Müller",
+    anbieter_typ: "Privat",
+    kanton: "Bern",
+    telefon: "+41 79 123 45 67",
+    ueber_mich: "Sportschütze seit 20 Jahren, Mitglied SG Bern.",
+  },
+  {
+    email: "peter.schmid@gmx.ch",
+    vorname: "Peter",
+    nachname: "Schmid",
+    anbieter_typ: "Händler",
+    kanton: "Zürich",
+    telefon: "+41 44 987 65 43",
+    firmenname: "Schmid Waffen AG",
+    uid_nummer: "CHE-123.456.789",
+    bewilligungs_nr: "WH-ZH-2024-0042",
+    website: "https://schmid-waffen.ch",
+    ueber_mich: "Konzessionierter Waffenhändler in Zürich seit 2010.",
+  },
+  {
+    email: "marco.bernasconi@ticino.ch",
+    vorname: "Marco",
+    nachname: "Bernasconi",
+    anbieter_typ: "Privat",
+    kanton: "Tessin",
+    telefon: "+41 76 456 78 90",
+    ueber_mich: "Jäger und Sammler in der Südschweiz.",
+  },
+  {
+    email: "lukas.weber@sunrise.ch",
+    vorname: "Lukas",
+    nachname: "Weber",
+    anbieter_typ: "Privat",
+    kanton: "Luzern",
+    telefon: "+41 78 234 56 78",
+    ueber_mich: "IPSC-Schütze, Standard Division.",
+  },
+  {
+    email: "anna.koller@protonmail.ch",
+    vorname: "Anna",
+    nachname: "Koller",
+    anbieter_typ: "Händler",
+    kanton: "St. Gallen",
+    telefon: "+41 71 345 67 89",
+    firmenname: "Koller Sport & Jagd",
+    uid_nummer: "CHE-987.654.321",
+    bewilligungs_nr: "WH-SG-2023-0018",
+    ueber_mich: "Familienunternehmen seit 1985. Spezialisiert auf Jagdwaffen.",
+  },
+];
+
+const LISTINGS = [
+  {
+    titel: "SIG Sauer P226 Legion",
+    beschreibung: "Verkaufe meine SIG Sauer P226 Legion in 9mm Luger. Sehr guter Zustand, ca. 500 Schuss geschossen. Inkl. Originalbox, 3 Magazine und Reinigungsset.",
+    hauptkategorie: "kurzwaffen",
+    unterkategorie: "pistolen",
+    rechtsstatus: "wes",
+    marke: "SIG Sauer",
+    modell: "P226 Legion",
+    kaliber: "9mm Luger",
+    zustand: "Sehr gut",
+    baujahr: "2022",
+    lauflaenge: "112 mm",
+    magazin: "3 × 15 Schuss",
+    preis: 1650,
+    verhandelbar: 1,
+    kanton: "Bern",
+    ortschaft: "Bern",
+    plz: "3000",
+    lat: 46.948,
+    lng: 7.4474,
+    userIdx: 0,
+  },
+  {
+    titel: "Glock 17 Gen5 MOS",
+    beschreibung: "Neue Glock 17 Gen5 MOS, ungeschossen, in OVP. MOS-System für Rotpunktmontage. 2 Magazine à 17 Schuss.",
+    hauptkategorie: "kurzwaffen",
+    unterkategorie: "pistolen",
+    rechtsstatus: "wes",
+    marke: "Glock",
+    modell: "17 Gen5 MOS",
+    kaliber: "9mm Luger",
+    zustand: "Neu",
+    baujahr: "2025",
+    lauflaenge: "114 mm",
+    magazin: "2 × 17 Schuss",
+    preis: 890,
+    verhandelbar: 0,
+    kanton: "Zürich",
+    ortschaft: "Zürich",
+    plz: "8000",
+    lat: 47.3769,
+    lng: 8.5417,
+    userIdx: 1,
+  },
+  {
+    titel: "K31 Karabiner 1931",
+    beschreibung: "Originaler Schweizer Karabiner K31 in 7.5x55 Swiss. Jahrgang 1943, Waffenfabrik Bern. Lauf und Züge in gutem Zustand. Truppenstempel vorhanden.",
+    hauptkategorie: "ordonnanzwaffen",
+    unterkategorie: "ord-schweiz",
+    rechtsstatus: "wes",
+    marke: "Waffenfabrik Bern",
+    modell: "K31",
+    kaliber: "7.5×55 Swiss",
+    zustand: "Gut",
+    baujahr: "1943",
+    lauflaenge: "655 mm",
+    magazin: "6 Schuss",
+    preis: 480,
+    verhandelbar: 1,
+    kanton: "Aargau",
+    ortschaft: "Aarau",
+    plz: "5000",
+    lat: 47.3925,
+    lng: 8.0444,
+    userIdx: 0,
+  },
+  {
+    titel: "Blaser R8 Professional Success",
+    beschreibung: "Blaser R8 Professional Success mit Wechsellauf .308 Win und 8x57 IS. Inkl. Zeiss Victory V8 2.8-20x56 auf Blaser Sattelmontage. Komplett-Paket für den Jäger.",
+    hauptkategorie: "jagdwaffen",
+    unterkategorie: "jagdbuechsen",
+    rechtsstatus: "wes",
+    marke: "Blaser",
+    modell: "R8 Professional Success",
+    kaliber: ".308 Win / 7.62×51",
+    zustand: "Sehr gut",
+    baujahr: "2021",
+    lauflaenge: "580 mm",
+    magazin: "3+1 Schuss",
+    preis: 4800,
+    verhandelbar: 1,
+    kanton: "Graubünden",
+    ortschaft: "Chur",
+    plz: "7000",
+    lat: 46.8508,
+    lng: 9.5311,
+    userIdx: 4,
+  },
+  {
+    titel: "CZ 75 Shadow 2",
+    beschreibung: "CZ 75 Shadow 2 in 9mm. Die perfekte IPSC-Pistole. Ca. 3000 Schuss, regelmässig gewartet. Inklusive 4 Magazine.",
+    hauptkategorie: "kurzwaffen",
+    unterkategorie: "pistolen",
+    rechtsstatus: "wes",
+    marke: "CZ",
+    modell: "75 Shadow 2",
+    kaliber: "9mm Luger",
+    zustand: "Gut",
+    baujahr: "2020",
+    lauflaenge: "120 mm",
+    magazin: "4 × 19 Schuss",
+    preis: 1480,
+    verhandelbar: 0,
+    kanton: "Luzern",
+    ortschaft: "Luzern",
+    plz: "6000",
+    lat: 47.0502,
+    lng: 8.3093,
+    userIdx: 3,
+  },
+  {
+    titel: "Zeiss Victory V8 4.8-35x60",
+    beschreibung: "Zeiss Victory V8 4.8-35x60 mit ASV+ Verstellturm. Leuchtabsehen Ill. 60, erste Bildebene. Wie neu, nur montiert gewesen.",
+    hauptkategorie: "optik",
+    unterkategorie: "zielfernrohre",
+    rechtsstatus: "frei",
+    marke: "Zeiss",
+    modell: "Victory V8 4.8-35x60",
+    kaliber: "",
+    zustand: "Wie neu",
+    baujahr: "2024",
+    lauflaenge: "",
+    magazin: "",
+    preis: 3200,
+    verhandelbar: 1,
+    kanton: "St. Gallen",
+    ortschaft: "St. Gallen",
+    plz: "9000",
+    lat: 47.4245,
+    lng: 9.3767,
+    userIdx: 4,
+  },
+  {
+    titel: "Beretta 692 Sporting",
+    beschreibung: "Beretta 692 Sporting in 12/76. Lauflänge 76cm, 5 Wechselchokes. Ideale Flinte für Trap und Sporting.",
+    hauptkategorie: "flinten",
+    unterkategorie: "bockflinten",
+    rechtsstatus: "wes",
+    marke: "Beretta",
+    modell: "692 Sporting",
+    kaliber: "12/76",
+    zustand: "Sehr gut",
+    baujahr: "2023",
+    lauflaenge: "760 mm",
+    magazin: "2 Schuss",
+    preis: 2900,
+    verhandelbar: 0,
+    kanton: "Tessin",
+    ortschaft: "Lugano",
+    plz: "6900",
+    lat: 46.0037,
+    lng: 8.9511,
+    userIdx: 2,
+  },
+  {
+    titel: "Ruger 10/22 Carbine",
+    beschreibung: "Ruger 10/22 in .22 LR. Perfektes Einsteigergewehr. Wenig geschossen, mit original Holzschaft.",
+    hauptkategorie: "buechsen",
+    unterkategorie: "halbautomat-buechsen",
+    rechtsstatus: "wes",
+    marke: "Ruger",
+    modell: "10/22 Carbine",
+    kaliber: ".22 LR",
+    zustand: "Gut",
+    baujahr: "2019",
+    lauflaenge: "470 mm",
+    magazin: "10 Schuss",
+    preis: 380,
+    verhandelbar: 1,
+    kanton: "Solothurn",
+    ortschaft: "Solothurn",
+    plz: "4500",
+    lat: 47.2088,
+    lng: 7.5323,
+    userIdx: 0,
+  },
+  {
+    titel: "Smith & Wesson 686 Plus",
+    beschreibung: "S&W 686 Plus in .357 Magnum, 6\" Lauf. 7-Schuss Trommel. Perfekter Revolver für Sport und Freizeit.",
+    hauptkategorie: "kurzwaffen",
+    unterkategorie: "revolver",
+    rechtsstatus: "wes",
+    marke: "Smith & Wesson",
+    modell: "686 Plus",
+    kaliber: ".357 Magnum",
+    zustand: "Sehr gut",
+    baujahr: "2021",
+    lauflaenge: "152 mm",
+    magazin: "7 Schuss",
+    preis: 1250,
+    verhandelbar: 1,
+    kanton: "Basel-Stadt",
+    ortschaft: "Basel",
+    plz: "4000",
+    lat: 47.5596,
+    lng: 7.5886,
+    userIdx: 1,
+  },
+  {
+    titel: "Tikka T3x Lite",
+    beschreibung: "Tikka T3x Lite in 6.5 Creedmoor. Leichtes Jagdgewehr mit synthetischem Schaft. Inkl. Mündungsgewinde M18x1.",
+    hauptkategorie: "jagdwaffen",
+    unterkategorie: "jagdbuechsen",
+    rechtsstatus: "wes",
+    marke: "Tikka",
+    modell: "T3x Lite",
+    kaliber: "6.5 Creedmoor",
+    zustand: "Neu",
+    baujahr: "2025",
+    lauflaenge: "570 mm",
+    magazin: "3+1 Schuss",
+    preis: 1050,
+    verhandelbar: 0,
+    kanton: "Freiburg",
+    ortschaft: "Freiburg",
+    plz: "1700",
+    lat: 46.8065,
+    lng: 7.1620,
+    userIdx: 4,
+  },
+  {
+    titel: "SIG SG 550 PE",
+    beschreibung: "SIG SG 550 PE (Privatexemplar) in .223 Rem. Originalzustand, alle Seriennummern matching. Inkl. 2 Magazine à 20 Schuss.",
+    hauptkategorie: "ordonnanzwaffen",
+    unterkategorie: "ord-schweiz",
+    rechtsstatus: "wes",
+    marke: "SIG",
+    modell: "SG 550 PE",
+    kaliber: ".223 Rem / 5.56×45",
+    zustand: "Gut",
+    baujahr: "1995",
+    lauflaenge: "528 mm",
+    magazin: "2 × 20 Schuss",
+    preis: 2200,
+    verhandelbar: 1,
+    kanton: "Bern",
+    ortschaft: "Thun",
+    plz: "3600",
+    lat: 46.7580,
+    lng: 7.6280,
+    userIdx: 0,
+  },
+  {
+    titel: "Aimpoint Micro H-2",
+    beschreibung: "Aimpoint Micro H-2 mit 2 MOA Punkt. Inkl. Blaser Sattelmontage. Batterie hält 50'000 Stunden.",
+    hauptkategorie: "optik",
+    unterkategorie: "rotpunktvisiere",
+    rechtsstatus: "frei",
+    marke: "Aimpoint",
+    modell: "Micro H-2",
+    kaliber: "",
+    zustand: "Wie neu",
+    baujahr: "2024",
+    lauflaenge: "",
+    magazin: "",
+    preis: 680,
+    verhandelbar: 0,
+    kanton: "Wallis",
+    ortschaft: "Sion",
+    plz: "1950",
+    lat: 46.2331,
+    lng: 7.3597,
+    userIdx: 2,
+  },
+  {
+    titel: "Benelli M2 Comfortech",
+    beschreibung: "Benelli M2 mit Comfortech-System. 12/76, Lauf 71cm, 5 Wechselchokes. Rückstossarme Selbstladeflinte.",
+    hauptkategorie: "flinten",
+    unterkategorie: "selbstladeflinten",
+    rechtsstatus: "wes",
+    marke: "Benelli",
+    modell: "M2 Comfortech",
+    kaliber: "12/76",
+    zustand: "Gut",
+    baujahr: "2020",
+    lauflaenge: "710 mm",
+    magazin: "3+1 Schuss",
+    preis: 1350,
+    verhandelbar: 1,
+    kanton: "Zürich",
+    ortschaft: "Winterthur",
+    plz: "8400",
+    lat: 47.5001,
+    lng: 8.7240,
+    userIdx: 1,
+  },
+  {
+    titel: "Walther LGV Challenger",
+    beschreibung: "Walther LGV Challenger Luftgewehr in 4.5mm. Frei erhältlich, kein WES nötig. Ideal für Einsteiger und Hobbyschützen.",
+    hauptkategorie: "freie-waffen",
+    unterkategorie: "luftdruck",
+    rechtsstatus: "frei",
+    marke: "Walther",
+    modell: "LGV Challenger",
+    kaliber: "4.5mm (.177)",
+    zustand: "Neu",
+    baujahr: "2025",
+    lauflaenge: "420 mm",
+    magazin: "1 Schuss",
+    preis: 450,
+    verhandelbar: 0,
+    kanton: "Neuenburg",
+    ortschaft: "Neuchâtel",
+    plz: "2000",
+    lat: 46.9920,
+    lng: 6.9311,
+    userIdx: 3,
+  },
+  {
+    titel: "RUAG GP11 7.5x55 Swiss (480 Schuss)",
+    beschreibung: "RUAG GP11 Originalmunition für K31 und StGw 57. 480 Schuss in Schachteln à 60. Fabrikverpackung.",
+    hauptkategorie: "munition",
+    unterkategorie: "buechsenmunition",
+    rechtsstatus: "wes",
+    marke: "RUAG",
+    modell: "GP11",
+    kaliber: "7.5×55 Swiss",
+    zustand: "Neu",
+    baujahr: "",
+    lauflaenge: "",
+    magazin: "",
+    preis: 320,
+    verhandelbar: 0,
+    kanton: "Bern",
+    ortschaft: "Thun",
+    plz: "3600",
+    lat: 46.7580,
+    lng: 7.6280,
+    userIdx: 0,
+  },
+  {
+    titel: "Safariland 6390 Holster für P226",
+    beschreibung: "Safariland 6390 ALS Level I Holster für SIG Sauer P226. Rechtshand, schwarz. Mit QLS-Adapter.",
+    hauptkategorie: "zubehoer",
+    unterkategorie: "holster",
+    rechtsstatus: "frei",
+    marke: "Safariland",
+    modell: "6390",
+    kaliber: "",
+    zustand: "Sehr gut",
+    baujahr: "",
+    lauflaenge: "",
+    magazin: "",
+    preis: 95,
+    verhandelbar: 0,
+    kanton: "Aargau",
+    ortschaft: "Baden",
+    plz: "5400",
+    lat: 47.4734,
+    lng: 8.3072,
+    userIdx: 3,
+  },
+  {
+    titel: "Swarovski Z8i 2-16x50",
+    beschreibung: "Swarovski Z8i 2-16x50 P mit Leuchtabsehen 4A-I. 30mm Tubus, zweite Bildebene. Top-Glas für die Jagd.",
+    hauptkategorie: "optik",
+    unterkategorie: "zielfernrohre",
+    rechtsstatus: "frei",
+    marke: "Swarovski",
+    modell: "Z8i 2-16x50 P",
+    kaliber: "",
+    zustand: "Sehr gut",
+    baujahr: "2023",
+    lauflaenge: "",
+    magazin: "",
+    preis: 2400,
+    verhandelbar: 1,
+    kanton: "Graubünden",
+    ortschaft: "Davos",
+    plz: "7270",
+    lat: 46.8003,
+    lng: 9.8355,
+    userIdx: 4,
+  },
+  {
+    titel: "Stgw 57 (PE90)",
+    beschreibung: "Sturmgewehr 57 als Privatexemplar. 7.5x55 Swiss, Diopter original. Guter Gesamtzustand, Bohrung leicht angelaufen.",
+    hauptkategorie: "ordonnanzwaffen",
+    unterkategorie: "ord-schweiz",
+    rechtsstatus: "wes",
+    marke: "Waffenfabrik Bern",
+    modell: "Stgw 57 (PE)",
+    kaliber: "7.5×55 Swiss",
+    zustand: "Akzeptabel",
+    baujahr: "1962",
+    lauflaenge: "583 mm",
+    magazin: "24 Schuss",
+    preis: 750,
+    verhandelbar: 1,
+    kanton: "Solothurn",
+    ortschaft: "Olten",
+    plz: "4600",
+    lat: 47.3520,
+    lng: 7.9070,
+    userIdx: 0,
+  },
+  {
+    titel: "Hornady 9mm 124gr FMJ (500 Stk)",
+    beschreibung: "Hornady 9mm Luger 124gr FMJ Training Munition. 500 Stück, Fabrikverpackung. Zuverlässig und präzise.",
+    hauptkategorie: "munition",
+    unterkategorie: "pistolenmunition",
+    rechtsstatus: "wes",
+    marke: "Hornady",
+    modell: "American Gunner",
+    kaliber: "9mm Luger",
+    zustand: "Neu",
+    baujahr: "",
+    lauflaenge: "",
+    magazin: "",
+    preis: 185,
+    verhandelbar: 0,
+    kanton: "Zürich",
+    ortschaft: "Zürich",
+    plz: "8000",
+    lat: 47.3769,
+    lng: 8.5417,
+    userIdx: 1,
+  },
+  {
+    titel: "Remington 870 Express",
+    beschreibung: "Remington 870 Express Pump-Action in 12/76. Zuverlässige Pump-Flinte mit 51cm Lauf. Ideal für Jagd und Sport.",
+    hauptkategorie: "flinten",
+    unterkategorie: "pump-action",
+    rechtsstatus: "wes",
+    marke: "Remington",
+    modell: "870 Express",
+    kaliber: "12/76",
+    zustand: "Gut",
+    baujahr: "2018",
+    lauflaenge: "510 mm",
+    magazin: "4+1 Schuss",
+    preis: 520,
+    verhandelbar: 1,
+    kanton: "Tessin",
+    ortschaft: "Bellinzona",
+    plz: "6500",
+    lat: 46.1956,
+    lng: 9.0235,
+    userIdx: 2,
+  },
+];
+
+// Wikimedia Commons images matched to each seed listing (by index)
+const SEED_IMAGES: string[][] = [
+  // 0: SIG Sauer P226 Legion
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/d/d8/Pistole_SIG_Sauer_P226_S.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/e/e2/P226_Elite_Dark.JPG",
+  ],
+  // 1: Glock 17 Gen5 MOS
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/3/3b/Glock_17_%286825676904%29.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/4/48/Glock_17.JPG",
+  ],
+  // 2: K31 Karabiner 1931
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/b/b0/Schmidt_Rubin_K31.jpg",
+  ],
+  // 3: Blaser R8 Professional Success
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/1/14/Blaser-R8-Profesional.png",
+    "https://upload.wikimedia.org/wikipedia/commons/0/0c/ARMS_%26_Hunting_2012_exhibition_%28474-01%29.jpg",
+  ],
+  // 4: CZ 75 Shadow 2
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/4/48/Glock_17.JPG",
+    "https://upload.wikimedia.org/wikipedia/commons/d/d8/Pistole_SIG_Sauer_P226_S.jpg",
+  ],
+  // 5: Zeiss Victory V8 4.8-35x60
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/6/64/Rifle_scope.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/5/55/Pso-1onsvd.jpg",
+  ],
+  // 6: Beretta 692 Sporting
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/3/33/Remington_870_Wmaster.jpg",
+  ],
+  // 7: Ruger 10/22 Carbine
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/2/2d/DPMS_AR-15.JPG",
+  ],
+  // 8: Smith & Wesson 686 Plus
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/6/69/Kompakt_Revolver.JPG",
+  ],
+  // 9: Tikka T3x Lite
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/c/c6/Tikka-T3-Sporter.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/7/7e/Bolt_Action_.308_Rifle.jpg",
+  ],
+  // 10: SIG SG 550 PE
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/0/08/Swiss_soldier_SG550_GL5040.JPG",
+    "https://upload.wikimedia.org/wikipedia/commons/b/b7/Stgw_90.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/8/8a/SIG_550_IMG_3272.jpg",
+  ],
+  // 11: Aimpoint Micro H-2
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/d/dd/Red_Dot_Sight_%22Docter_Sight_3%22.jpg",
+  ],
+  // 12: Benelli M2 Comfortech
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/3/33/Remington_870_Wmaster.jpg",
+  ],
+  // 13: Walther LGV Challenger
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/d/d8/Diana_34.jpg",
+  ],
+  // 14: RUAG GP11 7.5x55 Swiss
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/d/de/7.5x55_Cutaway_cartridge.jpeg",
+    "https://upload.wikimedia.org/wikipedia/commons/5/5d/Ammunition_7x57.jpg",
+  ],
+  // 15: Safariland 6390 Holster
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/d/d8/Pistole_SIG_Sauer_P226_S.jpg",
+  ],
+  // 16: Swarovski Z8i 2-16x50
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/6/64/Rifle_scope.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/4/4f/Airsoft_Bushnell_rifle_scope.JPG",
+  ],
+  // 17: Stgw 57 (PE90)
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/5/56/Stgw_57.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/f/f8/Fass57-diag.jpg",
+  ],
+  // 18: Hornady 9mm 124gr FMJ
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/2/2a/9_mm.JPG",
+  ],
+  // 19: Remington 870 Express
+  [
+    "https://upload.wikimedia.org/wikipedia/commons/3/33/Remington_870_Wmaster.jpg",
+  ],
+];
+
+export async function seedDatabase() {
+  const db = getDb();
+
+  const userCount = db.prepare("SELECT COUNT(*) as c FROM users").get() as { c: number };
+  if (userCount.c > 0) {
+    console.log("Database already seeded.");
+    return;
+  }
+
+  const password_hash = bcrypt.hashSync("GunMarket2026!", 10);
+
+  const insertUser = db.prepare(`
+    INSERT INTO users (id, email, password_hash, vorname, nachname, anbieter_typ, telefon, kanton, ueber_mich, firmenname, uid_nummer, bewilligungs_nr, website, is_admin)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `);
+
+  const insertListing = db.prepare(`
+    INSERT INTO listings (id, user_id, titel, beschreibung, hauptkategorie, unterkategorie, rechtsstatus, marke, modell, kaliber, zustand, baujahr, lauflaenge, magazin, preis, verhandelbar, tausch, kanton, ortschaft, plz, lat, lng, aufrufe, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?)
+  `);
+
+  const userIds: string[] = [];
+
+  const transaction = db.transaction(() => {
+    // Create admin user
+    const adminId = uuidv4();
+    insertUser.run(
+      adminId, ADMIN_USER.email, password_hash, ADMIN_USER.vorname, ADMIN_USER.nachname,
+      ADMIN_USER.anbieter_typ, null, ADMIN_USER.kanton, null, null, null, null, null, ADMIN_USER.is_admin
+    );
+
+    for (const u of USERS) {
+      const id = uuidv4();
+      userIds.push(id);
+      insertUser.run(
+        id, u.email, password_hash, u.vorname, u.nachname, u.anbieter_typ,
+        u.telefon || null, u.kanton || null, u.ueber_mich || null,
+        u.firmenname || null, u.uid_nummer || null, u.bewilligungs_nr || null,
+        u.website || null, 0
+      );
+    }
+
+    // Mark all seeded users as email-verified
+    db.prepare("UPDATE users SET email_verified = 1").run();
+
+    const insertImage = db.prepare(`
+      INSERT INTO listing_images (id, listing_id, url, position, is_main)
+      VALUES (?, ?, ?, ?, ?)
+    `);
+
+    for (let i = 0; i < LISTINGS.length; i++) {
+      const l = LISTINGS[i];
+      const id = uuidv4();
+      const aufrufe = Math.floor(Math.random() * 200) + 10;
+      // Spread listings across last 6 days
+      const hoursAgo = Math.floor(Math.random() * 144);
+      const createdAt = new Date(Date.now() - hoursAgo * 3600000).toISOString().replace("T", " ").slice(0, 19);
+      insertListing.run(
+        id, userIds[l.userIdx], l.titel, l.beschreibung,
+        l.hauptkategorie, l.unterkategorie, l.rechtsstatus,
+        l.marke || null, l.modell || null, l.kaliber || null,
+        l.zustand, l.baujahr || null, l.lauflaenge || null, l.magazin || null,
+        l.preis, l.verhandelbar,
+        l.kanton, l.ortschaft, l.plz || null, l.lat || null, l.lng || null,
+        aufrufe, createdAt
+      );
+
+      // Add real weapon images from Wikimedia Commons
+      const listingImages = SEED_IMAGES[i] || [];
+      for (let imgIdx = 0; imgIdx < listingImages.length; imgIdx++) {
+        const imgId = uuidv4();
+        insertImage.run(imgId, id, listingImages[imgIdx], imgIdx, imgIdx === 0 ? 1 : 0);
+      }
+    }
+  });
+
+  transaction();
+  console.log(`Seeded ${USERS.length} users and ${LISTINGS.length} listings.`);
+}

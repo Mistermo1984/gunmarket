@@ -1,101 +1,183 @@
-import Image from "next/image";
+import type { Metadata } from "next";
+import HeroSection from "@/components/home/HeroSection";
+import HomeContent from "@/components/home/HomeContent";
+import KartenVorschau from "@/components/home/KartenVorschau";
+import SoFunktionierts from "@/components/home/SoFunktionierts";
+import RechtlicherHinweis from "@/components/home/RechtlicherHinweis";
+import Link from "next/link";
+import { seedDatabase } from "@/lib/seed";
+import { seedCrawledListings } from "@/lib/crawl-waffengebraucht";
+
+export const metadata: Metadata = {
+  title: "GunMarket.ch — Waffen kaufen & verkaufen in der Schweiz",
+  description:
+    "Der grösste Schweizer Waffenmarktplatz. Pistolen, Revolver, Büchsen, Flinten, Jagdwaffen und Ordonnanzwaffen kaufen und verkaufen. Kostenlose Inserate für Private und Händler in allen 26 Kantonen.",
+  alternates: {
+    canonical: "https://gunmarket.ch",
+  },
+};
+
+function ensureSeeded() {
+  try {
+    seedDatabase();
+    seedCrawledListings();
+  } catch {
+    // ignore
+  }
+}
+
+const KANTONE_LINKS = [
+  { label: "Zürich", kanton: "ZH" },
+  { label: "Bern", kanton: "BE" },
+  { label: "Luzern", kanton: "LU" },
+  { label: "Uri", kanton: "UR" },
+  { label: "Schwyz", kanton: "SZ" },
+  { label: "Obwalden", kanton: "OW" },
+  { label: "Nidwalden", kanton: "NW" },
+  { label: "Glarus", kanton: "GL" },
+  { label: "Zug", kanton: "ZG" },
+  { label: "Freiburg", kanton: "FR" },
+  { label: "Solothurn", kanton: "SO" },
+  { label: "Basel-Stadt", kanton: "BS" },
+  { label: "Basel-Land", kanton: "BL" },
+  { label: "Schaffhausen", kanton: "SH" },
+  { label: "Appenzell AR", kanton: "AR" },
+  { label: "Appenzell AI", kanton: "AI" },
+  { label: "St. Gallen", kanton: "SG" },
+  { label: "Graubünden", kanton: "GR" },
+  { label: "Aargau", kanton: "AG" },
+  { label: "Thurgau", kanton: "TG" },
+  { label: "Tessin", kanton: "TI" },
+  { label: "Waadt", kanton: "VD" },
+  { label: "Wallis", kanton: "VS" },
+  { label: "Neuenburg", kanton: "NE" },
+  { label: "Genf", kanton: "GE" },
+  { label: "Jura", kanton: "JU" },
+];
+
+// JSON-LD structured data — WebSite + SearchAction
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "GunMarket.ch",
+  url: "https://gunmarket.ch",
+  description: "Der grösste Schweizer Waffenmarktplatz. Pistolen, Büchsen, Jagdwaffen, Ordonnanzwaffen kaufen und verkaufen.",
+  inLanguage: "de-CH",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: "https://gunmarket.ch/suche?q={search_term_string}",
+    "query-input": "required name=search_term_string",
+  },
+};
+
+// JSON-LD Organization
+const orgJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "GunMarket.ch",
+  url: "https://gunmarket.ch",
+  logo: "https://gunmarket.ch/og-image.png",
+  description: "Der grösste Schweizer Waffenmarktplatz für legalen Waffenhandel.",
+  areaServed: {
+    "@type": "Country",
+    name: "Schweiz",
+  },
+  sameAs: [],
+};
+
+// JSON-LD FAQPage — für Google Rich Snippets
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Ist der Waffenhandel auf GunMarket.ch legal?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Ja. GunMarket.ch ist ein legaler Marktplatz für Waffen in der Schweiz. Alle Transaktionen müssen gemäss dem Schweizer Waffengesetz (WG) und der Waffenverordnung (WV) abgewickelt werden. Für bewilligungspflichtige Waffen ist ein Waffenerwerbsschein (WES) erforderlich.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Brauche ich einen Waffenerwerbsschein (WES)?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Für bewilligungspflichtige Waffen (z.B. Pistolen, Revolver, halbautomatische Waffen) benötigen Sie einen WES. Frei erwerbbare Waffen wie Repetiergewehre und einläufige Jagdflinten können mit einem Kaufvertrag erworben werden. Ordonnanzwaffen wie K31 oder Stgw 57 sind ebenfalls frei erwerbbar.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Was kostet ein Inserat auf GunMarket.ch?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Das Aufgeben von Inseraten auf GunMarket.ch ist komplett kostenlos — sowohl für Privatpersonen als auch für gewerbliche Waffenhändler. Es fallen keine Gebühren für das Einstellen oder die Vermittlung an.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Welche Waffen darf ich in der Schweiz kaufen und verkaufen?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "In der Schweiz dürfen Schweizer Bürger und Personen mit Niederlassungsbewilligung C die meisten Waffen kaufen und verkaufen. Dazu gehören Pistolen, Revolver, Büchsen, Flinten, Jagdwaffen und Ordonnanzwaffen. Verbotene Waffen (z.B. vollautomatische Waffen, Schalldämpfer ohne Bewilligung) sind vom Handel ausgeschlossen.",
+      },
+    },
+  ],
+};
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  ensureSeeded();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <>
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+
+      {/* 1. Hero with integrated search */}
+      <HeroSection />
+
+      {/* 2. Main content: FilterSidebar + Neueste Inserate */}
+      <HomeContent />
+
+      {/* Karten-Vorschau + So funktioniert's */}
+      <div className="mx-auto max-w-7xl px-4 pb-8">
+        <KartenVorschau />
+        <SoFunktionierts />
+      </div>
+
+      {/* Full-width sections */}
+      <RechtlicherHinweis />
+
+      {/* Waffen kaufen in allen Kantonen — SEO */}
+      <section className="bg-white py-12">
+        <div className="mx-auto max-w-7xl px-4">
+          <h2 className="mb-6 font-display text-xl font-black uppercase tracking-tight text-brand-dark">
+            Waffen kaufen in der Schweiz
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {KANTONE_LINKS.map((k) => (
+              <Link
+                key={k.kanton}
+                href={`/suche?kanton=${k.kanton}`}
+                className="rounded-full border border-brand-border px-3 py-1.5 text-xs font-medium text-neutral-600 transition-colors hover:border-brand-green hover:bg-brand-green-light hover:text-brand-green"
+              >
+                Waffen kaufen in {k.label}
+              </Link>
+            ))}
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </section>
+    </>
   );
 }

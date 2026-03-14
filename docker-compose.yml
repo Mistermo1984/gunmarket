@@ -1,0 +1,19 @@
+services:
+  gunmarket:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - gunmarket-data:/app/data
+      - gunmarket-uploads:/app/uploads
+    environment:
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - NEXTAUTH_URL=${NEXTAUTH_URL}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - EMAIL_FROM=${EMAIL_FROM:-GunMarket.ch <noreply@gunmarket.ch>}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    restart: unless-stopped
+
+volumes:
+  gunmarket-data:
+  gunmarket-uploads:

@@ -1,0 +1,10 @@
+node_modules
+.next
+.git
+gunmarket.db
+gunmarket.db-wal
+gunmarket.db-shm
+reports.db
+*.md
+.env
+.env.local

@@ -1,0 +1,279 @@
+"use client";
+
+import React, { useState, useMemo, useCallback, useEffect, Suspense } from "react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { ChevronRight, Plus } from "lucide-react";
+import FilterSidebar, {
+  INITIAL_FILTERS,
+  type FilterState,
+} from "@/components/suche/FilterSidebar";
+import ErgebnisHeader from "@/components/suche/ErgebnisHeader";
+import ListingGrid from "@/components/suche/ListingGrid";
+import DynamicMap from "@/components/map/DynamicMap";
+import LocationSearch from "@/components/map/LocationSearch";
+import { HAUPTKATEGORIEN } from "@/lib/constants";
+import { apiListingToCard } from "@/lib/listing-helpers";
+import type { ListingCardData } from "@/components/ui/ListingCard";
+
+export default function SuchePage() {
+  return (
+    <Suspense>
+      <SucheContent />
+    </Suspense>
+  );
+}
+
+function SucheContent() {
+  const searchParams = useSearchParams();
+
+  const [filters, setFilters] = useState<FilterState>(() => {
+    const initial = { ...INITIAL_FILTERS };
+    const q = searchParams.get("q");
+    const kat = searchParams.get("kategorie");
+    const kanton = searchParams.get("kanton");
+    if (kat) initial.kategorien = [kat];
+    if (kanton) initial.kantone = [kanton];
+    if (q) initial.marke = q; // reuse marke field for text search
+    return initial;
+  });
+
+  const [sort, setSort] = useState("neueste");
+  const [view, setView] = useState<"grid" | "list">("grid");
+  const [page, setPage] = useState(1);
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [showMap, setShowMap] = useState(() => searchParams.get("map") === "true");
+  const [hoveredListingId] = useState<string | null>(null);
+  const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | null>(null);
+  const [mapRadius, setMapRadius] = useState(50);
+
+  const [listings, setListings] = useState<ListingCardData[]>([]);
+  const [mapListings, setMapListings] = useState<{ id: string; titel: string; preis: number; lat: number; lng: number }[]>([]);
+  const [totalResults, setTotalResults] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Build shared filter params
+  const buildFilterParams = useCallback(() => {
+    const params = new URLSearchParams();
+    if (filters.kategorien.length === 1) params.set("kategorie", filters.kategorien[0]);
+    if (filters.rechtsstatus.length === 1) params.set("rechtsstatus", filters.rechtsstatus[0]);
+    if (filters.kantone.length === 1) params.set("kanton", filters.kantone[0]);
+    if (filters.zustand.length === 1) params.set("zustand", filters.zustand[0]);
+    if (filters.preisMin) params.set("minPreis", filters.preisMin);
+    if (filters.preisMax) params.set("maxPreis", filters.preisMax);
+    if (filters.marke) params.set("suche", filters.marke);
+    return params;
+  }, [filters]);
+
+  // Fetch paginated listings for the grid
+  useEffect(() => {
+    setIsLoading(true);
+    const params = buildFilterParams();
+    const sortMap: Record<string, string> = {
+      neueste: "neueste",
+      "preis-aufsteigend": "preis-asc",
+      "preis-absteigend": "preis-desc",
+      aufrufe: "aufrufe",
+    };
+    params.set("sort", sortMap[sort] || "neueste");
+    params.set("seite", String(page));
+    params.set("limit", "12");
+
+    fetch(`/api/listings?${params}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const mapped = (data.listings || []).map((l: Record<string, unknown>) =>
+          apiListingToCard(l)
+        );
+        setListings(mapped);
+        setTotalResults(data.total || 0);
+        setTotalPages(data.totalSeiten || 1);
+        setIsLoading(false);
+      })
+      .catch(() => setIsLoading(false));
+  }, [filters, sort, page, buildFilterParams]);
+
+  // Fetch ALL map markers (lightweight) when map is visible
+  useEffect(() => {
+    if (!showMap) return;
+    const params = buildFilterParams();
+    params.set("mapOnly", "1");
+
+    fetch(`/api/listings/map?${params}`)
+      .then((res) => res.json())
+      .then((data) => setMapListings(data.markers || []))
+      .catch(() => setMapListings([]));
+  }, [filters, showMap, buildFilterParams]);
+
+  // Count active filters
+  const activeFilterCount = useMemo(() => {
+    let c = 0;
+    if (filters.anbieter !== "alle") c++;
+    c += filters.kategorien.length;
+    c += filters.unterkategorien.length;
+    c += filters.rechtsstatus.length;
+    c += filters.kaliber.length;
+    c += filters.zustand.length;
+    if (filters.preisMin || filters.preisMax) c++;
+    c += filters.kantone.length;
+    if (filters.marke) c++;
+    if (filters.mitFotos) c++;
+    if (filters.neuEingestellt) c++;
+    if (filters.preisreduziert) c++;
+    return c;
+  }, [filters]);
+
+  // Active category label for breadcrumb
+  const activeKatLabel = useMemo(() => {
+    if (filters.kategorien.length === 1) {
+      return HAUPTKATEGORIEN.find((h) => h.id === filters.kategorien[0])?.label;
+    }
+    return null;
+  }, [filters.kategorien]);
+
+  const handleFilterChange = useCallback((f: FilterState) => {
+    setFilters(f);
+    setPage(1);
+  }, []);
+
+  return (
+    <>
+      {/* Breadcrumb */}
+      <div className="border-b border-brand-border bg-brand-grey/50">
+        <div className="mx-auto flex max-w-7xl items-center gap-1.5 px-4 py-3 text-xs text-neutral-500">
+          <Link href="/" className="hover:text-brand-green transition-colors">
+            Startseite
+          </Link>
+          <ChevronRight size={12} className="text-neutral-300" />
+          <Link href="/suche" className="hover:text-brand-green transition-colors">
+            Suche
+          </Link>
+          {activeKatLabel && (
+            <>
+              <ChevronRight size={12} className="text-neutral-300" />
+              <span className="text-brand-dark">{activeKatLabel}</span>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Main layout */}
+      <div className="mx-auto flex max-w-7xl gap-6 px-4 py-6">
+        {/* Desktop Sidebar */}
+        <aside className="hidden w-[280px] shrink-0 lg:block">
+          <div className="sticky top-[140px] max-h-[calc(100vh-160px)] overflow-y-auto rounded-xl border border-brand-border bg-white">
+            <FilterSidebar
+              filters={filters}
+              onChange={handleFilterChange}
+              resultCount={totalResults}
+            />
+          </div>
+        </aside>
+
+        {/* Results */}
+        <div className="min-w-0 flex-1">
+          <ErgebnisHeader
+            resultCount={totalResults}
+            sort={sort}
+            onSortChange={setSort}
+            view={view}
+            onViewChange={setView}
+            activeFilterCount={activeFilterCount}
+            onOpenMobileFilter={() => setMobileFilterOpen(true)}
+            showMap={showMap}
+            onToggleMap={() => setShowMap(!showMap)}
+          />
+
+          {showMap && (
+            <div className="mb-4 rounded-xl border border-brand-border bg-white p-4 shadow-sm animate-fade-in">
+              <LocationSearch
+                onLocationChange={(loc) =>
+                  setMapCenter(loc ? { lat: loc.lat, lng: loc.lng } : null)
+                }
+                onRadiusChange={setMapRadius}
+                radius={mapRadius}
+              />
+            </div>
+          )}
+
+          {/* Map — full width on mobile, side-by-side on desktop */}
+          {showMap && (
+            <div className="mb-4 lg:hidden">
+              <div className="h-[350px] rounded-xl overflow-hidden border border-brand-border shadow-sm">
+                <DynamicMap
+                  listings={mapListings}
+                  center={mapCenter || undefined}
+                  radius={mapCenter ? mapRadius : undefined}
+                  hoveredId={hoveredListingId}
+                  onMarkerClick={(id) => {
+                    window.location.href = `/inserat/${id}`;
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
+          <div className={showMap ? "lg:flex lg:gap-4" : ""}>
+            <div className={showMap ? "lg:w-1/2 lg:overflow-y-auto" : "w-full"}>
+              <ListingGrid
+                listings={listings}
+                view={showMap ? "list" : view}
+                page={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+                isLoading={isLoading}
+              />
+            </div>
+            {showMap && (
+              <div className="hidden w-1/2 lg:block">
+                <div className="sticky top-[140px] h-[calc(100vh-180px)] rounded-xl overflow-hidden border border-brand-border shadow-sm">
+                  <DynamicMap
+                    listings={mapListings}
+                    center={mapCenter || undefined}
+                    radius={mapCenter ? mapRadius : undefined}
+                    hoveredId={hoveredListingId}
+                    onMarkerClick={(id) => {
+                      window.location.href = `/inserat/${id}`;
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Filter — Bottom Sheet */}
+      {mobileFilterOpen && (
+        <>
+          {/* Backdrop with blur */}
+          <div
+            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-bg lg:hidden"
+            onClick={() => setMobileFilterOpen(false)}
+          />
+          {/* Bottom Sheet */}
+          <div className="fixed inset-x-0 bottom-0 z-50 max-h-[85vh] overflow-hidden rounded-t-2xl bg-white shadow-[var(--shadow-modal)] lg:hidden animate-slide-up">
+            <div className="mx-auto my-2 h-1 w-10 rounded-full bg-neutral-300" />
+            <FilterSidebar
+              filters={filters}
+              onChange={handleFilterChange}
+              onClose={() => setMobileFilterOpen(false)}
+              resultCount={totalResults}
+              isMobile
+            />
+          </div>
+        </>
+      )}
+
+      {/* Mobile FAB: Inserat aufgeben */}
+      <Link
+        href="/dashboard/inserat-erstellen"
+        className="fixed bottom-20 right-4 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-brand-green text-white shadow-lg animate-bounce-in lg:hidden hover:bg-brand-green-dark transition-colors"
+        aria-label="Inserat aufgeben"
+      >
+        <Plus size={24} />
+      </Link>
+    </>
+  );
+}

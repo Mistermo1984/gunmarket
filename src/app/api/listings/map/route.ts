@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { initializeSchema, dbAll } from "@/lib/db";
 import { haversineDistance } from "@/lib/geocoding";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: NextRequest) {
   try {
     await initializeSchema();

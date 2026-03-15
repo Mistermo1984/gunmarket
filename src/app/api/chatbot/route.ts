@@ -76,9 +76,10 @@ export async function POST(req: NextRequest) {
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
+    console.error("GEMINI_API_KEY ist nicht gesetzt. Bitte in .env.local oder Vercel Environment Variables konfigurieren.");
     return NextResponse.json(
-      { error: "API key not configured" },
-      { status: 500 }
+      { error: "KI-Assistent ist derzeit nicht verfügbar. Bitte kontaktieren Sie den Administrator." },
+      { status: 503 }
     );
   }
 

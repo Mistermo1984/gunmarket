@@ -53,7 +53,8 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
   }
 
   const imageCount = listing.bildAnzahl ?? 3;
-  const isExternal = listing.source === "waffengebraucht";
+  const isExternal = !!listing.source && listing.source !== "gunmarket";
+  const sourceName = listing.source === "waffengebraucht" ? "waffengebraucht.ch" : listing.source === "nextgun" ? "nextgun.ch" : listing.source;
 
   const href = `/inserat/${listing.id}`;
 
@@ -121,7 +122,7 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
         {/* Top-left badge */}
         {isExternal ? (
           <span className="absolute left-2 top-2 flex items-center gap-1 rounded bg-blue-600 px-2 py-1 text-[10px] font-medium text-white backdrop-blur-sm">
-            <ExternalLink size={10} />waffengebraucht.ch
+            <ExternalLink size={10} />{sourceName}
           </span>
         ) : (
           <span className="absolute left-2 top-2 flex items-center gap-1 rounded bg-white/80 px-1.5 py-0.5 text-[10px] text-neutral-500 backdrop-blur-sm">

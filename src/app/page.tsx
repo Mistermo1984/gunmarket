@@ -5,8 +5,7 @@ import KartenVorschau from "@/components/home/KartenVorschau";
 import SoFunktionierts from "@/components/home/SoFunktionierts";
 import RechtlicherHinweis from "@/components/home/RechtlicherHinweis";
 import Link from "next/link";
-import { seedDatabase } from "@/lib/seed";
-import { seedCrawledListings } from "@/lib/crawl-waffengebraucht";
+import { initializeSchema } from "@/lib/db";
 
 export const metadata: Metadata = {
   title: "GunMarket.ch — Waffen kaufen & verkaufen in der Schweiz",
@@ -17,10 +16,9 @@ export const metadata: Metadata = {
   },
 };
 
-function ensureSeeded() {
+function ensureSchema() {
   try {
-    seedDatabase();
-    seedCrawledListings();
+    initializeSchema();
   } catch {
     // ignore
   }
@@ -126,7 +124,7 @@ const faqJsonLd = {
 };
 
 export default function Home() {
-  ensureSeeded();
+  ensureSchema();
 
   return (
     <>

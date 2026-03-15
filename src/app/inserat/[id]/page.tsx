@@ -240,9 +240,12 @@ export default function InseratDetailPage() {
   }
 
   const rechts = RECHTS_MAP[listing.rechtsstatus] || RECHTS_MAP.frei;
-  const isExternal = listing.source === "waffengebraucht" && !!listing.source_url;
-  const verkaeuferInitialen = `${listing.vorname?.[0] || ""}${listing.nachname?.[0] || ""}`.toUpperCase();
-  const verkaeuferName = `${listing.vorname} ${listing.nachname?.[0]}.`;
+  const isExternal = !!listing.source && listing.source !== "gunmarket";
+  const sourceName = listing.source === "waffengebraucht" ? "waffengebraucht.ch" : listing.source === "nextgun" ? "nextgun.ch" : listing.source;
+  const verkaeuferInitialen = isExternal
+    ? sourceName.substring(0, 2).toUpperCase()
+    : `${listing.vorname?.[0] || ""}${listing.nachname?.[0] || ""}`.toUpperCase();
+  const verkaeuferName = isExternal ? sourceName : `${listing.vorname} ${listing.nachname?.[0]}.`;
   const mitgliedSeit = listing.user_created_at
     ? new Date(listing.user_created_at).toLocaleDateString("de-CH", { month: "long", year: "numeric" })
     : "";
@@ -295,18 +298,20 @@ export default function InseratDetailPage() {
             <ExternalLink size={20} className="shrink-0 text-blue-600" />
             <div className="flex-1">
               <p className="text-sm font-medium text-blue-800">
-                Dieses Inserat stammt von <strong>waffengebraucht.ch</strong>
+                Dieses Inserat stammt von <strong>{sourceName}</strong>
               </p>
               <p className="text-xs text-blue-600">
                 Für Kontaktaufnahme werden Sie zur Originalseite weitergeleitet.
               </p>
             </div>
-            <a
-              href={`/weiterleitung?url=${encodeURIComponent(listing.source_url!)}&titel=${encodeURIComponent(listing.titel)}`}
-              className="shrink-0 rounded-lg bg-blue-600 px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-blue-700"
-            >
-              Original ansehen
-            </a>
+            {listing.source_url && (
+              <a
+                href={`/weiterleitung?url=${encodeURIComponent(listing.source_url)}&titel=${encodeURIComponent(listing.titel)}`}
+                className="shrink-0 rounded-lg bg-blue-600 px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-blue-700"
+              >
+                Original ansehen
+              </a>
+            )}
           </div>
         )}
 
@@ -452,14 +457,19 @@ export default function InseratDetailPage() {
               </div>
 
               {/* Contact */}
-              {isExternal ? (
+              {isExternal && listing.source_url ? (
                 <a
-                  href={`/weiterleitung?url=${encodeURIComponent(listing.source_url!)}&titel=${encodeURIComponent(listing.titel)}`}
+                  href={`/weiterleitung?url=${encodeURIComponent(listing.source_url)}&titel=${encodeURIComponent(listing.titel)}`}
                   className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 py-3 text-lg font-medium text-white transition-colors hover:bg-blue-700"
                 >
                   <ExternalLink size={20} />
-                  Auf waffengebraucht.ch kontaktieren
+                  Auf {sourceName} ansehen
                 </a>
+              ) : isExternal ? (
+                <div className="flex w-full items-center justify-center gap-2 rounded-lg bg-neutral-100 py-3 text-sm text-neutral-500">
+                  <ExternalLink size={16} />
+                  Externes Inserat — Kontakt über {sourceName}
+                </div>
               ) : (
                 <button
                   onClick={() => setKontaktOpen(true)}
@@ -472,23 +482,42 @@ export default function InseratDetailPage() {
 
               {/* Seller */}
               <div className="rounded-xl bg-white p-5 shadow-sm">
-                <div className="mb-3 flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-green font-display text-lg font-bold text-white">
-                    {verkaeuferInitialen}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-brand-dark">{verkaeuferName}</p>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-neutral-500">
-                        {listing.verkaeufer_typ === "Händler" ? "Händler" : "Privater Nutzer"}
-                      </span>
+                {isExternal ? (
+                  <>
+                    <div className="mb-3 flex items-center gap-3">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 font-display text-lg font-bold text-white">
+                        <ExternalLink size={20} />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-brand-dark">{sourceName}</p>
+                        <span className="text-sm text-neutral-500">Externes Inserat</span>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-neutral-500">
-                  <User size={14} />
-                  Aktiv seit {mitgliedSeit}
-                </div>
+                    <p className="text-xs text-neutral-500">
+                      Dieses Inserat wird automatisch von {sourceName} importiert. Verkäufer-Kontakt nur über die Originalseite.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <div className="mb-3 flex items-center gap-3">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-green font-display text-lg font-bold text-white">
+                        {verkaeuferInitialen}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-brand-dark">{verkaeuferName}</p>
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-neutral-500">
+                            {listing.verkaeufer_typ === "Händler" ? "Händler" : "Privater Nutzer"}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-neutral-500">
+                      <User size={14} />
+                      Aktiv seit {mitgliedSeit}
+                    </div>
+                  </>
+                )}
               </div>
 
               {/* Share + Report */}
@@ -612,15 +641,15 @@ export default function InseratDetailPage() {
               CHF {listing.preis.toLocaleString("de-CH")}.–
             </p>
           </div>
-          {isExternal ? (
+          {isExternal && listing.source_url ? (
             <a
-              href={`/weiterleitung?url=${encodeURIComponent(listing.source_url!)}&titel=${encodeURIComponent(listing.titel)}`}
+              href={`/weiterleitung?url=${encodeURIComponent(listing.source_url)}&titel=${encodeURIComponent(listing.titel)}`}
               className="flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white touch-target"
             >
               <ExternalLink size={16} />
-              Kontaktieren
+              Auf {sourceName}
             </a>
-          ) : (
+          ) : !isExternal ? (
             <button
               onClick={() => setKontaktOpen(true)}
               className="flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white touch-target"
@@ -628,7 +657,7 @@ export default function InseratDetailPage() {
               <MessageSquare size={16} />
               Nachricht senden
             </button>
-          )}
+          ) : null}
         </div>
       </div>
 

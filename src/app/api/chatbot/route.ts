@@ -1,6 +1,18 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
+// Startup-Log: zeigt beim ersten Laden welche relevanten Env-Vars verfügbar sind
+const geminiVars = Object.keys(process.env).filter(
+  (k) => k.includes("GEMINI") || k.includes("GOOGLE")
+);
+console.log(
+  "[Chatbot] Verfügbare GEMINI/GOOGLE Env-Vars:",
+  geminiVars.length > 0 ? geminiVars.join(", ") : "KEINE GEFUNDEN",
+  "| GEMINI_API_KEY gesetzt:", !!process.env.GEMINI_API_KEY
+);
+
 const SYSTEM_PROMPT = `Du bist der freundliche Assistent von GunMarket.ch, dem Schweizer Waffenmarktplatz. Du hilfst Nutzern dabei, sich auf der Plattform zurechtzufinden und beantwortest allgemeine Fragen zum Schweizer Waffenrecht.
 
 DEINE ROLLE:

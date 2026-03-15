@@ -222,52 +222,6 @@ function getTotalPages(html: string): number {
   return maxPage;
 }
 
-async function crawlWaffengebraucht(): Promise<CrawledItem[]> {
-  const allItems: CrawledItem[] = [];
-  const seenIds = new Set<string>();
-
-  for (const cat of CATEGORIES) {
-    console.log(`[Crawl] Crawling category: ${cat.slug}`);
-    const firstPageUrl = `${BASE_URL}/li/${cat.slug}`;
-
-    try {
-      const firstPageHtml = await fetchPage(firstPageUrl);
-      const totalPages = getTotalPages(firstPageHtml);
-      console.log(`[Crawl] ${cat.slug}: ${totalPages} pages`);
-
-      const firstItems = parseListingCards(firstPageHtml, cat.hauptkategorie);
-      for (const item of firstItems) {
-        if (!seenIds.has(item.sourceId)) {
-          seenIds.add(item.sourceId);
-          allItems.push(item);
-        }
-      }
-
-      for (let page = 2; page <= totalPages; page++) {
-        await delay(300);
-        try {
-          const pageUrl = `${firstPageUrl}?&page=${page}`;
-          const pageHtml = await fetchPage(pageUrl);
-          const pageItems = parseListingCards(pageHtml, cat.hauptkategorie);
-          for (const item of pageItems) {
-            if (!seenIds.has(item.sourceId)) {
-              seenIds.add(item.sourceId);
-              allItems.push(item);
-            }
-          }
-        } catch (err) {
-          console.error(`[Crawl] Error page ${page} of ${cat.slug}:`, err);
-        }
-      }
-    } catch (err) {
-      console.error(`[Crawl] Error category ${cat.slug}:`, err);
-    }
-  }
-
-  console.log(`[Crawl] Waffengebraucht total: ${allItems.length} listings`);
-  return allItems;
-}
-
 async function crawlNextgun(): Promise<CrawledItem[]> {
   const allItems: CrawledItem[] = [];
 
@@ -421,69 +375,148 @@ export function seedCrawledListings() {
   console.log("[Seed] Use admin panel to crawl.");
 }
 
-export async function runCrawl(): Promise<{ inserted: number; deleted: number; duration: number }> {
-  const start = Date.now();
-  await initializeSchema();
+// Get list of all crawl steps (for sequential execution from frontend/cron)
+export function getCrawlSteps(): { id: string; label: string }[] {
+  return [
+    ...CATEGORIES.map((c) => ({ id: `wg-${c.slug}`, label: `waffengebraucht.ch: ${c.slug}` })),
+    { id: "nextgun", label: "nextgun.ch" },
+    { id: "cleanup", label: "Aufräumen (verkaufte entfernen)" },
+  ];
+}
 
-  // Ensure crawler users exist
+// Crawl a single step (one category or nextgun or cleanup)
+export async function runCrawlStep(stepId: string): Promise<{ inserted: number; deleted: number; source: string }> {
+  await initializeSchema();
   await ensureCrawlerUser(CRAWLER_USER.id, CRAWLER_USER.email, CRAWLER_USER.vorname, CRAWLER_USER.nachname);
   await ensureCrawlerUser("crawler-nextgun", "crawler@nextgun.ch", "NextGun", ".ch");
 
-  // Get existing source_ids so we can skip duplicates and preserve their created_at
-  const existingRows = await dbAll<{ source_id: string }>(
-    "SELECT source_id FROM listings WHERE source IN ('waffengebraucht', 'nextgun') AND source_id IS NOT NULL"
+  // Get existing source_ids to skip duplicates
+  const existingRows = await dbAll<{ source_id: string; source: string }>(
+    "SELECT source_id, source FROM listings WHERE source IN ('waffengebraucht', 'nextgun') AND source_id IS NOT NULL"
   );
   const existingSourceIds = new Set(existingRows.map((r) => r.source_id));
 
-  // Crawl both sources
-  const [wgItems, ngItems] = await Promise.all([
-    crawlWaffengebraucht(),
-    crawlNextgun(),
-  ]);
-
-  // Filter out items that already exist in the DB (by source_id)
-  const newWgItems = wgItems.filter((item) => !existingSourceIds.has(item.sourceId));
-  const newNgItems = ngItems.filter((item) => !existingSourceIds.has(item.sourceId));
-
-  console.log(`[Crawl] Waffengebraucht: ${wgItems.length} total, ${newWgItems.length} new`);
-  console.log(`[Crawl] NextGun: ${ngItems.length} total, ${newNgItems.length} new`);
-
-  // Build set of all currently live source_ids from crawled data
-  const liveSourceIds = new Set([
-    ...wgItems.map((i) => i.sourceId),
-    ...ngItems.map((i) => i.sourceId),
-  ]);
-
-  // Remove listings that are no longer on the source sites (sold/deleted)
-  const toRemove = existingRows.filter((r) => !liveSourceIds.has(r.source_id));
-  let deleted = 0;
-  if (toRemove.length > 0) {
-    const deleteStatements: { sql: string; args: (string | number | null)[] }[] = [];
-    for (const row of toRemove) {
-      deleteStatements.push({
-        sql: "DELETE FROM listing_images WHERE listing_id IN (SELECT id FROM listings WHERE source_id = ?)",
-        args: [row.source_id],
-      });
-      deleteStatements.push({
-        sql: "DELETE FROM listings WHERE source_id = ?",
-        args: [row.source_id],
-      });
-    }
-    await dbBatch(deleteStatements);
-    deleted = toRemove.length;
+  if (stepId === "nextgun") {
+    const items = await crawlNextgun();
+    const newItems = items.filter((item) => !existingSourceIds.has(item.sourceId));
+    await insertItems(newItems, "nextgun");
+    console.log(`[Crawl] NextGun: ${items.length} total, ${newItems.length} new`);
+    return { inserted: newItems.length, deleted: 0, source: "nextgun" };
   }
 
-  // Insert only new items
-  await insertItems(newWgItems, "waffengebraucht");
-  await insertItems(newNgItems, "nextgun");
+  if (stepId === "cleanup") {
+    // Remove listings whose source_id is stored in crawl_meta from the last full crawl
+    await ensureCrawlMetaTable();
+    const liveIdsRow = await dbGet<{ value: string }>("SELECT value FROM crawl_meta WHERE key = 'live_source_ids'");
+    if (!liveIdsRow?.value) {
+      await saveCrawlTimestamp();
+      return { inserted: 0, deleted: 0, source: "cleanup" };
+    }
+    const liveSourceIds = new Set(JSON.parse(liveIdsRow.value) as string[]);
+    const toRemove = existingRows.filter((r) => !liveSourceIds.has(r.source_id));
+    let deleted = 0;
+    if (toRemove.length > 0) {
+      const deleteStatements: { sql: string; args: (string | number | null)[] }[] = [];
+      for (const row of toRemove) {
+        deleteStatements.push({
+          sql: "DELETE FROM listing_images WHERE listing_id IN (SELECT id FROM listings WHERE source_id = ?)",
+          args: [row.source_id],
+        });
+        deleteStatements.push({
+          sql: "DELETE FROM listings WHERE source_id = ?",
+          args: [row.source_id],
+        });
+      }
+      await dbBatch(deleteStatements);
+      deleted = toRemove.length;
+    }
+    // Clear temp data and save timestamp
+    await dbRun("DELETE FROM crawl_meta WHERE key = 'live_source_ids'");
+    await saveCrawlTimestamp();
+    console.log(`[Crawl] Cleanup: ${deleted} removed`);
+    return { inserted: 0, deleted, source: "cleanup" };
+  }
 
-  const totalInserted = newWgItems.length + newNgItems.length;
+  // wg-{slug} — crawl single waffengebraucht.ch category
+  const slug = stepId.replace("wg-", "");
+  const cat = CATEGORIES.find((c) => c.slug === slug);
+  if (!cat) throw new Error(`Unknown crawl step: ${stepId}`);
+
+  const items = await crawlSingleCategory(cat.slug, cat.hauptkategorie);
+  const newItems = items.filter((item) => !existingSourceIds.has(item.sourceId));
+  await insertItems(newItems, "waffengebraucht");
+
+  // Accumulate live source_ids in crawl_meta for cleanup step
+  await ensureCrawlMetaTable();
+  const existingLiveRow = await dbGet<{ value: string }>("SELECT value FROM crawl_meta WHERE key = 'live_source_ids'");
+  const existingLive: string[] = existingLiveRow?.value ? JSON.parse(existingLiveRow.value) : [];
+  const updatedLive = [...existingLive, ...items.map((i) => i.sourceId)];
+  await dbRun("INSERT OR REPLACE INTO crawl_meta (key, value) VALUES ('live_source_ids', ?)", [JSON.stringify(updatedLive)]);
+
+  console.log(`[Crawl] ${cat.slug}: ${items.length} total, ${newItems.length} new`);
+  return { inserted: newItems.length, deleted: 0, source: `wg-${slug}` };
+}
+
+// Crawl a single category from waffengebraucht.ch
+async function crawlSingleCategory(slug: string, hauptkategorie: string): Promise<CrawledItem[]> {
+  const items: CrawledItem[] = [];
+  const seenIds = new Set<string>();
+
+  console.log(`[Crawl] Crawling category: ${slug}`);
+  const firstPageUrl = `${BASE_URL}/li/${slug}`;
+  const firstPageHtml = await fetchPage(firstPageUrl);
+  const totalPages = getTotalPages(firstPageHtml);
+  console.log(`[Crawl] ${slug}: ${totalPages} pages`);
+
+  const firstItems = parseListingCards(firstPageHtml, hauptkategorie);
+  for (const item of firstItems) {
+    if (!seenIds.has(item.sourceId)) {
+      seenIds.add(item.sourceId);
+      items.push(item);
+    }
+  }
+
+  for (let page = 2; page <= totalPages; page++) {
+    await delay(200);
+    try {
+      const pageUrl = `${firstPageUrl}?&page=${page}`;
+      const pageHtml = await fetchPage(pageUrl);
+      const pageItems = parseListingCards(pageHtml, hauptkategorie);
+      for (const item of pageItems) {
+        if (!seenIds.has(item.sourceId)) {
+          seenIds.add(item.sourceId);
+          items.push(item);
+        }
+      }
+    } catch (err) {
+      console.error(`[Crawl] Error page ${page} of ${slug}:`, err);
+    }
+  }
+
+  return items;
+}
+
+// Full crawl (for local use / long-running environments)
+export async function runCrawl(): Promise<{ inserted: number; deleted: number; duration: number }> {
+  const start = Date.now();
+  const steps = getCrawlSteps();
+  let totalInserted = 0;
+  let totalDeleted = 0;
+
+  // Reset live_source_ids before starting
+  await initializeSchema();
+  await ensureCrawlMetaTable();
+  await dbRun("DELETE FROM crawl_meta WHERE key = 'live_source_ids'");
+
+  for (const step of steps) {
+    const result = await runCrawlStep(step.id);
+    totalInserted += result.inserted;
+    totalDeleted += result.deleted;
+  }
+
   const duration = Date.now() - start;
-  console.log(`[Crawl] Done: ${totalInserted} new, ${deleted} removed, ${existingSourceIds.size - deleted} kept in ${duration}ms`);
-
-  await saveCrawlTimestamp();
-
-  return { inserted: totalInserted, deleted, duration };
+  console.log(`[Crawl] Full crawl done: ${totalInserted} new, ${totalDeleted} removed in ${duration}ms`);
+  return { inserted: totalInserted, deleted: totalDeleted, duration };
 }
 
 export async function getCrawlStatus(): Promise<{ lastCrawl: string | null; count: number; autoCrawlEnabled: boolean; autoCrawlTime: string }> {

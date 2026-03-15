@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { initializeSchema, dbGet } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     await initializeSchema();
@@ -14,7 +16,7 @@ export async function GET() {
     )?.c ?? 0;
 
     const kantone = (
-      await dbGet<{ c: number }>("SELECT COUNT(DISTINCT kanton) as c FROM listings WHERE status = 'aktiv'")
+      await dbGet<{ c: number }>("SELECT COUNT(DISTINCT kanton) as c FROM listings WHERE status = 'aktiv' AND kanton IS NOT NULL AND kanton != ''")
     )?.c ?? 0;
 
     return NextResponse.json({ inserate, verkaeufer, kantone });

@@ -13,18 +13,25 @@ import {
   ExternalLink,
 } from "lucide-react";
 
+interface CrawlStep {
+  id: string;
+  label: string;
+}
+
 interface CrawlStatus {
   lastCrawl: string | null;
   count: number;
   autoCrawlEnabled: boolean;
   autoCrawlTime: string;
+  steps: CrawlStep[];
 }
 
-interface CrawlResult {
-  success: boolean;
+interface StepResult {
+  id: string;
+  label: string;
   inserted: number;
   deleted: number;
-  duration: number;
+  status: "pending" | "running" | "done" | "error";
   error?: string;
 }
 
@@ -32,7 +39,8 @@ export default function CrawlingPage() {
   const [status, setStatus] = useState<CrawlStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [crawling, setCrawling] = useState(false);
-  const [lastResult, setLastResult] = useState<CrawlResult | null>(null);
+  const [stepResults, setStepResults] = useState<StepResult[]>([]);
+  const [, setCurrentStepIdx] = useState(-1);
 
   const fetchStatus = useCallback(() => {
     fetch("/api/admin/crawl")
@@ -49,25 +57,62 @@ export default function CrawlingPage() {
   }, [fetchStatus]);
 
   async function handleCrawl() {
+    if (!status?.steps) return;
     setCrawling(true);
-    setLastResult(null);
+    setCurrentStepIdx(0);
 
-    try {
-      const res = await fetch("/api/admin/crawl", { method: "POST" });
-      const data = await res.json();
+    // Initialize step results
+    const results: StepResult[] = status.steps.map((s) => ({
+      id: s.id,
+      label: s.label,
+      inserted: 0,
+      deleted: 0,
+      status: "pending",
+    }));
+    setStepResults(results);
 
-      if (res.ok) {
-        setLastResult(data);
-        fetchStatus();
-      } else {
-        setLastResult({ success: false, inserted: 0, deleted: 0, duration: 0, error: data.error });
+    for (let i = 0; i < status.steps.length; i++) {
+      const step = status.steps[i];
+      setCurrentStepIdx(i);
+
+      // Mark current as running
+      results[i].status = "running";
+      setStepResults([...results]);
+
+      try {
+        const res = await fetch("/api/admin/crawl", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ step: step.id }),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          results[i].status = "done";
+          results[i].inserted = data.inserted || 0;
+          results[i].deleted = data.deleted || 0;
+        } else {
+          results[i].status = "error";
+          results[i].error = data.error || "Unbekannter Fehler";
+        }
+      } catch {
+        results[i].status = "error";
+        results[i].error = "Netzwerkfehler";
       }
-    } catch {
-      setLastResult({ success: false, inserted: 0, deleted: 0, duration: 0, error: "Netzwerkfehler" });
+
+      setStepResults([...results]);
     }
 
+    setCurrentStepIdx(-1);
     setCrawling(false);
+    fetchStatus();
   }
+
+  const totalInserted = stepResults.reduce((s, r) => s + r.inserted, 0);
+  const totalDeleted = stepResults.reduce((s, r) => s + r.deleted, 0);
+  const doneSteps = stepResults.filter((r) => r.status === "done").length;
+  const errorSteps = stepResults.filter((r) => r.status === "error").length;
+  const allDone = stepResults.length > 0 && !crawling;
 
   function formatDate(iso: string) {
     const d = new Date(iso);
@@ -108,7 +153,7 @@ export default function CrawlingPage() {
           </h1>
         </div>
         <p className="text-sm text-neutral-500">
-          Inserate von waffengebraucht.ch importieren und verwalten
+          Inserate von waffengebraucht.ch und nextgun.ch importieren
         </p>
       </div>
 
@@ -120,7 +165,8 @@ export default function CrawlingPage() {
           </div>
           <div className="p-5">
             <p className="mb-4 text-sm text-neutral-600">
-              Löscht alle bestehenden gecrawlten Inserate und importiert die aktuellen Daten neu von waffengebraucht.ch.
+              Crawlt alle Kategorien von waffengebraucht.ch und nextgun.ch Schritt für Schritt.
+              Bereits vorhandene Inserate werden übersprungen, verkaufte werden entfernt.
             </p>
 
             <button
@@ -131,7 +177,7 @@ export default function CrawlingPage() {
               {crawling ? (
                 <>
                   <Loader2 size={18} className="animate-spin" />
-                  Crawling läuft...
+                  Crawling läuft... ({doneSteps}/{stepResults.length})
                 </>
               ) : (
                 <>
@@ -141,35 +187,63 @@ export default function CrawlingPage() {
               )}
             </button>
 
-            {/* Result */}
-            {lastResult && (
+            {/* Step-by-step progress */}
+            {stepResults.length > 0 && (
+              <div className="mt-4 space-y-1.5">
+                {stepResults.map((r) => (
+                  <div
+                    key={r.id}
+                    className={`flex items-center justify-between rounded-lg px-3 py-2 text-xs ${
+                      r.status === "running"
+                        ? "bg-blue-50 text-blue-700"
+                        : r.status === "done"
+                        ? "bg-green-50 text-green-700"
+                        : r.status === "error"
+                        ? "bg-red-50 text-red-700"
+                        : "bg-gray-50 text-neutral-400"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      {r.status === "running" && <Loader2 size={12} className="animate-spin" />}
+                      {r.status === "done" && <CheckCircle size={12} />}
+                      {r.status === "error" && <AlertTriangle size={12} />}
+                      {r.status === "pending" && <span className="h-3 w-3" />}
+                      <span className="font-medium">{r.label}</span>
+                    </div>
+                    <div>
+                      {r.status === "done" && (
+                        <span>+{r.inserted} / -{r.deleted}</span>
+                      )}
+                      {r.status === "error" && (
+                        <span className="text-red-600">{r.error}</span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Summary */}
+            {allDone && stepResults.length > 0 && (
               <div
                 className={`mt-4 flex items-start gap-3 rounded-lg border p-4 ${
-                  lastResult.success
+                  errorSteps === 0
                     ? "border-green-200 bg-green-50"
-                    : "border-red-200 bg-red-50"
+                    : "border-amber-200 bg-amber-50"
                 }`}
               >
-                {lastResult.success ? (
+                {errorSteps === 0 ? (
                   <CheckCircle size={18} className="mt-0.5 shrink-0 text-green-600" />
                 ) : (
-                  <AlertTriangle size={18} className="mt-0.5 shrink-0 text-red-600" />
+                  <AlertTriangle size={18} className="mt-0.5 shrink-0 text-amber-600" />
                 )}
                 <div className="text-sm">
-                  {lastResult.success ? (
-                    <>
-                      <p className="font-semibold text-green-800">Crawling erfolgreich!</p>
-                      <p className="mt-1 text-green-700">
-                        {lastResult.deleted} alte Inserate gelöscht, {lastResult.inserted} neue Inserate importiert
-                        in {lastResult.duration}ms.
-                      </p>
-                    </>
-                  ) : (
-                    <>
-                      <p className="font-semibold text-red-800">Crawling fehlgeschlagen</p>
-                      <p className="mt-1 text-red-700">{lastResult.error}</p>
-                    </>
-                  )}
+                  <p className={`font-semibold ${errorSteps === 0 ? "text-green-800" : "text-amber-800"}`}>
+                    Crawling abgeschlossen{errorSteps > 0 ? ` (${errorSteps} Fehler)` : ""}
+                  </p>
+                  <p className={`mt-1 ${errorSteps === 0 ? "text-green-700" : "text-amber-700"}`}>
+                    {totalInserted} neue Inserate importiert, {totalDeleted} verkaufte entfernt.
+                  </p>
                 </div>
               </div>
             )}
@@ -220,7 +294,7 @@ export default function CrawlingPage() {
                   Auto-Crawling: {status?.autoCrawlTime || "17:00"} Uhr
                 </p>
                 <p className="text-xs text-neutral-500">
-                  Täglich automatisch — nächste Ausführung um 17:00
+                  Täglich automatisch via Vercel Cron
                 </p>
               </div>
             </div>
@@ -241,7 +315,7 @@ export default function CrawlingPage() {
                 <div className="flex items-center gap-2">
                   <h3 className="font-semibold text-brand-dark">waffengebraucht.ch</h3>
                   <a
-                    href="https://www.waffengebraucht.ch"
+                    href="https://waffengebraucht.ch"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 hover:text-blue-700"
@@ -250,10 +324,10 @@ export default function CrawlingPage() {
                   </a>
                 </div>
                 <p className="mt-1 text-sm text-neutral-600">
-                  ~1&apos;800 Inserate aus allen Kategorien. Echtes Web-Crawling aller Kategorieseiten.
+                  9 Kategorien. Echtes Web-Crawling aller Kategorieseiten.
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {["Kurzwaffen", "Langwaffen", "Ordonnanz", "Optik", "Munition", "Zubehör"].map((cat) => (
+                  {["Kurzwaffen", "Langwaffen", "Ordonnanz", "Luftdruck", "Optik", "Munition", "Messer", "Wiederladen", "Bogenschiessen"].map((cat) => (
                     <span key={cat} className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-neutral-600">
                       {cat}
                     </span>
@@ -286,7 +360,7 @@ export default function CrawlingPage() {
                   </a>
                 </div>
                 <p className="mt-1 text-sm text-neutral-600">
-                  ~190 Inserate. Daten werden aus dem eingebetteten SvelteKit-JSON extrahiert.
+                  Daten aus dem eingebetteten SvelteKit-JSON extrahiert.
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {["Firearms", "Accessories", "Equipment", "Ammunition", "Knives"].map((cat) => (

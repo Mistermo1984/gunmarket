@@ -58,10 +58,13 @@ function SucheContent() {
     const params = new URLSearchParams();
     if (filters.kategorien.length === 1) params.set("kategorie", filters.kategorien[0]);
     if (filters.rechtsstatus.length === 1) params.set("rechtsstatus", filters.rechtsstatus[0]);
-    if (filters.kantone.length === 1) {
-      // Map kanton ID (e.g. "be") to full name (e.g. "Bern") for DB query
-      const kt = KANTONE.find((k) => k.id === filters.kantone[0]);
-      params.set("kanton", kt?.label ?? filters.kantone[0]);
+    if (filters.kantone.length > 0) {
+      // Map kanton IDs (e.g. "be") to full names (e.g. "Bern") for DB query
+      const labels = filters.kantone.map((id) => {
+        const kt = KANTONE.find((k) => k.id === id);
+        return kt?.label ?? id;
+      });
+      params.set("kanton", labels.join(","));
     }
     if (filters.zustand.length === 1) params.set("zustand", filters.zustand[0]);
     if (filters.preisMin) params.set("minPreis", filters.preisMin);

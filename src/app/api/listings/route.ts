@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { initializeSchema, dbGet, dbAll, dbRun } from "@/lib/db";
 import { v4 as uuidv4 } from "uuid";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: NextRequest) {
   try {
     await initializeSchema();
@@ -36,8 +38,14 @@ export async function GET(req: NextRequest) {
       params.push(rechtsstatus);
     }
     if (kanton) {
-      where += " AND l.kanton = ?";
-      params.push(kanton);
+      const kantone = kanton.split(",").map((k) => k.trim()).filter(Boolean);
+      if (kantone.length === 1) {
+        where += " AND l.kanton = ?";
+        params.push(kantone[0]);
+      } else if (kantone.length > 1) {
+        where += ` AND l.kanton IN (${kantone.map(() => "?").join(",")})`;
+        params.push(...kantone);
+      }
     }
     if (zustand) {
       where += " AND l.zustand = ?";

@@ -74,9 +74,16 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || process.env.GOOGLE_GEMINI_API_KEY;
   if (!apiKey) {
-    console.error("GEMINI_API_KEY ist nicht gesetzt. Bitte in .env.local oder Vercel Environment Variables konfigurieren.");
+    // Log all available env var names containing GEMINI or GOOGLE for debugging
+    const relevantVars = Object.keys(process.env).filter(
+      (k) => k.includes("GEMINI") || k.includes("GOOGLE")
+    );
+    console.error(
+      "Chatbot API key fehlt! Erwartet: GEMINI_API_KEY, GOOGLE_API_KEY, oder GOOGLE_GEMINI_API_KEY.",
+      "Vorhandene relevante Env-Vars:", relevantVars.length > 0 ? relevantVars.join(", ") : "KEINE"
+    );
     return NextResponse.json(
       { error: "KI-Assistent ist derzeit nicht verfügbar. Bitte kontaktieren Sie den Administrator." },
       { status: 503 }

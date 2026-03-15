@@ -3,6 +3,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { initializeSchema, dbAll, dbRun } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 function unauthorized() {
   return NextResponse.json({ error: "Nicht autorisiert" }, { status: 403 });
 }

@@ -42,8 +42,8 @@ export default function LocationSearch({
         const res = await fetch(
           `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
             query + ", Schweiz"
-          )}&format=json&limit=5&countrycodes=ch`,
-          { headers: { "User-Agent": "GunMarket.ch/1.0" } }
+          )}&format=json&limit=5&countrycodes=ch&accept-language=de`,
+          { headers: { "User-Agent": "GunMarket.ch/1.0", "Accept-Language": "de" } }
         );
         const data = await res.json();
         setSuggestions(data);

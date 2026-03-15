@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { initializeSchema, dbAll } from "@/lib/db";
+import { haversineDistance } from "@/lib/geocoding";
 
 export async function GET(req: NextRequest) {
   try {
@@ -14,8 +15,24 @@ export async function GET(req: NextRequest) {
     const maxPreis = searchParams.get("maxPreis");
     const suche = searchParams.get("suche");
 
+    // Optional radius search params
+    const centerLat = searchParams.get("lat") ? parseFloat(searchParams.get("lat")!) : null;
+    const centerLng = searchParams.get("lng") ? parseFloat(searchParams.get("lng")!) : null;
+    const radius = parseFloat(searchParams.get("radius") || "50");
+
     let where = "WHERE l.status = 'aktiv' AND l.lat IS NOT NULL AND l.lng IS NOT NULL";
     const params: (string | number)[] = [];
+
+    // If center is set, use bounding box pre-filter
+    if (centerLat && centerLng) {
+      const latDelta = radius / 111;
+      const lngDelta = radius / (111 * Math.cos((centerLat * Math.PI) / 180));
+      where += " AND l.lat BETWEEN ? AND ? AND l.lng BETWEEN ? AND ?";
+      params.push(
+        centerLat - latDelta, centerLat + latDelta,
+        centerLng - lngDelta, centerLng + lngDelta
+      );
+    }
 
     if (kategorie) {
       where += " AND (l.hauptkategorie = ? OR l.unterkategorie = ?)";
@@ -47,13 +64,20 @@ export async function GET(req: NextRequest) {
       params.push(term, term, term);
     }
 
-    const markers = await dbAll(
+    let markers = await dbAll<{ id: string; titel: string; preis: number; lat: number; lng: number }>(
       `SELECT l.id, l.titel, l.preis, l.lat, l.lng
        FROM listings l
        ${where}
        LIMIT 5000`,
       params
     );
+
+    // Exact haversine filter when center is set
+    if (centerLat && centerLng) {
+      markers = markers.filter(
+        (m) => haversineDistance(centerLat, centerLng, m.lat, m.lng) <= radius
+      );
+    }
 
     return NextResponse.json({ markers });
   } catch (error) {

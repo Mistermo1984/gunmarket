@@ -67,9 +67,23 @@ interface MapViewProps {
   onMarkerClick?: (id: string) => void;
 }
 
-function FitBounds({ listings }: { listings: MapListing[] }) {
+function FitBounds({ listings, center, radius }: { listings: MapListing[]; center?: { lat: number; lng: number }; radius?: number }) {
   const map = useMap();
   useEffect(() => {
+    // If center is set (location search), fly to that location
+    if (center) {
+      // Zoom based on radius
+      let zoom = 11;
+      if (radius) {
+        if (radius <= 10) zoom = 13;
+        else if (radius <= 25) zoom = 11;
+        else if (radius <= 50) zoom = 10;
+        else zoom = 9;
+      }
+      map.flyTo([center.lat, center.lng], zoom, { duration: 1 });
+      return;
+    }
+    // Otherwise fit to markers
     if (listings.length > 0) {
       const bounds = L.latLngBounds(
         listings.map((l) => [l.lat, l.lng] as L.LatLngExpression)
@@ -78,7 +92,7 @@ function FitBounds({ listings }: { listings: MapListing[] }) {
     } else {
       map.setView(DEFAULT_CENTER, DEFAULT_ZOOM);
     }
-  }, [listings, map]);
+  }, [listings, map, center, radius]);
   return null;
 }
 
@@ -103,7 +117,7 @@ export default function MapView({
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      <FitBounds listings={listings} />
+      <FitBounds listings={listings} center={center} radius={radius} />
 
       {center && radius && (
         <Circle

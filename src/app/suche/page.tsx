@@ -12,7 +12,7 @@ import ErgebnisHeader from "@/components/suche/ErgebnisHeader";
 import ListingGrid from "@/components/suche/ListingGrid";
 import DynamicMap from "@/components/map/DynamicMap";
 import LocationSearch from "@/components/map/LocationSearch";
-import { HAUPTKATEGORIEN } from "@/lib/constants";
+import { HAUPTKATEGORIEN, KANTONE } from "@/lib/constants";
 import { apiListingToCard } from "@/lib/listing-helpers";
 import type { ListingCardData } from "@/components/ui/ListingCard";
 
@@ -58,7 +58,11 @@ function SucheContent() {
     const params = new URLSearchParams();
     if (filters.kategorien.length === 1) params.set("kategorie", filters.kategorien[0]);
     if (filters.rechtsstatus.length === 1) params.set("rechtsstatus", filters.rechtsstatus[0]);
-    if (filters.kantone.length === 1) params.set("kanton", filters.kantone[0]);
+    if (filters.kantone.length === 1) {
+      // Map kanton ID (e.g. "be") to full name (e.g. "Bern") for DB query
+      const kt = KANTONE.find((k) => k.id === filters.kantone[0]);
+      params.set("kanton", kt?.label ?? filters.kantone[0]);
+    }
     if (filters.zustand.length === 1) params.set("zustand", filters.zustand[0]);
     if (filters.preisMin) params.set("minPreis", filters.preisMin);
     if (filters.preisMax) params.set("maxPreis", filters.preisMax);
@@ -94,17 +98,23 @@ function SucheContent() {
       .catch(() => setIsLoading(false));
   }, [filters, sort, page, buildFilterParams]);
 
-  // Fetch ALL map markers (lightweight) when map is visible
+  // Fetch map markers (lightweight) when map is visible
   useEffect(() => {
     if (!showMap) return;
     const params = buildFilterParams();
-    params.set("mapOnly", "1");
+
+    // When center is set, add radius params for proximity filtering
+    if (mapCenter) {
+      params.set("lat", String(mapCenter.lat));
+      params.set("lng", String(mapCenter.lng));
+      params.set("radius", String(mapRadius));
+    }
 
     fetch(`/api/listings/map?${params}`)
       .then((res) => res.json())
       .then((data) => setMapListings(data.markers || []))
       .catch(() => setMapListings([]));
-  }, [filters, showMap, buildFilterParams]);
+  }, [filters, showMap, buildFilterParams, mapCenter, mapRadius]);
 
   // Count active filters
   const activeFilterCount = useMemo(() => {

@@ -5,7 +5,7 @@ import * as cheerio from "cheerio";
 import { getPlzCoordinates, getCityCoordinates } from "./plz-coordinates";
 import { classifyRechtsstatus } from "./rechtsstatus-classifier";
 
-const BASE_URL = "https://www.waffengebraucht.ch";
+const BASE_URL = "https://waffengebraucht.ch";
 const USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
 const CRAWLER_USER = {
@@ -129,6 +129,7 @@ function kantonFromPlz(plz: string): string {
 async function fetchPage(url: string): Promise<string> {
   const res = await fetch(url, {
     headers: { "User-Agent": USER_AGENT },
+    redirect: "follow",
   });
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
   return res.text();
@@ -424,28 +425,15 @@ export async function runCrawl(): Promise<{ inserted: number; deleted: number; d
   const start = Date.now();
   await initializeSchema();
 
-  const existing = (await dbGet<{ c: number }>("SELECT COUNT(*) as c FROM listings WHERE source IN ('waffengebraucht', 'nextgun')"))?.c ?? 0;
-
-  // Delete old crawled data
-  const crawledIds = await dbAll<{ id: string }>("SELECT id FROM listings WHERE source IN ('waffengebraucht', 'nextgun')");
-  if (crawledIds.length > 0) {
-    const deleteStatements: { sql: string; args: (string | number | null)[] }[] = [];
-    for (const row of crawledIds) {
-      deleteStatements.push({
-        sql: "DELETE FROM listing_images WHERE listing_id = ?",
-        args: [row.id],
-      });
-    }
-    deleteStatements.push({
-      sql: "DELETE FROM listings WHERE source IN ('waffengebraucht', 'nextgun')",
-      args: [],
-    });
-    await dbBatch(deleteStatements);
-  }
-
   // Ensure crawler users exist
   await ensureCrawlerUser(CRAWLER_USER.id, CRAWLER_USER.email, CRAWLER_USER.vorname, CRAWLER_USER.nachname);
   await ensureCrawlerUser("crawler-nextgun", "crawler@nextgun.ch", "NextGun", ".ch");
+
+  // Get existing source_ids so we can skip duplicates and preserve their created_at
+  const existingRows = await dbAll<{ source_id: string }>(
+    "SELECT source_id FROM listings WHERE source IN ('waffengebraucht', 'nextgun') AND source_id IS NOT NULL"
+  );
+  const existingSourceIds = new Set(existingRows.map((r) => r.source_id));
 
   // Crawl both sources
   const [wgItems, ngItems] = await Promise.all([
@@ -453,17 +441,49 @@ export async function runCrawl(): Promise<{ inserted: number; deleted: number; d
     crawlNextgun(),
   ]);
 
-  // Insert
-  await insertItems(wgItems, "waffengebraucht");
-  await insertItems(ngItems, "nextgun");
+  // Filter out items that already exist in the DB (by source_id)
+  const newWgItems = wgItems.filter((item) => !existingSourceIds.has(item.sourceId));
+  const newNgItems = ngItems.filter((item) => !existingSourceIds.has(item.sourceId));
 
-  const totalInserted = wgItems.length + ngItems.length;
+  console.log(`[Crawl] Waffengebraucht: ${wgItems.length} total, ${newWgItems.length} new`);
+  console.log(`[Crawl] NextGun: ${ngItems.length} total, ${newNgItems.length} new`);
+
+  // Build set of all currently live source_ids from crawled data
+  const liveSourceIds = new Set([
+    ...wgItems.map((i) => i.sourceId),
+    ...ngItems.map((i) => i.sourceId),
+  ]);
+
+  // Remove listings that are no longer on the source sites (sold/deleted)
+  const toRemove = existingRows.filter((r) => !liveSourceIds.has(r.source_id));
+  let deleted = 0;
+  if (toRemove.length > 0) {
+    const deleteStatements: { sql: string; args: (string | number | null)[] }[] = [];
+    for (const row of toRemove) {
+      deleteStatements.push({
+        sql: "DELETE FROM listing_images WHERE listing_id IN (SELECT id FROM listings WHERE source_id = ?)",
+        args: [row.source_id],
+      });
+      deleteStatements.push({
+        sql: "DELETE FROM listings WHERE source_id = ?",
+        args: [row.source_id],
+      });
+    }
+    await dbBatch(deleteStatements);
+    deleted = toRemove.length;
+  }
+
+  // Insert only new items
+  await insertItems(newWgItems, "waffengebraucht");
+  await insertItems(newNgItems, "nextgun");
+
+  const totalInserted = newWgItems.length + newNgItems.length;
   const duration = Date.now() - start;
-  console.log(`[Crawl] Done: Deleted ${existing}, inserted ${totalInserted} in ${duration}ms`);
+  console.log(`[Crawl] Done: ${totalInserted} new, ${deleted} removed, ${existingSourceIds.size - deleted} kept in ${duration}ms`);
 
   await saveCrawlTimestamp();
 
-  return { inserted: totalInserted, deleted: existing, duration };
+  return { inserted: totalInserted, deleted, duration };
 }
 
 export async function getCrawlStatus(): Promise<{ lastCrawl: string | null; count: number; autoCrawlEnabled: boolean; autoCrawlTime: string }> {

@@ -154,6 +154,23 @@ export async function POST(req: NextRequest) {
   } catch (error: unknown) {
     const errMsg = error instanceof Error ? error.message : String(error);
     console.error("Chatbot error:", errMsg);
+    console.error("Chatbot error full:", error);
+
+    // API key invalid or not authorized
+    if (errMsg.includes("API_KEY") || errMsg.includes("API key") || errMsg.includes("PERMISSION_DENIED") || errMsg.includes("403")) {
+      return NextResponse.json(
+        { error: "API-Schlüssel ungültig. Bitte prüfen Sie die Konfiguration." },
+        { status: 500 }
+      );
+    }
+    // Model not found
+    if (errMsg.includes("not found") || errMsg.includes("404") || errMsg.includes("model")) {
+      console.error("Gemini model error - tried: gemini-2.5-flash-lite");
+      return NextResponse.json(
+        { error: "KI-Modell nicht verfügbar. Bitte kontaktieren Sie den Administrator." },
+        { status: 500 }
+      );
+    }
     if (errMsg.includes("429")) {
       return NextResponse.json(
         { error: "KI-Assistent ist gerade überlastet. Bitte versuche es in einer Minute erneut." },

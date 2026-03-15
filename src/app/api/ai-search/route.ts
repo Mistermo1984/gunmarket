@@ -2,6 +2,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextRequest, NextResponse } from "next/server";
 import { initializeSchema, dbGet, dbAll } from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 const SYSTEM_PROMPT = `Du bist ein KI-Suchassistent für GunMarket.ch, einen Schweizer Waffenmarktplatz.
 
 DEINE AUFGABE:
@@ -65,9 +67,19 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || process.env.GOOGLE_GEMINI_API_KEY;
   if (!apiKey) {
-    return NextResponse.json({ error: "API key not configured" }, { status: 500 });
+    const relevantVars = Object.keys(process.env).filter(
+      (k) => k.includes("GEMINI") || k.includes("GOOGLE")
+    );
+    console.error(
+      "[AI-Search] API key fehlt! Vorhandene relevante Env-Vars:",
+      relevantVars.length > 0 ? relevantVars.join(", ") : "KEINE"
+    );
+    return NextResponse.json(
+      { error: "KI-Suche ist derzeit nicht verfügbar. Bitte versuchen Sie es später erneut." },
+      { status: 503 }
+    );
   }
 
   try {

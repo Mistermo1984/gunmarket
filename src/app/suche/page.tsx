@@ -56,17 +56,25 @@ function SucheContent() {
   // Build shared filter params
   const buildFilterParams = useCallback(() => {
     const params = new URLSearchParams();
-    if (filters.kategorien.length === 1) params.set("kategorie", filters.kategorien[0]);
-    if (filters.rechtsstatus.length === 1) params.set("rechtsstatus", filters.rechtsstatus[0]);
+    if (filters.kategorien.length > 0) {
+      params.set("kategorie", filters.kategorien.join(","));
+    }
+    if (filters.unterkategorien.length > 0) {
+      params.set("unterkategorie", filters.unterkategorien.join(","));
+    }
+    if (filters.rechtsstatus.length > 0) {
+      params.set("rechtsstatus", filters.rechtsstatus.join(","));
+    }
     if (filters.kantone.length > 0) {
-      // Map kanton IDs (e.g. "be") to full names (e.g. "Bern") for DB query
       const labels = filters.kantone.map((id) => {
         const kt = KANTONE.find((k) => k.id === id);
         return kt?.label ?? id;
       });
       params.set("kanton", labels.join(","));
     }
-    if (filters.zustand.length === 1) params.set("zustand", filters.zustand[0]);
+    if (filters.zustand.length > 0) {
+      params.set("zustand", filters.zustand.join(","));
+    }
     if (filters.preisMin) params.set("minPreis", filters.preisMin);
     if (filters.preisMax) params.set("maxPreis", filters.preisMax);
     if (filters.marke) params.set("suche", filters.marke);

@@ -10,6 +10,7 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
 
     const kategorie = searchParams.get("kategorie");
+    const unterkategorie = searchParams.get("unterkategorie");
     const rechtsstatus = searchParams.get("rechtsstatus");
     const kanton = searchParams.get("kanton");
     const zustand = searchParams.get("zustand");
@@ -30,12 +31,34 @@ export async function GET(req: NextRequest) {
       params.push(userId);
     }
     if (kategorie) {
-      where += " AND (l.hauptkategorie = ? OR l.unterkategorie = ?)";
-      params.push(kategorie, kategorie);
+      const kats = kategorie.split(",").map((k) => k.trim()).filter(Boolean);
+      if (kats.length === 1) {
+        where += " AND l.hauptkategorie = ?";
+        params.push(kats[0]);
+      } else if (kats.length > 1) {
+        where += ` AND l.hauptkategorie IN (${kats.map(() => "?").join(",")})`;
+        params.push(...kats);
+      }
+    }
+    if (unterkategorie) {
+      const uks = unterkategorie.split(",").map((k) => k.trim()).filter(Boolean);
+      if (uks.length === 1) {
+        where += " AND l.unterkategorie = ?";
+        params.push(uks[0]);
+      } else if (uks.length > 1) {
+        where += ` AND l.unterkategorie IN (${uks.map(() => "?").join(",")})`;
+        params.push(...uks);
+      }
     }
     if (rechtsstatus) {
-      where += " AND l.rechtsstatus = ?";
-      params.push(rechtsstatus);
+      const rss = rechtsstatus.split(",").map((k) => k.trim()).filter(Boolean);
+      if (rss.length === 1) {
+        where += " AND l.rechtsstatus = ?";
+        params.push(rss[0]);
+      } else if (rss.length > 1) {
+        where += ` AND l.rechtsstatus IN (${rss.map(() => "?").join(",")})`;
+        params.push(...rss);
+      }
     }
     if (kanton) {
       const kantone = kanton.split(",").map((k) => k.trim()).filter(Boolean);
@@ -48,8 +71,14 @@ export async function GET(req: NextRequest) {
       }
     }
     if (zustand) {
-      where += " AND l.zustand = ?";
-      params.push(zustand);
+      const zs = zustand.split(",").map((z) => z.trim()).filter(Boolean);
+      if (zs.length === 1) {
+        where += " AND l.zustand = ?";
+        params.push(zs[0]);
+      } else if (zs.length > 1) {
+        where += ` AND l.zustand IN (${zs.map(() => "?").join(",")})`;
+        params.push(...zs);
+      }
     }
     if (minPreis) {
       where += " AND l.preis >= ?";

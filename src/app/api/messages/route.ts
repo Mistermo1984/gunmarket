@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
+import { initializeSchema, dbAll, dbRun } from "@/lib/db";
 import { v4 as uuidv4 } from "uuid";
 
 export async function GET(req: NextRequest) {
   try {
-    const db = getDb();
+    await initializeSchema();
     const { searchParams } = new URL(req.url);
     const userId = searchParams.get("user_id");
 
@@ -12,20 +12,19 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "user_id required" }, { status: 400 });
     }
 
-    const messages = db
-      .prepare(
-        `SELECT m.*,
-           s.vorname as sender_vorname, s.nachname as sender_nachname,
-           r.vorname as receiver_vorname, r.nachname as receiver_nachname,
-           l.titel as listing_titel
-         FROM messages m
-         JOIN users s ON m.sender_id = s.id
-         JOIN users r ON m.receiver_id = r.id
-         LEFT JOIN listings l ON m.listing_id = l.id
-         WHERE m.sender_id = ? OR m.receiver_id = ?
-         ORDER BY m.created_at DESC`
-      )
-      .all(userId, userId);
+    const messages = await dbAll(
+      `SELECT m.*,
+         s.vorname as sender_vorname, s.nachname as sender_nachname,
+         r.vorname as receiver_vorname, r.nachname as receiver_nachname,
+         l.titel as listing_titel
+       FROM messages m
+       JOIN users s ON m.sender_id = s.id
+       JOIN users r ON m.receiver_id = r.id
+       LEFT JOIN listings l ON m.listing_id = l.id
+       WHERE m.sender_id = ? OR m.receiver_id = ?
+       ORDER BY m.created_at DESC`,
+      [userId, userId]
+    );
 
     return NextResponse.json({ messages });
   } catch (error) {
@@ -36,7 +35,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const db = getDb();
+    await initializeSchema();
     const body = await req.json();
     const { sender_id, receiver_id, listing_id, content } = body;
 
@@ -48,10 +47,11 @@ export async function POST(req: NextRequest) {
     }
 
     const id = uuidv4();
-    db.prepare(
+    await dbRun(
       `INSERT INTO messages (id, sender_id, receiver_id, listing_id, content)
-       VALUES (?, ?, ?, ?, ?)`
-    ).run(id, sender_id, receiver_id, listing_id || null, content);
+       VALUES (?, ?, ?, ?, ?)`,
+      [id, sender_id, receiver_id, listing_id || null, content]
+    );
 
     return NextResponse.json({ id }, { status: 201 });
   } catch (error) {

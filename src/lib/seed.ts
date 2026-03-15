@@ -1,4 +1,4 @@
-import { getDb } from "./db";
+import { initializeSchema, dbGet, dbBatch } from "./db";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcryptjs";
 
@@ -509,177 +509,104 @@ const LISTINGS = [
   },
 ];
 
-// Wikimedia Commons images matched to each seed listing (by index)
 const SEED_IMAGES: string[][] = [
-  // 0: SIG Sauer P226 Legion
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/d/d8/Pistole_SIG_Sauer_P226_S.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/e/e2/P226_Elite_Dark.JPG",
-  ],
-  // 1: Glock 17 Gen5 MOS
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/3/3b/Glock_17_%286825676904%29.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/4/48/Glock_17.JPG",
-  ],
-  // 2: K31 Karabiner 1931
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/b/b0/Schmidt_Rubin_K31.jpg",
-  ],
-  // 3: Blaser R8 Professional Success
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/1/14/Blaser-R8-Profesional.png",
-    "https://upload.wikimedia.org/wikipedia/commons/0/0c/ARMS_%26_Hunting_2012_exhibition_%28474-01%29.jpg",
-  ],
-  // 4: CZ 75 Shadow 2
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/4/48/Glock_17.JPG",
-    "https://upload.wikimedia.org/wikipedia/commons/d/d8/Pistole_SIG_Sauer_P226_S.jpg",
-  ],
-  // 5: Zeiss Victory V8 4.8-35x60
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/6/64/Rifle_scope.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/5/55/Pso-1onsvd.jpg",
-  ],
-  // 6: Beretta 692 Sporting
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/3/33/Remington_870_Wmaster.jpg",
-  ],
-  // 7: Ruger 10/22 Carbine
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/2/2d/DPMS_AR-15.JPG",
-  ],
-  // 8: Smith & Wesson 686 Plus
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/6/69/Kompakt_Revolver.JPG",
-  ],
-  // 9: Tikka T3x Lite
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/c/c6/Tikka-T3-Sporter.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/7/7e/Bolt_Action_.308_Rifle.jpg",
-  ],
-  // 10: SIG SG 550 PE
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/0/08/Swiss_soldier_SG550_GL5040.JPG",
-    "https://upload.wikimedia.org/wikipedia/commons/b/b7/Stgw_90.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/8/8a/SIG_550_IMG_3272.jpg",
-  ],
-  // 11: Aimpoint Micro H-2
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/d/dd/Red_Dot_Sight_%22Docter_Sight_3%22.jpg",
-  ],
-  // 12: Benelli M2 Comfortech
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/3/33/Remington_870_Wmaster.jpg",
-  ],
-  // 13: Walther LGV Challenger
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/d/d8/Diana_34.jpg",
-  ],
-  // 14: RUAG GP11 7.5x55 Swiss
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/d/de/7.5x55_Cutaway_cartridge.jpeg",
-    "https://upload.wikimedia.org/wikipedia/commons/5/5d/Ammunition_7x57.jpg",
-  ],
-  // 15: Safariland 6390 Holster
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/d/d8/Pistole_SIG_Sauer_P226_S.jpg",
-  ],
-  // 16: Swarovski Z8i 2-16x50
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/6/64/Rifle_scope.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/4/4f/Airsoft_Bushnell_rifle_scope.JPG",
-  ],
-  // 17: Stgw 57 (PE90)
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/5/56/Stgw_57.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/f/f8/Fass57-diag.jpg",
-  ],
-  // 18: Hornady 9mm 124gr FMJ
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/2/2a/9_mm.JPG",
-  ],
-  // 19: Remington 870 Express
-  [
-    "https://upload.wikimedia.org/wikipedia/commons/3/33/Remington_870_Wmaster.jpg",
-  ],
+  ["https://upload.wikimedia.org/wikipedia/commons/d/d8/Pistole_SIG_Sauer_P226_S.jpg", "https://upload.wikimedia.org/wikipedia/commons/e/e2/P226_Elite_Dark.JPG"],
+  ["https://upload.wikimedia.org/wikipedia/commons/3/3b/Glock_17_%286825676904%29.jpg", "https://upload.wikimedia.org/wikipedia/commons/4/48/Glock_17.JPG"],
+  ["https://upload.wikimedia.org/wikipedia/commons/b/b0/Schmidt_Rubin_K31.jpg"],
+  ["https://upload.wikimedia.org/wikipedia/commons/1/14/Blaser-R8-Profesional.png", "https://upload.wikimedia.org/wikipedia/commons/0/0c/ARMS_%26_Hunting_2012_exhibition_%28474-01%29.jpg"],
+  ["https://upload.wikimedia.org/wikipedia/commons/4/48/Glock_17.JPG", "https://upload.wikimedia.org/wikipedia/commons/d/d8/Pistole_SIG_Sauer_P226_S.jpg"],
+  ["https://upload.wikimedia.org/wikipedia/commons/6/64/Rifle_scope.jpg", "https://upload.wikimedia.org/wikipedia/commons/5/55/Pso-1onsvd.jpg"],
+  ["https://upload.wikimedia.org/wikipedia/commons/3/33/Remington_870_Wmaster.jpg"],
+  ["https://upload.wikimedia.org/wikipedia/commons/2/2d/DPMS_AR-15.JPG"],
+  ["https://upload.wikimedia.org/wikipedia/commons/6/69/Kompakt_Revolver.JPG"],
+  ["https://upload.wikimedia.org/wikipedia/commons/c/c6/Tikka-T3-Sporter.jpg", "https://upload.wikimedia.org/wikipedia/commons/7/7e/Bolt_Action_.308_Rifle.jpg"],
+  ["https://upload.wikimedia.org/wikipedia/commons/0/08/Swiss_soldier_SG550_GL5040.JPG", "https://upload.wikimedia.org/wikipedia/commons/b/b7/Stgw_90.jpg", "https://upload.wikimedia.org/wikipedia/commons/8/8a/SIG_550_IMG_3272.jpg"],
+  ["https://upload.wikimedia.org/wikipedia/commons/d/dd/Red_Dot_Sight_%22Docter_Sight_3%22.jpg"],
+  ["https://upload.wikimedia.org/wikipedia/commons/3/33/Remington_870_Wmaster.jpg"],
+  ["https://upload.wikimedia.org/wikipedia/commons/d/d8/Diana_34.jpg"],
+  ["https://upload.wikimedia.org/wikipedia/commons/d/de/7.5x55_Cutaway_cartridge.jpeg", "https://upload.wikimedia.org/wikipedia/commons/5/5d/Ammunition_7x57.jpg"],
+  ["https://upload.wikimedia.org/wikipedia/commons/d/d8/Pistole_SIG_Sauer_P226_S.jpg"],
+  ["https://upload.wikimedia.org/wikipedia/commons/6/64/Rifle_scope.jpg", "https://upload.wikimedia.org/wikipedia/commons/4/4f/Airsoft_Bushnell_rifle_scope.JPG"],
+  ["https://upload.wikimedia.org/wikipedia/commons/5/56/Stgw_57.jpg", "https://upload.wikimedia.org/wikipedia/commons/f/f8/Fass57-diag.jpg"],
+  ["https://upload.wikimedia.org/wikipedia/commons/2/2a/9_mm.JPG"],
+  ["https://upload.wikimedia.org/wikipedia/commons/3/33/Remington_870_Wmaster.jpg"],
 ];
 
 export async function seedDatabase() {
-  const db = getDb();
+  await initializeSchema();
 
-  const userCount = db.prepare("SELECT COUNT(*) as c FROM users").get() as { c: number };
-  if (userCount.c > 0) {
+  const userCount = await dbGet<{ c: number }>("SELECT COUNT(*) as c FROM users");
+  if ((userCount?.c ?? 0) > 0) {
     console.log("Database already seeded.");
     return;
   }
 
   const password_hash = bcrypt.hashSync("GunMarket2026!", 10);
+  const statements: { sql: string; args: (string | number | null)[] }[] = [];
 
-  const insertUser = db.prepare(`
-    INSERT INTO users (id, email, password_hash, vorname, nachname, anbieter_typ, telefon, kanton, ueber_mich, firmenname, uid_nummer, bewilligungs_nr, website, is_admin)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `);
-
-  const insertListing = db.prepare(`
-    INSERT INTO listings (id, user_id, titel, beschreibung, hauptkategorie, unterkategorie, rechtsstatus, marke, modell, kaliber, zustand, baujahr, lauflaenge, magazin, preis, verhandelbar, tausch, kanton, ortschaft, plz, lat, lng, aufrufe, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?)
-  `);
+  // Create admin user
+  const adminId = uuidv4();
+  statements.push({
+    sql: `INSERT INTO users (id, email, password_hash, vorname, nachname, anbieter_typ, telefon, kanton, ueber_mich, firmenname, uid_nummer, bewilligungs_nr, website, is_admin)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    args: [adminId, ADMIN_USER.email, password_hash, ADMIN_USER.vorname, ADMIN_USER.nachname, ADMIN_USER.anbieter_typ, null, ADMIN_USER.kanton, null, null, null, null, null, ADMIN_USER.is_admin],
+  });
 
   const userIds: string[] = [];
-
-  const transaction = db.transaction(() => {
-    // Create admin user
-    const adminId = uuidv4();
-    insertUser.run(
-      adminId, ADMIN_USER.email, password_hash, ADMIN_USER.vorname, ADMIN_USER.nachname,
-      ADMIN_USER.anbieter_typ, null, ADMIN_USER.kanton, null, null, null, null, null, ADMIN_USER.is_admin
-    );
-
-    for (const u of USERS) {
-      const id = uuidv4();
-      userIds.push(id);
-      insertUser.run(
+  for (const u of USERS) {
+    const id = uuidv4();
+    userIds.push(id);
+    statements.push({
+      sql: `INSERT INTO users (id, email, password_hash, vorname, nachname, anbieter_typ, telefon, kanton, ueber_mich, firmenname, uid_nummer, bewilligungs_nr, website, is_admin)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      args: [
         id, u.email, password_hash, u.vorname, u.nachname, u.anbieter_typ,
-        u.telefon || null, u.kanton || null, u.ueber_mich || null,
-        u.firmenname || null, u.uid_nummer || null, u.bewilligungs_nr || null,
-        u.website || null, 0
-      );
-    }
+        (u as Record<string, unknown>).telefon as string || null,
+        u.kanton || null,
+        (u as Record<string, unknown>).ueber_mich as string || null,
+        (u as Record<string, unknown>).firmenname as string || null,
+        (u as Record<string, unknown>).uid_nummer as string || null,
+        (u as Record<string, unknown>).bewilligungs_nr as string || null,
+        (u as Record<string, unknown>).website as string || null,
+        0,
+      ],
+    });
+  }
 
-    // Mark all seeded users as email-verified
-    db.prepare("UPDATE users SET email_verified = 1").run();
+  // Mark all seeded users as email-verified
+  statements.push({ sql: "UPDATE users SET email_verified = 1", args: [] });
 
-    const insertImage = db.prepare(`
-      INSERT INTO listing_images (id, listing_id, url, position, is_main)
-      VALUES (?, ?, ?, ?, ?)
-    `);
+  for (let i = 0; i < LISTINGS.length; i++) {
+    const l = LISTINGS[i];
+    const id = uuidv4();
+    const aufrufe = Math.floor(Math.random() * 200) + 10;
+    const hoursAgo = Math.floor(Math.random() * 144);
+    const createdAt = new Date(Date.now() - hoursAgo * 3600000).toISOString().replace("T", " ").slice(0, 19);
 
-    for (let i = 0; i < LISTINGS.length; i++) {
-      const l = LISTINGS[i];
-      const id = uuidv4();
-      const aufrufe = Math.floor(Math.random() * 200) + 10;
-      // Spread listings across last 6 days
-      const hoursAgo = Math.floor(Math.random() * 144);
-      const createdAt = new Date(Date.now() - hoursAgo * 3600000).toISOString().replace("T", " ").slice(0, 19);
-      insertListing.run(
+    statements.push({
+      sql: `INSERT INTO listings (id, user_id, titel, beschreibung, hauptkategorie, unterkategorie, rechtsstatus, marke, modell, kaliber, zustand, baujahr, lauflaenge, magazin, preis, verhandelbar, tausch, kanton, ortschaft, plz, lat, lng, aufrufe, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?)`,
+      args: [
         id, userIds[l.userIdx], l.titel, l.beschreibung,
         l.hauptkategorie, l.unterkategorie, l.rechtsstatus,
         l.marke || null, l.modell || null, l.kaliber || null,
         l.zustand, l.baujahr || null, l.lauflaenge || null, l.magazin || null,
         l.preis, l.verhandelbar,
         l.kanton, l.ortschaft, l.plz || null, l.lat || null, l.lng || null,
-        aufrufe, createdAt
-      );
+        aufrufe, createdAt,
+      ],
+    });
 
-      // Add real weapon images from Wikimedia Commons
-      const listingImages = SEED_IMAGES[i] || [];
-      for (let imgIdx = 0; imgIdx < listingImages.length; imgIdx++) {
-        const imgId = uuidv4();
-        insertImage.run(imgId, id, listingImages[imgIdx], imgIdx, imgIdx === 0 ? 1 : 0);
-      }
+    const listingImages = SEED_IMAGES[i] || [];
+    for (let imgIdx = 0; imgIdx < listingImages.length; imgIdx++) {
+      const imgId = uuidv4();
+      statements.push({
+        sql: "INSERT INTO listing_images (id, listing_id, url, position, is_main) VALUES (?, ?, ?, ?, ?)",
+        args: [imgId, id, listingImages[imgIdx], imgIdx, imgIdx === 0 ? 1 : 0],
+      });
     }
-  });
+  }
 
-  transaction();
+  await dbBatch(statements);
   console.log(`Seeded ${USERS.length} users and ${LISTINGS.length} listings.`);
 }

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
+import { initializeSchema, dbGet, dbRun } from "@/lib/db";
 import { v4 as uuidv4 } from "uuid";
 import sharp from "sharp";
 import path from "path";
@@ -31,21 +31,22 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const db = getDb();
+    await initializeSchema();
 
-    // Check existing image count
-    const existing = db
-      .prepare("SELECT COUNT(*) as c FROM listing_images WHERE listing_id = ?")
-      .get(listingId) as { c: number };
+    const existing = await dbGet<{ c: number }>(
+      "SELECT COUNT(*) as c FROM listing_images WHERE listing_id = ?",
+      [listingId]
+    );
 
-    if (existing.c + files.length > MAX_IMAGES) {
+    const existingCount = existing?.c ?? 0;
+
+    if (existingCount + files.length > MAX_IMAGES) {
       return NextResponse.json(
-        { error: `Maximal ${MAX_IMAGES} Bilder erlaubt. Bereits ${existing.c} vorhanden.` },
+        { error: `Maximal ${MAX_IMAGES} Bilder erlaubt. Bereits ${existingCount} vorhanden.` },
         { status: 400 }
       );
     }
 
-    // Ensure upload directory exists
     await mkdir(UPLOAD_DIR, { recursive: true });
 
     const uploadedImages: { id: string; url: string; position: number }[] = [];
@@ -72,18 +73,18 @@ export async function POST(req: NextRequest) {
       const ext = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
       const filename = `${imageId}.${ext}`;
 
-      // Resize with sharp
       await sharp(buffer)
         .resize(MAX_DIMENSION, MAX_DIMENSION, { fit: "inside", withoutEnlargement: true })
         .toFile(path.join(UPLOAD_DIR, filename));
 
       const url = `/uploads/${filename}`;
-      const position = existing.c + i;
-      const isMain = existing.c === 0 && i === 0 ? 1 : 0;
+      const position = existingCount + i;
+      const isMain = existingCount === 0 && i === 0 ? 1 : 0;
 
-      db.prepare(
-        "INSERT INTO listing_images (id, listing_id, url, position, is_main) VALUES (?, ?, ?, ?, ?)"
-      ).run(imageId, listingId, url, position, isMain);
+      await dbRun(
+        "INSERT INTO listing_images (id, listing_id, url, position, is_main) VALUES (?, ?, ?, ?, ?)",
+        [imageId, listingId, url, position, isMain]
+      );
 
       uploadedImages.push({ id: imageId, url, position });
     }

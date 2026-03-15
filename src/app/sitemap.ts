@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { getDb } from "@/lib/db";
+import { initializeSchema, dbAll } from "@/lib/db";
 import { wissenWaffen, wissenMunition } from "@/lib/wissen-data";
 
 const SITE_URL = "https://gunmarket.ch";
@@ -20,7 +20,7 @@ const KANTONE = [
   "TI", "UR", "VD", "VS", "ZG", "ZH",
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: SITE_URL,
@@ -102,7 +102,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Kategorie-Seiten
   const kategoriePages: MetadataRoute.Sitemap = KATEGORIEN.map((kat) => ({
     url: `${SITE_URL}/kategorien/${kat}`,
     lastModified: new Date(),
@@ -110,7 +109,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  // Kanton-Seiten
   const kantonPages: MetadataRoute.Sitemap = KANTONE.map((kanton) => ({
     url: `${SITE_URL}/suche?kanton=${kanton}`,
     lastModified: new Date(),
@@ -118,13 +116,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  // Echte Inserat-Detailseiten aus DB
   let inseratPages: MetadataRoute.Sitemap = [];
   try {
-    const db = getDb();
-    const listings = db
-      .prepare("SELECT id, updated_at FROM listings WHERE status = 'aktiv' ORDER BY created_at DESC")
-      .all() as { id: string; updated_at: string }[];
+    await initializeSchema();
+    const listings = await dbAll<{ id: string; updated_at: string }>(
+      "SELECT id, updated_at FROM listings WHERE status = 'aktiv' ORDER BY created_at DESC"
+    );
 
     inseratPages = listings.map((l) => ({
       url: `${SITE_URL}/inserat/${l.id}`,
@@ -136,7 +133,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // DB not available during build
   }
 
-  // Wissen-Seiten: Waffen + Munition
   const wissenWaffenPages: MetadataRoute.Sitemap = wissenWaffen.map((w) => ({
     url: `${SITE_URL}/wissen/waffen/${w.slug}`,
     lastModified: new Date(),

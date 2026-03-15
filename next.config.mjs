@@ -5,7 +5,6 @@ const nextConfig = {
   },
   compress: true,
   poweredByHeader: false,
-  serverExternalPackages: ["better-sqlite3"],
   async headers() {
     return [
       {

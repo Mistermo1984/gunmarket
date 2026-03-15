@@ -1,22 +1,82 @@
-import Database from "better-sqlite3";
-import path from "path";
+import { createClient, Client, InStatement, Row } from "@libsql/client";
 
-const DB_PATH = path.join(process.cwd(), "gunmarket.db");
+let client: Client;
 
-let db: Database.Database;
-
-export function getDb(): Database.Database {
-  if (!db) {
-    db = new Database(DB_PATH);
-    db.pragma("journal_mode = WAL");
-    db.pragma("foreign_keys = ON");
-    initializeSchema(db);
+export function getClient(): Client {
+  if (!client) {
+    client = createClient({
+      url: process.env.TURSO_DATABASE_URL || "file:gunmarket.db",
+      authToken: process.env.TURSO_AUTH_TOKEN,
+    });
   }
-  return db;
+  return client;
 }
 
-function initializeSchema(db: Database.Database) {
-  db.exec(`
+/** Convert a libsql Row to a plain JS object (strips numeric index keys) */
+function toPlain(row: Row): Record<string, unknown> {
+  const obj: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(row)) {
+    if (!/^\d+$/.test(key)) {
+      obj[key] = value;
+    }
+  }
+  return obj;
+}
+
+export async function dbGet<T = Record<string, unknown>>(
+  sql: string,
+  args: (string | number | null | undefined)[] = []
+): Promise<T | undefined> {
+  const result = await getClient().execute({
+    sql,
+    args: args.map((a) => a ?? null),
+  });
+  if (result.rows.length === 0) return undefined;
+  return toPlain(result.rows[0]) as T;
+}
+
+export async function dbAll<T = Record<string, unknown>>(
+  sql: string,
+  args: (string | number | null | undefined)[] = []
+): Promise<T[]> {
+  const result = await getClient().execute({
+    sql,
+    args: args.map((a) => a ?? null),
+  });
+  return result.rows.map((r) => toPlain(r)) as T[];
+}
+
+export async function dbRun(
+  sql: string,
+  args: (string | number | null | undefined)[] = []
+): Promise<{ changes: number }> {
+  const result = await getClient().execute({
+    sql,
+    args: args.map((a) => a ?? null),
+  });
+  return { changes: result.rowsAffected };
+}
+
+export async function dbBatch(statements: InStatement[]): Promise<void> {
+  if (statements.length === 0) return;
+  const CHUNK_SIZE = 500;
+  const db = getClient();
+  for (let i = 0; i < statements.length; i += CHUNK_SIZE) {
+    await db.batch(statements.slice(i, i + CHUNK_SIZE), "write");
+  }
+}
+
+export async function dbExec(sql: string): Promise<void> {
+  await getClient().executeMultiple(sql);
+}
+
+let schemaInitialized = false;
+
+export async function initializeSchema(): Promise<void> {
+  if (schemaInitialized) return;
+  schemaInitialized = true;
+
+  await dbExec(`
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
       email TEXT UNIQUE NOT NULL,
@@ -111,6 +171,14 @@ function initializeSchema(db: Database.Database) {
       used INTEGER DEFAULT 0,
       created_at TEXT DEFAULT (datetime('now')),
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS reports (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      listing_id TEXT NOT NULL,
+      reason TEXT NOT NULL,
+      details TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 
     CREATE INDEX IF NOT EXISTS idx_email_tokens_token ON email_tokens(token);

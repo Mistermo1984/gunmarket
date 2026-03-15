@@ -1,20 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { getDb } from "@/lib/db";
+import { initializeSchema, dbAll, dbRun } from "@/lib/db";
 
 function unauthorized() {
   return NextResponse.json({ error: "Nicht autorisiert" }, { status: 403 });
 }
 
-// GET /api/admin/messages — All messages with user info
 export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.isAdmin) return unauthorized();
 
-  const db = getDb();
+  await initializeSchema();
 
-  const messages = db.prepare(`
+  const messages = await dbAll(`
     SELECT
       m.id, m.content, m.created_at, m.read_at, m.listing_id,
       m.sender_id, s.vorname as sender_vorname, s.nachname as sender_nachname, s.email as sender_email,
@@ -25,12 +24,11 @@ export async function GET() {
     JOIN users r ON m.receiver_id = r.id
     LEFT JOIN listings l ON m.listing_id = l.id
     ORDER BY m.created_at DESC
-  `).all();
+  `);
 
   return NextResponse.json({ messages });
 }
 
-// DELETE /api/admin/messages — Delete a message
 export async function DELETE(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.isAdmin) return unauthorized();
@@ -42,8 +40,8 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ error: "message_id erforderlich" }, { status: 400 });
   }
 
-  const db = getDb();
-  db.prepare("DELETE FROM messages WHERE id = ?").run(messageId);
+  await initializeSchema();
+  await dbRun("DELETE FROM messages WHERE id = ?", [messageId]);
 
   return NextResponse.json({ success: true });
 }

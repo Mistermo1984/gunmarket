@@ -1,4 +1,4 @@
-import { getDb } from "./db";
+import { initializeSchema, dbGet, dbRun, dbExec } from "./db";
 
 interface GeoResult {
   lat: number;
@@ -8,7 +8,7 @@ interface GeoResult {
 
 const GEOCODE_CACHE = new Map<string, GeoResult>();
 let lastRequestTime = 0;
-const MIN_INTERVAL = 1100; // 1 req/sec (Nominatim policy)
+const MIN_INTERVAL = 1100;
 
 export async function geocodeOrtschaft(
   ortschaft: string,
@@ -16,14 +16,12 @@ export async function geocodeOrtschaft(
 ): Promise<GeoResult | null> {
   const cacheKey = `${ortschaft}-${kanton}`.toLowerCase();
 
-  // Check memory cache
   if (GEOCODE_CACHE.has(cacheKey)) {
     return GEOCODE_CACHE.get(cacheKey)!;
   }
 
-  // Check DB cache
-  const db = getDb();
-  db.exec(`
+  await initializeSchema();
+  await dbExec(`
     CREATE TABLE IF NOT EXISTS geocode_cache (
       key TEXT PRIMARY KEY,
       lat REAL NOT NULL,
@@ -33,9 +31,10 @@ export async function geocodeOrtschaft(
     )
   `);
 
-  const cached = db
-    .prepare("SELECT lat, lng, display_name FROM geocode_cache WHERE key = ?")
-    .get(cacheKey) as { lat: number; lng: number; display_name: string } | undefined;
+  const cached = await dbGet<{ lat: number; lng: number; display_name: string }>(
+    "SELECT lat, lng, display_name FROM geocode_cache WHERE key = ?",
+    [cacheKey]
+  );
 
   if (cached) {
     const result = { lat: cached.lat, lng: cached.lng, display_name: cached.display_name };
@@ -43,7 +42,6 @@ export async function geocodeOrtschaft(
     return result;
   }
 
-  // Rate limiting
   const now = Date.now();
   const waitTime = MIN_INTERVAL - (now - lastRequestTime);
   if (waitTime > 0) {
@@ -72,10 +70,10 @@ export async function geocodeOrtschaft(
       display_name: data[0].display_name,
     };
 
-    // Store in DB cache
-    db.prepare(
-      "INSERT OR REPLACE INTO geocode_cache (key, lat, lng, display_name) VALUES (?, ?, ?, ?)"
-    ).run(cacheKey, result.lat, result.lng, result.display_name);
+    await dbRun(
+      "INSERT OR REPLACE INTO geocode_cache (key, lat, lng, display_name) VALUES (?, ?, ?, ?)",
+      [cacheKey, result.lat, result.lng, result.display_name]
+    );
 
     GEOCODE_CACHE.set(cacheKey, result);
     return result;
@@ -91,7 +89,7 @@ export function haversineDistance(
   lat2: number,
   lng2: number
 ): number {
-  const R = 6371; // km
+  const R = 6371;
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
   const dLng = ((lng2 - lng1) * Math.PI) / 180;
   const a =

@@ -1,7 +1,7 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { getDb } from "./db";
+import { initializeSchema, dbGet } from "./db";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -14,10 +14,11 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
-        const db = getDb();
-        const user = db
-          .prepare("SELECT * FROM users WHERE email = ?")
-          .get(credentials.email) as Record<string, unknown> | undefined;
+        await initializeSchema();
+        const user = await dbGet<Record<string, unknown>>(
+          "SELECT * FROM users WHERE email = ?",
+          [credentials.email]
+        );
 
         if (!user) return null;
 
@@ -27,7 +28,6 @@ export const authOptions: NextAuthOptions = {
         );
         if (!valid) return null;
 
-        // Check email verification (admins and seeded users bypass)
         if ((user.email_verified as number) === 0 && (user.is_admin as number) === 0) {
           throw new Error("EMAIL_NOT_VERIFIED");
         }
@@ -46,7 +46,7 @@ export const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 30 * 24 * 60 * 60,
   },
   callbacks: {
     async jwt({ token, user }) {

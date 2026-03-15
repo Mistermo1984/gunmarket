@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
+import { initializeSchema, dbGet, dbAll, dbRun } from "@/lib/db";
 import { v4 as uuidv4 } from "uuid";
 
 export async function GET(req: NextRequest) {
   try {
-    const db = getDb();
+    await initializeSchema();
     const { searchParams } = new URL(req.url);
 
     const kategorie = searchParams.get("kategorie");
@@ -62,46 +62,45 @@ export async function GET(req: NextRequest) {
     if (sortierung === "preis-desc") orderBy = "ORDER BY l.preis DESC";
     if (sortierung === "aufrufe") orderBy = "ORDER BY l.aufrufe DESC";
 
-    const countRow = db
-      .prepare(`SELECT COUNT(*) as total FROM listings l ${where}`)
-      .get(...params) as { total: number };
+    const countRow = await dbGet<{ total: number }>(
+      `SELECT COUNT(*) as total FROM listings l ${where}`,
+      params
+    );
 
-    const listings = db
-      .prepare(
-        `SELECT l.*, u.vorname, u.nachname, u.anbieter_typ as verkaeufer_typ
-         FROM listings l
-         JOIN users u ON l.user_id = u.id
-         ${where} ${orderBy}
-         LIMIT ? OFFSET ?`
-      )
-      .all(...params, limit, offset);
+    const listings = await dbAll(
+      `SELECT l.*, u.vorname, u.nachname, u.anbieter_typ as verkaeufer_typ
+       FROM listings l
+       JOIN users u ON l.user_id = u.id
+       ${where} ${orderBy}
+       LIMIT ? OFFSET ?`,
+      [...params, limit, offset]
+    );
 
     // Attach images
-    const listingIds = (listings as Record<string, unknown>[]).map((l) => l.id as string);
+    const listingIds = listings.map((l) => l.id as string);
     if (listingIds.length > 0) {
       const placeholders = listingIds.map(() => "?").join(",");
-      const images = db
-        .prepare(
-          `SELECT * FROM listing_images WHERE listing_id IN (${placeholders}) ORDER BY position`
-        )
-        .all(...listingIds);
+      const images = await dbAll(
+        `SELECT * FROM listing_images WHERE listing_id IN (${placeholders}) ORDER BY position`,
+        listingIds
+      );
 
       const imageMap = new Map<string, Record<string, unknown>[]>();
-      for (const img of images as Record<string, unknown>[]) {
+      for (const img of images) {
         const lid = img.listing_id as string;
         if (!imageMap.has(lid)) imageMap.set(lid, []);
         imageMap.get(lid)!.push(img);
       }
-      for (const l of listings as Record<string, unknown>[]) {
+      for (const l of listings) {
         l.images = imageMap.get(l.id as string) || [];
       }
     }
 
     return NextResponse.json({
       listings,
-      total: countRow.total,
+      total: countRow?.total ?? 0,
       seite,
-      totalSeiten: Math.ceil(countRow.total / limit),
+      totalSeiten: Math.ceil((countRow?.total ?? 0) / limit),
     });
   } catch (error) {
     console.error("GET /api/listings error:", error);
@@ -111,7 +110,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const db = getDb();
+    await initializeSchema();
     const body = await req.json();
 
     const {
@@ -127,15 +126,16 @@ export async function POST(req: NextRequest) {
 
     const id = uuidv4();
 
-    db.prepare(`
-      INSERT INTO listings (id, user_id, titel, beschreibung, hauptkategorie, unterkategorie, rechtsstatus, marke, modell, kaliber, zustand, baujahr, lauflaenge, magazin, preis, verhandelbar, tausch, kanton, ortschaft, plz, lat, lng)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(
-      id, user_id, titel, beschreibung, hauptkategorie, unterkategorie,
-      rechtsstatus, marke || null, modell || null, kaliber || null,
-      zustand, baujahr || null, lauflaenge || null, magazin || null,
-      preis, verhandelbar ? 1 : 0, tausch ? 1 : 0,
-      kanton, ortschaft, plz || null, lat || null, lng || null
+    await dbRun(
+      `INSERT INTO listings (id, user_id, titel, beschreibung, hauptkategorie, unterkategorie, rechtsstatus, marke, modell, kaliber, zustand, baujahr, lauflaenge, magazin, preis, verhandelbar, tausch, kanton, ortschaft, plz, lat, lng)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        id, user_id, titel, beschreibung, hauptkategorie, unterkategorie,
+        rechtsstatus, marke || null, modell || null, kaliber || null,
+        zustand, baujahr || null, lauflaenge || null, magazin || null,
+        preis, verhandelbar ? 1 : 0, tausch ? 1 : 0,
+        kanton, ortschaft, plz || null, lat || null, lng || null,
+      ]
     );
 
     return NextResponse.json({ id }, { status: 201 });

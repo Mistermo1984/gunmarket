@@ -1,16 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
+import { initializeSchema, dbRun } from "@/lib/db";
 
 export async function POST(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const db = getDb();
+    await initializeSchema();
 
-    const result = db
-      .prepare("UPDATE listings SET aufrufe = aufrufe + 1 WHERE id = ? AND status = 'aktiv'")
-      .run(params.id);
+    const result = await dbRun(
+      "UPDATE listings SET aufrufe = aufrufe + 1 WHERE id = ? AND status = 'aktiv'",
+      [params.id]
+    );
 
     if (result.changes === 0) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });

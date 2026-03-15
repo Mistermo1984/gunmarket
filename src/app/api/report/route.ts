@@ -1,24 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import Database from "better-sqlite3";
-import path from "path";
-
-function getDb() {
-  const dbPath = path.join(process.cwd(), "data", "reports.db");
-  const db = new Database(dbPath);
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS reports (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      listing_id TEXT NOT NULL,
-      reason TEXT NOT NULL,
-      details TEXT,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
-  return db;
-}
+import { initializeSchema, dbRun } from "@/lib/db";
 
 export async function POST(req: NextRequest) {
   try {
+    await initializeSchema();
     const body = await req.json();
     const { listing_id, reason, details } = body;
 
@@ -29,12 +14,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const db = getDb();
-    const stmt = db.prepare(
-      "INSERT INTO reports (listing_id, reason, details) VALUES (?, ?, ?)"
+    await dbRun(
+      "INSERT INTO reports (listing_id, reason, details) VALUES (?, ?, ?)",
+      [listing_id, reason, details || null]
     );
-    stmt.run(listing_id, reason, details || null);
-    db.close();
 
     return NextResponse.json({ success: true }, { status: 201 });
   } catch (error) {

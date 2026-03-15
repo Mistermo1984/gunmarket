@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
+import { initializeSchema, dbAll } from "@/lib/db";
 import { haversineDistance } from "@/lib/geocoding";
 
 export async function GET(req: NextRequest) {
@@ -17,30 +17,22 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const db = getDb();
+    await initializeSchema();
 
-    // Rough bounding box filter (1 degree ≈ 111km)
     const latDelta = radius / 111;
     const lngDelta = radius / (111 * Math.cos((lat * Math.PI) / 180));
 
-    const listings = db
-      .prepare(
-        `SELECT l.*, u.vorname, u.nachname, u.anbieter_typ as verkaeufer_typ
-         FROM listings l
-         JOIN users u ON l.user_id = u.id
-         WHERE l.status = 'aktiv'
-           AND l.lat BETWEEN ? AND ?
-           AND l.lng BETWEEN ? AND ?
-         ORDER BY l.created_at DESC`
-      )
-      .all(
-        lat - latDelta,
-        lat + latDelta,
-        lng - lngDelta,
-        lng + lngDelta
-      ) as { lat: number; lng: number; [key: string]: unknown }[];
+    const listings = await dbAll<{ lat: number; lng: number; [key: string]: unknown }>(
+      `SELECT l.*, u.vorname, u.nachname, u.anbieter_typ as verkaeufer_typ
+       FROM listings l
+       JOIN users u ON l.user_id = u.id
+       WHERE l.status = 'aktiv'
+         AND l.lat BETWEEN ? AND ?
+         AND l.lng BETWEEN ? AND ?
+       ORDER BY l.created_at DESC`,
+      [lat - latDelta, lat + latDelta, lng - lngDelta, lng + lngDelta]
+    );
 
-    // Exact Haversine filter
     const filtered = listings
       .map((l) => ({
         ...l,

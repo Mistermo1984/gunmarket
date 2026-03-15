@@ -1,14 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
+import { initializeSchema, dbAll } from "@/lib/db";
 
-/**
- * GET /api/listings/map?kategorie=...&rechtsstatus=...
- * Returns lightweight markers (id, titel, preis, lat, lng) for all matching listings with coordinates.
- * No images, no pagination — optimized for map display.
- */
 export async function GET(req: NextRequest) {
   try {
-    const db = getDb();
+    await initializeSchema();
     const { searchParams } = new URL(req.url);
 
     const kategorie = searchParams.get("kategorie");
@@ -52,14 +47,13 @@ export async function GET(req: NextRequest) {
       params.push(term, term, term);
     }
 
-    const markers = db
-      .prepare(
-        `SELECT l.id, l.titel, l.preis, l.lat, l.lng
-         FROM listings l
-         ${where}
-         LIMIT 5000`
-      )
-      .all(...params);
+    const markers = await dbAll(
+      `SELECT l.id, l.titel, l.preis, l.lat, l.lng
+       FROM listings l
+       ${where}
+       LIMIT 5000`,
+      params
+    );
 
     return NextResponse.json({ markers });
   } catch (error) {

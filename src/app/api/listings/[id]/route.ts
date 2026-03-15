@@ -1,28 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
+import { initializeSchema, dbGet, dbAll, dbRun } from "@/lib/db";
 
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const db = getDb();
-    const listing = db
-      .prepare(
-        `SELECT l.*, u.vorname, u.nachname, u.anbieter_typ as verkaeufer_typ, u.created_at as user_created_at
-         FROM listings l
-         JOIN users u ON l.user_id = u.id
-         WHERE l.id = ?`
-      )
-      .get(params.id) as Record<string, unknown> | undefined;
+    await initializeSchema();
+    const listing = await dbGet(
+      `SELECT l.*, u.vorname, u.nachname, u.anbieter_typ as verkaeufer_typ, u.created_at as user_created_at
+       FROM listings l
+       JOIN users u ON l.user_id = u.id
+       WHERE l.id = ?`,
+      [params.id]
+    );
 
     if (!listing) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
-    const images = db
-      .prepare("SELECT * FROM listing_images WHERE listing_id = ? ORDER BY position")
-      .all(params.id);
+    const images = await dbAll(
+      "SELECT * FROM listing_images WHERE listing_id = ? ORDER BY position",
+      [params.id]
+    );
 
     listing.images = images;
 
@@ -38,10 +38,10 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const db = getDb();
+    await initializeSchema();
     const body = await req.json();
 
-    const existing = db.prepare("SELECT id FROM listings WHERE id = ?").get(params.id);
+    const existing = await dbGet("SELECT id FROM listings WHERE id = ?", [params.id]);
     if (!existing) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
@@ -69,7 +69,7 @@ export async function PUT(
     fields.push("updated_at = datetime('now')");
     values.push(params.id);
 
-    db.prepare(`UPDATE listings SET ${fields.join(", ")} WHERE id = ?`).run(...values);
+    await dbRun(`UPDATE listings SET ${fields.join(", ")} WHERE id = ?`, values);
 
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -83,11 +83,12 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const db = getDb();
+    await initializeSchema();
 
-    const result = db
-      .prepare("UPDATE listings SET status = 'geloescht', updated_at = datetime('now') WHERE id = ?")
-      .run(params.id);
+    const result = await dbRun(
+      "UPDATE listings SET status = 'geloescht', updated_at = datetime('now') WHERE id = ?",
+      [params.id]
+    );
 
     if (result.changes === 0) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });

@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
+import { initializeSchema, dbGet, dbRun } from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
 import { sendVerificationEmail } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   try {
-    const db = getDb();
+    await initializeSchema();
     const body = await req.json();
 
     const {
@@ -14,7 +14,6 @@ export async function POST(req: NextRequest) {
       telefon, kanton, firmenname, uidNummer, bewilligungsNr, website,
     } = body;
 
-    // Validation
     if (!email || !password || !vorname || !nachname) {
       return NextResponse.json(
         { error: "Pflichtfelder fehlen" },
@@ -29,10 +28,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check if email exists
-    const existing = db
-      .prepare("SELECT id FROM users WHERE email = ?")
-      .get(email);
+    const existing = await dbGet("SELECT id FROM users WHERE email = ?", [email]);
 
     if (existing) {
       return NextResponse.json(
@@ -44,29 +40,29 @@ export async function POST(req: NextRequest) {
     const id = uuidv4();
     const password_hash = bcrypt.hashSync(password, 10);
 
-    db.prepare(`
-      INSERT INTO users (id, email, password_hash, vorname, nachname, anbieter_typ, telefon, kanton, firmenname, uid_nummer, bewilligungs_nr, website)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(
-      id, email, password_hash, vorname, nachname,
-      anbieterTyp === "haendler" ? "Händler" : "Privat",
-      telefon || null, kanton || null,
-      firmenname || null, uidNummer || null, bewilligungsNr || null, website || null
+    await dbRun(
+      `INSERT INTO users (id, email, password_hash, vorname, nachname, anbieter_typ, telefon, kanton, firmenname, uid_nummer, bewilligungs_nr, website)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        id, email, password_hash, vorname, nachname,
+        anbieterTyp === "haendler" ? "Händler" : "Privat",
+        telefon || null, kanton || null,
+        firmenname || null, uidNummer || null, bewilligungsNr || null, website || null,
+      ]
     );
 
-    // Create verification token and send email
     const token = uuidv4();
-    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(); // 24h
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
-    db.prepare(
-      "INSERT INTO email_tokens (id, user_id, token, type, expires_at) VALUES (?, ?, ?, 'verify', ?)"
-    ).run(uuidv4(), id, token, expiresAt);
+    await dbRun(
+      "INSERT INTO email_tokens (id, user_id, token, type, expires_at) VALUES (?, ?, ?, 'verify', ?)",
+      [uuidv4(), id, token, expiresAt]
+    );
 
     try {
       await sendVerificationEmail(email, token, vorname);
     } catch (emailError) {
       console.error("Email send error:", emailError);
-      // Don't fail registration if email fails — user can request resend
     }
 
     return NextResponse.json({ id, emailSent: true }, { status: 201 });

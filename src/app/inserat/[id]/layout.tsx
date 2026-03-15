@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getDb } from "@/lib/db";
+import { initializeSchema, dbGet, dbAll } from "@/lib/db";
 
 interface ListingRow {
   id: string;
@@ -13,22 +13,21 @@ interface ListingRow {
   status: string;
 }
 
-interface ImageRow {
-  url: string;
-}
-
-function getListingData(id: string): { listing: ListingRow; images: string[] } | null {
+async function getListingData(id: string): Promise<{ listing: ListingRow; images: string[] } | null> {
   try {
-    const db = getDb();
-    const listing = db
-      .prepare("SELECT id, titel, beschreibung, marke, modell, preis, kanton, hauptkategorie, status FROM listings WHERE id = ?")
-      .get(id) as ListingRow | undefined;
+    await initializeSchema();
+    const listing = await dbGet<ListingRow>(
+      "SELECT id, titel, beschreibung, marke, modell, preis, kanton, hauptkategorie, status FROM listings WHERE id = ?",
+      [id]
+    );
 
     if (!listing) return null;
 
-    const images = (
-      db.prepare("SELECT url FROM listing_images WHERE listing_id = ? ORDER BY position ASC").all(id) as ImageRow[]
-    ).map((img) => img.url);
+    const imageRows = await dbAll<{ url: string }>(
+      "SELECT url FROM listing_images WHERE listing_id = ? ORDER BY position ASC",
+      [id]
+    );
+    const images = imageRows.map((img) => img.url);
 
     return { listing, images };
   } catch {
@@ -42,7 +41,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const data = getListingData(id);
+  const data = await getListingData(id);
 
   if (!data) {
     return {
@@ -81,8 +80,8 @@ export async function generateMetadata({
   };
 }
 
-function ProductJsonLd({ id }: { id: string }) {
-  const data = getListingData(id);
+async function ProductJsonLd({ id }: { id: string }) {
+  const data = await getListingData(id);
   if (!data) return null;
 
   const { listing, images } = data;
@@ -116,8 +115,8 @@ function ProductJsonLd({ id }: { id: string }) {
   );
 }
 
-function BreadcrumbJsonLd({ id }: { id: string }) {
-  const data = getListingData(id);
+async function BreadcrumbJsonLd({ id }: { id: string }) {
+  const data = await getListingData(id);
   if (!data) return null;
 
   const { listing } = data;

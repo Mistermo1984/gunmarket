@@ -1,4 +1,4 @@
-import { getDb } from "./db";
+import { initializeSchema, dbGet, dbAll, dbRun, dbBatch, dbExec } from "./db";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcryptjs";
 import * as cheerio from "cheerio";
@@ -8,7 +8,6 @@ import { classifyRechtsstatus } from "./rechtsstatus-classifier";
 const BASE_URL = "https://www.waffengebraucht.ch";
 const USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
-// System user for crawled listings
 const CRAWLER_USER = {
   id: "crawler-waffengebraucht",
   email: "crawler@waffengebraucht.ch",
@@ -17,7 +16,6 @@ const CRAWLER_USER = {
   anbieter_typ: "Händler",
 };
 
-// Categories to crawl with their slugs
 const CATEGORIES = [
   { slug: "kurzwaffen", hauptkategorie: "kurzwaffen" },
   { slug: "langwaffen", hauptkategorie: "buechsen" },
@@ -29,7 +27,6 @@ const CATEGORIES = [
   { slug: "wiederladen", hauptkategorie: "zubehoer" },
   { slug: "bogenschiessen", hauptkategorie: "zubehoer" },
 ];
-
 
 interface CrawledItem {
   sourceId: string;
@@ -48,7 +45,6 @@ interface CrawledItem {
   lng?: number | null;
 }
 
-// Map Swiss PLZ ranges to cantons
 function kantonFromPlz(plz: string): string {
   const p = parseInt(plz, 10);
   if (isNaN(p)) return "";
@@ -142,9 +138,6 @@ function delay(ms: number): Promise<void> {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-/**
- * Parse listing cards from a category page
- */
 function parseListingCards(html: string, hauptkategorie: string): CrawledItem[] {
   const $ = cheerio.load(html);
   const items: CrawledItem[] = [];
@@ -160,14 +153,12 @@ function parseListingCards(html: string, hauptkategorie: string): CrawledItem[] 
     const titel = titleEl.text().trim();
     const href = titleEl.attr("href") || "";
 
-    // Price
     const priceEl = $el.find(".__SetPriceRequest");
     const priceStr = priceEl.attr("data-price") || "0";
     const preis = parseFloat(priceStr) || 0;
     const priceText = priceEl.text().trim();
     const verhandelbar = priceText.includes("VB") ? 1 : 0;
 
-    // Location — detect which part is PLZ (4 digits) and which is city
     const cityText = $el.find(".__CityName").text().trim();
     const cityParts = cityText.split(",").map((s) => s.trim());
     let ortschaft = "";
@@ -179,22 +170,18 @@ function parseListingCards(html: string, hauptkategorie: string): CrawledItem[] 
         ortschaft = part;
       }
     }
-    // If no 4-digit PLZ found, try extracting from any part
     if (!plz) {
       const plzMatch = cityText.match(/\b(\d{4})\b/);
       if (plzMatch) plz = plzMatch[1];
     }
-    // If ortschaft looks like a PLZ and plz looks like a city, swap
     if (/^\d{4}$/.test(ortschaft) && !plz) {
       plz = ortschaft;
       ortschaft = "";
     }
 
-    // Image
     const imgEl = $el.find("img.lazyload");
     const imageUrl = imgEl.attr("data-src") || imgEl.attr("src") || "";
 
-    // Description
     const beschreibung = $el.find(".__ProductDescription").text().trim().substring(0, 500);
 
     const kanton = kantonFromPlz(plz);
@@ -220,9 +207,6 @@ function parseListingCards(html: string, hauptkategorie: string): CrawledItem[] 
   return items;
 }
 
-/**
- * Get total pages for a category
- */
 function getTotalPages(html: string): number {
   const $ = cheerio.load(html);
   let maxPage = 1;
@@ -237,9 +221,6 @@ function getTotalPages(html: string): number {
   return maxPage;
 }
 
-/**
- * Crawl all listings from waffengebraucht.ch
- */
 async function crawlWaffengebraucht(): Promise<CrawledItem[]> {
   const allItems: CrawledItem[] = [];
   const seenIds = new Set<string>();
@@ -253,7 +234,6 @@ async function crawlWaffengebraucht(): Promise<CrawledItem[]> {
       const totalPages = getTotalPages(firstPageHtml);
       console.log(`[Crawl] ${cat.slug}: ${totalPages} pages`);
 
-      // Parse first page
       const firstItems = parseListingCards(firstPageHtml, cat.hauptkategorie);
       for (const item of firstItems) {
         if (!seenIds.has(item.sourceId)) {
@@ -262,9 +242,8 @@ async function crawlWaffengebraucht(): Promise<CrawledItem[]> {
         }
       }
 
-      // Parse remaining pages
       for (let page = 2; page <= totalPages; page++) {
-        await delay(300); // Be respectful
+        await delay(300);
         try {
           const pageUrl = `${firstPageUrl}?&page=${page}`;
           const pageHtml = await fetchPage(pageUrl);
@@ -288,9 +267,6 @@ async function crawlWaffengebraucht(): Promise<CrawledItem[]> {
   return allItems;
 }
 
-/**
- * Crawl all listings from marketplace.nextgun.ch
- */
 async function crawlNextgun(): Promise<CrawledItem[]> {
   const allItems: CrawledItem[] = [];
 
@@ -298,15 +274,12 @@ async function crawlNextgun(): Promise<CrawledItem[]> {
     console.log("[Crawl] Crawling marketplace.nextgun.ch");
     const html = await fetchPage("https://marketplace.nextgun.ch/marketplace");
 
-    // Extract embedded SvelteKit data — listings are in the annonces array
-    // Find the annonces array in embedded SvelteKit data
     const startIdx = html.indexOf("annonces:[");
     if (startIdx === -1) {
       console.error("[Crawl] NextGun: Could not find annonces data");
       return [];
     }
 
-    // Extract the array content
     let bracketCount = 0;
     const arrayStart = startIdx + "annonces:".length;
     let arrayEnd = arrayStart;
@@ -320,10 +293,6 @@ async function crawlNextgun(): Promise<CrawledItem[]> {
     }
 
     const arrayStr = html.substring(arrayStart, arrayEnd);
-
-    // Convert JS object notation to valid JSON
-    // 1. Replace new Date(...) with timestamp first (before key quoting)
-    // 2. Quote unquoted keys (only at start of object or after comma)
     const step1 = arrayStr.replace(/new Date\((\d+)\)/g, "$1");
     const step2 = step1.replace(/([{,])\s*(\w+)\s*:/g, '$1"$2":');
 
@@ -349,19 +318,16 @@ async function crawlNextgun(): Promise<CrawledItem[]> {
     console.log(`[Crawl] NextGun: Found ${listings.length} listings`);
 
     for (const l of listings) {
-      // Extract PLZ and city from location string
       let ortschaft = "";
       let plz = "";
       let kanton = "";
       if (l.location) {
         const locParts = l.location.split(",").map((s) => s.trim());
-        // First part is often PLZ or city
         const plzMatch = l.location.match(/(\d{4})/);
         if (plzMatch) {
           plz = plzMatch[1];
           kanton = kantonFromPlz(plz);
         }
-        // Find city name (usually first or second part)
         ortschaft = locParts.find((p) => p.length > 2 && !/^\d+$/.test(p) && !p.includes("District") && !p.includes("Suisse")) || locParts[0] || "";
       }
 
@@ -393,46 +359,30 @@ async function crawlNextgun(): Promise<CrawledItem[]> {
   return allItems;
 }
 
-/**
- * Ensure crawler user exists in DB
- */
-function ensureCrawlerUser(db: ReturnType<typeof getDb>, userId: string, email: string, vorname: string, nachname: string) {
-  const existing = db.prepare("SELECT id FROM users WHERE id = ?").get(userId);
+async function ensureCrawlerUser(userId: string, email: string, vorname: string, nachname: string) {
+  const existing = await dbGet("SELECT id FROM users WHERE id = ?", [userId]);
   if (!existing) {
     const hash = bcrypt.hashSync("CrawlerNoLogin!", 10);
-    db.prepare(
-      "INSERT INTO users (id, email, password_hash, vorname, nachname, anbieter_typ, email_verified, is_admin) VALUES (?, ?, ?, ?, ?, ?, 1, 0)"
-    ).run(userId, email, hash, vorname, nachname, "Händler");
+    await dbRun(
+      "INSERT INTO users (id, email, password_hash, vorname, nachname, anbieter_typ, email_verified, is_admin) VALUES (?, ?, ?, ?, ?, ?, 1, 0)",
+      [userId, email, hash, vorname, nachname, "Händler"]
+    );
   }
 }
 
-/**
- * Insert crawled items into DB
- */
-function insertItems(db: ReturnType<typeof getDb>, items: CrawledItem[], source: string) {
-  const insert = db.prepare(`
-    INSERT INTO listings (id, user_id, titel, beschreibung, hauptkategorie, unterkategorie, rechtsstatus, marke, modell, kaliber, zustand, preis, verhandelbar, tausch, kanton, ortschaft, plz, lat, lng, aufrufe, source, source_url, source_id, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `);
-
-  const insertImage = db.prepare(`
-    INSERT INTO listing_images (id, listing_id, url, position, is_main)
-    VALUES (?, ?, ?, 0, 1)
-  `);
-
+async function insertItems(items: CrawledItem[], source: string) {
   const userId = source === "nextgun" ? "crawler-nextgun" : CRAWLER_USER.id;
+  const statements: { sql: string; args: (string | number | null)[] }[] = [];
 
   for (const item of items) {
     const id = uuidv4();
     const createdAt = new Date().toISOString().replace("T", " ").slice(0, 19);
 
-    // Use item's own coords (NextGun), then PLZ lookup, then city name lookup
     const coords = (item.lat && item.lng)
       ? { lat: item.lat, lng: item.lng }
       : (item.plz ? getPlzCoordinates(item.plz) : null)
         ?? getCityCoordinates(item.ortschaft);
 
-    // Classify legal status based on title, description, category
     const rechtsstatus = classifyRechtsstatus({
       titel: item.titel,
       beschreibung: item.beschreibung,
@@ -440,58 +390,62 @@ function insertItems(db: ReturnType<typeof getDb>, items: CrawledItem[], source:
       unterkategorie: item.unterkategorie,
     });
 
-    insert.run(
-      id, userId, item.titel, item.beschreibung,
-      item.hauptkategorie, item.unterkategorie, rechtsstatus,
-      "", "", "", "",
-      item.preis, item.verhandelbar,
-      item.kanton, item.ortschaft, item.plz,
-      coords?.lat ?? null, coords?.lng ?? null, 0,
-      source, item.sourceUrl, item.sourceId, createdAt
-    );
+    statements.push({
+      sql: `INSERT INTO listings (id, user_id, titel, beschreibung, hauptkategorie, unterkategorie, rechtsstatus, marke, modell, kaliber, zustand, preis, verhandelbar, tausch, kanton, ortschaft, plz, lat, lng, aufrufe, source, source_url, source_id, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      args: [
+        id, userId, item.titel, item.beschreibung,
+        item.hauptkategorie, item.unterkategorie, rechtsstatus,
+        "", "", "", "",
+        item.preis, item.verhandelbar,
+        item.kanton, item.ortschaft, item.plz,
+        coords?.lat ?? null, coords?.lng ?? null, 0,
+        source, item.sourceUrl, item.sourceId, createdAt,
+      ],
+    });
 
     if (item.imageUrl) {
-      insertImage.run(uuidv4(), id, item.imageUrl);
+      statements.push({
+        sql: "INSERT INTO listing_images (id, listing_id, url, position, is_main) VALUES (?, ?, ?, 0, 1)",
+        args: [uuidv4(), id, item.imageUrl],
+      });
     }
   }
+
+  await dbBatch(statements);
 }
 
-/**
- * Initial seed — only runs if no crawled listings exist yet.
- */
 export function seedCrawledListings() {
-  const db = getDb();
-  const existing = db.prepare("SELECT COUNT(*) as c FROM listings WHERE source IN ('waffengebraucht', 'nextgun')").get() as { c: number };
-  if (existing.c > 0) {
-    return;
-  }
-  // Don't auto-crawl on seed — it takes too long. Use the admin panel.
-  console.log("[Seed] No crawled listings found. Use admin panel to crawl.");
+  // No-op: Use admin panel to crawl.
+  console.log("[Seed] Use admin panel to crawl.");
 }
 
-/**
- * Re-crawl: Delete all old crawled listings + images, then fetch and insert fresh data.
- */
 export async function runCrawl(): Promise<{ inserted: number; deleted: number; duration: number }> {
   const start = Date.now();
-  const db = getDb();
+  await initializeSchema();
 
-  // Count existing before delete
-  const existing = (db.prepare("SELECT COUNT(*) as c FROM listings WHERE source IN ('waffengebraucht', 'nextgun')").get() as { c: number }).c;
+  const existing = (await dbGet<{ c: number }>("SELECT COUNT(*) as c FROM listings WHERE source IN ('waffengebraucht', 'nextgun')"))?.c ?? 0;
 
   // Delete old crawled data
-  const deleteTransaction = db.transaction(() => {
-    const crawledIds = db.prepare("SELECT id FROM listings WHERE source IN ('waffengebraucht', 'nextgun')").all() as { id: string }[];
+  const crawledIds = await dbAll<{ id: string }>("SELECT id FROM listings WHERE source IN ('waffengebraucht', 'nextgun')");
+  if (crawledIds.length > 0) {
+    const deleteStatements: { sql: string; args: (string | number | null)[] }[] = [];
     for (const row of crawledIds) {
-      db.prepare("DELETE FROM listing_images WHERE listing_id = ?").run(row.id);
+      deleteStatements.push({
+        sql: "DELETE FROM listing_images WHERE listing_id = ?",
+        args: [row.id],
+      });
     }
-    db.prepare("DELETE FROM listings WHERE source IN ('waffengebraucht', 'nextgun')").run();
-  });
-  deleteTransaction();
+    deleteStatements.push({
+      sql: "DELETE FROM listings WHERE source IN ('waffengebraucht', 'nextgun')",
+      args: [],
+    });
+    await dbBatch(deleteStatements);
+  }
 
   // Ensure crawler users exist
-  ensureCrawlerUser(db, CRAWLER_USER.id, CRAWLER_USER.email, CRAWLER_USER.vorname, CRAWLER_USER.nachname);
-  ensureCrawlerUser(db, "crawler-nextgun", "crawler@nextgun.ch", "NextGun", ".ch");
+  await ensureCrawlerUser(CRAWLER_USER.id, CRAWLER_USER.email, CRAWLER_USER.vorname, CRAWLER_USER.nachname);
+  await ensureCrawlerUser("crawler-nextgun", "crawler@nextgun.ch", "NextGun", ".ch");
 
   // Crawl both sources
   const [wgItems, ngItems] = await Promise.all([
@@ -499,32 +453,25 @@ export async function runCrawl(): Promise<{ inserted: number; deleted: number; d
     crawlNextgun(),
   ]);
 
-  // Insert in transaction
-  const insertTransaction = db.transaction(() => {
-    insertItems(db, wgItems, "waffengebraucht");
-    insertItems(db, ngItems, "nextgun");
-  });
-  insertTransaction();
+  // Insert
+  await insertItems(wgItems, "waffengebraucht");
+  await insertItems(ngItems, "nextgun");
 
   const totalInserted = wgItems.length + ngItems.length;
   const duration = Date.now() - start;
   console.log(`[Crawl] Done: Deleted ${existing}, inserted ${totalInserted} in ${duration}ms`);
 
-  // Save crawl timestamp
-  saveCrawlTimestamp(db);
+  await saveCrawlTimestamp();
 
   return { inserted: totalInserted, deleted: existing, duration };
 }
 
-/**
- * Get info about the last crawl run.
- */
-export function getCrawlStatus(): { lastCrawl: string | null; count: number; autoCrawlEnabled: boolean; autoCrawlTime: string } {
-  const db = getDb();
-  const count = (db.prepare("SELECT COUNT(*) as c FROM listings WHERE source IN ('waffengebraucht', 'nextgun')").get() as { c: number }).c;
+export async function getCrawlStatus(): Promise<{ lastCrawl: string | null; count: number; autoCrawlEnabled: boolean; autoCrawlTime: string }> {
+  await initializeSchema();
+  const count = (await dbGet<{ c: number }>("SELECT COUNT(*) as c FROM listings WHERE source IN ('waffengebraucht', 'nextgun')"))?.c ?? 0;
 
-  ensureCrawlMetaTable(db);
-  const row = db.prepare("SELECT value FROM crawl_meta WHERE key = 'last_crawl'").get() as { value: string } | undefined;
+  await ensureCrawlMetaTable();
+  const row = await dbGet<{ value: string }>("SELECT value FROM crawl_meta WHERE key = 'last_crawl'");
 
   return {
     lastCrawl: row?.value || null,
@@ -534,8 +481,8 @@ export function getCrawlStatus(): { lastCrawl: string | null; count: number; aut
   };
 }
 
-function ensureCrawlMetaTable(db: ReturnType<typeof getDb>) {
-  db.exec(`
+async function ensureCrawlMetaTable() {
+  await dbExec(`
     CREATE TABLE IF NOT EXISTS crawl_meta (
       key TEXT PRIMARY KEY,
       value TEXT NOT NULL
@@ -543,8 +490,8 @@ function ensureCrawlMetaTable(db: ReturnType<typeof getDb>) {
   `);
 }
 
-function saveCrawlTimestamp(db: ReturnType<typeof getDb>) {
-  ensureCrawlMetaTable(db);
+async function saveCrawlTimestamp() {
+  await ensureCrawlMetaTable();
   const now = new Date().toISOString();
-  db.prepare("INSERT OR REPLACE INTO crawl_meta (key, value) VALUES ('last_crawl', ?)").run(now);
+  await dbRun("INSERT OR REPLACE INTO crawl_meta (key, value) VALUES ('last_crawl', ?)", [now]);
 }

@@ -1,21 +1,21 @@
 import { NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
+import { initializeSchema, dbGet } from "@/lib/db";
 
 export async function GET() {
   try {
-    const db = getDb();
+    await initializeSchema();
 
     const inserate = (
-      db.prepare("SELECT COUNT(*) as c FROM listings WHERE status = 'aktiv'").get() as { c: number }
-    ).c;
+      await dbGet<{ c: number }>("SELECT COUNT(*) as c FROM listings WHERE status = 'aktiv'")
+    )?.c ?? 0;
 
     const verkaeufer = (
-      db.prepare("SELECT COUNT(DISTINCT user_id) as c FROM listings WHERE status = 'aktiv'").get() as { c: number }
-    ).c;
+      await dbGet<{ c: number }>("SELECT COUNT(DISTINCT user_id) as c FROM listings WHERE status = 'aktiv'")
+    )?.c ?? 0;
 
     const kantone = (
-      db.prepare("SELECT COUNT(DISTINCT kanton) as c FROM listings WHERE status = 'aktiv'").get() as { c: number }
-    ).c;
+      await dbGet<{ c: number }>("SELECT COUNT(DISTINCT kanton) as c FROM listings WHERE status = 'aktiv'")
+    )?.c ?? 0;
 
     return NextResponse.json({ inserate, verkaeufer, kantone });
   } catch {

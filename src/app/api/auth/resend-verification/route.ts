@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
+import { initializeSchema, dbGet, dbRun } from "@/lib/db";
 import { v4 as uuidv4 } from "uuid";
 import { sendVerificationEmail } from "@/lib/email";
 
@@ -11,11 +11,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "E-Mail erforderlich" }, { status: 400 });
     }
 
-    const db = getDb();
-    const user = db.prepare("SELECT id, vorname, email_verified FROM users WHERE email = ?").get(email) as Record<string, unknown> | undefined;
+    await initializeSchema();
+    const user = await dbGet<{ id: string; vorname: string; email_verified: number }>(
+      "SELECT id, vorname, email_verified FROM users WHERE email = ?",
+      [email]
+    );
 
     if (!user) {
-      // Don't reveal whether email exists
       return NextResponse.json({ success: true });
     }
 
@@ -23,18 +25,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "E-Mail bereits bestätigt" }, { status: 400 });
     }
 
-    // Invalidate old tokens
-    db.prepare("UPDATE email_tokens SET used = 1 WHERE user_id = ? AND type = 'verify'").run(user.id);
+    await dbRun(
+      "UPDATE email_tokens SET used = 1 WHERE user_id = ? AND type = 'verify'",
+      [user.id]
+    );
 
-    // Create new token
     const token = uuidv4();
     const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
-    db.prepare(
-      "INSERT INTO email_tokens (id, user_id, token, type, expires_at) VALUES (?, ?, ?, 'verify', ?)"
-    ).run(uuidv4(), user.id, token, expiresAt);
+    await dbRun(
+      "INSERT INTO email_tokens (id, user_id, token, type, expires_at) VALUES (?, ?, ?, 'verify', ?)",
+      [uuidv4(), user.id, token, expiresAt]
+    );
 
-    await sendVerificationEmail(email, token, user.vorname as string);
+    await sendVerificationEmail(email, token, user.vorname);
 
     return NextResponse.json({ success: true });
   } catch (error) {

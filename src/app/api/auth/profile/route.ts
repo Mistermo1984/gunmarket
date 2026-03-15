@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
+import { initializeSchema, dbGet, dbRun } from "@/lib/db";
 import bcrypt from "bcryptjs";
 
 export async function PUT(req: NextRequest) {
   try {
-    const db = getDb();
+    await initializeSchema();
     const body = await req.json();
     const { user_id, vorname, nachname, telefon, kanton, ueber_mich, oldPassword, newPassword } = body;
 
@@ -12,9 +12,11 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ error: "user_id required" }, { status: 400 });
     }
 
-    // Password change
     if (oldPassword && newPassword) {
-      const user = db.prepare("SELECT password_hash FROM users WHERE id = ?").get(user_id) as { password_hash: string } | undefined;
+      const user = await dbGet<{ password_hash: string }>(
+        "SELECT password_hash FROM users WHERE id = ?",
+        [user_id]
+      );
       if (!user) {
         return NextResponse.json({ error: "User not found" }, { status: 404 });
       }
@@ -24,11 +26,13 @@ export async function PUT(req: NextRequest) {
       }
 
       const newHash = bcrypt.hashSync(newPassword, 10);
-      db.prepare("UPDATE users SET password_hash = ?, updated_at = datetime('now') WHERE id = ?").run(newHash, user_id);
+      await dbRun(
+        "UPDATE users SET password_hash = ?, updated_at = datetime('now') WHERE id = ?",
+        [newHash, user_id]
+      );
       return NextResponse.json({ success: true });
     }
 
-    // Profile update
     const fields: string[] = [];
     const values: (string | null)[] = [];
 
@@ -45,7 +49,7 @@ export async function PUT(req: NextRequest) {
     fields.push("updated_at = datetime('now')");
     values.push(user_id);
 
-    db.prepare(`UPDATE users SET ${fields.join(", ")} WHERE id = ?`).run(...values);
+    await dbRun(`UPDATE users SET ${fields.join(", ")} WHERE id = ?`, values);
 
     return NextResponse.json({ success: true });
   } catch (error) {

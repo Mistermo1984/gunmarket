@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/db";
+import { initializeSchema, dbGet, dbAll } from "@/lib/db";
 
 const SYSTEM_PROMPT = `Du bist ein KI-Suchassistent für GunMarket.ch, einen Schweizer Waffenmarktplatz.
 
@@ -85,7 +85,6 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Combine system prompt + user query in a single prompt for more reliable JSON output
     const fullPrompt = `${SYSTEM_PROMPT}\n\n---\n\nNUTZER-ANFRAGE: ${query.trim()}\n\nAntworte NUR mit dem JSON-Objekt, keine zusätzlichen Erklärungen.`;
 
     let aiText: string;
@@ -100,13 +99,10 @@ export async function POST(req: NextRequest) {
       throw aiErr;
     }
 
-    // Parse JSON from AI response
     let parsed;
     try {
-      // Try direct parse first
       parsed = JSON.parse(aiText);
     } catch {
-      // Try extracting JSON from markdown or text wrapper
       try {
         const jsonMatch = aiText.match(/```json\s*([\s\S]*?)\s*```/) || aiText.match(/(\{[\s\S]*\})/);
         parsed = JSON.parse(jsonMatch ? (jsonMatch[1] || jsonMatch[0]) : "{}");
@@ -118,7 +114,6 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Ensure parsed has expected fields with defaults
     parsed = {
       erklärung: parsed.erklärung || parsed.erklaerung || "",
       suchbegriff: parsed.suchbegriff || null,
@@ -132,8 +127,8 @@ export async function POST(req: NextRequest) {
       annotationen: parsed.annotationen || {},
     };
 
-    // Step 2: Query DB with AI-determined filters
-    const db = getDb();
+    await initializeSchema();
+
     const conditions: string[] = ["l.status = 'aktiv'"];
     const params: (string | number)[] = [];
 
@@ -173,26 +168,29 @@ export async function POST(req: NextRequest) {
       "preis-desc": "l.preis DESC",
     };
     const orderBy = sortMap[parsed.sortierung] || "l.created_at DESC";
-
     const whereClause = conditions.join(" AND ");
 
     const total = (
-      db.prepare(`SELECT COUNT(*) as c FROM listings l WHERE ${whereClause}`).get(...params) as { c: number }
-    ).c;
+      await dbGet<{ c: number }>(`SELECT COUNT(*) as c FROM listings l WHERE ${whereClause}`, params)
+    )?.c ?? 0;
 
-    const listings = db.prepare(`
-      SELECT l.*, u.vorname, u.nachname, u.anbieter_typ as verkaeufer_typ
+    const listings = await dbAll(
+      `SELECT l.*, u.vorname, u.nachname, u.anbieter_typ as verkaeufer_typ
       FROM listings l
       LEFT JOIN users u ON l.user_id = u.id
       WHERE ${whereClause}
       ORDER BY ${orderBy}
-      LIMIT 20
-    `).all(...params) as Record<string, unknown>[];
+      LIMIT 20`,
+      params
+    );
 
     // Attach images
-    const imgStmt = db.prepare("SELECT url, position FROM listing_images WHERE listing_id = ? ORDER BY position ASC");
     for (const listing of listings) {
-      listing.images = imgStmt.all(listing.id as string);
+      const images = await dbAll(
+        "SELECT url, position FROM listing_images WHERE listing_id = ? ORDER BY position ASC",
+        [listing.id as string]
+      );
+      listing.images = images;
     }
 
     return NextResponse.json({

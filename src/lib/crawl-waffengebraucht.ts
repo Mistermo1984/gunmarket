@@ -400,6 +400,14 @@ export async function runCrawlStep(stepId: string): Promise<{ inserted: number; 
     const items = await crawlNextgun();
     const newItems = items.filter((item) => !existingSourceIds.has(item.sourceId));
     await insertItems(newItems, "nextgun");
+
+    // Add nextgun source_ids to live list for cleanup step
+    await ensureCrawlMetaTable();
+    const existingLiveRow = await dbGet<{ value: string }>("SELECT value FROM crawl_meta WHERE key = 'live_source_ids'");
+    const existingLive: string[] = existingLiveRow?.value ? JSON.parse(existingLiveRow.value) : [];
+    const updatedLive = [...existingLive, ...items.map((i) => i.sourceId)];
+    await dbRun("INSERT OR REPLACE INTO crawl_meta (key, value) VALUES ('live_source_ids', ?)", [JSON.stringify(updatedLive)]);
+
     console.log(`[Crawl] NextGun: ${items.length} total, ${newItems.length} new`);
     return { inserted: newItems.length, deleted: 0, source: "nextgun" };
   }

@@ -29,48 +29,7 @@ const CATEGORIES = [
   { slug: "bogenschiessen", hauptkategorie: "zubehoer" },
 ];
 
-// ─── Subcategory detection from title + description ──────────
-function detectSubcategory(hauptkategorie: string, titel: string, beschreibung: string): string {
-  const text = `${titel} ${beschreibung}`.toLowerCase();
-
-  switch (hauptkategorie) {
-    case "kurzwaffen": {
-      if (/revolver|python|king\s*cobra|anaconda|detective|tracker|judge|raging|blackhawk|wrangler|vaquero/i.test(text)) return "revolver";
-      return "pistolen";
-    }
-    case "langwaffen": {
-      if (/flinte|schrotflinte|bockflinte|querflinte|drilling|12\/70|20\/70|12\/76|20\/76|superpos|juxtapos|over[\s/-]?under|side[\s/-]?by/i.test(text)) return "flinten";
-      if (/jagd|kirrung|kipplauf|bockb[üu]chs|pirsch|ansitz/i.test(text)) return "jagdwaffen";
-      if (/b[üu]chse|karabiner|repetier|halbautomat|sturmgewehr|bolt[\s-]?action|einzellad/i.test(text)) return "buechsen";
-      return "andere-langwaffen";
-    }
-    case "ordonnanzwaffen": {
-      if (/p[\s.-]?210|p[\s.-]?49|p[\s.-]?75|ordonnanzpistol|ordonanz.*pistol|pistol.*ordon/i.test(text)) return "kurzwaffen-ordonnanz";
-      return "langwaffen-ordonnanz";
-    }
-    case "luftdruckwaffen": {
-      if (/luftpistol|air\s*pistol|co2[\s-]?pistol/i.test(text)) return "luftpistolen";
-      if (/co2|softair|airsoft|bb[\s-]?gun|gbb|aeg|hpa/i.test(text)) return "co2-waffen";
-      return "luftgewehre";
-    }
-    case "optik": {
-      if (/zielfernrohr|scope|variable|fix.*x|zf\b/i.test(text)) return "zielfernrohre";
-      if (/rotpunkt|red[\s-]?dot|reflex|holosun|aimpoint|eotech/i.test(text)) return "rotpunktvisiere";
-      if (/fernglas|spektiv|binocular/i.test(text)) return "fernglaeser";
-      if (/montage|picatinny|ring|rail|weaver/i.test(text)) return "montagen";
-      return "zielfernrohre";
-    }
-    case "zubehoer": {
-      if (/magazin|ladevorrichtung|charger/i.test(text)) return "magazine";
-      if (/holster|tasche|futteral|koffer/i.test(text)) return "holster";
-      if (/lauf|verschluss|schaft|kolben|abzug|schlitten|griffst[üu]ck|teil/i.test(text)) return "lauefe-teile";
-      if (/reinigung|pflege|[öo]l\b|putzstock|borste/i.test(text)) return "reinigung";
-      return "andere-zubehoer";
-    }
-    default:
-      return "";
-  }
-}
+// Subcategory detection now handled by category-classifier.ts
 
 interface CrawledItem {
   sourceId: string;
@@ -183,7 +142,7 @@ function delay(ms: number): Promise<void> {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-function parseListingCards(html: string, hauptkategorie: string): CrawledItem[] {
+function parseListingCards(html: string): CrawledItem[] {
   const $ = cheerio.load(html);
   const items: CrawledItem[] = [];
 
@@ -564,7 +523,7 @@ export async function runCrawlStep(stepId: string): Promise<{ inserted: number; 
   const cat = CATEGORIES.find((c) => c.slug === slug);
   if (!cat) throw new Error(`Unknown crawl step: ${stepId}`);
 
-  const items = await crawlSingleCategory(cat.slug, cat.hauptkategorie);
+  const items = await crawlSingleCategory(cat.slug);
   const newItems = items.filter((item) => !existingSourceIds.has(item.sourceId));
   await insertItems(newItems, "waffengebraucht");
 
@@ -580,7 +539,7 @@ export async function runCrawlStep(stepId: string): Promise<{ inserted: number; 
 }
 
 // Crawl a single category from waffengebraucht.ch
-async function crawlSingleCategory(slug: string, hauptkategorie: string): Promise<CrawledItem[]> {
+async function crawlSingleCategory(slug: string): Promise<CrawledItem[]> {
   const items: CrawledItem[] = [];
   const seenIds = new Set<string>();
 
@@ -590,7 +549,7 @@ async function crawlSingleCategory(slug: string, hauptkategorie: string): Promis
   const totalPages = getTotalPages(firstPageHtml);
   console.log(`[Crawl] ${slug}: ${totalPages} pages`);
 
-  const firstItems = parseListingCards(firstPageHtml, hauptkategorie);
+  const firstItems = parseListingCards(firstPageHtml);
   for (const item of firstItems) {
     if (!seenIds.has(item.sourceId)) {
       seenIds.add(item.sourceId);
@@ -603,7 +562,7 @@ async function crawlSingleCategory(slug: string, hauptkategorie: string): Promis
     try {
       const pageUrl = `${firstPageUrl}?&page=${page}`;
       const pageHtml = await fetchPage(pageUrl);
-      const pageItems = parseListingCards(pageHtml, hauptkategorie);
+      const pageItems = parseListingCards(pageHtml);
       for (const item of pageItems) {
         if (!seenIds.has(item.sourceId)) {
           seenIds.add(item.sourceId);

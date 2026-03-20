@@ -280,12 +280,9 @@ export function classifyCategory(titel: string, beschreibung: string = ""): Clas
   // PHASE 4: FIND WINNER
   // ═══════════════════════════════════════════════════════════════
 
-  // Get weapon score (max of all weapon categories)
   const weaponCategories = ["kurzwaffen", "langwaffen", "ordonnanzwaffen", "luftdruckwaffen"];
-  const maxWeaponScore = Math.max(...weaponCategories.map(c => scores[c]));
 
-  // If a weapon category scored AND beats non-weapon categories, prefer it
-  // (weapons get priority in ties)
+  // Weapons get priority in ties
   const allEntries = Object.entries(scores);
   allEntries.sort((a, b) => {
     if (b[1] !== a[1]) return b[1] - a[1];
@@ -299,16 +296,16 @@ export function classifyCategory(titel: string, beschreibung: string = ""): Clas
 
   // If no category scored at all, default to zubehoer
   if (maxScore < 2) {
-    return { hauptkategorie: "zubehoer", unterkategorie: detectSubcategory("zubehoer", text, titelLower) };
+    return { hauptkategorie: "zubehoer", unterkategorie: detectSubcategory("zubehoer", text) };
   }
 
   const winner = allEntries[0][0];
-  const sub = detectSubcategory(winner, text, titelLower);
+  const sub = detectSubcategory(winner, text);
 
   return { hauptkategorie: winner, unterkategorie: sub };
 }
 
-function detectSubcategory(hauptkategorie: string, text: string, titel: string): string {
+function detectSubcategory(hauptkategorie: string, text: string): string {
   switch (hauptkategorie) {
     case "kurzwaffen": {
       if (/revolver|python|cobra|anaconda|detective|tracker|judge|raging|blackhawk|wrangler|vaquero|gp100|sp101|redhawk|model\s*\d+.*mag/i.test(text)) return "revolver";

@@ -141,6 +141,32 @@ function Pill({ label, active, onClick }: { label: string; active: boolean; onCl
   );
 }
 
+// ─── Panel image with error fallback ─────────────────────────────
+
+function PanelImage({ url }: { url: string | null }) {
+  const [failed, setFailed] = useState(false);
+
+  if (!url || failed) {
+    return (
+      <div style={{ width: 56, height: 56, borderRadius: 6, background: "#e5e7eb", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.5">
+          <path d="M3 9l2-4h14l2 4M3 9v8a2 2 0 002 2h14a2 2 0 002-2V9M3 9h18" />
+        </svg>
+      </div>
+    );
+  }
+
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={url}
+      alt=""
+      style={{ width: 56, height: 56, borderRadius: 6, objectFit: "cover", flexShrink: 0, background: "#e5e7eb" }}
+      onError={() => setFailed(true)}
+    />
+  );
+}
+
 // ─── Component ──────────────────────────────────────────────────
 
 const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView(
@@ -544,32 +570,8 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
                 onMouseEnter={(e) => { e.currentTarget.style.background = "#f0fdf4"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = "white"; }}
               >
-                {/* Image or placeholder */}
-                {l.image_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={l.image_url}
-                    alt={l.titel}
-                    style={{ width: 56, height: 56, borderRadius: 6, objectFit: "cover", flexShrink: 0, background: "#f3f4f6" }}
-                    onError={(e) => {
-                      const el = e.target as HTMLImageElement;
-                      el.style.display = "none";
-                      if (el.nextElementSibling) (el.nextElementSibling as HTMLElement).style.display = "flex";
-                    }}
-                  />
-                ) : null}
-                <div
-                  style={{
-                    width: 56, height: 56, borderRadius: 6, background: "#f3f4f6",
-                    flexShrink: 0, display: l.image_url ? "none" : "flex",
-                    alignItems: "center", justifyContent: "center", fontSize: 20,
-                  }}
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
-                </div>
+                {/* Image with fallback placeholder */}
+                <PanelImage url={l.image_url} />
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontWeight: 600, fontSize: 13, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                     {l.titel}

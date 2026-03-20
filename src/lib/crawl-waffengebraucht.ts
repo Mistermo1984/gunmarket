@@ -34,16 +34,17 @@ const GW_CRAWLER_USER = {
   anbieter_typ: "Händler",
 };
 
-// All categories to crawl — exact slugs from gebrauchtwaffen.com
+// All categories to crawl — exact slugs from gebrauchtwaffen.com (verified live)
+// NOTE: 'munition' does not exist as a standalone category on gebrauchtwaffen.com
 const CATEGORIES = [
   { slug: "kurzwaffen", hauptkategorie: "kurzwaffen" },
   { slug: "langwaffen", hauptkategorie: "langwaffen" },
   { slug: "sammler-ordonanzwaffen", hauptkategorie: "ordonnanzwaffen" },
   { slug: "luftdruckwaffen-softair", hauptkategorie: "luftdruckwaffen" },
   { slug: "optik", hauptkategorie: "optik" },
-  { slug: "munition", hauptkategorie: "munition" },
   { slug: "messer-blankwaffen", hauptkategorie: "zubehoer" },
   { slug: "wiederladen", hauptkategorie: "zubehoer" },
+  { slug: "bogenschiesen", hauptkategorie: "zubehoer" },
   { slug: "wild-und-jagd", hauptkategorie: "langwaffen" },
   { slug: "verschiedenes", hauptkategorie: "zubehoer" },
   { slug: "selbstverteidigung", hauptkategorie: "zubehoer" },
@@ -126,70 +127,38 @@ function extractListingUrls(html: string): string[] {
   return Array.from(new Set(matches.map((m) => m[1])));
 }
 
-// URL path segments that indicate accessories (not the weapon itself)
-const ACCESSORY_URL_SEGMENTS = [
-  "/magazine/",
-  "/holster/",
-  "/griffschalen/",
-  "/schafte/",
-  "/laufe/",
-  "/laeufe/",
-  "/montagen/",
-  "/chokes/",
-  "/zubehor/",
-  "/ersatzteile/",
-  "/bekleidung/",
-  "/taschen/",
-  "/koffer/",
-  "/reinigung/",
-  "/pflege/",
-  "/kombinierte/",
-];
-
-/** URL-based category override: detect accessories in weapon categories */
-function mapCategoryFromUrl(
-  url: string
-): { hauptkategorie: string; unterkategorie: string } | null {
-  const urlLower = url.toLowerCase();
-  for (const seg of ACCESSORY_URL_SEGMENTS) {
-    if (urlLower.includes(seg)) {
-      // Determine zubehoer subcategory from URL path
-      if (seg.includes("magazin"))
-        return { hauptkategorie: "zubehoer", unterkategorie: "magazine" };
-      if (
-        seg.includes("holster") ||
-        seg.includes("taschen") ||
-        seg.includes("koffer")
-      )
-        return { hauptkategorie: "zubehoer", unterkategorie: "holster" };
-      if (
-        seg.includes("lauf") ||
-        seg.includes("schafte") ||
-        seg.includes("ersatz") ||
-        seg.includes("kombinierte")
-      )
-        return {
-          hauptkategorie: "zubehoer",
-          unterkategorie: "lauefe-teile",
-        };
-      if (seg.includes("reinigung") || seg.includes("pflege"))
-        return { hauptkategorie: "zubehoer", unterkategorie: "reinigung" };
-      if (seg.includes("montagen") || seg.includes("chokes"))
-        return { hauptkategorie: "optik", unterkategorie: "montagen" };
-      return {
-        hauptkategorie: "zubehoer",
-        unterkategorie: "andere-zubehoer",
-      };
-    }
-  }
-  // No accessory override — let classifier handle it
-  return null;
+/** URL-based category mapping — accessories override weapon parent categories */
+function mapCategoryFromUrl(url: string): string {
+  // Accessories first — these appear under weapon categories but are Zubehör
+  if (
+    url.includes("/magazine") ||
+    url.includes("/holster") ||
+    url.includes("/griffschalen") ||
+    url.includes("/schafte") ||
+    url.includes("/laufe") ||
+    url.includes("/montagen") ||
+    url.includes("/chokes")
+  )
+    return "zubehoer";
+  // Main categories
+  if (url.includes("/kurzwaffen")) return "kurzwaffen";
+  if (url.includes("/langwaffen")) return "langwaffen";
+  if (url.includes("/sammler") || url.includes("/ordonanz"))
+    return "ordonnanzwaffen";
+  if (url.includes("/luftdruck") || url.includes("/softair"))
+    return "luftdruckwaffen";
+  if (url.includes("/optik")) return "optik";
+  if (url.includes("/messer") || url.includes("/blank")) return "zubehoer";
+  if (url.includes("/wiederladen")) return "zubehoer";
+  if (url.includes("/wild") || url.includes("/jagd")) return "langwaffen";
+  if (url.includes("/bogenschiesen")) return "zubehoer";
+  if (url.includes("/selbstverteidigung")) return "zubehoer";
+  return "zubehoer";
 }
 
 /** Scrape individual gebrauchtwaffen.com listing page for full data */
 async function scrapeGwListing(
-  url: string,
-  defaultHauptkategorie: string
+  url: string
 ): Promise<CrawledItem | null> {
   const html = await fetchPage(url);
   if (!html) return null;
@@ -238,21 +207,10 @@ async function scrapeGwListing(
     u.replace("_thumbnail", "")
   );
 
-  // Category: URL-based accessory detection first, then classifier, then default
-  const urlOverride = mapCategoryFromUrl(url);
-  let hauptkategorie: string;
-  let unterkategorie: string;
-
-  if (urlOverride) {
-    // URL clearly indicates accessory/optic — use that
-    hauptkategorie = urlOverride.hauptkategorie;
-    unterkategorie = urlOverride.unterkategorie;
-  } else {
-    // Use text-based classifier, fall back to category default
-    const classified = classifyCategory(titel, beschreibung);
-    hauptkategorie = classified.hauptkategorie || defaultHauptkategorie;
-    unterkategorie = classified.unterkategorie;
-  }
+  // Category: URL-based mapping for hauptkategorie, classifier for unterkategorie
+  const hauptkategorie = mapCategoryFromUrl(url);
+  const classified = classifyCategory(titel, beschreibung);
+  const unterkategorie = classified.unterkategorie;
 
   return {
     sourceId: `gw-${idMatch[1]}`,
@@ -759,7 +717,7 @@ export async function runCrawlStep(
   const newItems: CrawledItem[] = [];
   for (const ref of newRefs) {
     await delay(1200 + Math.random() * 1300);
-    const item = await scrapeGwListing(ref.url, cat.hauptkategorie);
+    const item = await scrapeGwListing(ref.url);
     if (item) newItems.push(item);
   }
 

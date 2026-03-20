@@ -324,10 +324,10 @@ export default function CrawlingPage() {
                   </a>
                 </div>
                 <p className="mt-1 text-sm text-neutral-600">
-                  11 Kategorien. Echtes Web-Crawling aller Kategorieseiten mit Detail-Scraping.
+                  11 Kategorien. Web-Crawling aller Kategorieseiten mit Detail-Scraping.
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {["Kurzwaffen", "Langwaffen", "Ordonnanz", "Luftdruck", "Optik", "Munition", "Messer", "Wiederladen", "Jagd", "Verschiedenes", "Selbstverteidigung"].map((cat) => (
+                  {["Kurzwaffen", "Langwaffen", "Ordonnanz", "Luftdruck", "Optik", "Messer", "Wiederladen", "Bogenschiessen", "Jagd", "Verschiedenes", "Selbstverteidigung"].map((cat) => (
                     <span key={cat} className="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-neutral-600">
                       {cat}
                     </span>

@@ -383,6 +383,28 @@ async function ensureCrawlerUser(userId: string, email: string, vorname: string,
   }
 }
 
+async function downloadImage(imageUrl: string, listingId: string): Promise<string | null> {
+  try {
+    const response = await fetch(imageUrl, {
+      headers: {
+        "User-Agent": USER_AGENT,
+        "Referer": "https://waffengebraucht.ch/",
+      },
+    });
+    if (!response.ok) return null;
+    const buffer = await response.arrayBuffer();
+    const { put } = await import("@vercel/blob");
+    const blob = await put(`listings/${listingId}-${Date.now()}.jpg`, buffer, {
+      access: "public",
+      contentType: response.headers.get("content-type") || "image/jpeg",
+    });
+    return blob.url;
+  } catch (e) {
+    console.error("[Crawl] Image download failed:", e);
+    return null;
+  }
+}
+
 async function insertItems(items: CrawledItem[], source: string) {
   const userId = source === "nextgun" ? "crawler-nextgun" : CRAWLER_USER.id;
   const statements: { sql: string; args: (string | number | null)[] }[] = [];
@@ -418,9 +440,10 @@ async function insertItems(items: CrawledItem[], source: string) {
     });
 
     if (item.imageUrl) {
+      const blobUrl = await downloadImage(item.imageUrl, id);
       statements.push({
         sql: "INSERT INTO listing_images (id, listing_id, url, position, is_main) VALUES (?, ?, ?, 0, 1)",
-        args: [uuidv4(), id, item.imageUrl],
+        args: [uuidv4(), id, blobUrl || item.imageUrl],
       });
     }
   }

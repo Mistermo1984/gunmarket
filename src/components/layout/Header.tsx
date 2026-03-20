@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, Plus, User, BookOpen, Search, LogOut, Shield } from "lucide-react";
+import { Menu, X, Plus, User, BookOpen, Search, LogOut, Shield, BarChart3 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 
@@ -83,6 +83,13 @@ export default function Header() {
             className="rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-grey hover:text-brand-dark"
           >
             Schützenvereine
+          </Link>
+          <Link
+            href="/markt"
+            className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-grey hover:text-brand-dark"
+          >
+            <BarChart3 size={15} />
+            Marktdaten
           </Link>
           <Link
             href="/waffenrecht"
@@ -182,6 +189,14 @@ export default function Header() {
             >
               <BookOpen size={16} />
               Waffen-Wiki
+            </Link>
+            <Link
+              href="/markt"
+              className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-neutral-600 hover:bg-brand-grey touch-target"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <BarChart3 size={16} />
+              Marktdaten
             </Link>
             {user ? (
               <>

@@ -49,9 +49,11 @@ const ZUSTAND_LABELS: Record<string, string> = {
 };
 
 const RECHTS_LABELS: Record<string, { label: string; color: string }> = {
-  frei: { label: "Frei", color: "#4ade80" },
-  wes: { label: "WES", color: "#fbbf24" },
-  "abk-klein": { label: "ABK", color: "#f87171" },
+  frei: { label: "Frei erwerbbar", color: "#4ade80" },
+  wes: { label: "WES-pflichtig", color: "#fbbf24" },
+  kaufvertrag: { label: "Kaufvertrag", color: "#60a5fa" },
+  "abk-klein": { label: "ABK (Klein)", color: "#f87171" },
+  "abk-gross": { label: "ABK (Gross)", color: "#ef4444" },
 };
 
 const KANTON_ABBREV: Record<string, string> = {

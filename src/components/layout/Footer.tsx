@@ -1,45 +1,47 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { Mail, ExternalLink } from "lucide-react";
 import Logo from "@/components/ui/Logo";
+import { useLocale } from "@/lib/locale-context";
+import type { TranslationKey } from "@/lib/i18n";
 
-const footerSections = [
+const footerSections: { titleKey: TranslationKey; links: { labelKey: TranslationKey; href: string }[] }[] = [
   {
-    title: "Marktplatz",
+    titleKey: "nav_listings",
     links: [
-      { label: "Alle Inserate", href: "/suche" },
-      { label: "Inserat aufgeben", href: "/inserat/neu" },
-      { label: "Karte", href: "/karte" },
-      { label: "Schützenvereine", href: "/vereine" },
+      { labelKey: "nav_all_listings", href: "/suche" },
+      { labelKey: "nav_create_long", href: "/inserat/neu" },
+      { labelKey: "map_title", href: "/karte" },
+      { labelKey: "nav_clubs", href: "/vereine" },
     ],
   },
   {
-    title: "Waffen-Wiki",
+    titleKey: "nav_wiki",
     links: [
-      { label: "Waffen-Wiki", href: "/wissen/waffen" },
-      { label: "Kaliber-Guide", href: "/wissen/munition" },
-      { label: "Waffenrecht CH", href: "/waffenrecht" },
-      { label: "Sicherheit", href: "/sicherheit" },
+      { labelKey: "nav_wiki", href: "/wissen/waffen" },
+      { labelKey: "filter_caliber", href: "/wissen/munition" },
+      { labelKey: "nav_law", href: "/waffenrecht" },
     ],
   },
   {
-    title: "Rechtliches",
+    titleKey: "footer_imprint",
     links: [
-      { label: "Kontakt", href: "/kontakt" },
-      { label: "AGB", href: "/agb" },
-      { label: "Datenschutz", href: "/datenschutz" },
-      { label: "Impressum", href: "/impressum" },
+      { labelKey: "footer_contact", href: "/kontakt" },
+      { labelKey: "footer_agb", href: "/agb" },
+      { labelKey: "footer_privacy", href: "/datenschutz" },
+      { labelKey: "footer_imprint", href: "/impressum" },
     ],
   },
 ];
 
 const KATEGORIE_LINKS = [
-  { label: "Kurzwaffen", href: "/kategorien/kurzwaffen" },
-  { label: "Langwaffen", href: "/kategorien/buechsen" },
-  { label: "Flinten", href: "/kategorien/flinten" },
-  { label: "Ordonnanzwaffen", href: "/kategorien/ordonnanzwaffen" },
-  { label: "Luftdruckwaffen", href: "/kategorien/freie-waffen" },
-  { label: "Zubehör", href: "/kategorien/zubehoer" },
+  { labelKey: "cat_kurzwaffen" as TranslationKey, href: "/kategorien/kurzwaffen" },
+  { labelKey: "cat_langwaffen" as TranslationKey, href: "/kategorien/buechsen" },
+  { labelKey: "cat_ordonnanz" as TranslationKey, href: "/kategorien/ordonnanzwaffen" },
+  { labelKey: "cat_luftdruck" as TranslationKey, href: "/kategorien/freie-waffen" },
+  { labelKey: "cat_zubehoer" as TranslationKey, href: "/kategorien/zubehoer" },
 ];
 
 const KANTON_LINKS = [
@@ -65,6 +67,8 @@ const KANTON_LINKS = [
 ];
 
 export default function Footer() {
+  const { t } = useLocale();
+
   return (
     <footer className="bg-brand-grey">
       <div className="mx-auto max-w-7xl px-4 py-12">
@@ -75,7 +79,7 @@ export default function Footer() {
               <Logo />
             </Link>
             <p className="mb-5 text-sm leading-relaxed text-neutral-500">
-              Der kostenlose Schweizer Waffenmarktplatz für Private und Händler.
+              {t("footer_tagline")}
             </p>
             <div className="flex items-center gap-3">
               <a
@@ -97,9 +101,9 @@ export default function Footer() {
 
           {/* Spalten 2–4: Link-Gruppen */}
           {footerSections.map((section) => (
-            <div key={section.title}>
+            <div key={section.titleKey}>
               <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-brand-dark">
-                {section.title}
+                {t(section.titleKey)}
               </h3>
               <ul className="space-y-2.5">
                 {section.links.map((link) => (
@@ -108,7 +112,7 @@ export default function Footer() {
                       href={link.href}
                       className="text-sm text-neutral-500 transition-colors hover:text-brand-green"
                     >
-                      {link.label}
+                      {t(link.labelKey)}
                     </Link>
                   </li>
                 ))}
@@ -120,7 +124,7 @@ export default function Footer() {
         {/* Kategorien Links — SEO */}
         <div className="mt-10 border-t border-brand-border pt-8">
           <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-brand-dark">
-            Kategorien
+            {t("filter_category")}
           </h3>
           <div className="flex flex-wrap gap-x-4 gap-y-1.5">
             {KATEGORIE_LINKS.map((kat) => (
@@ -129,7 +133,7 @@ export default function Footer() {
                 href={kat.href}
                 className="text-xs text-neutral-500 transition-colors hover:text-brand-green"
               >
-                {kat.label}
+                {t(kat.labelKey)}
               </Link>
             ))}
           </div>
@@ -138,7 +142,7 @@ export default function Footer() {
         {/* Kantone Links — SEO */}
         <div className="mt-6">
           <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-brand-dark">
-            Waffen kaufen nach Kanton
+            {t("filter_canton")}
           </h3>
           <div className="flex flex-wrap gap-x-4 gap-y-1.5">
             {KANTON_LINKS.map((k) => (

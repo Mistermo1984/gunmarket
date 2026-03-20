@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Clock, X } from "lucide-react";
 import ListingCard, { type ListingCardData } from "@/components/ui/ListingCard";
 import { apiListingToCard } from "@/lib/listing-helpers";
+import { useLocale } from "@/lib/locale-context";
 
 const KANTONE = [
   "AG","AI","AR","BE","BL","BS","FR","GE","GL","GR","JU","LU",
@@ -14,6 +15,7 @@ const KANTONE = [
 const DAY_BUTTONS = [1, 2, 3, 5, 7];
 
 export default function NeusteInserate() {
+  const { t } = useLocale();
   const [listings, setListings] = useState<(ListingCardData & { createdAt: number })[]>([]);
   const [loading, setLoading] = useState(true);
   const [maxDays, setMaxDays] = useState(7);
@@ -60,13 +62,13 @@ export default function NeusteInserate() {
       {/* Header */}
       <div className="mb-4 flex items-end justify-between">
         <h2 className="font-display text-xl font-black uppercase tracking-tight text-brand-dark md:text-2xl">
-          Neueste Inserate
+          {t("listings_title")}
         </h2>
         <Link
           href="/suche"
           className="hidden text-sm font-medium text-brand-green hover:underline sm:inline-flex"
         >
-          Alle anzeigen &rarr;
+          {t("listings_show_all")}
         </Link>
       </div>
 
@@ -100,7 +102,7 @@ export default function NeusteInserate() {
           onChange={(e) => setFilterKanton(e.target.value)}
           className="rounded-md border border-brand-border bg-white px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-brand-green/30"
         >
-          <option value="">Alle Kantone</option>
+          <option value="">{t("filter_all_cantons")}</option>
           {KANTONE.map((k) => (
             <option key={k} value={k}>{k}</option>
           ))}
@@ -112,7 +114,7 @@ export default function NeusteInserate() {
           onChange={(e) => setFilterRecht(e.target.value)}
           className="rounded-md border border-brand-border bg-white px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-brand-green/30"
         >
-          <option value="">Alle Status</option>
+          <option value="">{t("filter_all_status")}</option>
           <option value="frei">Frei</option>
           <option value="wes">WES</option>
           <option value="abk-klein">ABK Klein</option>
@@ -150,15 +152,15 @@ export default function NeusteInserate() {
 
       {!loading && filtered.length === 0 && (
         <div className="py-12 text-center">
-          <p className="text-base font-semibold text-brand-dark">Keine Inserate gefunden</p>
+          <p className="text-base font-semibold text-brand-dark">{t("listings_no_results")}</p>
           <p className="mt-1 text-sm text-neutral-500">
-            Versuche es mit einem grösseren Zeitraum oder weniger Filtern.
+            {t("listings_no_results_hint")}
           </p>
           <button
             onClick={resetFilters}
             className="mt-3 text-sm font-medium text-brand-green hover:underline"
           >
-            Alle Filter zurücksetzen
+            {t("listings_reset_filters")}
           </button>
         </div>
       )}
@@ -169,7 +171,7 @@ export default function NeusteInserate() {
           href="/suche"
           className="text-sm font-medium text-brand-green hover:underline"
         >
-          Alle anzeigen &rarr;
+          {t("listings_show_all")}
         </Link>
       </div>
     </div>

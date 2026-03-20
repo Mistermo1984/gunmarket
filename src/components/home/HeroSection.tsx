@@ -4,9 +4,10 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Search, Plus } from "lucide-react";
+import { useLocale } from "@/lib/locale-context";
 
 const KANTONE_OPTIONS = [
-  { id: "", label: "Alle Kantone" },
+  { id: "", labelKey: "hero_all_cantons" as const },
   { id: "AG", label: "Aargau" },
   { id: "AI", label: "Appenzell I." },
   { id: "AR", label: "Appenzell A." },
@@ -72,6 +73,7 @@ function CountUp({ end }: { end: number }) {
 
 export default function HeroSection() {
   const router = useRouter();
+  const { t } = useLocale();
   const [query, setQuery] = useState("");
   const [searchKanton, setSearchKanton] = useState("");
   const [stats, setStats] = useState({ inserate: 0, verkaeufer: 0, kantone: 0 });
@@ -130,17 +132,17 @@ export default function HeroSection() {
                 color: "#4ade80",
               }}
             >
-              Schweizer Waffenmarktplatz
+              {t("hero_badge")}
             </span>
           </div>
 
           {/* 2. Headline */}
           <h1 className="mb-6 animate-fade-in" style={{ animationDelay: "0.05s" }}>
             <span className="block text-[28px] font-bold leading-tight text-white md:text-[32px]">
-              Waffen kaufen &amp; verkaufen.
+              {t("hero_title")}
             </span>
             <span className="block text-[28px] font-bold leading-tight md:text-[32px]" style={{ color: "#4ade80" }}>
-              Kostenlos. Sicher. Schweizweit.
+              {t("hero_subtitle")}
             </span>
           </h1>
 
@@ -153,7 +155,7 @@ export default function HeroSection() {
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Waffe, Kaliber, Marke..."
+                  placeholder={t("hero_placeholder")}
                   className="min-w-0 flex-1 py-3.5 text-sm text-[#1a1a1f] placeholder:text-neutral-400 focus:outline-none"
                 />
               </div>
@@ -165,7 +167,7 @@ export default function HeroSection() {
               >
                 {KANTONE_OPTIONS.map((k) => (
                   <option key={k.id} value={k.id}>
-                    {k.label}
+                    {"labelKey" in k ? t(k.labelKey as "hero_all_cantons") : k.label}
                   </option>
                 ))}
               </select>
@@ -176,7 +178,7 @@ export default function HeroSection() {
                   style={{ backgroundColor: "#16a34a" }}
                 >
                   <Search size={15} />
-                  <span className="hidden sm:inline">Suchen</span>
+                  <span className="hidden sm:inline">{t("hero_search")}</span>
                 </button>
               </div>
             </div>
@@ -207,7 +209,7 @@ export default function HeroSection() {
               }}
             >
               <Plus size={12} />
-              Inserat aufgeben
+              {t("hero_create")}
             </Link>
           </div>
         </div>
@@ -220,19 +222,19 @@ export default function HeroSection() {
             <span className="font-display text-xl font-black md:text-2xl" style={{ color: "#4ade80" }}>
               <CountUp end={stats.inserate} />
             </span>
-            <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-500">Inserate</span>
+            <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-500">{t("stats_listings")}</span>
           </div>
           <div className="flex flex-col items-center px-8">
             <span className="font-display text-xl font-black md:text-2xl" style={{ color: "#4ade80" }}>
               <CountUp end={stats.verkaeufer} />
             </span>
-            <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-500">Verkäufer</span>
+            <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-500">{t("stats_sellers")}</span>
           </div>
           <div className="flex flex-col items-center px-8">
             <span className="font-display text-xl font-black md:text-2xl" style={{ color: "#4ade80" }}>
               <CountUp end={stats.kantone} />
             </span>
-            <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-500">Kantone</span>
+            <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-500">{t("stats_cantons")}</span>
           </div>
         </div>
       </div>

@@ -4,6 +4,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ChatWrapper from "@/components/chatbot/ChatWrapper";
 import SessionProvider from "@/components/auth/SessionProvider";
+import { LocaleProvider } from "@/lib/locale-context";
 import CookieConsent from "@/components/CookieConsent";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
@@ -118,14 +119,16 @@ export default function RootLayout({
         className={`${barlowCondensed.variable} ${dmSans.variable} ${dmMono.variable} font-body antialiased`}
       >
         <SessionProvider>
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-          <ChatWrapper />
+          <LocaleProvider>
+            <div className="flex min-h-screen flex-col">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+            <ChatWrapper />
+            <CookieConsent />
+          </LocaleProvider>
         </SessionProvider>
-        <CookieConsent />
         <Analytics />
       </body>
     </html>

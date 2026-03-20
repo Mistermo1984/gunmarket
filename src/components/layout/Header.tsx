@@ -4,12 +4,15 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, Plus, User, BookOpen, Search, LogOut, Shield, BarChart3 } from "lucide-react";
 import Logo from "@/components/ui/Logo";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
+import { useLocale } from "@/lib/locale-context";
 
 export default function Header() {
   const router = useRouter();
   const { data: session } = useSession();
+  const { t } = useLocale();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -49,7 +52,7 @@ export default function Header() {
           <button
             className="shrink-0 rounded-md p-1.5 text-brand-dark hover:bg-brand-grey lg:hidden touch-target"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Menü öffnen"
+            aria-label={t("nav_menu_open")}
           >
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
@@ -65,41 +68,42 @@ export default function Header() {
             href="/suche"
             className="rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-grey hover:text-brand-dark"
           >
-            Inserate
+            {t("nav_listings")}
           </Link>
           <Link
             href="/markt"
             className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-grey hover:text-brand-dark"
           >
             <BarChart3 size={15} />
-            Marktdaten
+            {t("nav_market")}
           </Link>
           <Link
             href="/wissen"
             className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-grey hover:text-brand-dark"
           >
             <BookOpen size={15} />
-            Waffen-Wiki
+            {t("nav_wiki")}
           </Link>
           <Link
             href="/vereine"
             className="rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-grey hover:text-brand-dark"
           >
-            Schützenvereine
+            {t("nav_clubs")}
           </Link>
           <Link
             href="/waffenrecht"
             className="rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-grey hover:text-brand-dark"
           >
-            Waffenrecht
+            {t("nav_law")}
           </Link>
         </nav>
 
         {/* Right: Actions */}
         <div className="flex items-center gap-2">
+          <LanguageSwitcher />
           <button
             className="rounded-md p-1.5 text-brand-dark hover:bg-brand-grey lg:hidden touch-target"
-            aria-label="Suchen"
+            aria-label={t("nav_search")}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             <Search size={20} />
@@ -122,7 +126,7 @@ export default function Header() {
                 <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-green text-xs font-bold text-white">
                   {initials}
                 </span>
-                Dashboard
+                {t("nav_dashboard")}
               </Link>
             </>
           ) : (
@@ -131,7 +135,7 @@ export default function Header() {
               className="hidden items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-grey hover:text-brand-dark sm:inline-flex"
             >
               <User size={16} />
-              Anmelden
+              {t("nav_login")}
             </Link>
           )}
           <Link
@@ -139,7 +143,7 @@ export default function Header() {
             className="hidden items-center gap-1.5 rounded-lg bg-brand-green px-3.5 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-green-dark sm:inline-flex"
           >
             <Plus size={14} />
-            Inserat
+            {t("nav_create")}
           </Link>
         </div>
       </div>
@@ -155,7 +159,7 @@ export default function Header() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Was suchst du?"
+                placeholder={t("nav_search_placeholder")}
                 className="flex-1 bg-transparent text-sm text-brand-dark placeholder:text-neutral-400 focus:outline-none"
                 autoFocus
               />
@@ -163,7 +167,7 @@ export default function Header() {
                 type="submit"
                 className="shrink-0 rounded-md bg-brand-green px-3 py-1.5 text-xs font-medium text-white"
               >
-                Suchen
+                {t("nav_search")}
               </button>
             </div>
           </form>
@@ -176,7 +180,7 @@ export default function Header() {
               onClick={() => setMobileMenuOpen(false)}
             >
               <Search size={16} />
-              Alle Inserate
+              {t("nav_all_listings")}
             </Link>
             <Link
               href="/wissen"
@@ -184,7 +188,7 @@ export default function Header() {
               onClick={() => setMobileMenuOpen(false)}
             >
               <BookOpen size={16} />
-              Waffen-Wiki
+              {t("nav_wiki")}
             </Link>
             <Link
               href="/markt"
@@ -192,7 +196,7 @@ export default function Header() {
               onClick={() => setMobileMenuOpen(false)}
             >
               <BarChart3 size={16} />
-              Marktdaten
+              {t("nav_market")}
             </Link>
             {user ? (
               <>
@@ -212,14 +216,14 @@ export default function Header() {
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <User size={16} />
-                  Dashboard
+                  {t("nav_dashboard")}
                 </Link>
                 <button
                   onClick={() => { signOut({ callbackUrl: "/" }); setMobileMenuOpen(false); }}
                   className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-red-500 hover:bg-red-50 touch-target"
                 >
                   <LogOut size={16} />
-                  Abmelden
+                  {t("nav_logout")}
                 </button>
               </>
             ) : (
@@ -229,7 +233,7 @@ export default function Header() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <User size={16} />
-                Anmelden
+                {t("nav_login")}
               </Link>
             )}
             <Link
@@ -238,7 +242,7 @@ export default function Header() {
               onClick={() => setMobileMenuOpen(false)}
             >
               <Plus size={16} />
-              Inserat aufgeben
+              {t("nav_create_long")}
             </Link>
           </div>
         </div>

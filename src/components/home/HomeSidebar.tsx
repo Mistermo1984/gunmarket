@@ -9,7 +9,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   kurzwaffen: "#dc2626",
   buechsen: "#2563eb",
   flinten: "#16a34a",
-  jagdwaffen: "#92400e",
+  // jagdwaffen merged into buechsen (Langwaffen)
   ordonnanzwaffen: "#4b5563",
   "freie-waffen": "#0891b2",
   optik: "#ea580c",

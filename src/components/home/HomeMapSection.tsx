@@ -68,10 +68,10 @@ const CANTON_CENTERS: Record<string, { lat: number; lng: number; zoom: number }>
 const KATEGORIE_FILTERS = [
   { value: "", label: "Alle" },
   { value: "kurzwaffen", label: "Kurzwaffen" },
-  { value: "buechsen", label: "Büchsen" },
+  { value: "buechsen", label: "Langwaffen" },
   { value: "flinten", label: "Flinten" },
-  { value: "jagdwaffen", label: "Jagdwaffen" },
   { value: "ordonnanzwaffen", label: "Ordonnanz" },
+  { value: "freie-waffen", label: "Luftdruckwaffen" },
   { value: "optik", label: "Optik" },
 ];
 

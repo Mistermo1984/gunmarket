@@ -10,7 +10,6 @@ const waffenIconMap: Record<string, React.ComponentType<{ className?: string; si
   kurzwaffen: PistolenIcon,
   buechsen: RepetierIcon,
   flinten: BockflinteIcon,
-  jagdwaffen: RepetierIcon,
   ordonnanzwaffen: RepetierIcon,
   "freie-waffen": RepetierIcon,
   optik: OptikIcon,

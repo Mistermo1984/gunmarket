@@ -136,7 +136,7 @@ const LISTINGS = [
   {
     titel: "Blaser R8 Professional Success",
     beschreibung: "Blaser R8 Professional Success mit Wechsellauf .308 Win und 8x57 IS. Inkl. Zeiss Victory V8 2.8-20x56 auf Blaser Sattelmontage. Komplett-Paket für den Jäger.",
-    hauptkategorie: "jagdwaffen",
+    hauptkategorie: "buechsen",
     unterkategorie: "jagdbuechsen",
     rechtsstatus: "wes",
     marke: "Blaser",
@@ -268,7 +268,7 @@ const LISTINGS = [
   {
     titel: "Tikka T3x Lite",
     beschreibung: "Tikka T3x Lite in 6.5 Creedmoor. Leichtes Jagdgewehr mit synthetischem Schaft. Inkl. Mündungsgewinde M18x1.",
-    hauptkategorie: "jagdwaffen",
+    hauptkategorie: "buechsen",
     unterkategorie: "jagdbuechsen",
     rechtsstatus: "wes",
     marke: "Tikka",

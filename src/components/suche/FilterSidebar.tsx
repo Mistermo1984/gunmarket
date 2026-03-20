@@ -9,6 +9,8 @@ import {
 } from "lucide-react";
 import {
   HAUPTKATEGORIEN,
+  WAFFEN_IDS,
+  ZUBEHOER_IDS,
   RECHTSSTATUS_FILTER,
   KALIBER_GRUPPEN,
   ZUSTAND_OPTIONEN,
@@ -297,8 +299,24 @@ export default function FilterSidebar({
       <div className="flex-1 overflow-y-auto px-4 pb-4">
         {/* ── KATEGORIE ── */}
         <SectionLabel>Kategorie</SectionLabel>
+        <span className="mb-1 block text-[9px] font-semibold uppercase tracking-wider text-neutral-300">Waffen</span>
         <div className="flex flex-wrap gap-1.5">
-          {HAUPTKATEGORIEN.map((hk) => {
+          {HAUPTKATEGORIEN.filter((hk) => WAFFEN_IDS.includes(hk.id)).map((hk) => {
+            const active = filters.kategorien.includes(hk.id);
+            return (
+              <Pill
+                key={hk.id}
+                label={hk.label}
+                active={active}
+                onClick={() => toggleArray("kategorien", hk.id)}
+                count={counts?.categories?.[hk.id]}
+              />
+            );
+          })}
+        </div>
+        <span className="mb-1 mt-2.5 block text-[9px] font-semibold uppercase tracking-wider text-neutral-300">Zubehör & Mehr</span>
+        <div className="flex flex-wrap gap-1.5">
+          {HAUPTKATEGORIEN.filter((hk) => ZUBEHOER_IDS.includes(hk.id)).map((hk) => {
             const active = filters.kategorien.includes(hk.id);
             return (
               <Pill

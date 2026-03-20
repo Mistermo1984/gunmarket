@@ -61,7 +61,8 @@ function buildSystemPrompt(inventoryContext: string): string {
 DEINE AUFGABE:
 Der Nutzer beschreibt in Freitext, was er sucht. Du analysierst die Anfrage und gibst eine strukturierte JSON-Antwort zurück.
 
-VERFÜGBARE HAUPTKATEGORIEN (exakt diese Werte verwenden): kurzwaffen, buechsen, flinten, jagdwaffen, ordonnanzwaffen, freie-waffen, optik, munition, zubehoer
+VERFÜGBARE HAUPTKATEGORIEN (exakt diese Werte verwenden): kurzwaffen, buechsen (Langwaffen), flinten, ordonnanzwaffen, freie-waffen (Luftdruckwaffen), optik, munition, zubehoer
+HINWEIS: "jagdwaffen" ist veraltet und wurde in "buechsen" (Langwaffen) zusammengelegt.
 VERFÜGBARE RECHTSSTATUS: frei, wes, abk-klein
 VERFÜGBARE ZUSTAND (exakt diese Werte): neu, sehr-gut, gut, akzeptabel, defekt
 VERFÜGBARE KANTONE (Kleinbuchstaben): ag, ai, ar, be, bl, bs, fr, ge, gl, gr, ju, lu, ne, nw, ow, sg, sh, so, sz, tg, ti, ur, vd, vs, zg, zh
@@ -73,7 +74,7 @@ Du antwortest IMMER in gültigem JSON mit genau diesem Schema:
   "erklärung": "Kurze Erklärung (2-3 Sätze) warum du diese Ergebnisse empfiehlst. Fachkundige Beratung.",
   "suchbegriff": "Optionaler Textsuche-Begriff für Titel/Marke/Beschreibung oder null. NUR setzen wenn nötig (z.B. spezifische Marke/Modell). NICHT setzen wenn Kategorie allein reicht.",
   "kategorie": "Eine der verfügbaren Hauptkategorien oder null. Kann auch eine Unterkategorie sein.",
-  "kategorien": ["Optional: Array von mehreren passenden Kategorien, z.B. ['jagdwaffen', 'buechsen']. Nur wenn mehrere Kategorien passen."],
+  "kategorien": ["Optional: Array von mehreren passenden Kategorien, z.B. ['buechsen', 'flinten']. Nur wenn mehrere Kategorien passen."],
   "rechtsstatus": "Einer der verfügbaren Status oder null",
   "zustand": "Einer der verfügbaren Zustände (Kleinbuchstaben mit Bindestrich) oder null",
   "kanton": "Einer der verfügbaren Kantone (Kleinbuchstaben) oder null",
@@ -89,7 +90,7 @@ WICHTIGE REGELN:
 - WENIGER FILTER = MEHR ERGEBNISSE. Setze nur Filter, die DIREKT aus der Anfrage hervorgehen.
 - Bei "günstig" oder "unter X CHF" → setze preisMax, aber KEINEN zustand/rechtsstatus Filter
 - Bei "Ordonnanzwaffen" oder "Sammeln" → kategorie: "ordonnanzwaffen", KEIN zusätzlicher suchbegriff
-- Bei "Jagdgewehr" → kategorien: ["jagdwaffen", "buechsen"] (beide passen)
+- Bei "Jagdgewehr" → kategorie: "buechsen" (Langwaffen, inkl. Jagdgewehre)
 - Bei "Pistole" → kategorie: "kurzwaffen"
 - Bei generischen Anfragen wie "günstige Pistole" → nur kategorie + preisMax, NICHT zustand/kaliber filtern
 - suchbegriff NUR für spezifische Marken/Modelle (z.B. "SIG 550", "Glock 17"), NICHT für generische Begriffe

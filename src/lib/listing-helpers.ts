@@ -15,7 +15,6 @@ const WAFFEN_TYP_MAP: Record<string, "kurzwaffe" | "langwaffe" | "flinte" | "zub
   kurzwaffen: "kurzwaffe",
   buechsen: "langwaffe",
   flinten: "flinte",
-  jagdwaffen: "langwaffe",
   ordonnanzwaffen: "langwaffe",
   "freie-waffen": "langwaffe",
   optik: "zubehoer",

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { initializeSchema, dbGet, dbAll, dbRun } from "@/lib/db";
 import { kantonToFullName } from "@/lib/plz-coordinates";
+import { CATEGORY_ALIASES } from "@/lib/constants";
 import { v4 as uuidv4 } from "uuid";
 
 export const dynamic = "force-dynamic";
@@ -32,7 +33,8 @@ export async function GET(req: NextRequest) {
       params.push(userId);
     }
     if (kategorie) {
-      const kats = kategorie.split(",").map((k) => k.trim()).filter(Boolean);
+      const kats = kategorie.split(",").map((k) => k.trim()).filter(Boolean)
+        .map((k) => CATEGORY_ALIASES[k] || k);
       if (kats.length === 1) {
         where += " AND l.hauptkategorie = ?";
         params.push(kats[0]);

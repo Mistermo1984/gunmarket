@@ -21,11 +21,9 @@ import {
   KurzwaffenIcon,
   BuechsenIcon,
   FlintenGruppeIcon,
-  JagdwaffenIcon,
   JagdflinteIcon,
   DrillingIcon,
   BockbuechsflinteIcon,
-  JagdzubehoerIcon,
   FreieWaffenIcon,
   ZubehoerGruppeIcon,
   ZielfernrohrIcon,
@@ -70,13 +68,15 @@ export const HAUPTKATEGORIEN: Hauptkategorie[] = [
   },
   {
     id: "buechsen",
-    label: "Büchsen",
+    label: "Langwaffen",
     iconComponent: BuechsenIcon,
     unterkategorien: [
       { id: "repetierbuechsen", label: "Repetiergewehre", iconComponent: RepetierIcon },
       { id: "halbautomat-buechsen", label: "Halbautomatische Büchsen", iconComponent: HalbautomatIcon },
       { id: "einzellader", label: "Einzellader", iconComponent: EinzelladerIcon },
       { id: "jagdbuechsen", label: "Jagdbüchsen & Jagdgewehre", iconComponent: JagdbuechseIcon },
+      { id: "drillinge", label: "Drillinge & Kombinierte", iconComponent: DrillingIcon },
+      { id: "bockbuechsflinten", label: "Bockbüchsflinten", iconComponent: BockbuechsflinteIcon },
     ],
   },
   {
@@ -87,18 +87,7 @@ export const HAUPTKATEGORIEN: Hauptkategorie[] = [
       { id: "bockflinten", label: "Bock- & Querflinten", iconComponent: BockflinteIcon },
       { id: "selbstladeflinten", label: "Selbstladeflinten", iconComponent: SelbstladeFlinteIcon },
       { id: "pump-action", label: "Vorderschaftrepetierer", iconComponent: PumpActionIcon },
-    ],
-  },
-  {
-    id: "jagdwaffen",
-    label: "Jagdwaffen",
-    iconComponent: JagdwaffenIcon,
-    unterkategorien: [
-      { id: "jagdbuechsen", label: "Jagdbüchsen & Karabiner", iconComponent: JagdbuechseIcon },
       { id: "jagdflinten", label: "Jagdflinten", iconComponent: JagdflinteIcon },
-      { id: "drillinge", label: "Drillinge & Kombinierte", iconComponent: DrillingIcon },
-      { id: "bockbuechsflinten", label: "Bockbüchsflinten", iconComponent: BockbuechsflinteIcon },
-      { id: "jagd-zubehoer", label: "Jagdzubehör", iconComponent: JagdzubehoerIcon },
     ],
   },
   {
@@ -114,7 +103,7 @@ export const HAUPTKATEGORIEN: Hauptkategorie[] = [
   },
   {
     id: "freie-waffen",
-    label: "Freie Waffen",
+    label: "Luftdruckwaffen",
     iconComponent: FreieWaffenIcon,
     unterkategorien: [
       { id: "luftdruck", label: "Luftdruck & CO2", iconComponent: LuftwaffeIcon },
@@ -164,6 +153,18 @@ export const HAUPTKATEGORIEN: Hauptkategorie[] = [
 export const KATEGORIEN_FLAT: Unterkategorie[] = HAUPTKATEGORIEN.flatMap(
   (hk) => hk.unterkategorien
 );
+
+// ─── Category groups for sidebar display ─────────────────────
+
+export const WAFFEN_IDS = ["kurzwaffen", "buechsen", "flinten", "ordonnanzwaffen", "freie-waffen"];
+export const ZUBEHOER_IDS = ["optik", "zubehoer", "munition"];
+
+// Backward compat: old slug → current slug
+export const CATEGORY_ALIASES: Record<string, string> = {
+  jagdwaffen: "buechsen",
+  langwaffen: "buechsen",
+  luftdruckwaffen: "freie-waffen",
+};
 
 // ─── Rechtsstatus-Filter ─────────────────────────────────────
 

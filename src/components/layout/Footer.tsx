@@ -34,11 +34,10 @@ const footerSections = [
 
 const KATEGORIE_LINKS = [
   { label: "Kurzwaffen", href: "/kategorien/kurzwaffen" },
-  { label: "Büchsen", href: "/kategorien/buechsen" },
+  { label: "Langwaffen", href: "/kategorien/buechsen" },
   { label: "Flinten", href: "/kategorien/flinten" },
-  { label: "Jagdwaffen", href: "/kategorien/jagdwaffen" },
   { label: "Ordonnanzwaffen", href: "/kategorien/ordonnanzwaffen" },
-  { label: "Freie Waffen", href: "/kategorien/freie-waffen" },
+  { label: "Luftdruckwaffen", href: "/kategorien/freie-waffen" },
   { label: "Zubehör", href: "/kategorien/zubehoer" },
 ];
 

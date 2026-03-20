@@ -300,7 +300,7 @@ export function classifyRechtsstatus(input: ClassificationInput): string {
   // STEP 8: Category-specific logic
   // ═══════════════════════════════════════════════════════════════
 
-  // Jagdwaffen: default frei (bolt-action, single-shot)
+  // Jagdwaffen (legacy slug, now merged into buechsen): default frei (bolt-action, single-shot)
   if (hauptkategorie === "jagdwaffen") {
     if (/\bhalbautomat|selbstlade|semi[\s-]?auto/i.test(text)) return "wes";
     return "frei";

@@ -8,7 +8,6 @@ const KATEGORIEN = [
   "kurzwaffen",
   "buechsen",
   "flinten",
-  "jagdwaffen",
   "ordonnanzwaffen",
   "freie-waffen",
   "zubehoer",

@@ -70,8 +70,9 @@ interface ListingData {
 const RECHTS_MAP: Record<string, { label: string; variant: "amber" | "grey" | "red" }> = {
   frei: { label: "Frei", variant: "grey" },
   wes: { label: "WES", variant: "amber" },
-  "abk-klein": { label: "ABK Klein", variant: "red" },
-  "abk-gross": { label: "ABK Gross", variant: "red" },
+  "abk-klein": { label: "ABK", variant: "red" },
+  "abk-gross": { label: "ABK", variant: "red" },
+  kaufvertrag: { label: "Frei", variant: "grey" },
 };
 
 function formatDate(dateStr: string): string {

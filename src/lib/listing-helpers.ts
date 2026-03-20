@@ -4,9 +4,10 @@ import type { ListingCardData } from "@/components/ui/ListingCard";
 const RECHTS_MAP: Record<string, { label: string; farbe: string; textfarbe: string }> = {
   frei: { label: "Frei", farbe: "bg-gray-100", textfarbe: "text-gray-700" },
   wes: { label: "WES", farbe: "bg-amber-100", textfarbe: "text-amber-800" },
-  "abk-klein": { label: "ABK Klein", farbe: "bg-orange-100", textfarbe: "text-orange-800" },
-  "abk-gross": { label: "ABK Gross", farbe: "bg-red-100", textfarbe: "text-red-800" },
-  kaufvertrag: { label: "Vertrag", farbe: "bg-gray-100", textfarbe: "text-gray-700" },
+  "abk-klein": { label: "ABK", farbe: "bg-orange-100", textfarbe: "text-orange-800" },
+  // Legacy values mapped to current categories
+  "abk-gross": { label: "ABK", farbe: "bg-orange-100", textfarbe: "text-orange-800" },
+  kaufvertrag: { label: "Frei", farbe: "bg-gray-100", textfarbe: "text-gray-700" },
 };
 
 // Map hauptkategorie to waffenTyp

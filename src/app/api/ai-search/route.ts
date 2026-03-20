@@ -62,7 +62,7 @@ DEINE AUFGABE:
 Der Nutzer beschreibt in Freitext, was er sucht. Du analysierst die Anfrage und gibst eine strukturierte JSON-Antwort zurück.
 
 VERFÜGBARE HAUPTKATEGORIEN (exakt diese Werte verwenden): kurzwaffen, buechsen, flinten, jagdwaffen, ordonnanzwaffen, freie-waffen, optik, munition, zubehoer
-VERFÜGBARE RECHTSSTATUS: frei, wes, abk-klein, abk-gross, ordonnanz
+VERFÜGBARE RECHTSSTATUS: frei, wes, abk-klein
 VERFÜGBARE ZUSTAND (exakt diese Werte): neu, sehr-gut, gut, akzeptabel, defekt
 VERFÜGBARE KANTONE (Kleinbuchstaben): ag, ai, ar, be, bl, bs, fr, ge, gl, gr, ju, lu, ne, nw, ow, sg, sh, so, sz, tg, ti, ur, vd, vs, zg, zh
 

@@ -4,7 +4,7 @@
 // Einfügen in: /Users/maurice/waffenmarkt/src/lib/wissen-data.ts
 // ============================================================
 
-export type Rechtsstatus = 'frei' | 'wes' | 'wes' | 'abk-klein' | 'abk-gross' | 'ordonnanz'
+export type Rechtsstatus = 'frei' | 'wes' | 'abk-klein' | 'ordonnanz'
 
 export interface WissenWaffe {
   slug: string

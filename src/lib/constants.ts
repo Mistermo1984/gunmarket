@@ -219,31 +219,13 @@ export const RECHTSSTATUS_FILTER: RechtstatusFilter[] = [
     textfarbe: "text-orange-800",
     icon: "Award",
     tooltip:
-      "Ausnahmebewilligung klein — kantonal. Für verbotene Waffen wie umgebaute Ordonnanzwaffen, Halbautomaten mit grossem Magazin (>10 Schuss Gewehr, >20 Schuss Pistole) oder auf unter 60cm kürzbare Waffen. Zwei Varianten: Sportschütze (Vereinsnachweis) oder Sammler (Sicherheitskonzept + Waffenverzeichnis). Welche Variante Sie benötigen — beim kantonalen Waffenbüro anfragen.",
+      "Ausnahmebewilligung (ABK) — kantonal. Für verbotene Waffen: Vollautomaten, Schalldämpfer, Nachtsichtzielgeräte, Laser-Zielgeräte. Sehr restriktiv — beim kantonalen Waffenbüro anfragen.",
     dokumente: [
       "Ausnahmebewilligung klein (kant. Waffenbüro)",
       "Sportschütze: Nachweis aktiver Schiesssport",
       "Sammler: Sicherheitskonzept + Waffenverzeichnis",
       "Ausweis/Pass beider Parteien",
       "Schriftlicher Kaufvertrag",
-    ],
-  },
-  {
-    id: "abk-gross",
-    label: "ABK Gross",
-    kurzlabel: "ABK Gross",
-    farbe: "bg-red-100",
-    textfarbe: "text-red-800",
-    icon: "AlertTriangle",
-    tooltip:
-      "Ausnahmebewilligung gross — kantonale Behörde. Für Vollautomaten, Schalldämpfer, Nachtsichtzielgeräte. Sehr restriktiv. Schalldämpfer: Seit 2024 für Jagd als Erwerbsgrund anerkannt (Art. 28b WG), jedoch kantonsabhängig — vor Erwerb beim kantonalen Waffenbüro anfragen.",
-    dokumente: [
-      "Ausnahmebewilligung gross (kantonal)",
-      "Detaillierte Begründung des Erwerbszwecks",
-      "Sicherheitskonzept",
-      "Waffenverzeichnis",
-      "Strafregisterauszug (max. 3 Monate)",
-      "Ausweis/Pass beider Parteien",
     ],
   },
   {

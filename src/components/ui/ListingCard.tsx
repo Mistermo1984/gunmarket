@@ -117,7 +117,7 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
       : [];
   const imageCount = listing.bildAnzahl ?? images.length;
   const isExternal = !!listing.source && listing.source !== "gunmarket";
-  const sourceName = listing.source === "waffengebraucht" ? "waffengebraucht.ch" : listing.source === "nextgun" ? "nextgun.ch" : listing.source;
+  const sourceName = listing.source === "gebrauchtwaffen" ? "gebrauchtwaffen.com" : listing.source === "nextgun" ? "nextgun.ch" : listing.source;
 
   const href = `/inserat/${listing.id}`;
 

@@ -153,7 +153,7 @@ export default function CrawlingPage() {
           </h1>
         </div>
         <p className="text-sm text-neutral-500">
-          Inserate von waffengebraucht.ch und nextgun.ch importieren
+          Inserate von gebrauchtwaffen.com und nextgun.ch importieren
         </p>
       </div>
 
@@ -165,7 +165,7 @@ export default function CrawlingPage() {
           </div>
           <div className="p-5">
             <p className="mb-4 text-sm text-neutral-600">
-              Crawlt alle Kategorien von waffengebraucht.ch und nextgun.ch Schritt für Schritt.
+              Crawlt alle Kategorien von gebrauchtwaffen.com und nextgun.ch Schritt für Schritt.
               Bereits vorhandene Inserate werden übersprungen, verkaufte werden entfernt.
             </p>
 
@@ -313,9 +313,9 @@ export default function CrawlingPage() {
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-brand-dark">waffengebraucht.ch</h3>
+                  <h3 className="font-semibold text-brand-dark">gebrauchtwaffen.com</h3>
                   <a
-                    href="https://waffengebraucht.ch"
+                    href="https://www.gebrauchtwaffen.com"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 hover:text-blue-700"
@@ -324,7 +324,7 @@ export default function CrawlingPage() {
                   </a>
                 </div>
                 <p className="mt-1 text-sm text-neutral-600">
-                  9 Kategorien. Echtes Web-Crawling aller Kategorieseiten.
+                  10 Kategorien. Echtes Web-Crawling aller Kategorieseiten.
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {["Kurzwaffen", "Langwaffen", "Ordonnanz", "Luftdruck", "Optik", "Munition", "Messer", "Wiederladen", "Bogenschiessen"].map((cat) => (

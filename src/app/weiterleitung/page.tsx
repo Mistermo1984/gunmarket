@@ -59,13 +59,13 @@ function Content() {
         </div>
 
         <h1 className="mb-3 font-display text-2xl font-black text-brand-dark">
-          Weiterleitung zu waffengebraucht.ch
+          Weiterleitung zum Originalinserat
         </h1>
 
         <div className="mx-auto mb-6 max-w-md rounded-xl border border-amber-200 bg-amber-50 p-5">
           <p className="text-sm leading-relaxed text-amber-800">
             Dieses Inserat <strong>&quot;{titel}&quot;</strong> ist ursprünglich von{" "}
-            <strong>waffengebraucht.ch</strong>. Wir leiten Sie sofort weiter.
+            der Originalquelle. Wir leiten Sie sofort weiter.
           </p>
         </div>
 

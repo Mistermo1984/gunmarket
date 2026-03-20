@@ -242,7 +242,7 @@ export default function InseratDetailPage() {
 
   const rechts = RECHTS_MAP[listing.rechtsstatus] || RECHTS_MAP.frei;
   const isExternal = !!listing.source && listing.source !== "gunmarket";
-  const sourceName = listing.source === "waffengebraucht" ? "waffengebraucht.ch" : listing.source === "nextgun" ? "nextgun.ch" : listing.source;
+  const sourceName = listing.source === "gebrauchtwaffen" ? "gebrauchtwaffen.com" : listing.source === "nextgun" ? "nextgun.ch" : listing.source;
   const verkaeuferInitialen = isExternal
     ? sourceName.substring(0, 2).toUpperCase()
     : `${listing.vorname?.[0] || ""}${listing.nachname?.[0] || ""}`.toUpperCase();

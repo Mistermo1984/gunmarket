@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search, PlusCircle, Users, ShieldCheck } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 
 const KANTONE_OPTIONS = [
   { id: "", label: "Alle Kantone" },
@@ -44,7 +44,7 @@ const QUICK_CHIPS = [
   { label: "Zeiss", q: "Zeiss" },
 ];
 
-function CountUpNumber({ end, suffix }: { end: number; suffix: string }) {
+function CountUp({ end }: { end: number }) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
 
@@ -67,11 +67,7 @@ function CountUpNumber({ end, suffix }: { end: number; suffix: string }) {
     return () => clearInterval(interval);
   }, [end]);
 
-  return (
-    <span ref={ref} className="font-display text-xl font-black text-brand-green md:text-2xl animate-count-up">
-      {count.toLocaleString("de-CH")}{suffix}
-    </span>
-  );
+  return <span ref={ref}>{count.toLocaleString("de-CH")}</span>;
 }
 
 export default function HeroSection() {
@@ -95,45 +91,73 @@ export default function HeroSection() {
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
-    if (!query.trim()) return;
     const params = new URLSearchParams();
-    params.set("q", query.trim());
+    if (query.trim()) params.set("q", query.trim());
     if (searchKanton) params.set("kanton", searchKanton);
-    router.push(`/suche?${params.toString()}`);
+    if (params.toString()) router.push(`/suche?${params.toString()}`);
+    else router.push("/suche");
+  }
+
+  function handleChipClick(q: string) {
+    setQuery(q);
+    router.push(`/suche?q=${encodeURIComponent(q)}`);
   }
 
   return (
-    <section className="relative overflow-hidden">
-      {/* Background */}
+    <section className="relative overflow-hidden rounded-b-xl" style={{ minHeight: 320 }}>
+      {/* Background image + gradient overlay */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}
       />
-      <div className="absolute inset-0 bg-brand-dark/80 backdrop-blur-[1px]" />
+      <div
+        className="absolute inset-0"
+        style={{
+          background: "linear-gradient(to bottom, rgba(10,26,10,0.6) 0%, rgba(10,26,10,0.95) 100%)",
+        }}
+      />
 
-      <div className="relative mx-auto max-w-7xl px-4 py-10 md:py-14">
-        <div className="mx-auto max-w-2xl text-center animate-fade-in">
-          <h1 className="mb-2 font-display text-2xl font-black uppercase tracking-tight text-white md:text-3xl">
-            Der Schweizer Waffenmarktplatz
+      <div className="relative mx-auto max-w-7xl px-4 pb-0 pt-10 md:pt-14">
+        <div className="mx-auto max-w-2xl text-center">
+
+          {/* 1. Badge */}
+          <div className="mb-5 flex justify-center animate-fade-in">
+            <span
+              className="inline-block rounded-full px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.15em]"
+              style={{
+                background: "rgba(74,222,128,0.12)",
+                border: "0.5px solid rgba(74,222,128,0.3)",
+                color: "#4ade80",
+              }}
+            >
+              Schweizer Waffenmarktplatz
+            </span>
+          </div>
+
+          {/* 2. Headline */}
+          <h1 className="mb-6 animate-fade-in" style={{ animationDelay: "0.05s" }}>
+            <span className="block text-[28px] font-bold leading-tight text-white md:text-[32px]">
+              Waffen kaufen &amp; verkaufen.
+            </span>
+            <span className="block text-[28px] font-bold leading-tight md:text-[32px]" style={{ color: "#4ade80" }}>
+              Kostenlos. Sicher. Schweizweit.
+            </span>
           </h1>
-          <p className="mb-6 text-sm text-neutral-400">
-            Kaufen &amp; verkaufen — einfach, kostenlos, sicher.
-          </p>
 
-          {/* Search Bar */}
-          <form onSubmit={handleSearch} className="mx-auto max-w-xl">
-            <div className="flex items-center overflow-hidden rounded-xl bg-white shadow-lg transition-all focus-within:ring-2 focus-within:ring-brand-green/40">
+          {/* 3. Search Bar */}
+          <form onSubmit={handleSearch} className="mx-auto max-w-[580px] animate-fade-in" style={{ animationDelay: "0.1s" }}>
+            <div className="flex items-center overflow-hidden rounded-xl bg-white shadow-[0_8px_30px_rgba(0,0,0,0.25)] transition-all focus-within:ring-2 focus-within:ring-[#4ade80]/40">
               <div className="flex flex-1 items-center gap-2 px-4">
                 <Search size={18} className="shrink-0 text-neutral-400" />
                 <input
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Waffe, Kaliber oder Marke suchen..."
-                  className="min-w-0 flex-1 py-3.5 text-sm text-brand-dark placeholder:text-neutral-400 focus:outline-none"
+                  placeholder="Waffe, Kaliber, Marke..."
+                  className="min-w-0 flex-1 py-3.5 text-sm text-[#1a1a1f] placeholder:text-neutral-400 focus:outline-none"
                 />
               </div>
-              <div className="hidden h-8 w-px bg-brand-border sm:block" />
+              <div className="hidden h-8 w-px bg-neutral-200 sm:block" />
               <select
                 value={searchKanton}
                 onChange={(e) => setSearchKanton(e.target.value)}
@@ -145,11 +169,11 @@ export default function HeroSection() {
                   </option>
                 ))}
               </select>
-
               <div className="m-1.5 shrink-0">
                 <button
                   type="submit"
-                  className="flex items-center gap-1.5 rounded-lg bg-brand-green px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-green-dark"
+                  className="flex items-center gap-1.5 rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:brightness-110"
+                  style={{ backgroundColor: "#16a34a" }}
                 >
                   <Search size={15} />
                   <span className="hidden sm:inline">Suchen</span>
@@ -158,63 +182,57 @@ export default function HeroSection() {
             </div>
           </form>
 
-          {/* Quick Search Chips */}
-          <div className="mt-4 flex flex-wrap justify-center gap-2">
-            {QUICK_CHIPS.map((chip, i) => (
-              <Link
+          {/* 4. Quick Search Tags */}
+          <div className="mt-4 flex flex-wrap justify-center gap-2 animate-fade-in" style={{ animationDelay: "0.15s" }}>
+            {QUICK_CHIPS.map((chip) => (
+              <button
                 key={chip.q}
-                href={`/suche?q=${encodeURIComponent(chip.q)}`}
-                className={`animate-chip-in stagger-${i + 1} rounded-full border border-white/20 px-3 py-1 text-xs font-medium text-white/70 transition-all hover:border-brand-green hover:bg-brand-green hover:text-white`}
+                onClick={() => handleChipClick(chip.q)}
+                className="rounded-full border px-3 py-1 text-xs font-medium text-white/80 transition-all hover:border-[#4ade80]/60 hover:bg-[#4ade80]/10 hover:text-white"
+                style={{
+                  background: "rgba(255,255,255,0.07)",
+                  borderColor: "rgba(255,255,255,0.12)",
+                }}
               >
                 {chip.label}
-              </Link>
+              </button>
             ))}
-          </div>
-
-          {/* CTA Icons */}
-          <div className="mt-8 flex justify-center gap-8">
-            <Link href="/dashboard/inserat-erstellen">
-              <div className="flex flex-col items-center gap-2 text-white transition hover:text-green-300">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 transition hover:bg-white/20">
-                  <PlusCircle className="h-6 w-6" />
-                </div>
-                <span className="text-[11px] font-medium">Inserat aufgeben</span>
-              </div>
-            </Link>
-            <Link href="/vereine">
-              <div className="flex flex-col items-center gap-2 text-white transition hover:text-green-300">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 transition hover:bg-white/20">
-                  <Users className="h-6 w-6" />
-                </div>
-                <span className="text-[11px] font-medium">Schützenvereine</span>
-              </div>
-            </Link>
-            <Link href="/waffenrecht">
-              <div className="flex flex-col items-center gap-2 text-white transition hover:text-green-300">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-white/10 transition hover:bg-white/20">
-                  <ShieldCheck className="h-6 w-6" />
-                </div>
-                <span className="text-[11px] font-medium">Waffenrecht</span>
-              </div>
+            <Link
+              href="/dashboard/inserat-erstellen"
+              className="flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-medium transition-all hover:brightness-125"
+              style={{
+                background: "rgba(74,222,128,0.12)",
+                borderColor: "rgba(74,222,128,0.3)",
+                color: "#4ade80",
+              }}
+            >
+              <Plus size={12} />
+              Inserat aufgeben
             </Link>
           </div>
         </div>
       </div>
 
-      {/* Stats bar */}
-      <div className="relative border-t border-white/10 bg-brand-dark/80">
-        <div className="mx-auto flex max-w-xl items-center justify-center divide-x divide-white/10 py-3">
-          <div className="flex flex-col items-center px-6 md:px-10">
-            <CountUpNumber end={stats.inserate} suffix="" />
-            <span className="text-[10px] text-neutral-400">Inserate</span>
+      {/* 5. Stats Bar */}
+      <div className="relative mt-8 border-t" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+        <div className="mx-auto flex max-w-md items-center justify-center divide-x divide-white/[0.08] py-4">
+          <div className="flex flex-col items-center px-8">
+            <span className="font-display text-xl font-black md:text-2xl" style={{ color: "#4ade80" }}>
+              <CountUp end={stats.inserate} />
+            </span>
+            <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-500">Inserate</span>
           </div>
-          <div className="flex flex-col items-center px-6 md:px-10">
-            <CountUpNumber end={stats.verkaeufer} suffix="" />
-            <span className="text-[10px] text-neutral-400">Verkäufer</span>
+          <div className="flex flex-col items-center px-8">
+            <span className="font-display text-xl font-black md:text-2xl" style={{ color: "#4ade80" }}>
+              <CountUp end={stats.verkaeufer} />
+            </span>
+            <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-500">Verkäufer</span>
           </div>
-          <div className="flex flex-col items-center px-6 md:px-10">
-            <CountUpNumber end={stats.kantone} suffix="" />
-            <span className="text-[10px] text-neutral-400">Kantone</span>
+          <div className="flex flex-col items-center px-8">
+            <span className="font-display text-xl font-black md:text-2xl" style={{ color: "#4ade80" }}>
+              <CountUp end={stats.kantone} />
+            </span>
+            <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-500">Kantone</span>
           </div>
         </div>
       </div>

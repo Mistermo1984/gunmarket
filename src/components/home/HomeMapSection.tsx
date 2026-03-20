@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, lazy, Suspense } from "react";
 import Link from "next/link";
-import { LayoutList, ChevronRight, PackageOpen } from "lucide-react";
+import { MapPin, ChevronRight, PackageOpen } from "lucide-react";
+
+const HomeMapView = lazy(() => import("./HomeMapView"));
 
 const KANTONE = [
   { abbr: "ZH", label: "Zürich" },
@@ -82,9 +84,11 @@ interface Listing {
   ortschaft: string;
   image_url: string | null;
   hauptkategorie?: string;
+  lat?: number;
+  lng?: number;
 }
 
-export default function HomeListingsSection() {
+export default function HomeMapSection() {
   const [allListings, setAllListings] = useState<Listing[]>([]);
   const [selectedKantone, setSelectedKantone] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
@@ -92,28 +96,26 @@ export default function HomeListingsSection() {
   const [katFilter, setKatFilter] = useState("");
   const [preisFilter, setPreisFilter] = useState("");
 
-  // Fetch all listings once on mount
+  // Fetch listings with coordinates for map
   useEffect(() => {
-    fetch("/api/listings?limit=2000&sort=neueste")
+    fetch("/api/listings/map")
       .then((r) => r.json())
       .then((data) => {
         try {
-          const raw = Array.isArray(data?.listings) ? data.listings : [];
-          const listings: Listing[] = raw.map((l: Record<string, unknown>) => {
-            const images = Array.isArray(l.images) ? l.images : [];
-            const firstImg = images.length > 0 && images[0] ? (images[0] as Record<string, string>).url : null;
-            return {
-              id: String(l.id || ""),
-              titel: String(l.titel || ""),
-              preis: Number(l.preis) || 0,
-              zustand: String(l.zustand || ""),
-              kanton: String(l.kanton || ""),
-              rechtsstatus: String(l.rechtsstatus || ""),
-              ortschaft: String(l.ortschaft || ""),
-              hauptkategorie: String(l.hauptkategorie || ""),
-              image_url: firstImg || null,
-            };
-          });
+          const raw = Array.isArray(data?.markers) ? data.markers : [];
+          const listings: Listing[] = raw.map((l: Record<string, unknown>) => ({
+            id: String(l.id || ""),
+            titel: String(l.titel || ""),
+            preis: Number(l.preis) || 0,
+            zustand: String(l.zustand || ""),
+            kanton: String(l.kanton || ""),
+            rechtsstatus: String(l.rechtsstatus || ""),
+            ortschaft: String(l.ortschaft || ""),
+            hauptkategorie: String(l.hauptkategorie || ""),
+            image_url: (l.image_url as string) || null,
+            lat: Number(l.lat) || 0,
+            lng: Number(l.lng) || 0,
+          }));
           setAllListings(listings);
           const counts: Record<string, number> = {};
           for (const m of listings) {
@@ -153,8 +155,24 @@ export default function HomeListingsSection() {
     return result;
   }, [cantonFiltered, katFilter, preisFilter]);
 
-  const displayListings = fullyFiltered.slice(0, 50);
-  const totalAfterCantonFilter = cantonFiltered.length;
+  // Map markers from filtered listings
+  const mapMarkers = useMemo(
+    () =>
+      fullyFiltered
+        .filter((l) => l.lat && l.lng)
+        .map((l) => ({
+          id: l.id,
+          titel: l.titel,
+          preis: l.preis,
+          lat: l.lat!,
+          lng: l.lng!,
+          rechtsstatus: l.rechtsstatus,
+          image_url: l.image_url,
+        })),
+    [fullyFiltered]
+  );
+
+  const displayListings = fullyFiltered.slice(0, 30);
 
   function handleKantonClick(abbr: string) {
     setSelectedKantone((prev) => {
@@ -180,12 +198,10 @@ export default function HomeListingsSection() {
 
   const selCount = selectedKantone.size;
 
-  // Build "Alle X Inserate anzeigen" link
   const searchLink = selCount > 0
     ? `/suche?kanton=${Array.from(selectedKantone).join(",")}`
     : "/suche";
 
-  // Header subtitle
   let locationLabel = "Schweizweit";
   if (selCount === 1) {
     const abbr = Array.from(selectedKantone)[0];
@@ -195,22 +211,19 @@ export default function HomeListingsSection() {
   }
 
   return (
-    <section className="py-10 md:py-14">
-      <div
-        className="mx-auto max-w-7xl rounded-xl border px-4 py-8 md:px-6 md:py-10"
-        style={{ backgroundColor: "#f8faf8", borderColor: "#e5e7eb" }}
-      >
+    <section className="py-10 md:py-14" style={{ backgroundColor: "#f8faf8" }}>
+      <div className="mx-auto max-w-7xl px-4 md:px-6">
         {/* Header */}
         <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="mb-2 flex items-center gap-2">
-              <LayoutList className="h-5 w-5 text-[#16a34a]" />
+              <MapPin className="h-5 w-5 text-[#16a34a]" />
               <span className="text-xs font-semibold uppercase tracking-widest text-[#16a34a]">
-                Aktuelle Inserate
+                Inserate auf der Karte
               </span>
             </div>
             <h2 className="font-display text-2xl font-black uppercase tracking-tight text-[#1a2e1a] md:text-3xl">
-              Inserate <span className="text-[#16a34a]">durchsuchen</span>
+              Waffen <span className="text-[#16a34a]">in deiner Nähe</span>
             </h2>
           </div>
           <p className="text-sm text-neutral-500">
@@ -219,10 +232,10 @@ export default function HomeListingsSection() {
           </p>
         </div>
 
-        {/* Main content: canton filter + listing cards */}
-        <div className="flex flex-col gap-4 lg:flex-row">
-          {/* Left: Canton filter panel */}
-          <div className="shrink-0 lg:w-[300px]">
+        {/* Main layout: canton filter + map with overlay */}
+        <div className="flex flex-col gap-4 lg:flex-row" style={{ height: "auto" }}>
+          {/* Left: Canton filter panel (30%) */}
+          <div className="shrink-0 lg:w-[280px]">
             <div className="rounded-xl border bg-white p-4" style={{ borderColor: "#e5e7eb" }}>
               <h3 className="mb-3 text-sm font-semibold text-[#1a2e1a]">Nach Kanton filtern</h3>
 
@@ -239,7 +252,10 @@ export default function HomeListingsSection() {
                 </p>
               )}
 
-              <div className="flex gap-1.5 overflow-x-auto pb-2 lg:grid lg:grid-cols-2 lg:gap-1.5 lg:overflow-visible">
+              <div
+                className="flex gap-1.5 overflow-x-auto pb-2 lg:grid lg:grid-cols-2 lg:gap-1.5 lg:overflow-y-auto lg:overflow-x-visible"
+                style={{ maxHeight: 480, scrollbarWidth: "thin", scrollbarColor: "#16a34a #f3f4f6" }}
+              >
                 {sortedKantone.map((k) => {
                   const count = kantonCounts[k.abbr] || 0;
                   const isSelected = selectedKantone.has(k.abbr);
@@ -271,18 +287,32 @@ export default function HomeListingsSection() {
             </div>
           </div>
 
-          {/* Right: Listing cards panel */}
-          <div className="flex-1 rounded-xl border bg-white" style={{ borderColor: "#e5e7eb" }}>
-            {/* Quick filters bar — show when canton-filtered results > 20 */}
-            {totalAfterCantonFilter > 20 && (
-              <div className="border-b px-4 py-3" style={{ borderColor: "#f3f4f6" }}>
-                {/* Kategorie row */}
-                <div className="mb-2 flex flex-wrap items-center gap-1.5">
+          {/* Right: Map (70%) with overlay listing panel */}
+          <div className="relative flex-1 overflow-hidden rounded-xl border" style={{ borderColor: "#e5e7eb", height: 600 }}>
+            {/* Leaflet map — fills entire right panel */}
+            <Suspense
+              fallback={
+                <div className="flex h-full w-full items-center justify-center bg-[#f1f5f1]">
+                  <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#16a34a] border-t-transparent" />
+                </div>
+              }
+            >
+              <HomeMapView markers={mapMarkers} />
+            </Suspense>
+
+            {/* Overlay listing panel — positioned on top of map */}
+            <div
+              className="absolute bottom-3 right-3 top-3 hidden w-[320px] flex-col overflow-hidden rounded-xl border bg-white/95 shadow-lg backdrop-blur-sm lg:flex"
+              style={{ borderColor: "#e5e7eb" }}
+            >
+              {/* Quick filters */}
+              <div className="border-b px-3 py-2.5" style={{ borderColor: "#f3f4f6" }}>
+                <div className="mb-1.5 flex flex-wrap gap-1">
                   {KATEGORIE_FILTERS.map((f) => (
                     <button
                       key={f.value}
                       onClick={() => setKatFilter(f.value)}
-                      className={`rounded-full px-3 py-1 text-[11px] font-medium transition-colors ${
+                      className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium transition-colors ${
                         katFilter === f.value
                           ? "bg-[#16a34a] text-white"
                           : "bg-[#f3f4f6] text-[#374151] hover:bg-[#dcfce7]"
@@ -292,15 +322,12 @@ export default function HomeListingsSection() {
                     </button>
                   ))}
                 </div>
-                {/* Divider */}
-                <div className="mb-2 h-px bg-[#f3f4f6]" />
-                {/* Preis row */}
-                <div className="flex flex-wrap items-center gap-1.5">
+                <div className="flex flex-wrap gap-1">
                   {PREIS_FILTERS.map((f) => (
                     <button
                       key={f.value}
                       onClick={() => setPreisFilter(f.value)}
-                      className={`rounded-full px-3 py-1 text-[11px] font-medium transition-colors ${
+                      className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium transition-colors ${
                         preisFilter === f.value
                           ? "bg-[#16a34a] text-white"
                           : "bg-[#f3f4f6] text-[#374151] hover:bg-[#dcfce7]"
@@ -309,122 +336,182 @@ export default function HomeListingsSection() {
                       {f.label}
                     </button>
                   ))}
-                  {(katFilter || preisFilter) && (
-                    <span className="ml-2 text-[11px] text-neutral-400">
-                      {fullyFiltered.length} von {totalAfterCantonFilter} Inseraten
-                    </span>
-                  )}
                 </div>
               </div>
-            )}
 
-            {/* Header bar */}
-            <div className="flex items-center justify-between border-b px-4 py-3" style={{ borderColor: "#f3f4f6" }}>
-              <p className="text-sm font-semibold text-[#1a2e1a]">
-                {fullyFiltered.length.toLocaleString("de-CH")} Inserate
-                <span className="font-normal text-neutral-400"> — {locationLabel}</span>
-              </p>
-            </div>
+              {/* Count bar */}
+              <div className="flex items-center justify-between border-b px-3 py-2" style={{ borderColor: "#f3f4f6" }}>
+                <p className="text-xs font-semibold text-[#1a2e1a]">
+                  {fullyFiltered.length.toLocaleString("de-CH")} Inserate
+                </p>
+                <span className="text-[10px] text-neutral-400">{locationLabel}</span>
+              </div>
 
-            {/* Scrollable listing cards */}
-            <div
-              className="overflow-y-auto"
-              style={{ maxHeight: 520, scrollbarWidth: "thin", scrollbarColor: "#16a34a #f3f4f6" }}
-            >
-              {loading ? (
-                // Skeleton loading
-                <div className="divide-y" style={{ borderColor: "#f3f4f6" }}>
-                  {Array.from({ length: 8 }).map((_, i) => (
-                    <div key={i} className="flex items-center gap-3 px-4 py-3">
-                      <div className="h-16 w-16 shrink-0 animate-pulse rounded-md bg-[#f3f4f6]" />
-                      <div className="flex-1 space-y-2">
-                        <div className="h-3 w-3/4 animate-pulse rounded bg-[#f3f4f6]" />
-                        <div className="h-2.5 w-1/2 animate-pulse rounded bg-[#f3f4f6]" />
+              {/* Scrollable listing cards */}
+              <div
+                className="flex-1 overflow-y-auto"
+                style={{ scrollbarWidth: "thin", scrollbarColor: "#16a34a #f3f4f6" }}
+              >
+                {loading ? (
+                  <div className="divide-y" style={{ borderColor: "#f3f4f6" }}>
+                    {Array.from({ length: 6 }).map((_, i) => (
+                      <div key={i} className="flex items-center gap-2.5 px-3 py-2.5">
+                        <div className="h-12 w-12 shrink-0 animate-pulse rounded-md bg-[#f3f4f6]" />
+                        <div className="flex-1 space-y-1.5">
+                          <div className="h-2.5 w-3/4 animate-pulse rounded bg-[#f3f4f6]" />
+                          <div className="h-2 w-1/2 animate-pulse rounded bg-[#f3f4f6]" />
+                        </div>
                       </div>
-                      <div className="h-4 w-16 animate-pulse rounded bg-[#f3f4f6]" />
-                    </div>
-                  ))}
-                </div>
-              ) : displayListings.length === 0 ? (
-                // Empty state
-                <div className="flex flex-col items-center justify-center py-16 text-center">
-                  <PackageOpen size={40} className="mb-3 text-neutral-300" />
-                  <p className="text-sm font-medium text-neutral-500">Keine Inserate gefunden</p>
-                  <p className="mt-1 text-xs text-neutral-400">Versuche einen anderen Kanton oder Filter</p>
-                </div>
-              ) : (
-                // Listing cards
-                <div>
-                  {displayListings.map((l) => {
-                    const rs = RECHTS_BADGE[l.rechtsstatus] || { label: l.rechtsstatus || "—", bg: "#f3f4f6", text: "#374151" };
-                    const zLabel = ZUSTAND_LABELS[l.zustand] || l.zustand || "";
-                    return (
-                      <a
-                        key={l.id}
-                        href={`/inserat/${l.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group flex items-center gap-3 border-b px-4 py-3 transition-colors hover:border-l-2 hover:border-l-[#16a34a] hover:bg-[#f0fdf4]"
-                        style={{ borderBottomColor: "#f3f4f6" }}
-                      >
-                        {/* Image */}
-                        {l.image_url ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={l.image_url}
-                            alt=""
-                            className="h-16 w-16 shrink-0 rounded-md object-cover"
-                          />
-                        ) : (
-                          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-md bg-[#f3f4f6] text-neutral-300">
-                            <PackageOpen size={20} />
-                          </div>
-                        )}
-
-                        {/* Middle: title + location + badge */}
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-semibold text-[#1a2e1a] group-hover:text-[#16a34a]">
-                            {l.titel}
-                          </p>
-                          <p className="mt-0.5 truncate text-xs text-neutral-400">
-                            {l.ortschaft}{l.kanton ? `, ${l.kanton}` : ""}
-                          </p>
-                          <span
-                            className="mt-1 inline-block rounded px-1.5 py-0.5 text-[10px] font-semibold"
-                            style={{ backgroundColor: rs.bg, color: rs.text }}
-                          >
-                            {rs.label}
-                          </span>
-                        </div>
-
-                        {/* Right: price + condition + arrow */}
-                        <div className="shrink-0 text-right">
-                          <p className="text-sm font-bold text-[#16a34a]">
-                            {l.preis > 0 ? `CHF ${l.preis.toLocaleString("de-CH")}` : "Auf Anfrage"}
-                          </p>
-                          {zLabel && (
-                            <span className="mt-0.5 inline-block rounded-full bg-[#f3f4f6] px-2 py-0.5 text-[10px] text-neutral-500">
-                              {zLabel}
-                            </span>
+                    ))}
+                  </div>
+                ) : displayListings.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-12 text-center">
+                    <PackageOpen size={32} className="mb-2 text-neutral-300" />
+                    <p className="text-xs font-medium text-neutral-500">Keine Inserate gefunden</p>
+                    <p className="mt-0.5 text-[10px] text-neutral-400">Anderen Kanton oder Filter wählen</p>
+                  </div>
+                ) : (
+                  <div>
+                    {displayListings.map((l) => {
+                      const rs = RECHTS_BADGE[l.rechtsstatus] || { label: l.rechtsstatus || "—", bg: "#f3f4f6", text: "#374151" };
+                      const zLabel = ZUSTAND_LABELS[l.zustand] || "";
+                      return (
+                        <a
+                          key={l.id}
+                          href={`/inserat/${l.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group flex items-center gap-2.5 border-b px-3 py-2.5 transition-colors hover:bg-[#f0fdf4]"
+                          style={{ borderBottomColor: "#f3f4f6" }}
+                        >
+                          {l.image_url ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={l.image_url}
+                              alt=""
+                              className="h-12 w-12 shrink-0 rounded-md object-cover"
+                            />
+                          ) : (
+                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-[#f3f4f6] text-neutral-300">
+                              <PackageOpen size={16} />
+                            </div>
                           )}
-                          <ChevronRight size={14} className="mt-1 ml-auto text-neutral-300 group-hover:text-[#16a34a]" />
-                        </div>
-                      </a>
-                    );
-                  })}
+
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate text-xs font-semibold text-[#1a2e1a] group-hover:text-[#16a34a]">
+                              {l.titel}
+                            </p>
+                            <p className="mt-0.5 truncate text-[10px] text-neutral-400">
+                              {l.ortschaft}{l.kanton ? `, ${l.kanton}` : ""}
+                              {zLabel && ` · ${zLabel}`}
+                            </p>
+                            <div className="mt-0.5 flex items-center gap-1.5">
+                              <span
+                                className="inline-block rounded px-1 py-0.5 text-[9px] font-semibold"
+                                style={{ backgroundColor: rs.bg, color: rs.text }}
+                              >
+                                {rs.label}
+                              </span>
+                              <span className="text-xs font-bold text-[#16a34a]">
+                                {l.preis > 0 ? `CHF ${l.preis.toLocaleString("de-CH")}` : "Auf Anfrage"}
+                              </span>
+                            </div>
+                          </div>
+
+                          <ChevronRight size={12} className="shrink-0 text-neutral-300 group-hover:text-[#16a34a]" />
+                        </a>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* "Show all" link */}
+              {fullyFiltered.length > 30 && (
+                <div className="border-t px-3 py-2" style={{ borderColor: "#f3f4f6" }}>
+                  <Link
+                    href={searchLink}
+                    className="flex items-center justify-center gap-1 rounded-lg bg-[#f0fdf4] px-3 py-2 text-xs font-semibold text-[#16a34a] transition-colors hover:bg-[#dcfce7]"
+                  >
+                    Alle {fullyFiltered.length.toLocaleString("de-CH")} anzeigen
+                    <ChevronRight size={14} />
+                  </Link>
                 </div>
               )}
             </div>
+          </div>
+        </div>
 
-            {/* "Show all" link */}
-            {fullyFiltered.length > 50 && (
-              <div className="border-t px-4 py-3" style={{ borderColor: "#f3f4f6" }}>
+        {/* Mobile: listing cards below map */}
+        <div className="mt-4 lg:hidden">
+          <div className="rounded-xl border bg-white" style={{ borderColor: "#e5e7eb" }}>
+            {/* Mobile quick filters */}
+            <div className="border-b px-3 py-2.5" style={{ borderColor: "#f3f4f6" }}>
+              <div className="flex flex-wrap gap-1">
+                {KATEGORIE_FILTERS.map((f) => (
+                  <button
+                    key={f.value}
+                    onClick={() => setKatFilter(f.value)}
+                    className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium transition-colors ${
+                      katFilter === f.value
+                        ? "bg-[#16a34a] text-white"
+                        : "bg-[#f3f4f6] text-[#374151] hover:bg-[#dcfce7]"
+                    }`}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="divide-y" style={{ borderColor: "#f3f4f6" }}>
+              {displayListings.slice(0, 10).map((l) => {
+                const rs = RECHTS_BADGE[l.rechtsstatus] || { label: l.rechtsstatus || "—", bg: "#f3f4f6", text: "#374151" };
+                return (
+                  <a
+                    key={l.id}
+                    href={`/inserat/${l.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 px-3 py-3 transition-colors hover:bg-[#f0fdf4]"
+                  >
+                    {l.image_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={l.image_url} alt="" className="h-14 w-14 shrink-0 rounded-md object-cover" />
+                    ) : (
+                      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-md bg-[#f3f4f6] text-neutral-300">
+                        <PackageOpen size={18} />
+                      </div>
+                    )}
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-semibold text-[#1a2e1a]">{l.titel}</p>
+                      <p className="mt-0.5 text-xs text-neutral-400">{l.ortschaft}</p>
+                      <div className="mt-1 flex items-center gap-2">
+                        <span
+                          className="rounded px-1.5 py-0.5 text-[10px] font-semibold"
+                          style={{ backgroundColor: rs.bg, color: rs.text }}
+                        >
+                          {rs.label}
+                        </span>
+                        <span className="text-sm font-bold text-[#16a34a]">
+                          {l.preis > 0 ? `CHF ${l.preis.toLocaleString("de-CH")}` : "Auf Anfrage"}
+                        </span>
+                      </div>
+                    </div>
+                    <ChevronRight size={14} className="shrink-0 text-neutral-300" />
+                  </a>
+                );
+              })}
+            </div>
+
+            {fullyFiltered.length > 10 && (
+              <div className="border-t px-3 py-2.5" style={{ borderColor: "#f3f4f6" }}>
                 <Link
                   href={searchLink}
-                  className="flex items-center justify-center gap-1.5 rounded-lg bg-[#f0fdf4] px-4 py-2.5 text-sm font-semibold text-[#16a34a] transition-colors hover:bg-[#dcfce7]"
+                  className="flex items-center justify-center gap-1 rounded-lg bg-[#f0fdf4] px-3 py-2 text-xs font-semibold text-[#16a34a] hover:bg-[#dcfce7]"
                 >
-                  Alle {fullyFiltered.length.toLocaleString("de-CH")} Inserate anzeigen
-                  <ChevronRight size={16} />
+                  Alle {fullyFiltered.length.toLocaleString("de-CH")} anzeigen
+                  <ChevronRight size={14} />
                 </Link>
               </div>
             )}

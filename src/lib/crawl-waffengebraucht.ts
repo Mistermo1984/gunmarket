@@ -83,7 +83,7 @@ interface CrawledItem {
   hauptkategorie: string;
   unterkategorie: string;
   beschreibung: string;
-  imageUrl: string;
+  imageUrls: string[];
   sourceUrl: string;
   lat?: number | null;
   lng?: number | null;
@@ -230,7 +230,7 @@ function parseListingCards(html: string, hauptkategorie: string): CrawledItem[] 
     }
 
     const imgEl = $el.find("img.lazyload");
-    const imageUrl = imgEl.attr("data-src") || imgEl.attr("src") || "";
+    const thumbUrl = imgEl.attr("data-src") || imgEl.attr("src") || "";
 
     const beschreibung = $el.find(".__ProductDescription").text().trim().substring(0, 500);
 
@@ -256,7 +256,7 @@ function parseListingCards(html: string, hauptkategorie: string): CrawledItem[] 
         hauptkategorie: finalHaupt,
         unterkategorie: finalUnter,
         beschreibung,
-        imageUrl: imageUrl.startsWith("http") ? imageUrl : (imageUrl ? `${BASE_URL}/${imageUrl}` : ""),
+        imageUrls: thumbUrl ? [thumbUrl.startsWith("http") ? thumbUrl : `${BASE_URL}/${thumbUrl}`] : [],
         sourceUrl: href.startsWith("http") ? href : `${BASE_URL}${href}`,
       });
     }
@@ -343,7 +343,7 @@ async function crawlNextgun(): Promise<CrawledItem[]> {
         ortschaft = locParts.find((p) => p.length > 2 && !/^\d+$/.test(p) && !p.includes("District") && !p.includes("Suisse")) || locParts[0] || "";
       }
 
-      const imageUrl = l.hasImage ? `https://marketplace.nextgun.ch/api/image/annonce/${l.id}` : "";
+      const imageUrls = l.hasImage ? [`https://marketplace.nextgun.ch/api/image/annonce/${l.id}`] : [];
       const slug = l.weaponName.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_-]/g, "");
 
       const ngClassified = classifyCategory(l.weaponName, "");
@@ -358,7 +358,7 @@ async function crawlNextgun(): Promise<CrawledItem[]> {
         hauptkategorie: ngClassified.hauptkategorie,
         unterkategorie: ngClassified.unterkategorie,
         beschreibung: "",
-        imageUrl,
+        imageUrls,
         sourceUrl: `https://marketplace.nextgun.ch/annonce/view/${slug}-id-${l.id}`,
         lat: l.latitude || null,
         lng: l.longitude || null,
@@ -383,26 +383,47 @@ async function ensureCrawlerUser(userId: string, email: string, vorname: string,
   }
 }
 
-async function downloadImage(imageUrl: string, listingId: string): Promise<string | null> {
+/** Scrape ALL full-size image URLs from a waffengebraucht.ch detail page */
+async function scrapeDetailImages(sourceUrl: string): Promise<string[]> {
   try {
-    const response = await fetch(imageUrl, {
-      headers: {
-        "User-Agent": USER_AGENT,
-        "Referer": "https://waffengebraucht.ch/",
-      },
-    });
-    if (!response.ok) return null;
-    const buffer = await response.arrayBuffer();
-    const { put } = await import("@vercel/blob");
-    const blob = await put(`listings/${listingId}-${Date.now()}.jpg`, buffer, {
-      access: "public",
-      contentType: response.headers.get("content-type") || "image/jpeg",
-    });
-    return blob.url;
+    const html = await fetchPage(sourceUrl);
+    // Pattern: "photo/{numericId}.{ext}/1920/1080" — these are the full-size gallery images
+    const matches = html.match(/"photo\/\d+[^"]+1920\/1080/g);
+    if (!matches || matches.length === 0) return [];
+    const unique = Array.from(new Set(matches.map((m) => m.replace(/^"/, ""))));
+    return unique.map((path) => `${BASE_URL}/${path}`);
   } catch (e) {
-    console.error("[Crawl] Image download failed:", e);
-    return null;
+    console.error("[Crawl] Detail page scrape failed:", sourceUrl, e);
+    return [];
   }
+}
+
+/** Download multiple images to Vercel Blob, return array of blob URLs */
+async function downloadAllImages(imageUrls: string[], listingId: string): Promise<string[]> {
+  const blobUrls: string[] = [];
+  for (let i = 0; i < imageUrls.length; i++) {
+    try {
+      const response = await fetch(imageUrls[i], {
+        headers: {
+          "User-Agent": USER_AGENT,
+          "Referer": "https://waffengebraucht.ch/",
+        },
+      });
+      if (!response.ok) continue;
+      const buffer = await response.arrayBuffer();
+      if (buffer.byteLength < 500) continue; // skip tiny/broken images
+      const { put } = await import("@vercel/blob");
+      const blob = await put(`listings/${listingId}-img${i}-${Date.now()}.jpg`, buffer, {
+        access: "public",
+        contentType: response.headers.get("content-type") || "image/jpeg",
+      });
+      blobUrls.push(blob.url);
+      if (i < imageUrls.length - 1) await delay(200);
+    } catch (e) {
+      console.error("[Crawl] Image download failed:", imageUrls[i], e);
+    }
+  }
+  return blobUrls;
 }
 
 async function insertItems(items: CrawledItem[], source: string) {
@@ -439,12 +460,24 @@ async function insertItems(items: CrawledItem[], source: string) {
       ],
     });
 
-    if (item.imageUrl) {
-      const blobUrl = await downloadImage(item.imageUrl, id);
-      statements.push({
-        sql: "INSERT INTO listing_images (id, listing_id, url, position, is_main) VALUES (?, ?, ?, 0, 1)",
-        args: [uuidv4(), id, blobUrl || item.imageUrl],
-      });
+    if (item.imageUrls.length > 0) {
+      // For waffengebraucht listings, scrape detail page for all images
+      let allImageUrls = item.imageUrls;
+      if (item.sourceUrl.includes("waffengebraucht.ch")) {
+        const detailImages = await scrapeDetailImages(item.sourceUrl);
+        if (detailImages.length > 0) allImageUrls = detailImages;
+        await delay(300);
+      }
+
+      const blobUrls = await downloadAllImages(allImageUrls, id);
+      // Fall back to original URLs if blob upload failed entirely
+      const urls = blobUrls.length > 0 ? blobUrls : allImageUrls;
+      for (let i = 0; i < urls.length; i++) {
+        statements.push({
+          sql: "INSERT INTO listing_images (id, listing_id, url, position, is_main) VALUES (?, ?, ?, ?, ?)",
+          args: [uuidv4(), id, urls[i], i, i === 0 ? 1 : 0],
+        });
+      }
     }
   }
 

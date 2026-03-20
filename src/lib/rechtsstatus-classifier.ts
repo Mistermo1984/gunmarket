@@ -70,10 +70,10 @@ const CLEARLY_NOT_WEAPON = [
 const WES_KURZWAFFE_KEYWORDS = [
   /\bpistole?\b/i,
   /\brevolver\b/i,
-  // Glock models
-  /\bglock\s*\d/i,
+  // Glock models (including standalone G17, G19, etc.)
+  /\bglock\s*\d/i, /\bg[\s-]?17\b/i, /\bg[\s-]?19\b/i, /\bg[\s-]?26\b/i, /\bg[\s-]?34\b/i, /\bg[\s-]?43\b/i, /\bg[\s-]?45\b/i,
   // SIG pistol models
-  /\bsig\b.*\bp\d{3}/i, /\bp226\b/i, /\bp320\b/i, /\bp365\b/i, /\bp210\b/i, /\bp220\b/i,
+  /\bsig\b.*\bp\d{3}/i, /\bp226\b/i, /\bp320\b/i, /\bp365\b/i, /\bp210\b/i, /\bp220\b/i, /\bp228\b/i, /\bp229\b/i,
   /\bsig[\s-]?sauer\b/i,
   // Beretta pistol models
   /\bberetta\b.*\b(92|px4|apx|m9|80)\b/i,
@@ -81,8 +81,9 @@ const WES_KURZWAFFE_KEYWORDS = [
   /\bcz\s*(75|shadow|p[\s-]?\d|sp[\s-]?\d)/i,
   // Walther pistol models
   /\bwalther\s*(p\d|ppq|pdp|ppk|pps|creed|q\d)/i,
-  // HK pistol models
+  // HK pistol models (including standalone USP, VP9)
   /\b(hk|heckler)\b.*\b(usp|vp\d|p\d|sfp|mk23)\b/i,
+  /\busp\b/i, /\bvp9\b/i, /\bhk\s*45\b/i,
   // Smith & Wesson
   /\bsmith\s*[&+]?\s*wesson/i, /\bs&w\b/i, /\bs\s*&\s*w\b/i,
   // Colt pistol/revolver models
@@ -285,6 +286,14 @@ export function classifyRechtsstatus(input: ClassificationInput): string {
     if (!HAS_WEAPON_NAME.test(titel) && PURE_ACCESSORY_PATTERNS.some(p => p.test(titel))) {
       return "frei";
     }
+    // Bolt-action / repeater ordonnanz (K31, Schmidt-Rubin, K11, etc.) → frei
+    if (FREI_LANGWAFFEN_PATTERNS.some(p => p.test(text))) {
+      // Unless semi-auto variant
+      if (/\bhalbautomat|selbstlade|semi[\s-]?auto/i.test(text)) return "wes";
+      return "frei";
+    }
+    // Stgw 57 (select-fire but sold as semi-auto civilian) → frei (Kaufvertrag)
+    if (/\bstgw?\s*57\b/i.test(text) && !/\bvollaut/i.test(text)) return "frei";
     return "wes";
   }
 

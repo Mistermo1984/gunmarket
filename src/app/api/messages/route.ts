@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { initializeSchema, dbAll, dbRun } from "@/lib/db";
+import { initializeSchema, dbAll, dbRun, dbGet } from "@/lib/db";
 import { v4 as uuidv4 } from "uuid";
+import { sendContactSellerEmail } from "@/lib/email";
 
 export const dynamic = "force-dynamic";
 
@@ -54,6 +55,37 @@ export async function POST(req: NextRequest) {
        VALUES (?, ?, ?, ?, ?)`,
       [id, sender_id, receiver_id, listing_id || null, content]
     );
+
+    // Send email notification to the seller (non-blocking)
+    try {
+      const receiver = await dbGet<{ email: string }>(
+        "SELECT email FROM users WHERE id = ?",
+        [receiver_id]
+      );
+      const sender = await dbGet<{ vorname: string; nachname: string }>(
+        "SELECT vorname, nachname FROM users WHERE id = ?",
+        [sender_id]
+      );
+      const listing = listing_id
+        ? await dbGet<{ titel: string }>(
+            "SELECT titel FROM listings WHERE id = ?",
+            [listing_id]
+          )
+        : null;
+      if (receiver?.email && sender) {
+        const buyerName = `${sender.vorname} ${sender.nachname}`;
+        const listingTitle = listing?.titel || "Inserat";
+        await sendContactSellerEmail(
+          receiver.email,
+          buyerName,
+          listingTitle,
+          listing_id || "",
+          content
+        );
+      }
+    } catch (emailErr) {
+      console.error("Contact seller email error:", emailErr);
+    }
 
     return NextResponse.json({ id }, { status: 201 });
   } catch (error) {

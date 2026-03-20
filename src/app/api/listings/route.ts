@@ -3,6 +3,7 @@ import { initializeSchema, dbGet, dbAll, dbRun } from "@/lib/db";
 import { kantonToFullName } from "@/lib/plz-coordinates";
 import { CATEGORY_ALIASES } from "@/lib/constants";
 import { v4 as uuidv4 } from "uuid";
+import { sendListingApprovedEmail } from "@/lib/email";
 
 export const dynamic = "force-dynamic";
 
@@ -209,6 +210,19 @@ export async function POST(req: NextRequest) {
         kanton, ortschaft, plz || null, lat || null, lng || null,
       ]
     );
+
+    // Send listing confirmation email (non-blocking)
+    try {
+      const user = await dbGet<{ email: string }>(
+        "SELECT email FROM users WHERE id = ?",
+        [user_id]
+      );
+      if (user?.email) {
+        await sendListingApprovedEmail(user.email, titel, id);
+      }
+    } catch (emailErr) {
+      console.error("Listing email error:", emailErr);
+    }
 
     return NextResponse.json({ id }, { status: 201 });
   } catch (error) {

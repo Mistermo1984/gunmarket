@@ -7,6 +7,7 @@ import { Eye, EyeOff, User, Store, Lock, AlertTriangle, Loader2 } from "lucide-r
 import AuthPanel from "@/components/auth/AuthPanel";
 import PasswordStrength from "@/components/ui/PasswordStrength";
 import { KANTONE } from "@/lib/constants";
+import Logo from "@/components/ui/Logo";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -90,13 +91,8 @@ export default function RegisterPage() {
       <div className="flex items-start justify-center overflow-y-auto px-4 py-12">
         <div className="w-full max-w-md">
           {/* Mobile logo */}
-          <div className="mb-8 flex items-center gap-1.5 lg:hidden">
-            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-brand-green text-lg font-black text-white">
-              ✚
-            </span>
-            <span className="font-display text-xl font-black tracking-tight text-brand-dark">
-              GunMarket<span className="text-brand-green">.ch</span>
-            </span>
+          <div className="mb-8 lg:hidden">
+            <Logo />
           </div>
 
           <h1 className="mb-2 font-display text-3xl font-black text-brand-dark">

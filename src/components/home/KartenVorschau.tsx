@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { MapPin } from "lucide-react";
+import { LogoIcon } from "@/components/ui/Logo";
 
 export default function KartenVorschau() {
   return (
@@ -46,9 +47,7 @@ export default function KartenVorschau() {
         {/* Right: Map placeholder */}
         <div className="w-full lg:w-[280px]">
           <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl border border-brand-border bg-gray-200">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-red-600 text-xl font-black text-white">
-              ✚
-            </div>
+            <LogoIcon size={48} />
             <div className="absolute left-[30%] top-[35%] h-2.5 w-2.5 rounded-full border-2 border-white bg-brand-green shadow" />
             <div className="absolute left-[55%] top-[28%] h-2.5 w-2.5 rounded-full border-2 border-white bg-brand-green shadow" />
             <div className="absolute left-[45%] top-[55%] h-2.5 w-2.5 rounded-full border-2 border-white bg-brand-green shadow" />

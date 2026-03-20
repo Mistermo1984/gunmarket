@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Logo from "@/components/ui/Logo";
 
 export default function AuthPanel() {
   return (
@@ -13,13 +14,8 @@ export default function AuthPanel() {
       }}
     >
       {/* Logo */}
-      <Link href="/" className="flex items-center gap-1.5">
-        <span className="flex h-8 w-8 items-center justify-center rounded-md bg-white/20 text-lg font-black text-white">
-          ✚
-        </span>
-        <span className="font-display text-xl font-black tracking-tight text-white">
-          GunMarket<span className="text-white/60">.ch</span>
-        </span>
+      <Link href="/" className="flex items-center">
+        <Logo darkBg />
       </Link>
 
       {/* Quote */}

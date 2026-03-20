@@ -4,6 +4,7 @@ import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { ExternalLink, Loader2 } from "lucide-react";
 import Link from "next/link";
+import Logo from "@/components/ui/Logo";
 
 export default function WeiterleitungPage() {
   return (
@@ -48,13 +49,8 @@ function Content() {
     <div className="flex min-h-[calc(100vh-64px)] items-center justify-center px-4">
       <div className="w-full max-w-lg text-center">
         {/* Logo */}
-        <div className="mx-auto mb-8 flex items-center justify-center gap-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-md bg-brand-green text-lg font-black text-white">
-            ✚
-          </span>
-          <span className="font-display text-xl font-black tracking-tight text-brand-dark">
-            GunMarket<span className="text-brand-green">.ch</span>
-          </span>
+        <div className="mx-auto mb-8 flex items-center justify-center">
+          <Logo size={36} />
         </div>
 
         {/* External link icon */}

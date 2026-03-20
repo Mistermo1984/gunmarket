@@ -22,8 +22,8 @@ export async function sendVerificationEmail(email: string, token: string, vornam
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 520px; margin: 0 auto; padding: 32px 24px;">
         <div style="text-align: center; margin-bottom: 32px;">
-          <span style="display: inline-block; background: #16a34a; color: white; font-weight: 900; font-size: 18px; width: 40px; height: 40px; line-height: 40px; border-radius: 8px; text-align: center;">✚</span>
-          <span style="font-weight: 900; font-size: 22px; margin-left: 8px; color: #1a1a2e;">GunMarket<span style="color: #16a34a;">.ch</span></span>
+          <span style="display: inline-block; width: 28px; height: 28px; border: 1.5px solid #16a34a; border-radius: 50%; position: relative; vertical-align: middle;"></span>
+          <span style="font-weight: 700; font-size: 18px; margin-left: 6px; vertical-align: middle; color: #1a1a2e;">Gun<span style="color: #4ade80;">Market</span><span style="font-weight: 400; font-size: 13px; color: #6b7280; margin-left: 1px;">.ch</span></span>
         </div>
 
         <h1 style="font-size: 24px; font-weight: 800; color: #1a1a2e; margin-bottom: 8px;">Willkommen, ${vorname}!</h1>
@@ -66,8 +66,8 @@ export async function sendPasswordResetEmail(email: string, token: string, vorna
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 520px; margin: 0 auto; padding: 32px 24px;">
         <div style="text-align: center; margin-bottom: 32px;">
-          <span style="display: inline-block; background: #16a34a; color: white; font-weight: 900; font-size: 18px; width: 40px; height: 40px; line-height: 40px; border-radius: 8px; text-align: center;">✚</span>
-          <span style="font-weight: 900; font-size: 22px; margin-left: 8px; color: #1a1a2e;">GunMarket<span style="color: #16a34a;">.ch</span></span>
+          <span style="display: inline-block; width: 28px; height: 28px; border: 1.5px solid #16a34a; border-radius: 50%; position: relative; vertical-align: middle;"></span>
+          <span style="font-weight: 700; font-size: 18px; margin-left: 6px; vertical-align: middle; color: #1a1a2e;">Gun<span style="color: #4ade80;">Market</span><span style="font-weight: 400; font-size: 13px; color: #6b7280; margin-left: 1px;">.ch</span></span>
         </div>
 
         <h1 style="font-size: 24px; font-weight: 800; color: #1a1a2e; margin-bottom: 8px;">Passwort zurücksetzen</h1>

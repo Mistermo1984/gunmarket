@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, Plus, User, BookOpen, Search, LogOut, Shield, BarChart3 } from "lucide-react";
+import Logo from "@/components/ui/Logo";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 
@@ -53,13 +54,8 @@ export default function Header() {
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
 
-          <Link href="/" className="flex shrink-0 items-center gap-1.5">
-            <span className="flex h-7 w-7 items-center justify-center rounded-md bg-brand-green text-sm font-black text-white">
-              ✚
-            </span>
-            <span className="font-display text-lg font-black tracking-tight text-brand-dark lg:text-xl">
-              GunMarket<span className="text-brand-green">.ch</span>
-            </span>
+          <Link href="/" className="flex shrink-0 items-center">
+            <Logo />
           </Link>
         </div>
 

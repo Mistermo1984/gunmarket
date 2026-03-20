@@ -7,6 +7,7 @@ import { signIn } from "next-auth/react";
 import { Eye, EyeOff, Info, Loader2, CheckCircle, MailWarning } from "lucide-react";
 import AuthPanel from "@/components/auth/AuthPanel";
 import { RECHTLICHER_DISCLAIMER } from "@/lib/constants";
+import Logo from "@/components/ui/Logo";
 
 // Metadata must be in a separate layout since this is a client component
 // See: src/app/login/layout.tsx
@@ -87,13 +88,8 @@ function LoginContent() {
       <div className="flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
           {/* Mobile logo */}
-          <div className="mb-8 flex items-center gap-1.5 lg:hidden">
-            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-brand-green text-lg font-black text-white">
-              ✚
-            </span>
-            <span className="font-display text-xl font-black tracking-tight text-brand-dark">
-              GunMarket<span className="text-brand-green">.ch</span>
-            </span>
+          <div className="mb-8 lg:hidden">
+            <Logo />
           </div>
 
           {/* Verification success banner */}

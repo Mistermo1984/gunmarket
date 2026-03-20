@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { Mail, ExternalLink } from "lucide-react";
+import Logo from "@/components/ui/Logo";
 
 const footerSections = [
   {
@@ -70,13 +71,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Spalte 1: Logo + Beschreibung */}
           <div>
-            <Link href="/" className="mb-4 inline-flex items-center gap-1.5">
-              <span className="flex h-7 w-7 items-center justify-center rounded-md bg-brand-green text-sm font-black text-white">
-                ✚
-              </span>
-              <span className="font-display text-lg font-black tracking-tight text-brand-dark">
-                GunMarket<span className="text-brand-green">.ch</span>
-              </span>
+            <Link href="/" className="mb-4 inline-flex">
+              <Logo />
             </Link>
             <p className="mb-5 text-sm leading-relaxed text-neutral-500">
               Der kostenlose Schweizer Waffenmarktplatz für Private und Händler.

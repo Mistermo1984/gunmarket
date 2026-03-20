@@ -219,6 +219,63 @@ const PREIS_PILLS = [
   { label: "3'000+", min: "3000", max: "10000" },
 ];
 
+// ─── Category pill with inline subcategories ────────────────
+
+function CategoryPillWithSubs({
+  hk,
+  filters,
+  counts,
+  onToggleCategory,
+  onToggleSub,
+}: {
+  hk: { id: string; label: string; unterkategorien: { id: string; label: string }[] };
+  filters: FilterState;
+  counts?: FilterCounts | null;
+  onToggleCategory: () => void;
+  onToggleSub: (subId: string) => void;
+}) {
+  const active = filters.kategorien.includes(hk.id);
+  const hasSubs = active && hk.unterkategorien.length > 0;
+
+  if (!hasSubs) {
+    return (
+      <Pill
+        label={hk.label}
+        active={active}
+        onClick={onToggleCategory}
+        count={counts?.categories?.[hk.id]}
+      />
+    );
+  }
+
+  // Active with subcategories: take full width so subs render below
+  return (
+    <div className="flex w-full flex-col">
+      <Pill
+        label={hk.label}
+        active={active}
+        onClick={onToggleCategory}
+        count={counts?.categories?.[hk.id]}
+      />
+      <div className="ml-2 mt-1.5 flex flex-wrap gap-1">
+        {hk.unterkategorien.map((uk) => (
+          <button
+            key={uk.id}
+            onClick={() => onToggleSub(uk.id)}
+            className={`rounded-full border px-2.5 py-1 text-[11px] font-medium transition-all duration-150 ${
+              filters.unterkategorien.includes(uk.id)
+                ? "border-brand-green bg-brand-green/10 text-brand-green"
+                : "border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300"
+            }`}
+          >
+            {uk.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── Component ───────────────────────────────────────────────
 
 export default function FilterSidebar({
@@ -301,70 +358,44 @@ export default function FilterSidebar({
         <SectionLabel>Kategorie</SectionLabel>
         <span className="mb-1 block text-[9px] font-semibold uppercase tracking-wider text-neutral-300">Waffen</span>
         <div className="flex flex-wrap gap-1.5">
-          {HAUPTKATEGORIEN.filter((hk) => WAFFEN_IDS.includes(hk.id)).map((hk) => {
-            const active = filters.kategorien.includes(hk.id);
-            return (
-              <Pill
-                key={hk.id}
-                label={hk.label}
-                active={active}
-                onClick={() => {
-                  toggleArray("kategorien", hk.id);
-                  // Clear subcategories when toggling main category
-                  if (active) {
-                    const subIds = hk.unterkategorien.map((uk) => uk.id);
-                    update({ unterkategorien: filters.unterkategorien.filter((u) => !subIds.includes(u)) });
-                  }
-                }}
-                count={counts?.categories?.[hk.id]}
-              />
-            );
-          })}
+          {HAUPTKATEGORIEN.filter((hk) => WAFFEN_IDS.includes(hk.id)).map((hk) => (
+            <CategoryPillWithSubs
+              key={hk.id}
+              hk={hk}
+              filters={filters}
+              counts={counts}
+              onToggleCategory={() => {
+                const active = filters.kategorien.includes(hk.id);
+                toggleArray("kategorien", hk.id);
+                if (active) {
+                  const subIds = hk.unterkategorien.map((uk) => uk.id);
+                  update({ unterkategorien: filters.unterkategorien.filter((u) => !subIds.includes(u)) });
+                }
+              }}
+              onToggleSub={(subId) => toggleArray("unterkategorien", subId)}
+            />
+          ))}
         </div>
         <span className="mb-1 mt-2.5 block text-[9px] font-semibold uppercase tracking-wider text-neutral-300">Zubehör & Mehr</span>
         <div className="flex flex-wrap gap-1.5">
-          {HAUPTKATEGORIEN.filter((hk) => ZUBEHOER_IDS.includes(hk.id)).map((hk) => {
-            const active = filters.kategorien.includes(hk.id);
-            return (
-              <Pill
-                key={hk.id}
-                label={hk.label}
-                active={active}
-                onClick={() => {
-                  toggleArray("kategorien", hk.id);
-                  if (active) {
-                    const subIds = hk.unterkategorien.map((uk) => uk.id);
-                    update({ unterkategorien: filters.unterkategorien.filter((u) => !subIds.includes(u)) });
-                  }
-                }}
-                count={counts?.categories?.[hk.id]}
-              />
-            );
-          })}
+          {HAUPTKATEGORIEN.filter((hk) => ZUBEHOER_IDS.includes(hk.id)).map((hk) => (
+            <CategoryPillWithSubs
+              key={hk.id}
+              hk={hk}
+              filters={filters}
+              counts={counts}
+              onToggleCategory={() => {
+                const active = filters.kategorien.includes(hk.id);
+                toggleArray("kategorien", hk.id);
+                if (active) {
+                  const subIds = hk.unterkategorien.map((uk) => uk.id);
+                  update({ unterkategorien: filters.unterkategorien.filter((u) => !subIds.includes(u)) });
+                }
+              }}
+              onToggleSub={(subId) => toggleArray("unterkategorien", subId)}
+            />
+          ))}
         </div>
-
-        {/* ── UNTERKATEGORIE (shown when exactly 1 main category selected) ── */}
-        {filters.kategorien.length === 1 && (() => {
-          const selectedHK = HAUPTKATEGORIEN.find((hk) => hk.id === filters.kategorien[0]);
-          if (!selectedHK || selectedHK.unterkategorien.length === 0) return null;
-          return (
-            <>
-              <span className="mb-1 mt-2.5 block text-[9px] font-semibold uppercase tracking-wider text-neutral-300">
-                {selectedHK.label} — Unterkategorie
-              </span>
-              <div className="flex flex-wrap gap-1.5">
-                {selectedHK.unterkategorien.map((uk) => (
-                  <Pill
-                    key={uk.id}
-                    label={uk.label}
-                    active={filters.unterkategorien.includes(uk.id)}
-                    onClick={() => toggleArray("unterkategorien", uk.id)}
-                  />
-                ))}
-              </div>
-            </>
-          );
-        })()}
 
         <FilterDivider />
 

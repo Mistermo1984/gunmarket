@@ -357,6 +357,23 @@ async function scrapeDetailImages(sourceUrl: string): Promise<string[]> {
   }
 }
 
+/** Scrape ALL images from a NextGun detail page */
+async function scrapeNextgunDetailImages(sourceUrl: string, listingId: string): Promise<string[]> {
+  try {
+    const html = await fetchPage(sourceUrl);
+    const mainUrl = `https://marketplace.nextgun.ch/api/image/annonce/${listingId}`;
+    // Extract additional gallery image IDs: api/image/annonce-image/{imageId}
+    const matches = html.match(/api\/image\/annonce-image\/[a-z0-9]+/g);
+    const additionalUrls = matches
+      ? Array.from(new Set(matches)).map((path) => `https://marketplace.nextgun.ch/${path}`)
+      : [];
+    return [mainUrl, ...additionalUrls];
+  } catch (e) {
+    console.error("[Crawl] NextGun detail scrape failed:", sourceUrl, e);
+    return [`https://marketplace.nextgun.ch/api/image/annonce/${listingId}`];
+  }
+}
+
 /** Download multiple images to Vercel Blob, return array of blob URLs */
 async function downloadAllImages(imageUrls: string[], listingId: string): Promise<string[]> {
   const blobUrls: string[] = [];
@@ -420,10 +437,15 @@ async function insertItems(items: CrawledItem[], source: string) {
     });
 
     if (item.imageUrls.length > 0) {
-      // For waffengebraucht listings, scrape detail page for all images
+      // Scrape detail page for all images
       let allImageUrls = item.imageUrls;
       if (item.sourceUrl.includes("waffengebraucht.ch")) {
         const detailImages = await scrapeDetailImages(item.sourceUrl);
+        if (detailImages.length > 0) allImageUrls = detailImages;
+        await delay(300);
+      } else if (item.sourceUrl.includes("nextgun.ch")) {
+        const ngId = item.sourceId.replace("ng-", "");
+        const detailImages = await scrapeNextgunDetailImages(item.sourceUrl, ngId);
         if (detailImages.length > 0) allImageUrls = detailImages;
         await delay(300);
       }

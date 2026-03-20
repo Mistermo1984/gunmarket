@@ -33,7 +33,7 @@ function SucheContent() {
     const kat = searchParams.get("kategorie");
     const kanton = searchParams.get("kanton");
     if (kat) initial.kategorien = [kat];
-    if (kanton) initial.kantone = [kanton];
+    if (kanton) initial.kantone = kanton.split(",").map((k) => k.toLowerCase());
     if (q) initial.marke = q; // reuse marke field for text search
     return initial;
   });

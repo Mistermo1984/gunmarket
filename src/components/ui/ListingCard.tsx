@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Star, MapPin, Camera, ExternalLink } from "lucide-react";
+import { Star, MapPin, Camera, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 import { PistolenIcon, RepetierIcon, BockflinteIcon, OptikIcon } from "@/components/ui/WeaponIcons";
 
 export interface ListingCardData {
@@ -26,6 +26,7 @@ export interface ListingCardData {
   source?: string;
   sourceUrl?: string | null;
   imageUrl?: string | null;
+  imageUrls?: string[];
 }
 
 const waffenIconMap = {
@@ -34,6 +35,63 @@ const waffenIconMap = {
   flinte: BockflinteIcon,
   zubehoer: OptikIcon,
 };
+
+function ImageSlider({ images, alt }: { images: string[]; alt: string }) {
+  const [current, setCurrent] = useState(0);
+
+  function prev(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrent((i) => (i === 0 ? images.length - 1 : i - 1));
+  }
+
+  function next(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrent((i) => (i === images.length - 1 ? 0 : i + 1));
+  }
+
+  return (
+    <div className="group/slider relative h-full w-full">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={images[current]}
+        alt={alt}
+        className="h-full w-full object-contain object-center"
+      />
+
+      {images.length > 1 && (
+        <>
+          <button
+            onClick={prev}
+            className="absolute left-1.5 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-0 transition-opacity hover:bg-black/70 group-hover/slider:opacity-100 max-sm:opacity-70"
+            aria-label="Vorheriges Bild"
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <button
+            onClick={next}
+            className="absolute right-1.5 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-0 transition-opacity hover:bg-black/70 group-hover/slider:opacity-100 max-sm:opacity-70"
+            aria-label="Nächstes Bild"
+          >
+            <ChevronRight size={16} />
+          </button>
+
+          <div className="absolute bottom-1.5 left-1/2 z-10 flex -translate-x-1/2 gap-1">
+            {images.map((_, i) => (
+              <div
+                key={i}
+                className={`h-1.5 w-1.5 rounded-full transition-all ${
+                  i === current ? "bg-white" : "bg-white/50"
+                }`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
 
 interface ListingCardProps {
   listing: ListingCardData;
@@ -52,7 +110,12 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
     onFavoriteToggle?.(listing.id, !isFav);
   }
 
-  const imageCount = listing.bildAnzahl ?? 3;
+  const images = listing.imageUrls && listing.imageUrls.length > 0
+    ? listing.imageUrls
+    : listing.imageUrl
+      ? [listing.imageUrl]
+      : [];
+  const imageCount = listing.bildAnzahl ?? images.length;
   const isExternal = !!listing.source && listing.source !== "gunmarket";
   const sourceName = listing.source === "waffengebraucht" ? "waffengebraucht.ch" : listing.source === "nextgun" ? "nextgun.ch" : listing.source;
 
@@ -64,21 +127,20 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
       <Link href={href} className="group flex overflow-hidden rounded-lg bg-white transition-all duration-200 hover:shadow-md hover:scale-[1.01]">
         {/* Photo */}
         <div className="relative flex shrink-0 items-center justify-center overflow-hidden" style={{ width: 120, height: 90, background: "#f8faf8" }}>
-          {listing.imageUrl ? (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <img src={listing.imageUrl} alt={listing.titel} className="h-full w-full object-contain object-center" />
+          {images.length > 0 ? (
+            <ImageSlider images={images} alt={listing.titel} />
           ) : (
             <WaffenIcon size={36} className="text-gray-300" />
           )}
           {isExternal ? (
-            <span className="absolute left-1.5 top-1.5 flex items-center gap-1 rounded bg-blue-600 px-1.5 py-0.5 text-[10px] font-medium text-white">
+            <span className="absolute left-1.5 top-1.5 z-20 flex items-center gap-1 rounded bg-blue-600 px-1.5 py-0.5 text-[10px] font-medium text-white">
               <ExternalLink size={9} />extern
             </span>
-          ) : (
-            <span className="absolute left-1.5 top-1.5 flex items-center gap-1 rounded bg-white/80 px-1.5 py-0.5 text-[10px] text-neutral-500">
+          ) : imageCount > 0 ? (
+            <span className="absolute left-1.5 top-1.5 z-20 flex items-center gap-1 rounded bg-white/80 px-1.5 py-0.5 text-[10px] text-neutral-500">
               <Camera size={10} />{imageCount}
             </span>
-          )}
+          ) : null}
         </div>
 
         {/* Content */}
@@ -110,9 +172,8 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
     <Link href={href} className="group flex flex-col overflow-hidden rounded-lg bg-white transition-all duration-200 hover:shadow-md hover:scale-[1.01]">
       {/* Photo */}
       <div className="relative w-full overflow-hidden" style={{ aspectRatio: "4/3", background: "#f8faf8" }}>
-        {listing.imageUrl ? (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img src={listing.imageUrl} alt={listing.titel} className="h-full w-full object-contain object-center" />
+        {images.length > 0 ? (
+          <ImageSlider images={images} alt={listing.titel} />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
             <WaffenIcon size={48} className="text-gray-300" />
@@ -121,19 +182,19 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
 
         {/* Top-left badge */}
         {isExternal ? (
-          <span className="absolute left-2 top-2 flex items-center gap-1 rounded bg-blue-600 px-2 py-1 text-[10px] font-medium text-white backdrop-blur-sm">
+          <span className="absolute left-2 top-2 z-20 flex items-center gap-1 rounded bg-blue-600 px-2 py-1 text-[10px] font-medium text-white backdrop-blur-sm">
             <ExternalLink size={10} />{sourceName}
           </span>
-        ) : (
-          <span className="absolute left-2 top-2 flex items-center gap-1 rounded bg-white/80 px-1.5 py-0.5 text-[10px] text-neutral-500 backdrop-blur-sm">
+        ) : imageCount > 0 ? (
+          <span className="absolute left-2 top-2 z-20 flex items-center gap-1 rounded bg-white/80 px-1.5 py-0.5 text-[10px] text-neutral-500 backdrop-blur-sm">
             <Camera size={10} />{imageCount}
           </span>
-        )}
+        ) : null}
 
         {/* Top-right: star button */}
         <button
           onClick={handleFavClick}
-          className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-sm transition-transform duration-200 hover:scale-110"
+          className="absolute right-2 top-2 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-sm transition-transform duration-200 hover:scale-110"
           aria-label="Merken"
         >
           <Star

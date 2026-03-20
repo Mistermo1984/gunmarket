@@ -67,5 +67,8 @@ export function apiListingToCard(listing: Record<string, unknown>): ListingCardD
     source: String(listing.source || "gunmarket"),
     sourceUrl: (listing.source_url as string) || null,
     imageUrl: firstImage ? String((firstImage as Record<string, unknown>).url || "") || null : null,
+    imageUrls: images
+      .map((img) => String((img as Record<string, unknown>).url || ""))
+      .filter(Boolean),
   };
 }

@@ -82,12 +82,25 @@ export const metadata: Metadata = {
     title: "GunMarket.ch — Waffen kaufen & verkaufen in der Schweiz",
     description:
       "Der grösste Schweizer Waffenmarktplatz. Pistolen, Büchsen, Jagdwaffen, Ordonnanzwaffen kaufen und verkaufen.",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "GunMarket.ch — Der Schweizer Waffenmarktplatz",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "GunMarket.ch — Waffen kaufen & verkaufen in der Schweiz",
     description:
       "Der grösste Schweizer Waffenmarktplatz. Kostenlose Inserate für Private und Händler.",
+    images: ["/twitter-image"],
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
   alternates: {
     canonical: SITE_URL,

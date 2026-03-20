@@ -116,6 +116,7 @@ export default function HomeMapSection() {
   const [kantonCounts, setKantonCounts] = useState<Record<string, number>>({});
   const [katFilter, setKatFilter] = useState("");
   const [preisFilter, setPreisFilter] = useState("");
+  const [mapError, setMapError] = useState<string | null>(null);
 
   // Panel state
   const [panelOpen, setPanelOpen] = useState(false);
@@ -156,7 +157,11 @@ export default function HomeMapSection() {
         } catch { /* ignore */ }
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch((err) => {
+        console.error("HomeMapSection fetch error:", err);
+        setMapError("Karte konnte nicht geladen werden");
+        setLoading(false);
+      });
   }, []);
 
   // Canton-filtered listings
@@ -267,7 +272,7 @@ export default function HomeMapSection() {
   }
 
   return (
-    <section className="py-10 md:py-14" style={{ backgroundColor: "#f8faf8" }}>
+    <section className="py-10 md:py-14" style={{ backgroundColor: "#f8faf8", minHeight: 400 }}>
       <div className="mx-auto max-w-7xl px-4 md:px-6">
         {/* Header */}
         <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
@@ -348,19 +353,32 @@ export default function HomeMapSection() {
               className="absolute inset-0 transition-[right] duration-300 ease-in-out"
               style={{ right: panelOpen ? 340 : 0 }}
             >
-              <Suspense
-                fallback={
-                  <div className="flex h-full w-full items-center justify-center bg-[#f1f5f1]">
-                    <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#16a34a] border-t-transparent" />
-                  </div>
-                }
-              >
-                <HomeMapView
-                  ref={mapHandleRef}
-                  markers={mapMarkers}
-                  onClusterClick={handleClusterClick}
-                />
-              </Suspense>
+              {mapError ? (
+                <div className="flex h-full w-full flex-col items-center justify-center bg-[#f1f5f1] text-neutral-500">
+                  <MapPin size={32} className="mb-2 text-neutral-300" />
+                  <p className="text-sm font-medium">{mapError}</p>
+                  <button
+                    onClick={() => { setMapError(null); setLoading(true); window.location.reload(); }}
+                    className="mt-3 rounded-lg bg-[#16a34a] px-4 py-2 text-xs font-semibold text-white hover:bg-[#15803d]"
+                  >
+                    Erneut laden
+                  </button>
+                </div>
+              ) : (
+                <Suspense
+                  fallback={
+                    <div className="flex h-full w-full items-center justify-center bg-[#f1f5f1]">
+                      <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#16a34a] border-t-transparent" />
+                    </div>
+                  }
+                >
+                  <HomeMapView
+                    ref={mapHandleRef}
+                    markers={mapMarkers}
+                    onClusterClick={handleClusterClick}
+                  />
+                </Suspense>
+              )}
             </div>
 
             {/* Listing panel — right edge, 340px */}

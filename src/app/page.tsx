@@ -154,7 +154,15 @@ export default function Home() {
       </ErrorBoundary>
 
       {/* Listings section */}
-      <ErrorBoundary>
+      <ErrorBoundary
+        fallback={
+          <section className="py-10 md:py-14" style={{ backgroundColor: "#f8faf8", minHeight: 400 }}>
+            <div className="mx-auto max-w-7xl px-4 text-center text-neutral-400 py-20">
+              <p className="text-sm">Karte konnte nicht geladen werden.</p>
+            </div>
+          </section>
+        }
+      >
         <HomeMapSection />
       </ErrorBoundary>
 

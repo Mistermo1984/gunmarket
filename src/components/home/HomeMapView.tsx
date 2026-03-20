@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useImperativeHandle, forwardRef } from "react";
+import React, { useEffect, useRef, useState, useMemo, useImperativeHandle, forwardRef } from "react";
 import { MapPin } from "lucide-react";
 
 export interface MapMarker {
@@ -31,6 +31,7 @@ interface PanelListing {
   preis: number;
   ortschaft: string;
   zustand: string;
+  hauptkategorie: string;
   image_url: string | null;
 }
 
@@ -47,24 +48,97 @@ const PANEL_INIT: PanelState = { open: false, listings: [], title: "", loading: 
 const SWITZERLAND_CENTER: [number, number] = [46.8, 8.2];
 const SWITZERLAND_ZOOM = 8;
 
-function parsePanelListings(raw: Record<string, unknown>[]): PanelListing[] {
-  return raw.map((l) => {
-    let imgUrl: string | null = null;
-    if (l.image_url) imgUrl = String(l.image_url);
-    else if (Array.isArray(l.images) && l.images.length > 0) {
-      const first = l.images[0] as Record<string, unknown>;
-      if (first?.url) imgUrl = String(first.url);
-    }
-    return {
-      id: String(l.id || ""),
-      titel: String(l.titel || ""),
-      preis: Number(l.preis) || 0,
-      ortschaft: String(l.ortschaft || ""),
-      zustand: String(l.zustand || ""),
-      image_url: imgUrl,
-    };
-  });
+// ─── Image helper ───────────────────────────────────────────────
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getImageUrl(listing: Record<string, unknown>): string | null {
+  // Direct image_url field (from /api/listings/map or /api/listings/nearby)
+  if (listing.image_url) return String(listing.image_url);
+
+  // images field — could be array of objects, array of strings, or JSON string
+  let imgs = listing.images;
+  if (typeof imgs === "string") {
+    try { imgs = JSON.parse(imgs); } catch { return null; }
+  }
+  if (!Array.isArray(imgs) || imgs.length === 0) return null;
+
+  const first = imgs[0];
+  if (typeof first === "string") return first;
+  if (first && typeof first === "object" && "url" in (first as Record<string, unknown>)) {
+    return String((first as Record<string, unknown>).url);
+  }
+  return null;
 }
+
+// ─── Filter config ──────────────────────────────────────────────
+
+const KAT_FILTERS = [
+  { id: "alle", label: "Alle" },
+  { id: "kurzwaffen", label: "Kurzwaffen" },
+  { id: "buechsen", label: "Langwaffen" },
+  { id: "flinten", label: "Flinten" },
+  { id: "ordonnanzwaffen", label: "Ordonnanz" },
+  { id: "freie-waffen", label: "Luftdruck" },
+  { id: "optik", label: "Optik" },
+  { id: "munition", label: "Munition" },
+  { id: "zubehoer", label: "Zubehör" },
+];
+
+const PREIS_FILTERS = [
+  { id: "alle", label: "Alle" },
+  { id: "0-500", label: "<500" },
+  { id: "500-1500", label: "500–1500" },
+  { id: "1500-3000", label: "1500–3000" },
+  { id: "3000+", label: "3000+" },
+];
+
+function matchPreis(preis: number, filter: string): boolean {
+  if (filter === "alle") return true;
+  if (filter === "0-500") return preis < 500;
+  if (filter === "500-1500") return preis >= 500 && preis <= 1500;
+  if (filter === "1500-3000") return preis > 1500 && preis <= 3000;
+  if (filter === "3000+") return preis > 3000;
+  return true;
+}
+
+// ─── Parse listings ─────────────────────────────────────────────
+
+function parsePanelListings(raw: Record<string, unknown>[]): PanelListing[] {
+  return raw.map((l) => ({
+    id: String(l.id || ""),
+    titel: String(l.titel || ""),
+    preis: Number(l.preis) || 0,
+    ortschaft: String(l.ortschaft || ""),
+    zustand: String(l.zustand || ""),
+    hauptkategorie: String(l.hauptkategorie || ""),
+    image_url: getImageUrl(l),
+  }));
+}
+
+// ─── Pill component ─────────────────────────────────────────────
+
+function Pill({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        padding: "3px 10px",
+        borderRadius: 99,
+        border: "none",
+        cursor: "pointer",
+        fontSize: 11,
+        fontWeight: 600,
+        whiteSpace: "nowrap",
+        background: active ? "#16a34a" : "#f3f4f6",
+        color: active ? "#fff" : "#374151",
+        transition: "all 0.15s",
+      }}
+    >
+      {label}
+    </button>
+  );
+}
+
+// ─── Component ──────────────────────────────────────────────────
 
 const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView(
   { markers },
@@ -80,6 +154,28 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [panel, setPanel] = useState<PanelState>(PANEL_INIT);
+  const [filterKat, setFilterKat] = useState("alle");
+  const [filterPreis, setFilterPreis] = useState("alle");
+
+  // Reset filters when new listings arrive
+  const listingsRef = useRef(panel.listings);
+  if (panel.listings !== listingsRef.current) {
+    listingsRef.current = panel.listings;
+    if (filterKat !== "alle") setFilterKat("alle");
+    if (filterPreis !== "alle") setFilterPreis("alle");
+  }
+
+  // Client-side filtered listings
+  const filteredListings = useMemo(() => {
+    let list = panel.listings;
+    if (filterKat !== "alle") {
+      list = list.filter((l) => l.hauptkategorie === filterKat);
+    }
+    if (filterPreis !== "alle") {
+      list = list.filter((l) => matchPreis(l.preis, filterPreis));
+    }
+    return list;
+  }, [panel.listings, filterKat, filterPreis]);
 
   function fetchPanel(title: string, fetchUrl: string, searchLink: string) {
     console.log("[MapPanel] fetchPanel:", title, fetchUrl);
@@ -330,6 +426,8 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
     );
   }
 
+  const showFilters = !panel.loading && panel.listings.length > 20;
+
   return (
     <div style={{ display: "flex", height: "100%", width: "100%" }}>
       <div ref={mapContainerRef} style={{ flex: 1, minWidth: 0 }} />
@@ -337,11 +435,10 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
         <div
           style={{
             width: 320,
-            overflowY: "auto",
+            display: "flex",
+            flexDirection: "column",
             background: "white",
             borderLeft: "1px solid #e5e7eb",
-            scrollbarWidth: "thin" as const,
-            scrollbarColor: "#16a34a #f3f4f6",
           }}
         >
           {/* Panel Header */}
@@ -352,13 +449,17 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              position: "sticky",
-              top: 0,
-              background: "white",
-              zIndex: 1,
+              flexShrink: 0,
             }}
           >
-            <strong style={{ fontSize: 14, color: "#1a2e1a" }}>{panel.title}</strong>
+            <div>
+              <strong style={{ fontSize: 14, color: "#1a2e1a" }}>{panel.title}</strong>
+              {showFilters && filterKat !== "alle" || filterPreis !== "alle" ? (
+                <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 2 }}>
+                  {filteredListings.length} von {panel.listings.length} angezeigt
+                </div>
+              ) : null}
+            </div>
             <button
               onClick={() => setPanel(PANEL_INIT)}
               style={{
@@ -377,65 +478,110 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
             </button>
           </div>
 
-          {/* Loading */}
-          {panel.loading && (
-            <div style={{ padding: 40, textAlign: "center", color: "#9ca3af" }}>
+          {/* Quick Filters */}
+          {showFilters && (
+            <div style={{ padding: "8px 12px", borderBottom: "1px solid #f3f4f6", flexShrink: 0 }}>
+              {/* Category pills */}
+              <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginBottom: 6 }}>
+                {KAT_FILTERS.map((f) => (
+                  <Pill key={f.id} label={f.label} active={filterKat === f.id} onClick={() => setFilterKat(f.id)} />
+                ))}
+              </div>
+              {/* Price pills */}
+              <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+                {PREIS_FILTERS.map((f) => (
+                  <Pill key={f.id} label={f.label} active={filterPreis === f.id} onClick={() => setFilterPreis(f.id)} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Scrollable content */}
+          <div
+            style={{
+              flex: 1,
+              overflowY: "auto",
+              scrollbarWidth: "thin" as const,
+              scrollbarColor: "#16a34a #f3f4f6",
+            }}
+          >
+            {/* Loading */}
+            {panel.loading && (
+              <div style={{ padding: 40, textAlign: "center", color: "#9ca3af" }}>
+                <div
+                  style={{
+                    width: 24, height: 24, border: "2px solid #16a34a", borderTopColor: "transparent",
+                    borderRadius: "50%", animation: "spin 1s linear infinite",
+                    margin: "0 auto 8px",
+                  }}
+                />
+                <span style={{ fontSize: 12 }}>Lade Inserate…</span>
+              </div>
+            )}
+
+            {/* Empty state */}
+            {!panel.loading && filteredListings.length === 0 && (
+              <div style={{ padding: 40, textAlign: "center", color: "#9ca3af", fontSize: 12 }}>
+                Keine Inserate gefunden
+              </div>
+            )}
+
+            {/* Listing cards */}
+            {!panel.loading && filteredListings.map((l) => (
               <div
+                key={l.id}
+                onClick={() => window.open(`/inserat/${l.id}`, "_blank")}
                 style={{
-                  width: 24, height: 24, border: "2px solid #16a34a", borderTopColor: "transparent",
-                  borderRadius: "50%", animation: "spin 1s linear infinite",
-                  margin: "0 auto 8px",
+                  display: "flex",
+                  gap: 10,
+                  padding: "10px 12px",
+                  borderBottom: "1px solid #f3f4f6",
+                  cursor: "pointer",
                 }}
-              />
-              <span style={{ fontSize: 12 }}>Lade Inserate…</span>
-            </div>
-          )}
-
-          {/* Listings */}
-          {!panel.loading && panel.listings.length === 0 && (
-            <div style={{ padding: 40, textAlign: "center", color: "#9ca3af", fontSize: 12 }}>
-              Keine Inserate gefunden
-            </div>
-          )}
-
-          {!panel.loading && panel.listings.map((l) => (
-            <div
-              key={l.id}
-              onClick={() => window.open(`/inserat/${l.id}`, "_blank")}
-              style={{
-                display: "flex",
-                gap: 10,
-                padding: "10px 12px",
-                borderBottom: "1px solid #f3f4f6",
-                cursor: "pointer",
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "#f0fdf4"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = "white"; }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={l.image_url || "/placeholder.jpg"}
-                alt=""
-                style={{ width: 52, height: 52, borderRadius: 6, objectFit: "cover", background: "#f3f4f6" }}
-                onError={(e) => { (e.target as HTMLImageElement).src = "/placeholder.jpg"; }}
-              />
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontWeight: 600, fontSize: 13, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                  {l.titel}
+                onMouseEnter={(e) => { e.currentTarget.style.background = "#f0fdf4"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "white"; }}
+              >
+                {/* Image or placeholder */}
+                {l.image_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={l.image_url}
+                    alt=""
+                    style={{ width: 52, height: 52, borderRadius: 6, objectFit: "cover", background: "#f3f4f6", flexShrink: 0 }}
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                  />
+                ) : (
+                  <div
+                    style={{
+                      width: 52, height: 52, borderRadius: 6, background: "#f3f4f6",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      flexShrink: 0, color: "#d1d5db",
+                    }}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                  </div>
+                )}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontWeight: 600, fontSize: 13, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                    {l.titel}
+                  </div>
+                  <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 2 }}>
+                    {l.ortschaft}{l.ortschaft && l.zustand ? " · " : ""}{l.zustand}
+                  </div>
                 </div>
-                <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 2 }}>
-                  {l.ortschaft}{l.ortschaft && l.zustand ? " · " : ""}{l.zustand}
+                <div style={{ fontWeight: 700, color: "#16a34a", fontSize: 13, whiteSpace: "nowrap", flexShrink: 0 }}>
+                  CHF {l.preis.toLocaleString("de-CH")}
                 </div>
               </div>
-              <div style={{ fontWeight: 700, color: "#16a34a", fontSize: 13, whiteSpace: "nowrap" }}>
-                CHF {l.preis.toLocaleString("de-CH")}
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
 
           {/* Footer */}
-          {!panel.loading && panel.listings.length > 0 && (
-            <div style={{ padding: "12px 16px", borderTop: "1px solid #e5e7eb", position: "sticky", bottom: 0, background: "white" }}>
+          {!panel.loading && filteredListings.length > 0 && (
+            <div style={{ padding: "12px 16px", borderTop: "1px solid #e5e7eb", flexShrink: 0 }}>
               <a
                 href={panel.searchLink}
                 style={{

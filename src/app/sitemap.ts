@@ -15,9 +15,11 @@ const KATEGORIEN = [
 ];
 
 const KANTONE = [
-  "AG", "AI", "AR", "BE", "BL", "BS", "FR", "GE", "GL", "GR",
-  "JU", "LU", "NE", "NW", "OW", "SG", "SH", "SO", "SZ", "TG",
-  "TI", "UR", "VD", "VS", "ZG", "ZH",
+  "aargau", "appenzell-ausserrhoden", "appenzell-innerrhoden",
+  "basel-landschaft", "basel-stadt", "bern", "freiburg", "genf", "glarus",
+  "graubuenden", "jura", "luzern", "neuenburg", "nidwalden", "obwalden",
+  "schaffhausen", "schwyz", "solothurn", "st-gallen", "tessin", "thurgau",
+  "uri", "waadt", "wallis", "zug", "zuerich",
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -110,10 +112,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   const kantonPages: MetadataRoute.Sitemap = KANTONE.map((kanton) => ({
-    url: `${SITE_URL}/suche?kanton=${kanton}`,
+    url: `${SITE_URL}/kanton/${kanton}`,
     lastModified: new Date(),
     changeFrequency: "daily" as const,
-    priority: 0.6,
+    priority: 0.7,
   }));
 
   let inseratPages: MetadataRoute.Sitemap = [];

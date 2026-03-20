@@ -1,27 +1,29 @@
 import { initializeSchema, dbGet, dbAll, dbRun, dbBatch, dbExec } from "./db";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcryptjs";
-import * as cheerio from "cheerio";
 import { getPlzCoordinates, getCityCoordinates } from "./plz-coordinates";
 import { classifyRechtsstatus } from "./rechtsstatus-classifier";
 import { classifyCategory } from "./category-classifier";
 
+// ─── Constants ──────────────────────────────────────────────
+
 const GW_BASE_URL = "https://www.gebrauchtwaffen.com";
-const USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36";
 
 const BROWSER_HEADERS: Record<string, string> = {
-  "User-Agent": USER_AGENT,
-  "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+  "User-Agent":
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+  Accept:
+    "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
   "Accept-Language": "de-CH,de;q=0.9,fr;q=0.8,en;q=0.7",
   "Accept-Encoding": "gzip, deflate, br",
-  "Connection": "keep-alive",
+  Connection: "keep-alive",
   "Upgrade-Insecure-Requests": "1",
   "Sec-Fetch-Dest": "document",
   "Sec-Fetch-Mode": "navigate",
   "Sec-Fetch-Site": "none",
   "Sec-Fetch-User": "?1",
   "Cache-Control": "max-age=0",
-  "Referer": "https://www.google.ch/",
+  Referer: "https://www.google.ch/",
 };
 
 const GW_CRAWLER_USER = {
@@ -32,18 +34,22 @@ const GW_CRAWLER_USER = {
   anbieter_typ: "Händler",
 };
 
+// All categories to crawl — exact slugs from gebrauchtwaffen.com
 const CATEGORIES = [
   { slug: "kurzwaffen", hauptkategorie: "kurzwaffen" },
   { slug: "langwaffen", hauptkategorie: "langwaffen" },
-  { slug: "sammler-amp-ordonnanzwaffen", hauptkategorie: "ordonnanzwaffen" },
+  { slug: "sammler-ordonanzwaffen", hauptkategorie: "ordonnanzwaffen" },
   { slug: "luftdruckwaffen-softair", hauptkategorie: "luftdruckwaffen" },
   { slug: "optik", hauptkategorie: "optik" },
   { slug: "munition", hauptkategorie: "munition" },
-  { slug: "messer-amp-blankwaffen", hauptkategorie: "zubehoer" },
+  { slug: "messer-blankwaffen", hauptkategorie: "zubehoer" },
   { slug: "wiederladen", hauptkategorie: "zubehoer" },
-  { slug: "bogenschiessen", hauptkategorie: "zubehoer" },
+  { slug: "wild-und-jagd", hauptkategorie: "langwaffen" },
   { slug: "verschiedenes", hauptkategorie: "zubehoer" },
+  { slug: "selbstverteidigung", hauptkategorie: "zubehoer" },
 ];
+
+// ─── Types ──────────────────────────────────────────────────
 
 interface CrawledItem {
   sourceId: string;
@@ -62,158 +68,245 @@ interface CrawledItem {
   lng?: number | null;
 }
 
+interface ListingRef {
+  sourceId: string;
+  url: string;
+}
+
+// ─── Utilities ──────────────────────────────────────────────
+
 function delay(ms: number): Promise<void> {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-async function fetchPage(url: string, retries = 1): Promise<string> {
-  const res = await fetch(url, {
-    headers: BROWSER_HEADERS,
-    redirect: "follow",
-  });
-  if ((res.status === 403 || res.status === 429) && retries > 0) {
-    console.warn(`[Crawl] ${res.status} for ${url}, retrying in 5s...`);
-    await delay(5000);
-    return fetchPage(url, retries - 1);
+async function fetchPage(url: string, retries = 2): Promise<string | null> {
+  try {
+    const res = await fetch(url, {
+      headers: BROWSER_HEADERS,
+      redirect: "follow",
+    });
+    if ((res.status === 403 || res.status === 429) && retries > 0) {
+      console.warn(`[Crawl] ${res.status} for ${url}, retrying in 5s...`);
+      await delay(5000);
+      return fetchPage(url, retries - 1);
+    }
+    if (!res.ok) {
+      console.warn(`[Crawl] HTTP ${res.status} for ${url}`);
+      return null;
+    }
+    return await res.text();
+  } catch (err) {
+    console.error(`[Crawl] Fetch error for ${url}:`, err);
+    return null;
   }
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
-  return res.text();
 }
 
 // ─── gebrauchtwaffen.com ─────────────────────────────────────
 
-/** Parse listing cards from a gebrauchtwaffen.com category page */
-function parseGwListingCards(html: string): CrawledItem[] {
-  const $ = cheerio.load(html);
-  const items: CrawledItem[] = [];
-
-  $("tr.effect6").each((_, el) => {
-    const $el = $(el);
-
-    // Extract URL and listing ID
-    const linkEl = $el.find("td.text h3 a");
-    const href = linkEl.attr("href") || "";
-    const idMatch = href.match(/_i(\d+)$/);
-    if (!idMatch) return;
-
-    const sourceId = `gw-${idMatch[1]}`;
-    const titel = linkEl.text().trim();
-
-    // Price
-    const priceText = $el.find(".zoznam_cena").text().trim();
-    const priceMatch = priceText.match(/CHF\s*([\d.']+)/);
-    const priceRaw = priceMatch?.[1]?.replace(/\./g, "").replace(",", ".").replace("'", "") || "0";
-    const preis = parseFloat(priceRaw) || 0;
-
-    // Description
-    const beschreibung = $el.find(".zoznam_desc").text().trim().substring(0, 500);
-
-    // Location
-    const kanton = $el.find(".zoznam_region").text().replace("·", "").trim();
-    const ortschaft = $el.find(".zoznam_city").text().replace("·", "").trim();
-
-    // Thumbnail image → full size URL
-    const thumbSrc = $el.find("td.photo img").attr("src") || "";
-    const imageUrls: string[] = [];
-    if (thumbSrc.includes("cloudfront.net")) {
-      imageUrls.push(thumbSrc.replace("_thumbnail", ""));
-    }
-
-    if (titel && sourceId) {
-      const classified = classifyCategory(titel, beschreibung);
-      items.push({
-        sourceId,
-        titel,
-        preis,
-        verhandelbar: 0,
-        ortschaft,
-        plz: "",
-        kanton,
-        hauptkategorie: classified.hauptkategorie,
-        unterkategorie: classified.unterkategorie,
-        beschreibung,
-        imageUrls,
-        sourceUrl: href,
-      });
-    }
-  });
-
-  return items;
+/** Detect last page number from » pagination link */
+function getLastPage(html: string, categorySlug: string): number {
+  // Try specific category slug pattern: href="/kurzwaffen/57">»
+  const match = html.match(
+    new RegExp(`href="\\/${categorySlug}\\/(\\d+)"[^>]*>\\s*[»»]`)
+  );
+  if (match) return parseInt(match[1]);
+  // Fallback: any pagination » link
+  const match2 = html.match(/href="\/[a-z-]+\/(\d+)"[^>]*>\s*[»»]/);
+  if (match2) return parseInt(match2[1]);
+  return 1;
 }
 
-/** Get total page count from gebrauchtwaffen.com pagination select */
-function getGwTotalPages(html: string): number {
-  const $ = cheerio.load(html);
-  let maxPage = 1;
-  $(".pagination-select option").each((_, el) => {
-    const val = $(el).attr("value") || "";
-    // Pages are /category/2, /category/3, etc.
-    const match = val.match(/\/(\d+)$/);
-    if (match) {
-      const p = parseInt(match[1], 10);
-      if (p > maxPage) maxPage = p;
-    }
-  });
-  return maxPage;
+/** Extract listing URLs from category page using onclick patterns */
+function extractListingUrls(html: string): string[] {
+  const matches = Array.from(
+    html.matchAll(
+      /location\.href='(https:\/\/www\.gebrauchtwaffen\.com\/[^']+_i\d+)'/g
+    )
+  );
+  return Array.from(new Set(matches.map((m) => m[1])));
 }
 
-/** Scrape ALL image URLs from a gebrauchtwaffen.com detail page */
-async function scrapeGwDetailImages(sourceUrl: string): Promise<string[]> {
-  try {
-    const html = await fetchPage(sourceUrl);
-    const $ = cheerio.load(html);
-    const images: string[] = [];
+// URL path segments that indicate accessories (not the weapon itself)
+const ACCESSORY_URL_SEGMENTS = [
+  "/magazine/",
+  "/holster/",
+  "/griffschalen/",
+  "/schafte/",
+  "/laufe/",
+  "/laeufe/",
+  "/montagen/",
+  "/chokes/",
+  "/zubehor/",
+  "/ersatzteile/",
+  "/bekleidung/",
+  "/taschen/",
+  "/koffer/",
+  "/reinigung/",
+  "/pflege/",
+  "/kombinierte/",
+];
 
-    // Main image
-    const bigImg = $("#big-img").attr("src") || "";
-    if (bigImg.includes("d9c3dmdj8vwy7.cloudfront.net")) {
-      images.push(bigImg);
+/** URL-based category override: detect accessories in weapon categories */
+function mapCategoryFromUrl(
+  url: string
+): { hauptkategorie: string; unterkategorie: string } | null {
+  const urlLower = url.toLowerCase();
+  for (const seg of ACCESSORY_URL_SEGMENTS) {
+    if (urlLower.includes(seg)) {
+      // Determine zubehoer subcategory from URL path
+      if (seg.includes("magazin"))
+        return { hauptkategorie: "zubehoer", unterkategorie: "magazine" };
+      if (
+        seg.includes("holster") ||
+        seg.includes("taschen") ||
+        seg.includes("koffer")
+      )
+        return { hauptkategorie: "zubehoer", unterkategorie: "holster" };
+      if (
+        seg.includes("lauf") ||
+        seg.includes("schafte") ||
+        seg.includes("ersatz") ||
+        seg.includes("kombinierte")
+      )
+        return {
+          hauptkategorie: "zubehoer",
+          unterkategorie: "lauefe-teile",
+        };
+      if (seg.includes("reinigung") || seg.includes("pflege"))
+        return { hauptkategorie: "zubehoer", unterkategorie: "reinigung" };
+      if (seg.includes("montagen") || seg.includes("chokes"))
+        return { hauptkategorie: "optik", unterkategorie: "montagen" };
+      return {
+        hauptkategorie: "zubehoer",
+        unterkategorie: "andere-zubehoer",
+      };
     }
-
-    // Gallery images (from img-link anchors)
-    $("a.img-link").each((_, el) => {
-      const href = $(el).attr("href") || "";
-      if (href.includes("d9c3dmdj8vwy7.cloudfront.net")) {
-        images.push(href);
-      }
-    });
-
-    return Array.from(new Set(images));
-  } catch (e) {
-    console.error("[Crawl] GW detail scrape failed:", sourceUrl, e);
-    return [];
   }
+  // No accessory override — let classifier handle it
+  return null;
 }
 
-/** Crawl a single category from gebrauchtwaffen.com */
-async function crawlGwCategory(slug: string): Promise<CrawledItem[]> {
-  const items: CrawledItem[] = [];
-  const seenIds = new Set<string>();
+/** Scrape individual gebrauchtwaffen.com listing page for full data */
+async function scrapeGwListing(
+  url: string,
+  defaultHauptkategorie: string
+): Promise<CrawledItem | null> {
+  const html = await fetchPage(url);
+  if (!html) return null;
+
+  const idMatch = url.match(/_i(\d+)/);
+  if (!idMatch) return null;
+
+  // Title — remove category prefix like "Pistolen – "
+  let titel = html.match(/<h1[^>]*>([^<]+)<\/h1>/)?.[1]?.trim() || "";
+  titel = titel.replace(/^[^–\-]+ [–\-] /, "").trim();
+  if (!titel) return null;
+
+  // Price
+  const priceMatch = html.match(/CHF\s*([\d.']+)/);
+  const preis = priceMatch
+    ? parseFloat(
+        priceMatch[1].replace(/\./g, "").replace(/'/g, "").replace(",", ".")
+      )
+    : 0;
+
+  // Description
+  const descMatch = html.match(
+    /class="item-description"[^>]*>([\s\S]*?)<\/div>/
+  );
+  const beschreibung =
+    descMatch?.[1]
+      ?.replace(/<[^>]+>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .substring(0, 2000) || "";
+
+  // Canton
+  const cantonMatch =
+    html.match(/Schweiz-Switzerland\s*·\s*([^·\n<]+)/) ||
+    html.match(/class="region"[^>]*>\s*([^<]+)/) ||
+    html.match(/Standort[^<]*<[^>]+>\s*([^<]+)/);
+  const kanton = cantonMatch?.[1]?.trim().split("·")[0]?.trim() || "";
+
+  // Images — CloudFront thumbnail URLs → full size
+  const thumbMatches = Array.from(
+    html.matchAll(
+      /https:\/\/d9c3dmdj8vwy7\.cloudfront\.net\/\d+_thumbnail\.(?:jpg|jpeg|png)/g
+    )
+  ).map((m) => m[0]);
+  const imageUrls = Array.from(new Set(thumbMatches)).map((u) =>
+    u.replace("_thumbnail", "")
+  );
+
+  // Category: URL-based accessory detection first, then classifier, then default
+  const urlOverride = mapCategoryFromUrl(url);
+  let hauptkategorie: string;
+  let unterkategorie: string;
+
+  if (urlOverride) {
+    // URL clearly indicates accessory/optic — use that
+    hauptkategorie = urlOverride.hauptkategorie;
+    unterkategorie = urlOverride.unterkategorie;
+  } else {
+    // Use text-based classifier, fall back to category default
+    const classified = classifyCategory(titel, beschreibung);
+    hauptkategorie = classified.hauptkategorie || defaultHauptkategorie;
+    unterkategorie = classified.unterkategorie;
+  }
+
+  return {
+    sourceId: `gw-${idMatch[1]}`,
+    titel,
+    preis,
+    verhandelbar: 0,
+    ortschaft: "",
+    plz: "",
+    kanton,
+    hauptkategorie,
+    unterkategorie,
+    beschreibung,
+    imageUrls,
+    sourceUrl: url,
+  };
+}
+
+/** Collect all listing URLs from all pages of a GW category */
+async function collectGwListingUrls(slug: string): Promise<ListingRef[]> {
+  const refs: ListingRef[] = [];
+  const seen = new Set<string>();
 
   console.log(`[Crawl] Crawling gebrauchtwaffen.com: ${slug}`);
-  const firstPageUrl = `${GW_BASE_URL}/${slug}`;
-  const firstPageHtml = await fetchPage(firstPageUrl);
-  const totalPages = getGwTotalPages(firstPageHtml);
-  console.log(`[Crawl] ${slug}: ${totalPages} pages`);
+  const firstHtml = await fetchPage(`${GW_BASE_URL}/${slug}`);
+  if (!firstHtml) {
+    console.warn(`[Crawl] ${slug}: no response for first page`);
+    return refs;
+  }
 
-  const firstItems = parseGwListingCards(firstPageHtml);
-  for (const item of firstItems) {
-    if (!seenIds.has(item.sourceId)) {
-      seenIds.add(item.sourceId);
-      items.push(item);
+  const lastPage = getLastPage(firstHtml, slug);
+  console.log(`[Crawl] ${slug}: ${lastPage} pages found`);
+
+  // Process first page
+  for (const url of extractListingUrls(firstHtml)) {
+    const id = url.match(/_i(\d+)/)?.[1];
+    if (id && !seen.has(id)) {
+      seen.add(id);
+      refs.push({ sourceId: `gw-${id}`, url });
     }
   }
 
-  for (let page = 2; page <= totalPages; page++) {
-    await delay(1500 + Math.random() * 1500);
+  // Process remaining pages
+  for (let page = 2; page <= lastPage; page++) {
+    await delay(1200 + Math.random() * 1300);
     try {
-      const pageUrl = `${GW_BASE_URL}/${slug}/${page}`;
-      const pageHtml = await fetchPage(pageUrl);
-      const pageItems = parseGwListingCards(pageHtml);
-      for (const item of pageItems) {
-        if (!seenIds.has(item.sourceId)) {
-          seenIds.add(item.sourceId);
-          items.push(item);
+      const html = await fetchPage(`${GW_BASE_URL}/${slug}/${page}`);
+      if (!html) continue;
+      const urls = extractListingUrls(html);
+      if (urls.length === 0) break; // No more listings
+      for (const url of urls) {
+        const id = url.match(/_i(\d+)/)?.[1];
+        if (id && !seen.has(id)) {
+          seen.add(id);
+          refs.push({ sourceId: `gw-${id}`, url });
         }
       }
     } catch (err) {
@@ -221,7 +314,10 @@ async function crawlGwCategory(slug: string): Promise<CrawledItem[]> {
     }
   }
 
-  return items;
+  console.log(
+    `[Crawl] ${slug}: ${refs.length} listings found across ${lastPage} pages`
+  );
+  return refs;
 }
 
 // ─── nextgun.ch ──────────────────────────────────────────────
@@ -231,7 +327,13 @@ async function crawlNextgun(): Promise<CrawledItem[]> {
 
   try {
     console.log("[Crawl] Crawling marketplace.nextgun.ch");
-    const html = await fetchPage("https://marketplace.nextgun.ch/marketplace");
+    const html = await fetchPage(
+      "https://marketplace.nextgun.ch/marketplace"
+    );
+    if (!html) {
+      console.error("[Crawl] NextGun: No response");
+      return [];
+    }
 
     const startIdx = html.indexOf("annonces:[");
     if (startIdx === -1) {
@@ -287,12 +389,25 @@ async function crawlNextgun(): Promise<CrawledItem[]> {
           plz = plzMatch[1];
           kanton = kantonFromPlz(plz);
         }
-        ortschaft = locParts.find((p) => p.length > 2 && !/^\d+$/.test(p) && !p.includes("District") && !p.includes("Suisse")) || locParts[0] || "";
+        ortschaft =
+          locParts.find(
+            (p) =>
+              p.length > 2 &&
+              !/^\d+$/.test(p) &&
+              !p.includes("District") &&
+              !p.includes("Suisse")
+          ) ||
+          locParts[0] ||
+          "";
       }
 
       // Store image URLs directly — no download
-      const imageUrls = l.hasImage ? [`https://marketplace.nextgun.ch/api/image/annonce/${l.id}`] : [];
-      const slug = l.weaponName.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_-]/g, "");
+      const imageUrls = l.hasImage
+        ? [`https://marketplace.nextgun.ch/api/image/annonce/${l.id}`]
+        : [];
+      const slug = l.weaponName
+        .replace(/\s+/g, "_")
+        .replace(/[^a-zA-Z0-9_-]/g, "");
 
       const ngClassified = classifyCategory(l.weaponName, "");
       allItems.push({
@@ -318,6 +433,30 @@ async function crawlNextgun(): Promise<CrawledItem[]> {
 
   console.log(`[Crawl] NextGun total: ${allItems.length} listings`);
   return allItems;
+}
+
+/** Enrich NextGun items with gallery images from detail pages */
+async function enrichNextgunImages(items: CrawledItem[]): Promise<void> {
+  for (const item of items) {
+    if (item.imageUrls.length === 0) continue;
+    try {
+      const html = await fetchPage(item.sourceUrl);
+      if (html) {
+        const matches = html.match(
+          /api\/image\/annonce-image\/[a-z0-9]+/g
+        );
+        if (matches) {
+          const additionalUrls = Array.from(new Set(matches)).map(
+            (path) => `https://marketplace.nextgun.ch/${path}`
+          );
+          item.imageUrls = [...item.imageUrls, ...additionalUrls];
+        }
+      }
+      await delay(300);
+    } catch {
+      // Keep main image as fallback
+    }
+  }
 }
 
 // ─── Shared helpers ──────────────────────────────────────────
@@ -403,7 +542,12 @@ function kantonFromPlz(plz: string): string {
   return "";
 }
 
-async function ensureCrawlerUser(userId: string, email: string, vorname: string, nachname: string) {
+async function ensureCrawlerUser(
+  userId: string,
+  email: string,
+  vorname: string,
+  nachname: string
+) {
   const existing = await dbGet("SELECT id FROM users WHERE id = ?", [userId]);
   if (!existing) {
     const hash = bcrypt.hashSync("CrawlerNoLogin!", 10);
@@ -417,17 +561,22 @@ async function ensureCrawlerUser(userId: string, email: string, vorname: string,
 // ─── Insert items — store image URLs directly (no download) ──
 
 async function insertItems(items: CrawledItem[], source: string) {
-  const userId = source === "nextgun" ? "crawler-nextgun" : GW_CRAWLER_USER.id;
+  const userId =
+    source === "nextgun" ? "crawler-nextgun" : GW_CRAWLER_USER.id;
   const statements: { sql: string; args: (string | number | null)[] }[] = [];
 
   for (const item of items) {
     const id = uuidv4();
-    const createdAt = new Date().toISOString().replace("T", " ").slice(0, 19);
+    const createdAt = new Date()
+      .toISOString()
+      .replace("T", " ")
+      .slice(0, 19);
 
-    const coords = (item.lat && item.lng)
-      ? { lat: item.lat, lng: item.lng }
-      : (item.plz ? getPlzCoordinates(item.plz) : null)
-        ?? getCityCoordinates(item.ortschaft);
+    const coords =
+      item.lat && item.lng
+        ? { lat: item.lat, lng: item.lng }
+        : ((item.plz ? getPlzCoordinates(item.plz) : null) ??
+          getCityCoordinates(item.ortschaft));
 
     const rechtsstatus = classifyRechtsstatus({
       titel: item.titel,
@@ -440,51 +589,46 @@ async function insertItems(items: CrawledItem[], source: string) {
       sql: `INSERT INTO listings (id, user_id, titel, beschreibung, hauptkategorie, unterkategorie, rechtsstatus, marke, modell, kaliber, zustand, preis, verhandelbar, tausch, kanton, ortschaft, plz, lat, lng, aufrufe, source, source_url, source_id, created_at)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       args: [
-        id, userId, item.titel, item.beschreibung,
-        item.hauptkategorie, item.unterkategorie, rechtsstatus,
-        "", "", "", "",
-        item.preis, item.verhandelbar,
-        item.kanton, item.ortschaft, item.plz,
-        coords?.lat ?? null, coords?.lng ?? null, 0,
-        source, item.sourceUrl, item.sourceId, createdAt,
+        id,
+        userId,
+        item.titel,
+        item.beschreibung,
+        item.hauptkategorie,
+        item.unterkategorie,
+        rechtsstatus,
+        "",
+        "",
+        "",
+        "",
+        item.preis,
+        item.verhandelbar,
+        item.kanton,
+        item.ortschaft,
+        item.plz,
+        coords?.lat ?? null,
+        coords?.lng ?? null,
+        0,
+        source,
+        item.sourceUrl,
+        item.sourceId,
+        createdAt,
       ],
     });
 
-    // For gebrauchtwaffen listings, scrape detail page for all images
-    let allImageUrls = item.imageUrls;
-    if (source === "gebrauchtwaffen" && item.sourceUrl) {
-      try {
-        const detailImages = await scrapeGwDetailImages(item.sourceUrl);
-        if (detailImages.length > 0) allImageUrls = detailImages;
-        await delay(1000 + Math.random() * 1000);
-      } catch {
-        // Keep category page thumbnail as fallback
-      }
-    } else if (source === "nextgun" && item.imageUrls.length > 0) {
-      // For nextgun, try to get additional images from detail page
-      try {
-        const html = await fetchPage(item.sourceUrl);
-        const matches = html.match(/api\/image\/annonce-image\/[a-z0-9]+/g);
-        if (matches) {
-          const additionalUrls = Array.from(new Set(matches)).map((path) => `https://marketplace.nextgun.ch/${path}`);
-          allImageUrls = [...item.imageUrls, ...additionalUrls];
-        }
-        await delay(300);
-      } catch {
-        // Keep main image as fallback
-      }
-    }
-
     // Store image URLs directly in listing_images (no download)
-    for (let i = 0; i < allImageUrls.length; i++) {
+    for (let i = 0; i < item.imageUrls.length; i++) {
       statements.push({
         sql: "INSERT INTO listing_images (id, listing_id, url, position, is_main) VALUES (?, ?, ?, ?, ?)",
-        args: [uuidv4(), id, allImageUrls[i], i, i === 0 ? 1 : 0],
+        args: [uuidv4(), id, item.imageUrls[i], i, i === 0 ? 1 : 0],
       });
     }
   }
 
-  await dbBatch(statements);
+  // Batch in chunks to avoid oversized transactions
+  const CHUNK_SIZE = 200;
+  for (let i = 0; i < statements.length; i += CHUNK_SIZE) {
+    await dbBatch(statements.slice(i, i + CHUNK_SIZE));
+  }
 }
 
 // ─── Public API ──────────────────────────────────────────────
@@ -495,16 +639,31 @@ export function seedCrawledListings() {
 
 export function getCrawlSteps(): { id: string; label: string }[] {
   return [
-    ...CATEGORIES.map((c) => ({ id: `gw-${c.slug}`, label: `gebrauchtwaffen.com: ${c.slug}` })),
+    ...CATEGORIES.map((c) => ({
+      id: `gw-${c.slug}`,
+      label: `gebrauchtwaffen.com: ${c.slug}`,
+    })),
     { id: "nextgun", label: "nextgun.ch" },
     { id: "cleanup", label: "Aufräumen (verkaufte entfernen)" },
   ];
 }
 
-export async function runCrawlStep(stepId: string): Promise<{ inserted: number; deleted: number; source: string }> {
+export async function runCrawlStep(
+  stepId: string
+): Promise<{ inserted: number; deleted: number; source: string }> {
   await initializeSchema();
-  await ensureCrawlerUser(GW_CRAWLER_USER.id, GW_CRAWLER_USER.email, GW_CRAWLER_USER.vorname, GW_CRAWLER_USER.nachname);
-  await ensureCrawlerUser("crawler-nextgun", "crawler@nextgun.ch", "NextGun", ".ch");
+  await ensureCrawlerUser(
+    GW_CRAWLER_USER.id,
+    GW_CRAWLER_USER.email,
+    GW_CRAWLER_USER.vorname,
+    GW_CRAWLER_USER.nachname
+  );
+  await ensureCrawlerUser(
+    "crawler-nextgun",
+    "crawler@nextgun.ch",
+    "NextGun",
+    ".ch"
+  );
 
   // Get existing source_ids to skip duplicates
   const existingRows = await dbAll<{ source_id: string; source: string }>(
@@ -514,31 +673,57 @@ export async function runCrawlStep(stepId: string): Promise<{ inserted: number; 
 
   if (stepId === "nextgun") {
     const items = await crawlNextgun();
-    const newItems = items.filter((item) => !existingSourceIds.has(item.sourceId));
+    const newItems = items.filter(
+      (item) => !existingSourceIds.has(item.sourceId)
+    );
+
+    // Enrich new items with gallery images from detail pages
+    await enrichNextgunImages(newItems);
     await insertItems(newItems, "nextgun");
 
     await ensureCrawlMetaTable();
-    const existingLiveRow = await dbGet<{ value: string }>("SELECT value FROM crawl_meta WHERE key = 'live_source_ids'");
-    const existingLive: string[] = existingLiveRow?.value ? JSON.parse(existingLiveRow.value) : [];
-    const updatedLive = [...existingLive, ...items.map((i) => i.sourceId)];
-    await dbRun("INSERT OR REPLACE INTO crawl_meta (key, value) VALUES ('live_source_ids', ?)", [JSON.stringify(updatedLive)]);
+    const existingLiveRow = await dbGet<{ value: string }>(
+      "SELECT value FROM crawl_meta WHERE key = 'live_source_ids'"
+    );
+    const existingLive: string[] = existingLiveRow?.value
+      ? JSON.parse(existingLiveRow.value)
+      : [];
+    const updatedLive = [
+      ...existingLive,
+      ...items.map((i) => i.sourceId),
+    ];
+    await dbRun(
+      "INSERT OR REPLACE INTO crawl_meta (key, value) VALUES ('live_source_ids', ?)",
+      [JSON.stringify(updatedLive)]
+    );
 
-    console.log(`[Crawl] NextGun: ${items.length} total, ${newItems.length} new`);
+    console.log(
+      `[Crawl] NextGun: ${items.length} total, ${newItems.length} new`
+    );
     return { inserted: newItems.length, deleted: 0, source: "nextgun" };
   }
 
   if (stepId === "cleanup") {
     await ensureCrawlMetaTable();
-    const liveIdsRow = await dbGet<{ value: string }>("SELECT value FROM crawl_meta WHERE key = 'live_source_ids'");
+    const liveIdsRow = await dbGet<{ value: string }>(
+      "SELECT value FROM crawl_meta WHERE key = 'live_source_ids'"
+    );
     if (!liveIdsRow?.value) {
       await saveCrawlTimestamp();
       return { inserted: 0, deleted: 0, source: "cleanup" };
     }
-    const liveSourceIds = new Set(JSON.parse(liveIdsRow.value) as string[]);
-    const toRemove = existingRows.filter((r) => !liveSourceIds.has(r.source_id));
+    const liveSourceIds = new Set(
+      JSON.parse(liveIdsRow.value) as string[]
+    );
+    const toRemove = existingRows.filter(
+      (r) => !liveSourceIds.has(r.source_id)
+    );
     let deleted = 0;
     if (toRemove.length > 0) {
-      const deleteStatements: { sql: string; args: (string | number | null)[] }[] = [];
+      const deleteStatements: {
+        sql: string;
+        args: (string | number | null)[];
+      }[] = [];
       for (const row of toRemove) {
         deleteStatements.push({
           sql: "DELETE FROM listing_images WHERE listing_id IN (SELECT id FROM listings WHERE source_id = ?)",
@@ -563,21 +748,55 @@ export async function runCrawlStep(stepId: string): Promise<{ inserted: number; 
   const cat = CATEGORIES.find((c) => c.slug === slug);
   if (!cat) throw new Error(`Unknown crawl step: ${stepId}`);
 
-  const items = await crawlGwCategory(cat.slug);
-  const newItems = items.filter((item) => !existingSourceIds.has(item.sourceId));
+  // Phase 1: Collect all listing URLs from category pages (fast)
+  const refs = await collectGwListingUrls(cat.slug);
+  const newRefs = refs.filter((r) => !existingSourceIds.has(r.sourceId));
+  console.log(
+    `[Crawl] ${cat.slug}: ${refs.length} total, ${newRefs.length} new to scrape`
+  );
+
+  // Phase 2: Scrape detail pages for new listings only (slow)
+  const newItems: CrawledItem[] = [];
+  for (const ref of newRefs) {
+    await delay(1200 + Math.random() * 1300);
+    const item = await scrapeGwListing(ref.url, cat.hauptkategorie);
+    if (item) newItems.push(item);
+  }
+
   await insertItems(newItems, "gebrauchtwaffen");
 
+  // Track ALL source IDs (both new and existing) for cleanup
   await ensureCrawlMetaTable();
-  const existingLiveRow = await dbGet<{ value: string }>("SELECT value FROM crawl_meta WHERE key = 'live_source_ids'");
-  const existingLive: string[] = existingLiveRow?.value ? JSON.parse(existingLiveRow.value) : [];
-  const updatedLive = [...existingLive, ...items.map((i) => i.sourceId)];
-  await dbRun("INSERT OR REPLACE INTO crawl_meta (key, value) VALUES ('live_source_ids', ?)", [JSON.stringify(updatedLive)]);
+  const existingLiveRow = await dbGet<{ value: string }>(
+    "SELECT value FROM crawl_meta WHERE key = 'live_source_ids'"
+  );
+  const existingLive: string[] = existingLiveRow?.value
+    ? JSON.parse(existingLiveRow.value)
+    : [];
+  const updatedLive = [
+    ...existingLive,
+    ...refs.map((r) => r.sourceId),
+  ];
+  await dbRun(
+    "INSERT OR REPLACE INTO crawl_meta (key, value) VALUES ('live_source_ids', ?)",
+    [JSON.stringify(updatedLive)]
+  );
 
-  console.log(`[Crawl] ${cat.slug}: ${items.length} total, ${newItems.length} new`);
-  return { inserted: newItems.length, deleted: 0, source: `gw-${slug}` };
+  console.log(
+    `[Crawl] ${cat.slug}: ${refs.length} total, ${newItems.length} new inserted`
+  );
+  return {
+    inserted: newItems.length,
+    deleted: 0,
+    source: `gw-${slug}`,
+  };
 }
 
-export async function runCrawl(): Promise<{ inserted: number; deleted: number; duration: number }> {
+export async function runCrawl(): Promise<{
+  inserted: number;
+  deleted: number;
+  duration: number;
+}> {
   const start = Date.now();
   const steps = getCrawlSteps();
   let totalInserted = 0;
@@ -594,16 +813,30 @@ export async function runCrawl(): Promise<{ inserted: number; deleted: number; d
   }
 
   const duration = Date.now() - start;
-  console.log(`[Crawl] Full crawl done: ${totalInserted} new, ${totalDeleted} removed in ${duration}ms`);
+  console.log(
+    `[Crawl] Full crawl done: ${totalInserted} new, ${totalDeleted} removed in ${duration}ms`
+  );
   return { inserted: totalInserted, deleted: totalDeleted, duration };
 }
 
-export async function getCrawlStatus(): Promise<{ lastCrawl: string | null; count: number; autoCrawlEnabled: boolean; autoCrawlTime: string }> {
+export async function getCrawlStatus(): Promise<{
+  lastCrawl: string | null;
+  count: number;
+  autoCrawlEnabled: boolean;
+  autoCrawlTime: string;
+}> {
   await initializeSchema();
-  const count = (await dbGet<{ c: number }>("SELECT COUNT(*) as c FROM listings WHERE source IN ('gebrauchtwaffen', 'nextgun')"))?.c ?? 0;
+  const count =
+    (
+      await dbGet<{ c: number }>(
+        "SELECT COUNT(*) as c FROM listings WHERE source IN ('gebrauchtwaffen', 'nextgun')"
+      )
+    )?.c ?? 0;
 
   await ensureCrawlMetaTable();
-  const row = await dbGet<{ value: string }>("SELECT value FROM crawl_meta WHERE key = 'last_crawl'");
+  const row = await dbGet<{ value: string }>(
+    "SELECT value FROM crawl_meta WHERE key = 'last_crawl'"
+  );
 
   return {
     lastCrawl: row?.value || null,
@@ -625,5 +858,8 @@ async function ensureCrawlMetaTable() {
 async function saveCrawlTimestamp() {
   await ensureCrawlMetaTable();
   const now = new Date().toISOString();
-  await dbRun("INSERT OR REPLACE INTO crawl_meta (key, value) VALUES ('last_crawl', ?)", [now]);
+  await dbRun(
+    "INSERT OR REPLACE INTO crawl_meta (key, value) VALUES ('last_crawl', ?)",
+    [now]
+  );
 }

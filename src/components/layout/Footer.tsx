@@ -43,25 +43,25 @@ const KATEGORIE_LINKS = [
 ];
 
 const KANTON_LINKS = [
-  { label: "Zürich", k: "ZH" },
-  { label: "Bern", k: "BE" },
-  { label: "Luzern", k: "LU" },
-  { label: "St. Gallen", k: "SG" },
-  { label: "Aargau", k: "AG" },
-  { label: "Basel", k: "BS" },
-  { label: "Graubünden", k: "GR" },
-  { label: "Wallis", k: "VS" },
-  { label: "Waadt", k: "VD" },
-  { label: "Genf", k: "GE" },
-  { label: "Tessin", k: "TI" },
-  { label: "Thurgau", k: "TG" },
-  { label: "Solothurn", k: "SO" },
-  { label: "Freiburg", k: "FR" },
-  { label: "Schwyz", k: "SZ" },
-  { label: "Schaffhausen", k: "SH" },
-  { label: "Zug", k: "ZG" },
-  { label: "Neuenburg", k: "NE" },
-  { label: "Jura", k: "JU" },
+  { label: "Zürich", slug: "zuerich" },
+  { label: "Bern", slug: "bern" },
+  { label: "Luzern", slug: "luzern" },
+  { label: "St. Gallen", slug: "st-gallen" },
+  { label: "Aargau", slug: "aargau" },
+  { label: "Basel", slug: "basel-stadt" },
+  { label: "Graubünden", slug: "graubuenden" },
+  { label: "Wallis", slug: "wallis" },
+  { label: "Waadt", slug: "waadt" },
+  { label: "Genf", slug: "genf" },
+  { label: "Tessin", slug: "tessin" },
+  { label: "Thurgau", slug: "thurgau" },
+  { label: "Solothurn", slug: "solothurn" },
+  { label: "Freiburg", slug: "freiburg" },
+  { label: "Schwyz", slug: "schwyz" },
+  { label: "Schaffhausen", slug: "schaffhausen" },
+  { label: "Zug", slug: "zug" },
+  { label: "Neuenburg", slug: "neuenburg" },
+  { label: "Jura", slug: "jura" },
 ];
 
 export default function Footer() {
@@ -143,8 +143,8 @@ export default function Footer() {
           <div className="flex flex-wrap gap-x-4 gap-y-1.5">
             {KANTON_LINKS.map((k) => (
               <Link
-                key={k.k}
-                href={`/suche?kanton=${k.k}`}
+                key={k.slug}
+                href={`/kanton/${k.slug}`}
                 className="text-xs text-neutral-500 transition-colors hover:text-brand-green"
               >
                 {k.label}

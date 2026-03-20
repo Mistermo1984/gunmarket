@@ -50,23 +50,27 @@ const SWITZERLAND_ZOOM = 8;
 
 // ─── Image helper ───────────────────────────────────────────────
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getImageUrl(listing: Record<string, unknown>): string | null {
-  // Direct image_url field (from /api/listings/map or /api/listings/nearby)
-  if (listing.image_url) return String(listing.image_url);
+function getImageUrl(listing: any): string | null {
+  try {
+    // Direct image_url field (from /api/listings/map or /api/listings/nearby)
+    if (listing.image_url && typeof listing.image_url === "string") return listing.image_url;
 
-  // images field — could be array of objects, array of strings, or JSON string
-  let imgs = listing.images;
-  if (typeof imgs === "string") {
-    try { imgs = JSON.parse(imgs); } catch { return null; }
+    if (!listing.images) return null;
+    let imgs = listing.images;
+    if (typeof imgs === "string") {
+      imgs = imgs.trim();
+      if (imgs.startsWith("[")) imgs = JSON.parse(imgs);
+      else if (imgs.startsWith("http")) return imgs;
+    }
+    if (Array.isArray(imgs) && imgs.length > 0) {
+      const first = imgs[0];
+      if (typeof first === "string") return first;
+      if (first && typeof first === "object" && first.url) return String(first.url);
+    }
+    return null;
+  } catch {
+    return null;
   }
-  if (!Array.isArray(imgs) || imgs.length === 0) return null;
-
-  const first = imgs[0];
-  if (typeof first === "string") return first;
-  if (first && typeof first === "object" && "url" in (first as Record<string, unknown>)) {
-    return String((first as Record<string, unknown>).url);
-  }
-  return null;
 }
 
 // ─── Filter config ──────────────────────────────────────────────
@@ -546,24 +550,27 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={l.image_url}
-                    alt=""
-                    style={{ width: 52, height: 52, borderRadius: 6, objectFit: "cover", background: "#f3f4f6", flexShrink: 0 }}
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-                  />
-                ) : (
-                  <div
-                    style={{
-                      width: 52, height: 52, borderRadius: 6, background: "#f3f4f6",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      flexShrink: 0, color: "#d1d5db",
+                    alt={l.titel}
+                    style={{ width: 56, height: 56, borderRadius: 6, objectFit: "cover", flexShrink: 0, background: "#f3f4f6" }}
+                    onError={(e) => {
+                      const el = e.target as HTMLImageElement;
+                      el.style.display = "none";
+                      if (el.nextElementSibling) (el.nextElementSibling as HTMLElement).style.display = "flex";
                     }}
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                      <circle cx="12" cy="10" r="3" />
-                    </svg>
-                  </div>
-                )}
+                  />
+                ) : null}
+                <div
+                  style={{
+                    width: 56, height: 56, borderRadius: 6, background: "#f3f4f6",
+                    flexShrink: 0, display: l.image_url ? "none" : "flex",
+                    alignItems: "center", justifyContent: "center", fontSize: 20,
+                  }}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontWeight: 600, fontSize: 13, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                     {l.titel}

@@ -21,7 +21,7 @@ export interface MapHandle {
 
 interface HomeMapViewProps {
   markers: MapMarker[];
-  onClusterClick?: (markerIds: string[]) => void;
+  onClusterClick?: (latlng: { lat: number; lng: number }, count: number) => void;
 }
 
 const SWITZERLAND_CENTER: [number, number] = [46.8, 8.2];
@@ -209,17 +209,19 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
         },
       });
 
-      // Cluster click → notify parent
+      // Cluster click → pass lat/lng + count to parent
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       cluster.on("clusterclick", (e: any) => {
         try {
-          const childMarkers = e.layer.getAllChildMarkers();
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const ids = childMarkers.map((cm: any) => cm.options._listingId).filter(Boolean);
-          if (onClusterClickRef.current && ids.length > 0) {
-            onClusterClickRef.current(ids);
+          const latlng = e.layer.getLatLng();
+          const count = e.layer.getChildCount();
+          console.log("[HomeMapView] clusterclick fired", { lat: latlng.lat, lng: latlng.lng, count });
+          if (onClusterClickRef.current) {
+            onClusterClickRef.current({ lat: latlng.lat, lng: latlng.lng }, count);
           }
-        } catch { /* ignore click errors */ }
+        } catch (err) {
+          console.error("[HomeMapView] clusterclick error:", err);
+        }
       });
 
       for (const m of markers) {

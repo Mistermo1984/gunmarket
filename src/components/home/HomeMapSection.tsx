@@ -165,26 +165,18 @@ export default function HomeMapSection() {
     [filtered]
   );
 
-  // Fetch panel listings for selected cantons
-  async function fetchCantonListings(kantone: Set<string>) {
-    if (kantone.size === 0) {
-      setPanel((p) => ({ ...p, open: false, listings: [], loading: false }));
-      return;
-    }
-    const abbrArr = Array.from(kantone);
-    const label = abbrArr.length === 1
-      ? KANTONE.find((k) => k.abbr === abbrArr[0])?.label || abbrArr[0]
-      : `${abbrArr.length} Kantone`;
-    const link = `/suche?kanton=${abbrArr.join(",")}`;
-
-    setPanel({ open: true, listings: [], title: label, loading: true, searchLink: link });
-    console.log("[MapPanel] Fetching canton listings:", abbrArr.join(","));
-
-    try {
-      const res = await fetch(`/api/listings?kanton=${abbrArr.join(",")}&limit=50`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      const items: Listing[] = (data.listings || []).map((l: Record<string, unknown>) => ({
+  // Helper to parse listing response — handles both image_url (map API) and images[] (listings API)
+  function parseListings(raw: Record<string, unknown>[]): Listing[] {
+    return raw.map((l) => {
+      // /api/listings returns images[], /api/listings/nearby returns image_url directly
+      let imgUrl: string | null = null;
+      if (l.image_url) {
+        imgUrl = String(l.image_url);
+      } else if (Array.isArray(l.images) && l.images.length > 0) {
+        const first = l.images[0] as Record<string, unknown>;
+        if (first?.url) imgUrl = String(first.url);
+      }
+      return {
         id: String(l.id || ""),
         titel: String(l.titel || ""),
         preis: Number(l.preis) || 0,
@@ -193,35 +185,57 @@ export default function HomeMapSection() {
         rechtsstatus: String(l.rechtsstatus || ""),
         ortschaft: String(l.ortschaft || ""),
         hauptkategorie: String(l.hauptkategorie || ""),
-        image_url: (l.image_url as string) || null,
-      }));
-      console.log("[MapPanel] Canton results:", items.length);
-      setPanel((p) => ({ ...p, listings: items, loading: false }));
-    } catch (err) {
-      console.error("[MapPanel] Canton fetch failed:", err);
-      setPanel((p) => ({ ...p, loading: false }));
-    }
+        image_url: imgUrl,
+      };
+    });
   }
 
   // Canton click — toggle + fly + fetch panel
   function handleKantonClick(abbr: string) {
-    setSelectedKantone((prev) => {
-      const next = new Set(prev);
-      if (next.has(abbr)) next.delete(abbr); else next.add(abbr);
+    const next = new Set(selectedKantone);
+    if (next.has(abbr)) next.delete(abbr); else next.add(abbr);
+    setSelectedKantone(next);
 
-      if (next.size === 1) {
-        const single = Array.from(next)[0];
-        const center = CANTON_CENTERS[single];
-        if (center) mapHandleRef.current?.flyTo(center.lat, center.lng, center.zoom);
-      } else if (next.size === 0) {
-        mapHandleRef.current?.resetView();
-      } else {
-        mapHandleRef.current?.resetView();
-      }
+    console.log("[MapPanel] Canton click:", abbr, "selected:", Array.from(next));
 
-      fetchCantonListings(next);
-      return next;
-    });
+    if (next.size === 1) {
+      const single = Array.from(next)[0];
+      const center = CANTON_CENTERS[single];
+      if (center) mapHandleRef.current?.flyTo(center.lat, center.lng, center.zoom);
+    } else {
+      mapHandleRef.current?.resetView();
+    }
+
+    // Fetch panel listings
+    if (next.size === 0) {
+      setPanel({ open: false, listings: [], title: "", loading: false, searchLink: "/suche" });
+      return;
+    }
+
+    const abbrArr = Array.from(next);
+    const label = abbrArr.length === 1
+      ? KANTONE.find((k) => k.abbr === abbrArr[0])?.label || abbrArr[0]
+      : `${abbrArr.length} Kantone`;
+    const link = `/suche?kanton=${abbrArr.join(",")}`;
+
+    setPanel({ open: true, listings: [], title: label, loading: true, searchLink: link });
+    console.log("[MapPanel] Fetching canton listings:", abbrArr.join(","));
+
+    fetch(`/api/listings?kanton=${abbrArr.join(",")}&limit=50`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        console.log("[MapPanel] Canton fetch response:", data);
+        const items = parseListings(data.listings || []);
+        console.log("[MapPanel] Canton results:", items.length);
+        setPanel((p) => ({ ...p, listings: items, loading: false }));
+      })
+      .catch((err) => {
+        console.error("[MapPanel] Canton fetch failed:", err);
+        setPanel((p) => ({ ...p, loading: false }));
+      });
   }
 
   function handleReset() {
@@ -230,37 +244,26 @@ export default function HomeMapSection() {
     mapHandleRef.current?.resetView();
   }
 
-  // Cluster click — fetch nearby listings
-  const handleClusterClick = useCallback((markerIds: string[]) => {
-    if (!markerIds.length) return;
-    console.log("[MapPanel] Cluster click, marker IDs:", markerIds.length);
+  // Cluster click — receives lat/lng directly from map, fetches nearby listings
+  const handleClusterClick = useCallback((latlng: { lat: number; lng: number }, count: number) => {
+    console.log("[MapPanel] Cluster click received:", latlng, "count:", count);
 
-    // Find center of clicked markers from allListings
-    const matched = allListings.filter((l) => markerIds.includes(l.id) && l.lat && l.lng);
-    if (matched.length === 0) return;
+    setPanel({
+      open: true,
+      listings: [],
+      title: `${count} Inserate in der Nähe`,
+      loading: true,
+      searchLink: "/suche",
+    });
 
-    const avgLat = matched.reduce((s, l) => s + (l.lat || 0), 0) / matched.length;
-    const avgLng = matched.reduce((s, l) => s + (l.lng || 0), 0) / matched.length;
-
-    setPanel({ open: true, listings: [], title: "Inserate in der Nähe", loading: true, searchLink: "/suche" });
-
-    fetch(`/api/listings/nearby?lat=${avgLat}&lng=${avgLng}&radius=15&limit=30`)
+    fetch(`/api/listings/nearby?lat=${latlng.lat}&lng=${latlng.lng}&radius=15&limit=30`)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
       })
       .then((data) => {
-        const items: Listing[] = (data.listings || []).map((l: Record<string, unknown>) => ({
-          id: String(l.id || ""),
-          titel: String(l.titel || ""),
-          preis: Number(l.preis) || 0,
-          zustand: String(l.zustand || ""),
-          kanton: String(l.kanton || ""),
-          rechtsstatus: String(l.rechtsstatus || ""),
-          ortschaft: String(l.ortschaft || ""),
-          hauptkategorie: String(l.hauptkategorie || ""),
-          image_url: (l.image_url as string) || null,
-        }));
+        console.log("[MapPanel] Nearby fetch response:", data);
+        const items = parseListings(data.listings || []);
         console.log("[MapPanel] Nearby results:", items.length);
         setPanel((p) => ({ ...p, listings: items, loading: false }));
       })
@@ -268,7 +271,7 @@ export default function HomeMapSection() {
         console.error("[MapPanel] Nearby fetch failed:", err);
         setPanel((p) => ({ ...p, loading: false }));
       });
-  }, [allListings]);
+  }, []);
 
   // Invalidate map size when panel opens/closes
   useEffect(() => {

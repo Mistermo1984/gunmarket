@@ -1,10 +1,13 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, lazy, Suspense } from "react";
+import React, { useState, useEffect, useMemo, useRef, lazy, Suspense, useCallback } from "react";
 import Link from "next/link";
-import { MapPin, ChevronRight, PackageOpen } from "lucide-react";
+import { MapPin, ChevronRight, PackageOpen, X } from "lucide-react";
+import type { MapHandle, MapMarker } from "./HomeMapView";
 
 const HomeMapView = lazy(() => import("./HomeMapView"));
+
+// ─── Canton data ────────────────────────────────────────────────
 
 const KANTONE = [
   { abbr: "ZH", label: "Zürich" },
@@ -44,6 +47,37 @@ const CANTON_NAME_TO_ABBR: Record<string, string> = {
   "Neuenburg": "NE", "Genf": "GE", "Jura": "JU",
 };
 
+const CANTON_CENTERS: Record<string, { lat: number; lng: number; zoom: number }> = {
+  ZH: { lat: 47.41, lng: 8.65, zoom: 11 },
+  BE: { lat: 46.95, lng: 7.45, zoom: 10 },
+  LU: { lat: 47.05, lng: 8.30, zoom: 11 },
+  UR: { lat: 46.88, lng: 8.63, zoom: 11 },
+  SZ: { lat: 47.02, lng: 8.65, zoom: 11 },
+  OW: { lat: 46.87, lng: 8.25, zoom: 12 },
+  NW: { lat: 46.93, lng: 8.38, zoom: 12 },
+  GL: { lat: 46.98, lng: 9.07, zoom: 12 },
+  ZG: { lat: 47.17, lng: 8.52, zoom: 12 },
+  FR: { lat: 46.80, lng: 7.15, zoom: 11 },
+  SO: { lat: 47.21, lng: 7.53, zoom: 11 },
+  BS: { lat: 47.56, lng: 7.59, zoom: 12 },
+  BL: { lat: 47.48, lng: 7.73, zoom: 11 },
+  SH: { lat: 47.70, lng: 8.63, zoom: 12 },
+  AR: { lat: 47.37, lng: 9.28, zoom: 12 },
+  AI: { lat: 47.31, lng: 9.41, zoom: 13 },
+  SG: { lat: 47.42, lng: 9.37, zoom: 11 },
+  GR: { lat: 46.66, lng: 9.58, zoom: 9 },
+  AG: { lat: 47.39, lng: 8.16, zoom: 11 },
+  TG: { lat: 47.55, lng: 9.00, zoom: 11 },
+  TI: { lat: 46.17, lng: 8.80, zoom: 10 },
+  VD: { lat: 46.57, lng: 6.56, zoom: 10 },
+  VS: { lat: 46.20, lng: 7.54, zoom: 10 },
+  NE: { lat: 46.99, lng: 6.93, zoom: 11 },
+  GE: { lat: 46.21, lng: 6.14, zoom: 12 },
+  JU: { lat: 47.36, lng: 7.24, zoom: 11 },
+};
+
+// ─── Filters & badges ───────────────────────────────────────────
+
 const KATEGORIE_FILTERS = [
   { value: "", label: "Alle" },
   { value: "kurzwaffen", label: "Kurzwaffen" },
@@ -55,7 +89,7 @@ const KATEGORIE_FILTERS = [
 ];
 
 const PREIS_FILTERS = [
-  { value: "", label: "Alle" },
+  { value: "", label: "Alle Preise" },
   { value: "0-500", label: "< 500" },
   { value: "500-1500", label: "500–1'500" },
   { value: "1500-3000", label: "1'500–3'000" },
@@ -70,9 +104,7 @@ const RECHTS_BADGE: Record<string, { label: string; bg: string; text: string }> 
   "abk-gross": { label: "ABK", bg: "#fee2e2", text: "#991b1b" },
 };
 
-const ZUSTAND_LABELS: Record<string, string> = {
-  neu: "Neu", "sehr-gut": "Sehr gut", gut: "Gut", akzeptabel: "Akzeptabel", defekt: "Defekt",
-};
+// ─── Types ──────────────────────────────────────────────────────
 
 interface Listing {
   id: string;
@@ -88,6 +120,8 @@ interface Listing {
   lng?: number;
 }
 
+// ─── Component ──────────────────────────────────────────────────
+
 export default function HomeMapSection() {
   const [allListings, setAllListings] = useState<Listing[]>([]);
   const [selectedKantone, setSelectedKantone] = useState<Set<string>>(new Set());
@@ -95,6 +129,13 @@ export default function HomeMapSection() {
   const [kantonCounts, setKantonCounts] = useState<Record<string, number>>({});
   const [katFilter, setKatFilter] = useState("");
   const [preisFilter, setPreisFilter] = useState("");
+
+  // Overlay panel state
+  const [overlayOpen, setOverlayOpen] = useState(false);
+  const [overlayLabel, setOverlayLabel] = useState("");
+  const [clusterMarkerIds, setClusterMarkerIds] = useState<Set<string> | null>(null);
+
+  const mapHandleRef = useRef<MapHandle>(null);
 
   // Fetch listings with coordinates for map
   useEffect(() => {
@@ -155,8 +196,18 @@ export default function HomeMapSection() {
     return result;
   }, [cantonFiltered, katFilter, preisFilter]);
 
+  // Overlay panel listings: if cluster click → show cluster markers; else canton-filtered
+  const overlayListings = useMemo(() => {
+    if (clusterMarkerIds) {
+      return fullyFiltered.filter((l) => clusterMarkerIds.has(l.id));
+    }
+    return fullyFiltered;
+  }, [fullyFiltered, clusterMarkerIds]);
+
+  const displayOverlay = overlayListings.slice(0, 50);
+
   // Map markers from filtered listings
-  const mapMarkers = useMemo(
+  const mapMarkers: MapMarker[] = useMemo(
     () =>
       fullyFiltered
         .filter((l) => l.lat && l.lng)
@@ -172,24 +223,67 @@ export default function HomeMapSection() {
     [fullyFiltered]
   );
 
-  const displayListings = fullyFiltered.slice(0, 30);
-
+  // Canton click → toggle selection, fly to canton, open overlay
   function handleKantonClick(abbr: string) {
-    setSelectedKantone((prev) => {
-      const next = new Set(prev);
-      if (next.has(abbr)) next.delete(abbr);
-      else next.add(abbr);
-      return next;
-    });
+    setClusterMarkerIds(null);
     setKatFilter("");
     setPreisFilter("");
+
+    setSelectedKantone((prev) => {
+      const next = new Set(prev);
+      if (next.has(abbr)) {
+        next.delete(abbr);
+      } else {
+        next.add(abbr);
+      }
+
+      // Fly map to canton or reset
+      if (next.size === 1) {
+        const singleAbbr = Array.from(next)[0];
+        const center = CANTON_CENTERS[singleAbbr];
+        if (center && mapHandleRef.current) {
+          mapHandleRef.current.flyTo(center.lat, center.lng, center.zoom);
+        }
+        const label = KANTONE.find((k) => k.abbr === singleAbbr)?.label || singleAbbr;
+        setOverlayLabel(label);
+        setOverlayOpen(true);
+      } else if (next.size > 1) {
+        // Multiple cantons: reset to Switzerland view
+        mapHandleRef.current?.resetView();
+        setOverlayLabel(`${next.size} Kantone`);
+        setOverlayOpen(true);
+      } else {
+        // Nothing selected
+        mapHandleRef.current?.resetView();
+        setOverlayOpen(false);
+        setOverlayLabel("");
+      }
+
+      return next;
+    });
   }
 
   function handleReset() {
     setSelectedKantone(new Set());
     setKatFilter("");
     setPreisFilter("");
+    setOverlayOpen(false);
+    setOverlayLabel("");
+    setClusterMarkerIds(null);
+    mapHandleRef.current?.resetView();
   }
+
+  function handleCloseOverlay() {
+    setOverlayOpen(false);
+    setClusterMarkerIds(null);
+  }
+
+  // Cluster click callback from map
+  const handleClusterClick = useCallback((markerIds: string[]) => {
+    setClusterMarkerIds(new Set(markerIds));
+    setOverlayLabel(`${markerIds.length} Inserate`);
+    setOverlayOpen(true);
+  }, []);
 
   // Sort cantons by count descending, filter out empty
   const sortedKantone = KANTONE
@@ -232,10 +326,10 @@ export default function HomeMapSection() {
           </p>
         </div>
 
-        {/* Main layout: canton filter + map with overlay */}
-        <div className="flex flex-col gap-4 lg:flex-row" style={{ height: "auto" }}>
-          {/* Left: Canton filter panel (30%) */}
-          <div className="shrink-0 lg:w-[280px]">
+        {/* Main layout: canton filter (25%) + map (75%) */}
+        <div className="flex flex-col gap-4 lg:flex-row">
+          {/* Left: Canton filter panel (25%) */}
+          <div className="shrink-0 lg:w-[240px]">
             <div className="rounded-xl border bg-white p-4" style={{ borderColor: "#e5e7eb" }}>
               <h3 className="mb-3 text-sm font-semibold text-[#1a2e1a]">Nach Kanton filtern</h3>
 
@@ -254,7 +348,7 @@ export default function HomeMapSection() {
 
               <div
                 className="flex gap-1.5 overflow-x-auto pb-2 lg:grid lg:grid-cols-2 lg:gap-1.5 lg:overflow-y-auto lg:overflow-x-visible"
-                style={{ maxHeight: 480, scrollbarWidth: "thin", scrollbarColor: "#16a34a #f3f4f6" }}
+                style={{ maxHeight: 500, scrollbarWidth: "thin", scrollbarColor: "#16a34a #f3f4f6" }}
               >
                 {sortedKantone.map((k) => {
                   const count = kantonCounts[k.abbr] || 0;
@@ -263,7 +357,7 @@ export default function HomeMapSection() {
                     <button
                       key={k.abbr}
                       onClick={() => handleKantonClick(k.abbr)}
-                      className={`flex w-full shrink-0 items-center justify-between rounded-lg px-2.5 py-2 text-[12px] transition-colors ${
+                      className={`flex w-full shrink-0 items-center justify-between rounded-lg px-2 py-1.5 text-[11px] transition-colors ${
                         isSelected
                           ? "bg-[#16a34a] text-white"
                           : "bg-[#f8faf8] text-[#374151] hover:bg-[#f0fdf4]"
@@ -271,12 +365,12 @@ export default function HomeMapSection() {
                     >
                       <span className="truncate font-medium">{k.label}</span>
                       <span
-                        className={`ml-1.5 shrink-0 rounded-full px-1.5 py-0.5 text-center text-[11px] font-bold ${
+                        className={`ml-1 shrink-0 rounded-full px-1.5 py-0.5 text-center text-[10px] font-bold ${
                           isSelected
                             ? "bg-white/20 text-white"
                             : "bg-[#dcfce7] text-[#16a34a]"
                         }`}
-                        style={{ minWidth: 32 }}
+                        style={{ minWidth: 28 }}
                       >
                         {count}
                       </span>
@@ -287,7 +381,7 @@ export default function HomeMapSection() {
             </div>
           </div>
 
-          {/* Right: Map (70%) with overlay listing panel */}
+          {/* Right: Map (75%) with conditional overlay */}
           <div className="relative flex-1 overflow-hidden rounded-xl border" style={{ borderColor: "#e5e7eb", height: 600 }}>
             {/* Leaflet map — fills entire right panel */}
             <Suspense
@@ -297,226 +391,237 @@ export default function HomeMapSection() {
                 </div>
               }
             >
-              <HomeMapView markers={mapMarkers} />
+              <HomeMapView
+                ref={mapHandleRef}
+                markers={mapMarkers}
+                onClusterClick={handleClusterClick}
+              />
             </Suspense>
 
-            {/* Overlay listing panel — positioned on top of map */}
-            <div
-              className="absolute bottom-3 right-3 top-3 hidden w-[320px] flex-col overflow-hidden rounded-xl border bg-white/95 shadow-lg backdrop-blur-sm lg:flex"
-              style={{ borderColor: "#e5e7eb" }}
-            >
-              {/* Quick filters */}
-              <div className="border-b px-3 py-2.5" style={{ borderColor: "#f3f4f6" }}>
-                <div className="mb-1.5 flex flex-wrap gap-1">
-                  {KATEGORIE_FILTERS.map((f) => (
-                    <button
-                      key={f.value}
-                      onClick={() => setKatFilter(f.value)}
-                      className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium transition-colors ${
-                        katFilter === f.value
-                          ? "bg-[#16a34a] text-white"
-                          : "bg-[#f3f4f6] text-[#374151] hover:bg-[#dcfce7]"
-                      }`}
-                    >
-                      {f.label}
-                    </button>
-                  ))}
-                </div>
-                <div className="flex flex-wrap gap-1">
-                  {PREIS_FILTERS.map((f) => (
-                    <button
-                      key={f.value}
-                      onClick={() => setPreisFilter(f.value)}
-                      className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium transition-colors ${
-                        preisFilter === f.value
-                          ? "bg-[#16a34a] text-white"
-                          : "bg-[#f3f4f6] text-[#374151] hover:bg-[#dcfce7]"
-                      }`}
-                    >
-                      {f.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Count bar */}
-              <div className="flex items-center justify-between border-b px-3 py-2" style={{ borderColor: "#f3f4f6" }}>
-                <p className="text-xs font-semibold text-[#1a2e1a]">
-                  {fullyFiltered.length.toLocaleString("de-CH")} Inserate
-                </p>
-                <span className="text-[10px] text-neutral-400">{locationLabel}</span>
-              </div>
-
-              {/* Scrollable listing cards */}
+            {/* Overlay listing panel — right 1/3 of map, only when active */}
+            {overlayOpen && (
               <div
-                className="flex-1 overflow-y-auto"
-                style={{ scrollbarWidth: "thin", scrollbarColor: "#16a34a #f3f4f6" }}
+                className="absolute bottom-0 right-0 top-0 hidden flex-col lg:flex"
+                style={{
+                  width: "33.33%",
+                  backgroundColor: "rgba(255,255,255,0.96)",
+                  backdropFilter: "blur(4px)",
+                  WebkitBackdropFilter: "blur(4px)",
+                  borderLeft: "1px solid #e5e7eb",
+                }}
               >
-                {loading ? (
-                  <div className="divide-y" style={{ borderColor: "#f3f4f6" }}>
-                    {Array.from({ length: 6 }).map((_, i) => (
-                      <div key={i} className="flex items-center gap-2.5 px-3 py-2.5">
-                        <div className="h-12 w-12 shrink-0 animate-pulse rounded-md bg-[#f3f4f6]" />
-                        <div className="flex-1 space-y-1.5">
-                          <div className="h-2.5 w-3/4 animate-pulse rounded bg-[#f3f4f6]" />
-                          <div className="h-2 w-1/2 animate-pulse rounded bg-[#f3f4f6]" />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : displayListings.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center py-12 text-center">
-                    <PackageOpen size={32} className="mb-2 text-neutral-300" />
-                    <p className="text-xs font-medium text-neutral-500">Keine Inserate gefunden</p>
-                    <p className="mt-0.5 text-[10px] text-neutral-400">Anderen Kanton oder Filter wählen</p>
-                  </div>
-                ) : (
+                {/* Header with close button */}
+                <div className="flex items-center justify-between border-b px-3 py-2.5" style={{ borderColor: "#e5e7eb" }}>
                   <div>
-                    {displayListings.map((l) => {
-                      const rs = RECHTS_BADGE[l.rechtsstatus] || { label: l.rechtsstatus || "—", bg: "#f3f4f6", text: "#374151" };
-                      const zLabel = ZUSTAND_LABELS[l.zustand] || "";
-                      return (
-                        <a
-                          key={l.id}
-                          href={`/inserat/${l.id}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="group flex items-center gap-2.5 border-b px-3 py-2.5 transition-colors hover:bg-[#f0fdf4]"
-                          style={{ borderBottomColor: "#f3f4f6" }}
+                    <p className="text-xs font-bold text-[#1a2e1a]">
+                      {overlayListings.length.toLocaleString("de-CH")} Inserate
+                    </p>
+                    <p className="text-[10px] text-neutral-400">{overlayLabel}</p>
+                  </div>
+                  <button
+                    onClick={handleCloseOverlay}
+                    className="flex h-7 w-7 items-center justify-center rounded-full text-neutral-400 transition-colors hover:bg-[#f3f4f6] hover:text-neutral-600"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+
+                {/* Quick filter pills — show when >20 results */}
+                {overlayListings.length > 20 && (
+                  <div className="border-b px-3 py-2" style={{ borderColor: "#f3f4f6" }}>
+                    <div className="mb-1.5 flex flex-wrap gap-1">
+                      {KATEGORIE_FILTERS.map((f) => (
+                        <button
+                          key={f.value}
+                          onClick={() => setKatFilter(f.value)}
+                          className={`rounded-full px-2 py-0.5 text-[10px] font-medium transition-colors ${
+                            katFilter === f.value
+                              ? "bg-[#16a34a] text-white"
+                              : "bg-[#f3f4f6] text-[#374151] hover:bg-[#dcfce7]"
+                          }`}
                         >
-                          {l.image_url ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                              src={l.image_url}
-                              alt=""
-                              className="h-12 w-12 shrink-0 rounded-md object-cover"
-                            />
-                          ) : (
-                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-[#f3f4f6] text-neutral-300">
-                              <PackageOpen size={16} />
-                            </div>
-                          )}
+                          {f.label}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="flex flex-wrap gap-1">
+                      {PREIS_FILTERS.map((f) => (
+                        <button
+                          key={f.value}
+                          onClick={() => setPreisFilter(f.value)}
+                          className={`rounded-full px-2 py-0.5 text-[10px] font-medium transition-colors ${
+                            preisFilter === f.value
+                              ? "bg-[#16a34a] text-white"
+                              : "bg-[#f3f4f6] text-[#374151] hover:bg-[#dcfce7]"
+                          }`}
+                        >
+                          {f.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
-                          <div className="min-w-0 flex-1">
-                            <p className="truncate text-xs font-semibold text-[#1a2e1a] group-hover:text-[#16a34a]">
-                              {l.titel}
-                            </p>
-                            <p className="mt-0.5 truncate text-[10px] text-neutral-400">
-                              {l.ortschaft}{l.kanton ? `, ${l.kanton}` : ""}
-                              {zLabel && ` · ${zLabel}`}
-                            </p>
-                            <div className="mt-0.5 flex items-center gap-1.5">
-                              <span
-                                className="inline-block rounded px-1 py-0.5 text-[9px] font-semibold"
-                                style={{ backgroundColor: rs.bg, color: rs.text }}
-                              >
-                                {rs.label}
-                              </span>
-                              <span className="text-xs font-bold text-[#16a34a]">
-                                {l.preis > 0 ? `CHF ${l.preis.toLocaleString("de-CH")}` : "Auf Anfrage"}
-                              </span>
-                            </div>
+                {/* Scrollable listing cards */}
+                <div
+                  className="flex-1 overflow-y-auto"
+                  style={{ scrollbarWidth: "thin", scrollbarColor: "#16a34a #f3f4f6" }}
+                >
+                  {loading ? (
+                    <div>
+                      {Array.from({ length: 6 }).map((_, i) => (
+                        <div key={i} className="flex items-center gap-2.5 border-b px-3 py-2.5" style={{ borderColor: "#f3f4f6" }}>
+                          <div className="h-[52px] w-[52px] shrink-0 animate-pulse rounded-md bg-[#f3f4f6]" />
+                          <div className="flex-1 space-y-1.5">
+                            <div className="h-2.5 w-3/4 animate-pulse rounded bg-[#f3f4f6]" />
+                            <div className="h-2 w-1/2 animate-pulse rounded bg-[#f3f4f6]" />
                           </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : displayOverlay.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-12 text-center">
+                      <PackageOpen size={28} className="mb-2 text-neutral-300" />
+                      <p className="text-xs font-medium text-neutral-500">Keine Inserate</p>
+                      <p className="mt-0.5 text-[10px] text-neutral-400">Filter ändern oder anderen Kanton wählen</p>
+                    </div>
+                  ) : (
+                    <div>
+                      {displayOverlay.map((l) => {
+                        const rs = RECHTS_BADGE[l.rechtsstatus] || { label: l.rechtsstatus || "—", bg: "#f3f4f6", text: "#374151" };
+                        return (
+                          <a
+                            key={l.id}
+                            href={`/inserat/${l.id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group flex items-center gap-2.5 border-b px-3 py-2 transition-colors hover:border-l-2 hover:border-l-[#16a34a] hover:bg-[#f0fdf4]"
+                            style={{ borderBottomColor: "#f3f4f6" }}
+                          >
+                            {/* Image 52x52 */}
+                            {l.image_url ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img
+                                src={l.image_url}
+                                alt=""
+                                className="h-[52px] w-[52px] shrink-0 rounded-md object-cover"
+                              />
+                            ) : (
+                              <div className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-md bg-[#f3f4f6] text-neutral-300">
+                                <PackageOpen size={16} />
+                              </div>
+                            )}
 
-                          <ChevronRight size={12} className="shrink-0 text-neutral-300 group-hover:text-[#16a34a]" />
-                        </a>
-                      );
-                    })}
+                            <div className="min-w-0 flex-1">
+                              <p className="truncate text-xs font-semibold text-[#1a2e1a] group-hover:text-[#16a34a]">
+                                {l.titel}
+                              </p>
+                              <p className="mt-0.5 truncate text-[10px] text-neutral-400">
+                                {l.ortschaft}{l.kanton ? `, ${l.kanton}` : ""}
+                              </p>
+                              <div className="mt-0.5 flex items-center gap-1.5">
+                                <span
+                                  className="inline-block rounded px-1 py-0.5 text-[9px] font-semibold"
+                                  style={{ backgroundColor: rs.bg, color: rs.text }}
+                                >
+                                  {rs.label}
+                                </span>
+                                <span className="text-xs font-bold text-[#16a34a]">
+                                  {l.preis > 0 ? `CHF ${l.preis.toLocaleString("de-CH")}` : "Auf Anfrage"}
+                                </span>
+                              </div>
+                            </div>
+                          </a>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                {/* Footer: "Show all" link */}
+                {overlayListings.length > 50 && (
+                  <div className="border-t px-3 py-2" style={{ borderColor: "#e5e7eb" }}>
+                    <Link
+                      href={searchLink}
+                      className="flex items-center justify-center gap-1 rounded-lg bg-[#f0fdf4] px-3 py-2 text-xs font-semibold text-[#16a34a] transition-colors hover:bg-[#dcfce7]"
+                    >
+                      Alle {overlayListings.length.toLocaleString("de-CH")} Inserate in {overlayLabel}
+                      <ChevronRight size={14} />
+                    </Link>
                   </div>
                 )}
               </div>
+            )}
+          </div>
+        </div>
 
-              {/* "Show all" link */}
-              {fullyFiltered.length > 30 && (
-                <div className="border-t px-3 py-2" style={{ borderColor: "#f3f4f6" }}>
+        {/* Mobile: listing cards below map */}
+        {(selectedKantone.size > 0 || clusterMarkerIds) && (
+          <div className="mt-4 lg:hidden">
+            <div className="rounded-xl border bg-white" style={{ borderColor: "#e5e7eb" }}>
+              <div className="flex items-center justify-between border-b px-3 py-2.5" style={{ borderColor: "#f3f4f6" }}>
+                <p className="text-xs font-bold text-[#1a2e1a]">
+                  {overlayListings.length.toLocaleString("de-CH")} Inserate — {overlayLabel}
+                </p>
+                <button onClick={handleCloseOverlay} className="text-neutral-400 hover:text-neutral-600">
+                  <X size={14} />
+                </button>
+              </div>
+
+              <div className="divide-y" style={{ borderColor: "#f3f4f6" }}>
+                {displayOverlay.slice(0, 10).map((l) => {
+                  const rs = RECHTS_BADGE[l.rechtsstatus] || { label: l.rechtsstatus || "—", bg: "#f3f4f6", text: "#374151" };
+                  return (
+                    <a
+                      key={l.id}
+                      href={`/inserat/${l.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 px-3 py-3 transition-colors hover:bg-[#f0fdf4]"
+                    >
+                      {l.image_url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={l.image_url} alt="" className="h-14 w-14 shrink-0 rounded-md object-cover" />
+                      ) : (
+                        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-md bg-[#f3f4f6] text-neutral-300">
+                          <PackageOpen size={18} />
+                        </div>
+                      )}
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-semibold text-[#1a2e1a]">{l.titel}</p>
+                        <p className="mt-0.5 text-xs text-neutral-400">{l.ortschaft}</p>
+                        <div className="mt-1 flex items-center gap-2">
+                          <span
+                            className="rounded px-1.5 py-0.5 text-[10px] font-semibold"
+                            style={{ backgroundColor: rs.bg, color: rs.text }}
+                          >
+                            {rs.label}
+                          </span>
+                          <span className="text-sm font-bold text-[#16a34a]">
+                            {l.preis > 0 ? `CHF ${l.preis.toLocaleString("de-CH")}` : "Auf Anfrage"}
+                          </span>
+                        </div>
+                      </div>
+                      <ChevronRight size={14} className="shrink-0 text-neutral-300" />
+                    </a>
+                  );
+                })}
+              </div>
+
+              {overlayListings.length > 10 && (
+                <div className="border-t px-3 py-2.5" style={{ borderColor: "#f3f4f6" }}>
                   <Link
                     href={searchLink}
-                    className="flex items-center justify-center gap-1 rounded-lg bg-[#f0fdf4] px-3 py-2 text-xs font-semibold text-[#16a34a] transition-colors hover:bg-[#dcfce7]"
+                    className="flex items-center justify-center gap-1 rounded-lg bg-[#f0fdf4] px-3 py-2 text-xs font-semibold text-[#16a34a] hover:bg-[#dcfce7]"
                   >
-                    Alle {fullyFiltered.length.toLocaleString("de-CH")} anzeigen
+                    Alle {overlayListings.length.toLocaleString("de-CH")} anzeigen
                     <ChevronRight size={14} />
                   </Link>
                 </div>
               )}
             </div>
           </div>
-        </div>
-
-        {/* Mobile: listing cards below map */}
-        <div className="mt-4 lg:hidden">
-          <div className="rounded-xl border bg-white" style={{ borderColor: "#e5e7eb" }}>
-            {/* Mobile quick filters */}
-            <div className="border-b px-3 py-2.5" style={{ borderColor: "#f3f4f6" }}>
-              <div className="flex flex-wrap gap-1">
-                {KATEGORIE_FILTERS.map((f) => (
-                  <button
-                    key={f.value}
-                    onClick={() => setKatFilter(f.value)}
-                    className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium transition-colors ${
-                      katFilter === f.value
-                        ? "bg-[#16a34a] text-white"
-                        : "bg-[#f3f4f6] text-[#374151] hover:bg-[#dcfce7]"
-                    }`}
-                  >
-                    {f.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="divide-y" style={{ borderColor: "#f3f4f6" }}>
-              {displayListings.slice(0, 10).map((l) => {
-                const rs = RECHTS_BADGE[l.rechtsstatus] || { label: l.rechtsstatus || "—", bg: "#f3f4f6", text: "#374151" };
-                return (
-                  <a
-                    key={l.id}
-                    href={`/inserat/${l.id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 px-3 py-3 transition-colors hover:bg-[#f0fdf4]"
-                  >
-                    {l.image_url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={l.image_url} alt="" className="h-14 w-14 shrink-0 rounded-md object-cover" />
-                    ) : (
-                      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-md bg-[#f3f4f6] text-neutral-300">
-                        <PackageOpen size={18} />
-                      </div>
-                    )}
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-semibold text-[#1a2e1a]">{l.titel}</p>
-                      <p className="mt-0.5 text-xs text-neutral-400">{l.ortschaft}</p>
-                      <div className="mt-1 flex items-center gap-2">
-                        <span
-                          className="rounded px-1.5 py-0.5 text-[10px] font-semibold"
-                          style={{ backgroundColor: rs.bg, color: rs.text }}
-                        >
-                          {rs.label}
-                        </span>
-                        <span className="text-sm font-bold text-[#16a34a]">
-                          {l.preis > 0 ? `CHF ${l.preis.toLocaleString("de-CH")}` : "Auf Anfrage"}
-                        </span>
-                      </div>
-                    </div>
-                    <ChevronRight size={14} className="shrink-0 text-neutral-300" />
-                  </a>
-                );
-              })}
-            </div>
-
-            {fullyFiltered.length > 10 && (
-              <div className="border-t px-3 py-2.5" style={{ borderColor: "#f3f4f6" }}>
-                <Link
-                  href={searchLink}
-                  className="flex items-center justify-center gap-1 rounded-lg bg-[#f0fdf4] px-3 py-2 text-xs font-semibold text-[#16a34a] hover:bg-[#dcfce7]"
-                >
-                  Alle {fullyFiltered.length.toLocaleString("de-CH")} anzeigen
-                  <ChevronRight size={14} />
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
+        )}
       </div>
     </section>
   );

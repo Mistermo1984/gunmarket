@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useImperativeHandle, forwardRef } from "react";
 
-interface MapMarker {
+export interface MapMarker {
   id: string;
   titel: string;
   preis: number;
@@ -12,19 +12,23 @@ interface MapMarker {
   image_url: string | null;
 }
 
-interface HomeMapViewProps {
-  markers: MapMarker[];
+export interface MapHandle {
+  flyTo: (lat: number, lng: number, zoom: number) => void;
+  resetView: () => void;
 }
 
-const RECHTS_COLORS: Record<string, string> = {
-  frei: "#16a34a",
-  wes: "#ca8a04",
-  kaufvertrag: "#2563eb",
-  "abk-klein": "#dc2626",
-  "abk-gross": "#dc2626",
-};
+interface HomeMapViewProps {
+  markers: MapMarker[];
+  onClusterClick?: (markerIds: string[]) => void;
+}
 
-export default function HomeMapView({ markers }: HomeMapViewProps) {
+const SWITZERLAND_CENTER: [number, number] = [46.8, 8.2];
+const SWITZERLAND_ZOOM = 8;
+
+const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView(
+  { markers, onClusterClick },
+  ref
+) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any>(null);
@@ -33,13 +37,28 @@ export default function HomeMapView({ markers }: HomeMapViewProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const LRef = useRef<any>(null);
   const [ready, setReady] = useState(false);
+  const markersDataRef = useRef<MapMarker[]>([]);
+  markersDataRef.current = markers;
+  const onClusterClickRef = useRef(onClusterClick);
+  onClusterClickRef.current = onClusterClick;
+
+  useImperativeHandle(ref, () => ({
+    flyTo(lat: number, lng: number, zoom: number) {
+      if (mapRef.current) {
+        mapRef.current.flyTo([lat, lng], zoom, { duration: 1.2 });
+      }
+    },
+    resetView() {
+      if (mapRef.current) {
+        mapRef.current.flyTo(SWITZERLAND_CENTER, SWITZERLAND_ZOOM, { duration: 1.0 });
+      }
+    },
+  }));
 
   // Load Leaflet + MarkerCluster dynamically (SSR-safe)
   useEffect(() => {
     let cancelled = false;
-
     async function loadLeaflet() {
-      // Inject CSS via CDN link tags
       const cssUrls = [
         "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
         "https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css",
@@ -53,39 +72,33 @@ export default function HomeMapView({ markers }: HomeMapViewProps) {
           document.head.appendChild(link);
         }
       }
-
       const L = await import("leaflet");
       await import("leaflet.markercluster");
-
       if (cancelled) return;
       LRef.current = L;
       setReady(true);
     }
-
     loadLeaflet();
     return () => { cancelled = true; };
   }, []);
 
-  // Initialize map once Leaflet is ready
+  // Initialize map
   useEffect(() => {
     if (!ready || !mapContainerRef.current || mapRef.current) return;
-
     const L = LRef.current;
     const map = L.map(mapContainerRef.current, {
-      center: [46.8, 8.2],
-      zoom: 8,
+      center: SWITZERLAND_CENTER,
+      zoom: SWITZERLAND_ZOOM,
       zoomControl: true,
       scrollWheelZoom: true,
       attributionControl: false,
     });
-
     L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
       maxZoom: 19,
     }).addTo(map);
-
     mapRef.current = map;
 
-    // Add custom cluster CSS
+    // Custom cluster + marker styles
     const style = document.createElement("style");
     style.textContent = `
       .gun-cluster {
@@ -98,12 +111,21 @@ export default function HomeMapView({ markers }: HomeMapViewProps) {
       .gun-cluster-inner {
         background: #16a34a;
         color: white;
+        border: 2px solid white;
         border-radius: 50%;
         font-size: 12px;
         font-weight: 700;
         display: flex;
         align-items: center;
         justify-content: center;
+        box-shadow: 0 2px 6px rgba(0,0,0,.25);
+      }
+      .gun-pin {
+        width: 12px; height: 12px;
+        background: #16a34a;
+        border: 2px solid white;
+        border-radius: 50%;
+        box-shadow: 0 1px 3px rgba(0,0,0,.3);
       }
     `;
     document.head.appendChild(style);
@@ -114,14 +136,12 @@ export default function HomeMapView({ markers }: HomeMapViewProps) {
     };
   }, [ready]);
 
-  // Update markers when data changes
+  // Update markers
   useEffect(() => {
     if (!ready || !mapRef.current) return;
-
     const L = LRef.current;
     const map = mapRef.current;
 
-    // Remove old cluster layer
     if (clusterRef.current) {
       map.removeLayer(clusterRef.current);
     }
@@ -131,6 +151,7 @@ export default function HomeMapView({ markers }: HomeMapViewProps) {
       maxClusterRadius: 50,
       spiderfyOnMaxZoom: true,
       showCoverageOnHover: false,
+      zoomToBoundsOnClick: false,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       iconCreateFunction: (c: any) => {
         const count = c.getChildCount();
@@ -144,27 +165,41 @@ export default function HomeMapView({ markers }: HomeMapViewProps) {
       },
     });
 
+    // Cluster click → zoom in + notify parent with marker IDs
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    cluster.on("clusterclick", (e: any) => {
+      const childMarkers = e.layer.getAllChildMarkers();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const ids = childMarkers.map((cm: any) => cm.options._listingId).filter(Boolean);
+
+      // Zoom into cluster
+      const bounds = e.layer.getBounds();
+      map.flyToBounds(bounds, { padding: [40, 40], duration: 0.8 });
+
+      // Notify parent
+      if (onClusterClickRef.current && ids.length > 0) {
+        onClusterClickRef.current(ids);
+      }
+    });
+
     for (const m of markers) {
       if (!m.lat || !m.lng) continue;
 
-      const color = RECHTS_COLORS[m.rechtsstatus] || "#16a34a";
       const icon = L.divIcon({
-        html: `<div style="width:12px;height:12px;background:${color};border:2px solid white;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.3)"></div>`,
+        html: `<div class="gun-pin"></div>`,
         className: "",
         iconSize: L.point(12, 12),
         iconAnchor: L.point(6, 6),
       });
 
-      const marker = L.marker([m.lat, m.lng], { icon });
+      const marker = L.marker([m.lat, m.lng], { icon, _listingId: m.id });
 
-      // Tooltip on hover
       const priceStr = m.preis > 0 ? `CHF ${m.preis.toLocaleString("de-CH")}` : "Auf Anfrage";
       marker.bindTooltip(
         `<div style="font-size:12px;font-weight:600;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.titel}</div><div style="font-size:11px;color:#16a34a;font-weight:700">${priceStr}</div>`,
         { direction: "top", offset: L.point(0, -8) }
       );
 
-      // Click opens listing in new tab
       marker.on("click", () => {
         window.open(`/inserat/${m.id}`, "_blank");
       });
@@ -191,4 +226,6 @@ export default function HomeMapView({ markers }: HomeMapViewProps) {
   }
 
   return <div ref={mapContainerRef} className="h-full w-full" />;
-}
+});
+
+export default HomeMapView;

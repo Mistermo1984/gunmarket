@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import HeroSection from "@/components/home/HeroSection";
 import HomeContent from "@/components/home/HomeContent";
-import KartenVorschau from "@/components/home/KartenVorschau";
+import HomeMapSection from "@/components/home/HomeMapSection";
 import SoFunktionierts from "@/components/home/SoFunktionierts";
 import RechtlicherHinweis from "@/components/home/RechtlicherHinweis";
 import Link from "next/link";
@@ -148,9 +148,11 @@ export default function Home() {
       {/* 2. Main content: FilterSidebar + Neueste Inserate */}
       <HomeContent />
 
-      {/* Karten-Vorschau + So funktioniert's */}
-      <div className="mx-auto max-w-7xl px-4 pb-8">
-        <KartenVorschau />
+      {/* Map section — full width dark */}
+      <HomeMapSection />
+
+      {/* So funktioniert's */}
+      <div className="mx-auto max-w-7xl px-4 pb-8 pt-10">
         <SoFunktionierts />
       </div>
 

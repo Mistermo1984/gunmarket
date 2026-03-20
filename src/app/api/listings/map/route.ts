@@ -74,8 +74,14 @@ export async function GET(req: NextRequest) {
       params.push(term, term, term);
     }
 
-    let markers = await dbAll<{ id: string; titel: string; preis: number; lat: number; lng: number }>(
-      `SELECT l.id, l.titel, l.preis, l.lat, l.lng
+    let markers = await dbAll<{
+      id: string; titel: string; preis: number; lat: number; lng: number;
+      zustand: string; kanton: string; rechtsstatus: string; ortschaft: string;
+      image_url: string | null;
+    }>(
+      `SELECT l.id, l.titel, l.preis, l.lat, l.lng,
+              l.zustand, l.kanton, l.rechtsstatus, l.ortschaft,
+              (SELECT url FROM listing_images WHERE listing_id = l.id ORDER BY position LIMIT 1) as image_url
        FROM listings l
        ${where}
        LIMIT 5000`,

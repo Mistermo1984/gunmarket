@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useImperativeHandle, forwardRef } from "react";
+import { MapPin } from "lucide-react";
 
 export interface MapMarker {
   id: string;
@@ -38,18 +39,19 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const LRef = useRef<any>(null);
   const [ready, setReady] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const onClusterClickRef = useRef(onClusterClick);
   onClusterClickRef.current = onClusterClick;
 
   useImperativeHandle(ref, () => ({
     flyTo(lat: number, lng: number, zoom: number) {
-      mapRef.current?.flyTo([lat, lng], zoom, { duration: 1.2 });
+      try { mapRef.current?.flyTo([lat, lng], zoom, { duration: 1.2 }); } catch { /* ignore */ }
     },
     resetView() {
-      mapRef.current?.flyTo(SWITZERLAND_CENTER, SWITZERLAND_ZOOM, { duration: 1.0 });
+      try { mapRef.current?.flyTo(SWITZERLAND_CENTER, SWITZERLAND_ZOOM, { duration: 1.0 }); } catch { /* ignore */ }
     },
     invalidateSize() {
-      setTimeout(() => mapRef.current?.invalidateSize(), 100);
+      try { setTimeout(() => mapRef.current?.invalidateSize(), 100); } catch { /* ignore */ }
     },
   }));
 
@@ -57,24 +59,35 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
   useEffect(() => {
     let cancelled = false;
     async function loadLeaflet() {
-      const cssUrls = [
-        "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
-        "https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css",
-        "https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css",
-      ];
-      for (const href of cssUrls) {
-        if (!document.querySelector(`link[href="${href}"]`)) {
-          const link = document.createElement("link");
-          link.rel = "stylesheet";
-          link.href = href;
-          document.head.appendChild(link);
+      try {
+        // Inject CSS
+        const cssUrls = [
+          "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+          "https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css",
+          "https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css",
+        ];
+        for (const href of cssUrls) {
+          if (!document.querySelector(`link[href="${href}"]`)) {
+            const link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = href;
+            document.head.appendChild(link);
+          }
         }
+
+        const L = await import("leaflet");
+        // MarkerCluster needs L on window to attach itself
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (window as any).L = L;
+        await import("leaflet.markercluster");
+
+        if (cancelled) return;
+        LRef.current = L;
+        setReady(true);
+      } catch (err) {
+        console.error("HomeMapView: failed to load Leaflet", err);
+        if (!cancelled) setError("Karte konnte nicht geladen werden");
       }
-      const L = await import("leaflet");
-      await import("leaflet.markercluster");
-      if (cancelled) return;
-      LRef.current = L;
-      setReady(true);
     }
     loadLeaflet();
     return () => { cancelled = true; };
@@ -83,136 +96,162 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
   // Initialize map
   useEffect(() => {
     if (!ready || !mapContainerRef.current || mapRef.current) return;
-    const L = LRef.current;
-    const map = L.map(mapContainerRef.current, {
-      center: SWITZERLAND_CENTER,
-      zoom: SWITZERLAND_ZOOM,
-      zoomControl: true,
-      scrollWheelZoom: true,
-      attributionControl: false,
-    });
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-      maxZoom: 19,
-    }).addTo(map);
-    mapRef.current = map;
+    try {
+      const L = LRef.current;
+      const map = L.map(mapContainerRef.current, {
+        center: SWITZERLAND_CENTER,
+        zoom: SWITZERLAND_ZOOM,
+        zoomControl: true,
+        scrollWheelZoom: true,
+        attributionControl: false,
+      });
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+        maxZoom: 19,
+      }).addTo(map);
+      mapRef.current = map;
 
-    // Custom cluster styles — hide individual markers, only show cluster bubbles
-    const style = document.createElement("style");
-    style.textContent = `
-      .gun-cluster {
-        background: rgba(22, 163, 74, 0.15);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      }
-      .gun-cluster-inner {
-        background: #16a34a;
-        color: white;
-        border: 2px solid white;
-        border-radius: 50%;
-        font-size: 12px;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 2px 6px rgba(0,0,0,.25);
-      }
-      /* Hide ALL individual markers — only clusters should be visible */
-      .leaflet-marker-icon:not(.marker-cluster):not(.gun-cluster-icon) {
-        opacity: 0 !important;
-        pointer-events: none !important;
-        width: 0 !important;
-        height: 0 !important;
-      }
-      /* Hide spider legs completely */
-      .leaflet-cluster-anim .leaflet-marker-icon,
-      .leaflet-cluster-spider-leg {
-        display: none !important;
-      }
-      /* Override default MarkerCluster styles */
-      .marker-cluster-small,
-      .marker-cluster-medium,
-      .marker-cluster-large {
-        background: none !important;
-      }
-      .marker-cluster div {
-        background: none !important;
-      }
-    `;
-    document.head.appendChild(style);
+      // Custom cluster styles
+      const style = document.createElement("style");
+      style.textContent = `
+        .gun-cluster {
+          background: rgba(22, 163, 74, 0.15);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        }
+        .gun-cluster-inner {
+          background: #16a34a;
+          color: white;
+          border: 2px solid white;
+          border-radius: 50%;
+          font-size: 12px;
+          font-weight: 700;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 2px 6px rgba(0,0,0,.25);
+        }
+        .leaflet-marker-icon:not(.marker-cluster):not(.gun-cluster-icon) {
+          opacity: 0 !important;
+          pointer-events: none !important;
+          width: 0 !important;
+          height: 0 !important;
+        }
+        .leaflet-cluster-anim .leaflet-marker-icon,
+        .leaflet-cluster-spider-leg {
+          display: none !important;
+        }
+        .marker-cluster-small,
+        .marker-cluster-medium,
+        .marker-cluster-large {
+          background: none !important;
+        }
+        .marker-cluster div {
+          background: none !important;
+        }
+      `;
+      document.head.appendChild(style);
 
-    return () => {
-      map.remove();
-      mapRef.current = null;
-    };
+      return () => {
+        try { map.remove(); } catch { /* ignore */ }
+        mapRef.current = null;
+      };
+    } catch (err) {
+      console.error("HomeMapView: failed to init map", err);
+      setError("Kartenfehler");
+    }
   }, [ready]);
 
   // Update markers
   useEffect(() => {
     if (!ready || !mapRef.current) return;
-    const L = LRef.current;
-    const map = mapRef.current;
+    try {
+      const L = LRef.current;
+      const map = mapRef.current;
 
-    if (clusterRef.current) {
-      map.removeLayer(clusterRef.current);
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const cluster = new (L as any).MarkerClusterGroup({
-      maxClusterRadius: 60,
-      spiderfyOnMaxZoom: false,
-      spiderfyDistanceMultiplier: 0,
-      zoomToBoundsOnClick: false,
-      showCoverageOnHover: false,
-      singleMarkerMode: true,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      iconCreateFunction: (c: any) => {
-        const count = c.getChildCount();
-        const size = count < 10 ? 36 : count < 50 ? 44 : 52;
-        const inner = size - 10;
-        return L.divIcon({
-          html: `<div class="gun-cluster" style="width:${size}px;height:${size}px"><div class="gun-cluster-inner" style="width:${inner}px;height:${inner}px">${count}</div></div>`,
-          className: "gun-cluster-icon",
-          iconSize: L.point(size, size),
-        });
-      },
-    });
-
-    // Cluster click → notify parent (no zoom, no spiderfy)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    cluster.on("clusterclick", (e: any) => {
-      const childMarkers = e.layer.getAllChildMarkers();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const ids = childMarkers.map((cm: any) => cm.options._listingId).filter(Boolean);
-      if (onClusterClickRef.current && ids.length > 0) {
-        onClusterClickRef.current(ids);
+      if (clusterRef.current) {
+        try { map.removeLayer(clusterRef.current); } catch { /* ignore */ }
       }
-    });
 
-    for (const m of markers) {
-      if (!m.lat || !m.lng) continue;
-      // Individual markers are invisible (CSS hides them), but they feed into clusters
-      const icon = L.divIcon({
-        html: "",
-        className: "gun-hidden-marker",
-        iconSize: L.point(0, 0),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const MCG = (L as any).MarkerClusterGroup || (L as any).markerClusterGroup;
+      if (!MCG) {
+        console.error("HomeMapView: MarkerClusterGroup not available");
+        // Fallback: add markers directly without clustering
+        for (const m of markers) {
+          if (!m.lat || !m.lng) continue;
+          L.circleMarker([m.lat, m.lng], {
+            radius: 4, color: "#16a34a", fillColor: "#16a34a", fillOpacity: 0.6, weight: 1,
+          }).addTo(map);
+        }
+        return;
+      }
+
+      const cluster = new MCG({
+        maxClusterRadius: 60,
+        spiderfyOnMaxZoom: false,
+        spiderfyDistanceMultiplier: 0,
+        zoomToBoundsOnClick: false,
+        showCoverageOnHover: false,
+        singleMarkerMode: true,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        iconCreateFunction: (c: any) => {
+          const count = c.getChildCount();
+          const size = count < 10 ? 36 : count < 50 ? 44 : 52;
+          const inner = size - 10;
+          return L.divIcon({
+            html: `<div class="gun-cluster" style="width:${size}px;height:${size}px"><div class="gun-cluster-inner" style="width:${inner}px;height:${inner}px">${count}</div></div>`,
+            className: "gun-cluster-icon",
+            iconSize: L.point(size, size),
+          });
+        },
       });
-      const marker = L.marker([m.lat, m.lng], { icon, _listingId: m.id });
-      cluster.addLayer(marker);
-    }
 
-    map.addLayer(cluster);
-    clusterRef.current = cluster;
+      // Cluster click → notify parent
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      cluster.on("clusterclick", (e: any) => {
+        try {
+          const childMarkers = e.layer.getAllChildMarkers();
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const ids = childMarkers.map((cm: any) => cm.options._listingId).filter(Boolean);
+          if (onClusterClickRef.current && ids.length > 0) {
+            onClusterClickRef.current(ids);
+          }
+        } catch { /* ignore click errors */ }
+      });
+
+      for (const m of markers) {
+        if (!m.lat || !m.lng) continue;
+        const icon = L.divIcon({
+          html: "",
+          className: "gun-hidden-marker",
+          iconSize: L.point(0, 0),
+        });
+        const marker = L.marker([m.lat, m.lng], { icon, _listingId: m.id });
+        cluster.addLayer(marker);
+      }
+
+      map.addLayer(cluster);
+      clusterRef.current = cluster;
+    } catch (err) {
+      console.error("HomeMapView: failed to update markers", err);
+    }
   }, [ready, markers]);
+
+  if (error) {
+    return (
+      <div className="flex h-full w-full flex-col items-center justify-center bg-[#f1f5f1] text-neutral-500">
+        <MapPin size={32} className="mb-2 text-neutral-300" />
+        <p className="text-sm font-medium">{error}</p>
+      </div>
+    );
+  }
 
   if (!ready) {
     return (
-      <div
-        ref={mapContainerRef}
-        className="flex h-full w-full items-center justify-center bg-[#f1f5f1]"
-      >
+      <div className="flex h-full w-full items-center justify-center bg-[#f1f5f1]">
         <div className="flex flex-col items-center gap-2">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#16a34a] border-t-transparent" />
           <span className="text-xs text-neutral-400">Karte wird geladen…</span>

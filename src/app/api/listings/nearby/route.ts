@@ -39,10 +39,29 @@ export async function GET(req: NextRequest) {
       .map((l) => ({
         ...l,
         distance: haversineDistance(lat, lng, l.lat, l.lng),
-      }))
+      }) as Record<string, unknown> & { distance: number })
       .filter((l) => l.distance <= radius)
       .sort((a, b) => a.distance - b.distance)
       .slice(0, limit);
+
+    // Attach images
+    const listingIds = filtered.map((l) => String(l.id));
+    if (listingIds.length > 0) {
+      const placeholders = listingIds.map(() => "?").join(",");
+      const images = await dbAll(
+        `SELECT * FROM listing_images WHERE listing_id IN (${placeholders}) ORDER BY position`,
+        listingIds
+      );
+      const imageMap = new Map<string, Record<string, unknown>[]>();
+      for (const img of images) {
+        const lid = img.listing_id as string;
+        if (!imageMap.has(lid)) imageMap.set(lid, []);
+        imageMap.get(lid)!.push(img);
+      }
+      for (const l of filtered) {
+        l.images = imageMap.get(String(l.id)) || [];
+      }
+    }
 
     return NextResponse.json({ listings: filtered, total: filtered.length });
   } catch (error) {

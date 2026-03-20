@@ -7,7 +7,22 @@ import { classifyRechtsstatus } from "./rechtsstatus-classifier";
 import { classifyCategory } from "./category-classifier";
 
 const BASE_URL = "https://waffengebraucht.ch";
-const USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+const USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36";
+
+const BROWSER_HEADERS: Record<string, string> = {
+  "User-Agent": USER_AGENT,
+  "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+  "Accept-Language": "de-CH,de;q=0.9,fr;q=0.8,en;q=0.7",
+  "Accept-Encoding": "gzip, deflate, br",
+  "Connection": "keep-alive",
+  "Upgrade-Insecure-Requests": "1",
+  "Sec-Fetch-Dest": "document",
+  "Sec-Fetch-Mode": "navigate",
+  "Sec-Fetch-Site": "none",
+  "Sec-Fetch-User": "?1",
+  "Cache-Control": "max-age=0",
+  "Referer": "https://www.google.ch/",
+};
 
 const CRAWLER_USER = {
   id: "crawler-waffengebraucht",
@@ -129,11 +144,16 @@ function kantonFromPlz(plz: string): string {
   return "";
 }
 
-async function fetchPage(url: string): Promise<string> {
+async function fetchPage(url: string, retries = 1): Promise<string> {
   const res = await fetch(url, {
-    headers: { "User-Agent": USER_AGENT },
+    headers: BROWSER_HEADERS,
     redirect: "follow",
   });
+  if ((res.status === 403 || res.status === 429) && retries > 0) {
+    console.warn(`[Crawl] ${res.status} for ${url}, retrying in 5s...`);
+    await delay(5000);
+    return fetchPage(url, retries - 1);
+  }
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
   return res.text();
 }
@@ -379,10 +399,11 @@ async function downloadAllImages(imageUrls: string[], listingId: string): Promis
   const blobUrls: string[] = [];
   for (let i = 0; i < imageUrls.length; i++) {
     try {
+      const isWg = imageUrls[i].includes("waffengebraucht.ch");
       const response = await fetch(imageUrls[i], {
-        headers: {
+        headers: isWg ? BROWSER_HEADERS : {
           "User-Agent": USER_AGENT,
-          "Referer": "https://waffengebraucht.ch/",
+          "Referer": "https://marketplace.nextgun.ch/",
         },
       });
       if (!response.ok) continue;
@@ -580,7 +601,7 @@ async function crawlSingleCategory(slug: string): Promise<CrawledItem[]> {
   }
 
   for (let page = 2; page <= totalPages; page++) {
-    await delay(200);
+    await delay(1000 + Math.random() * 2000);
     try {
       const pageUrl = `${firstPageUrl}?&page=${page}`;
       const pageHtml = await fetchPage(pageUrl);

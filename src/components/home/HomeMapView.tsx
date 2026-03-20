@@ -1,11 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import "leaflet.markercluster";
-import "leaflet.markercluster/dist/MarkerCluster.css";
-import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+import React, { useEffect, useRef, useState } from "react";
 import type { MapMarker } from "./HomeMapSection";
 
 // Canton approximate centers for zoom
@@ -50,14 +45,6 @@ const RECHTS_LABELS: Record<string, { label: string; bg: string; text: string }>
   "abk-gross": { label: "ABK", bg: "#fee2e2", text: "#991b1b" },
 };
 
-// Small green circle marker
-const circleIcon = new L.DivIcon({
-  html: '<div style="width:12px;height:12px;background:#16a34a;border:2px solid white;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,0.25);"></div>',
-  iconSize: [12, 12],
-  iconAnchor: [6, 6],
-  className: "",
-});
-
 function buildTooltipHtml(m: MapMarker): string {
   const rs = RECHTS_LABELS[m.rechtsstatus] || { label: m.rechtsstatus, bg: "#f3f4f6", text: "#374151" };
   const zLabel = ZUSTAND_LABELS[m.zustand] || m.zustand || "";
@@ -90,11 +77,43 @@ interface HomeMapViewProps {
 export default function HomeMapView({ markers, selectedKantone }: HomeMapViewProps) {
   const mapRef = useRef<L.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const clusterRef = useRef<L.MarkerClusterGroup | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const clusterRef = useRef<any>(null);
+  const [leafletReady, setLeafletReady] = useState(false);
+  const LRef = useRef<typeof import("leaflet") | null>(null);
 
-  // Initialize map once
+  // Dynamically import leaflet + markercluster at runtime only
   useEffect(() => {
-    if (!containerRef.current || mapRef.current) return;
+    let cancelled = false;
+    async function loadLeaflet() {
+      // Load CSS via link tags to avoid TS module errors
+      for (const href of [
+        "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+        "https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css",
+        "https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css",
+      ]) {
+        if (!document.querySelector(`link[href="${href}"]`)) {
+          const link = document.createElement("link");
+          link.rel = "stylesheet";
+          link.href = href;
+          document.head.appendChild(link);
+        }
+      }
+      const L = await import("leaflet");
+      await import("leaflet.markercluster");
+      if (!cancelled) {
+        LRef.current = L;
+        setLeafletReady(true);
+      }
+    }
+    loadLeaflet();
+    return () => { cancelled = true; };
+  }, []);
+
+  // Initialize map once leaflet is loaded
+  useEffect(() => {
+    if (!leafletReady || !containerRef.current || mapRef.current) return;
+    const L = LRef.current!;
 
     const map = L.map(containerRef.current, {
       center: [46.8, 8.2],
@@ -105,7 +124,6 @@ export default function HomeMapView({ markers, selectedKantone }: HomeMapViewPro
       zoomControl: true,
     });
 
-    // Light CartoDB tiles
     L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
       subdomains: "abcd",
@@ -118,12 +136,13 @@ export default function HomeMapView({ markers, selectedKantone }: HomeMapViewPro
       map.remove();
       mapRef.current = null;
     };
-  }, []);
+  }, [leafletReady]);
 
   // Update markers when data or selection changes
   useEffect(() => {
     const map = mapRef.current;
-    if (!map) return;
+    const L = LRef.current;
+    if (!map || !L) return;
 
     // Remove old cluster layer
     if (clusterRef.current) {
@@ -131,11 +150,19 @@ export default function HomeMapView({ markers, selectedKantone }: HomeMapViewPro
       clusterRef.current = null;
     }
 
+    const circleIcon = new L.DivIcon({
+      html: '<div style="width:12px;height:12px;background:#16a34a;border:2px solid white;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,0.25);"></div>',
+      iconSize: [12, 12] as L.PointExpression,
+      iconAnchor: [6, 6] as L.PointExpression,
+      className: "",
+    });
+
     const cluster = L.markerClusterGroup({
       maxClusterRadius: 50,
       spiderfyOnMaxZoom: true,
       showCoverageOnHover: false,
-      iconCreateFunction: (c) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      iconCreateFunction: (c: any) => {
         const count = c.getChildCount();
         return L.divIcon({
           html: `<div style="
@@ -147,8 +174,8 @@ export default function HomeMapView({ markers, selectedKantone }: HomeMapViewPro
             box-shadow:0 2px 8px rgba(0,0,0,0.2);
           ">${count}</div>`,
           className: "",
-          iconSize: [36, 36],
-          iconAnchor: [18, 18],
+          iconSize: [36, 36] as L.PointExpression,
+          iconAnchor: [18, 18] as L.PointExpression,
         });
       },
     });
@@ -160,7 +187,7 @@ export default function HomeMapView({ markers, selectedKantone }: HomeMapViewPro
 
       marker.bindTooltip(buildTooltipHtml(m), {
         direction: "top",
-        offset: [0, -8],
+        offset: [0, -8] as L.PointExpression,
         opacity: 1,
         className: "home-map-tooltip",
       });
@@ -186,7 +213,7 @@ export default function HomeMapView({ markers, selectedKantone }: HomeMapViewPro
     } else {
       map.setView([46.8, 8.2], 8);
     }
-  }, [markers, selectedKantone]);
+  }, [markers, selectedKantone, leafletReady]);
 
   return (
     <>

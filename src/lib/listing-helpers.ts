@@ -13,13 +13,16 @@ const RECHTS_MAP: Record<string, { label: string; farbe: string; textfarbe: stri
 // Map hauptkategorie to waffenTyp
 const WAFFEN_TYP_MAP: Record<string, "kurzwaffe" | "langwaffe" | "flinte" | "zubehoer"> = {
   kurzwaffen: "kurzwaffe",
-  buechsen: "langwaffe",
-  flinten: "flinte",
+  langwaffen: "langwaffe",
   ordonnanzwaffen: "langwaffe",
-  "freie-waffen": "langwaffe",
+  luftdruckwaffen: "langwaffe",
   optik: "zubehoer",
   zubehoer: "zubehoer",
   munition: "zubehoer",
+  // Legacy IDs
+  buechsen: "langwaffe",
+  flinten: "flinte",
+  "freie-waffen": "langwaffe",
 };
 
 function formatDate(dateStr: string): string {

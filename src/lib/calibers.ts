@@ -69,7 +69,9 @@ export const ALL_CALIBERS: string[] = CALIBER_GROUPS.flatMap((g) => g.kaliber);
 
 // Categories that require caliber selection
 const WEAPON_CATEGORIES = new Set([
-  "kurzwaffen", "buechsen", "flinten", "ordonnanzwaffen", "freie-waffen", "munition",
+  "kurzwaffen", "langwaffen", "ordonnanzwaffen", "luftdruckwaffen", "munition",
+  // Legacy IDs
+  "buechsen", "flinten", "freie-waffen",
 ]);
 
 export function isCaliberRequired(hauptkategorie: string): boolean {

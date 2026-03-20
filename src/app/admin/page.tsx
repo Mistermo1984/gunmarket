@@ -26,14 +26,17 @@ interface AdminStats {
 
 const KAT_LABELS: Record<string, string> = {
   kurzwaffen: "Kurzwaffen",
-  buechsen: "Langwaffen",
-  flinten: "Flinten",
-  jagdwaffen: "Langwaffen",
+  langwaffen: "Langwaffen",
   ordonnanzwaffen: "Ordonnanz",
-  "freie-waffen": "Luftdruckwaffen",
+  luftdruckwaffen: "Luftdruckwaffen",
   optik: "Optik",
   munition: "Munition",
   zubehoer: "Zubehör",
+  // Legacy
+  buechsen: "Langwaffen",
+  flinten: "Langwaffen",
+  jagdwaffen: "Langwaffen",
+  "freie-waffen": "Luftdruckwaffen",
 };
 
 export default function AdminDashboardPage() {

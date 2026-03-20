@@ -8,13 +8,16 @@ import { PistolenIcon, RepetierIcon, BockflinteIcon, OptikIcon } from "@/compone
 
 const waffenIconMap: Record<string, React.ComponentType<{ className?: string; size?: number }>> = {
   kurzwaffen: PistolenIcon,
-  buechsen: RepetierIcon,
-  flinten: BockflinteIcon,
+  langwaffen: RepetierIcon,
   ordonnanzwaffen: RepetierIcon,
-  "freie-waffen": RepetierIcon,
+  luftdruckwaffen: RepetierIcon,
   optik: OptikIcon,
   zubehoer: OptikIcon,
   munition: OptikIcon,
+  // Legacy
+  buechsen: RepetierIcon,
+  flinten: BockflinteIcon,
+  "freie-waffen": RepetierIcon,
 };
 
 const RECHTS_MAP: Record<string, { label: string; farbe: string; textfarbe: string }> = {

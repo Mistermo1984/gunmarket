@@ -236,7 +236,7 @@ export function classifyRechtsstatus(input: ClassificationInput): string {
     if (/hülse\b|geschoss|wiederlad/i.test(text)) return "frei";
     return "wes";
   }
-  if (hauptkategorie === "freie-waffen") {
+  if (hauptkategorie === "freie-waffen" || hauptkategorie === "luftdruckwaffen") {
     return "frei";
   }
 
@@ -309,23 +309,11 @@ export function classifyRechtsstatus(input: ClassificationInput): string {
   // STEP 8: Category-specific logic
   // ═══════════════════════════════════════════════════════════════
 
-  // Jagdwaffen (legacy slug, now merged into buechsen): default frei (bolt-action, single-shot)
-  if (hauptkategorie === "jagdwaffen") {
-    if (/\bhalbautomat|selbstlade|semi[\s-]?auto/i.test(text)) return "wes";
-    return "frei";
-  }
-
-  // Flinten: Over/Under, pump = frei; semi-auto = wes
-  if (hauptkategorie === "flinten") {
+  // Langwaffen (new) / Jagdwaffen / Flinten / Büchsen (legacy)
+  if (hauptkategorie === "langwaffen" || hauptkategorie === "jagdwaffen" || hauptkategorie === "flinten" || hauptkategorie === "buechsen") {
     if (/\bselbstlade|halbautomat|semi[\s-]?auto/i.test(text)) return "wes";
-    if (FREI_FLINTEN_PATTERNS.some(p => p.test(text))) return "frei";
-    return "frei";
-  }
-
-  // Büchsen: bolt-action/repeater = frei; semi-auto = wes
-  if (hauptkategorie === "buechsen") {
-    if (/\bhalbautomat|selbstlade|semi[\s-]?auto/i.test(text)) return "wes";
     if (FREI_LANGWAFFEN_PATTERNS.some(p => p.test(text))) return "frei";
+    if (FREI_FLINTEN_PATTERNS.some(p => p.test(text))) return "frei";
     if (/\brepetier|bolt[\s-]?action|einzellad/i.test(text)) return "frei";
     return "wes";
   }

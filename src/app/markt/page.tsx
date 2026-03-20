@@ -31,14 +31,16 @@ interface MarketData {
 
 const KATEGORIE_LABELS: Record<string, string> = {
   kurzwaffen: "Kurzwaffen",
-  buechsen: "Langwaffen",
-  flinten: "Flinten",
-  jagdwaffen: "Langwaffen",
+  langwaffen: "Langwaffen",
   ordonnanzwaffen: "Ordonnanz",
-  "freie-waffen": "Luftdruckwaffen",
+  luftdruckwaffen: "Luftdruckwaffen",
   optik: "Optik",
   munition: "Munition",
   zubehoer: "Zubehör",
+  buechsen: "Langwaffen",
+  flinten: "Langwaffen",
+  jagdwaffen: "Langwaffen",
+  "freie-waffen": "Luftdruckwaffen",
 };
 
 const ZUSTAND_LABELS: Record<string, string> = {

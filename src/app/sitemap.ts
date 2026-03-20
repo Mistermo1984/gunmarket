@@ -6,11 +6,12 @@ const SITE_URL = "https://gunmarket.ch";
 
 const KATEGORIEN = [
   "kurzwaffen",
-  "buechsen",
-  "flinten",
+  "langwaffen",
   "ordonnanzwaffen",
-  "freie-waffen",
+  "luftdruckwaffen",
+  "optik",
   "zubehoer",
+  "munition",
 ];
 
 const KANTONE = [

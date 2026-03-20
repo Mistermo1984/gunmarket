@@ -4,12 +4,9 @@ import {
   RevolverIcon,
   RepetierIcon,
   HalbautomatIcon,
-  EinzelladerIcon,
   JagdbuechseIcon,
   OrdonnanzIcon,
   BockflinteIcon,
-  SelbstladeFlinteIcon,
-  PumpActionIcon,
   LuftwaffeIcon,
   SchreckschussIcon,
   OptikIcon,
@@ -20,23 +17,12 @@ import {
   ReinigungIcon,
   KurzwaffenIcon,
   BuechsenIcon,
-  FlintenGruppeIcon,
-  JagdflinteIcon,
-  DrillingIcon,
-  BockbuechsflinteIcon,
   FreieWaffenIcon,
   ZubehoerGruppeIcon,
   ZielfernrohrIcon,
   RotpunktIcon,
-  NachtsichtIcon,
   FernglasIcon,
   MontageIcon,
-  OptikZubehoerIcon,
-  BuechsenmunitionIcon,
-  PistolenmunitionIcon,
-  SchrotmunitionIcon,
-  RandfeuermunitionIcon,
-  WiederladenMunitionIcon,
 } from "@/components/ui/WeaponIcons";
 
 // ─── Kategorie-Interfaces ────────────────────────────────────
@@ -67,27 +53,14 @@ export const HAUPTKATEGORIEN: Hauptkategorie[] = [
     ],
   },
   {
-    id: "buechsen",
+    id: "langwaffen",
     label: "Langwaffen",
     iconComponent: BuechsenIcon,
     unterkategorien: [
-      { id: "repetierbuechsen", label: "Repetiergewehre", iconComponent: RepetierIcon },
-      { id: "halbautomat-buechsen", label: "Halbautomatische Büchsen", iconComponent: HalbautomatIcon },
-      { id: "einzellader", label: "Einzellader", iconComponent: EinzelladerIcon },
-      { id: "jagdbuechsen", label: "Jagdbüchsen & Jagdgewehre", iconComponent: JagdbuechseIcon },
-      { id: "drillinge", label: "Drillinge & Kombinierte", iconComponent: DrillingIcon },
-      { id: "bockbuechsflinten", label: "Bockbüchsflinten", iconComponent: BockbuechsflinteIcon },
-    ],
-  },
-  {
-    id: "flinten",
-    label: "Flinten",
-    iconComponent: FlintenGruppeIcon,
-    unterkategorien: [
-      { id: "bockflinten", label: "Bock- & Querflinten", iconComponent: BockflinteIcon },
-      { id: "selbstladeflinten", label: "Selbstladeflinten", iconComponent: SelbstladeFlinteIcon },
-      { id: "pump-action", label: "Vorderschaftrepetierer", iconComponent: PumpActionIcon },
-      { id: "jagdflinten", label: "Jagdflinten", iconComponent: JagdflinteIcon },
+      { id: "buechsen", label: "Büchsen", iconComponent: RepetierIcon },
+      { id: "flinten", label: "Flinten", iconComponent: BockflinteIcon },
+      { id: "jagdwaffen", label: "Jagdwaffen", iconComponent: JagdbuechseIcon },
+      { id: "andere-langwaffen", label: "Andere Langwaffen", iconComponent: HalbautomatIcon },
     ],
   },
   {
@@ -95,19 +68,18 @@ export const HAUPTKATEGORIEN: Hauptkategorie[] = [
     label: "Ordonnanzwaffen",
     iconComponent: OrdonnanzIcon,
     unterkategorien: [
-      { id: "ord-schweiz", label: "Schweizer Ordonnanz", iconComponent: OrdonnanzIcon },
-      { id: "ord-ausland", label: "Ausländische Ordonnanz", iconComponent: RepetierIcon },
-      { id: "ord-pistolen", label: "Ordonnanzpistolen", iconComponent: PistolenIcon },
-      { id: "ord-zubehoer", label: "Ordonnanzzubehör", iconComponent: MagazinIcon },
+      { id: "kurzwaffen-ordonnanz", label: "Kurzwaffen Ordonnanz", iconComponent: PistolenIcon },
+      { id: "langwaffen-ordonnanz", label: "Langwaffen Ordonnanz", iconComponent: OrdonnanzIcon },
     ],
   },
   {
-    id: "freie-waffen",
+    id: "luftdruckwaffen",
     label: "Luftdruckwaffen",
     iconComponent: FreieWaffenIcon,
     unterkategorien: [
-      { id: "luftdruck", label: "Luftdruck & CO2", iconComponent: LuftwaffeIcon },
-      { id: "schreckschuss", label: "Schreckschuss & Imitation", iconComponent: SchreckschussIcon },
+      { id: "luftpistolen", label: "Luftpistolen", iconComponent: PistolenIcon },
+      { id: "luftgewehre", label: "Luftgewehre", iconComponent: LuftwaffeIcon },
+      { id: "co2-waffen", label: "CO2 Waffen", iconComponent: SchreckschussIcon },
     ],
   },
   {
@@ -115,12 +87,10 @@ export const HAUPTKATEGORIEN: Hauptkategorie[] = [
     label: "Optik",
     iconComponent: OptikIcon,
     unterkategorien: [
-      { id: "zielfernrohre", label: "Zielfernrohre (ZF)", iconComponent: ZielfernrohrIcon },
-      { id: "rotpunktvisiere", label: "Rotpunkt & Red Dots", iconComponent: RotpunktIcon },
-      { id: "nachtsicht", label: "Nachtsicht & Wärmebild", iconComponent: NachtsichtIcon },
-      { id: "fernglaeser", label: "Ferngläser & Spektive", iconComponent: FernglasIcon },
-      { id: "montagen", label: "Montagen & Ringe", iconComponent: MontageIcon },
-      { id: "optik-zubehoer", label: "Optik-Zubehör", iconComponent: OptikZubehoerIcon },
+      { id: "zielfernrohre", label: "Zielfernrohre", iconComponent: ZielfernrohrIcon },
+      { id: "rotpunktvisiere", label: "Rotpunktvisiere", iconComponent: RotpunktIcon },
+      { id: "fernglaeser", label: "Ferngläser", iconComponent: FernglasIcon },
+      { id: "montagen", label: "Montagen", iconComponent: MontageIcon },
     ],
   },
   {
@@ -128,23 +98,18 @@ export const HAUPTKATEGORIEN: Hauptkategorie[] = [
     label: "Zubehör",
     iconComponent: ZubehoerGruppeIcon,
     unterkategorien: [
-      { id: "magazine", label: "Magazine & Ladevorrichtungen", iconComponent: MagazinIcon },
-      { id: "holster", label: "Holster & Taschen", iconComponent: HolsterIcon },
-      { id: "wiederladen", label: "Wiederladen & Werkzeug", iconComponent: WiederladenIcon },
-      { id: "reinigung", label: "Reinigung & Pflege", iconComponent: ReinigungIcon },
+      { id: "magazine", label: "Magazine", iconComponent: MagazinIcon },
+      { id: "holster", label: "Holster", iconComponent: HolsterIcon },
+      { id: "lauefe-teile", label: "Läufe & Teile", iconComponent: WiederladenIcon },
+      { id: "reinigung", label: "Reinigung", iconComponent: ReinigungIcon },
+      { id: "andere-zubehoer", label: "Andere", iconComponent: ZubehoerGruppeIcon },
     ],
   },
   {
     id: "munition",
     label: "Munition",
     iconComponent: MunitionIcon,
-    unterkategorien: [
-      { id: "buechsenmunition", label: "Büchsenmunition", iconComponent: BuechsenmunitionIcon },
-      { id: "pistolenmunition", label: "Pistolen & Revolvermunition", iconComponent: PistolenmunitionIcon },
-      { id: "schrotmunition", label: "Schrot & Flintenmunition", iconComponent: SchrotmunitionIcon },
-      { id: "randfeuermunition", label: "Randfeuermunition (.22 LR etc.)", iconComponent: RandfeuermunitionIcon },
-      { id: "wiederladen-komponenten", label: "Wiederladen & Komponenten", iconComponent: WiederladenMunitionIcon },
-    ],
+    unterkategorien: [],
   },
 ];
 
@@ -156,14 +121,15 @@ export const KATEGORIEN_FLAT: Unterkategorie[] = HAUPTKATEGORIEN.flatMap(
 
 // ─── Category groups for sidebar display ─────────────────────
 
-export const WAFFEN_IDS = ["kurzwaffen", "buechsen", "flinten", "ordonnanzwaffen", "freie-waffen"];
+export const WAFFEN_IDS = ["kurzwaffen", "langwaffen", "ordonnanzwaffen", "luftdruckwaffen"];
 export const ZUBEHOER_IDS = ["optik", "zubehoer", "munition"];
 
 // Backward compat: old slug → current slug
 export const CATEGORY_ALIASES: Record<string, string> = {
-  jagdwaffen: "buechsen",
-  langwaffen: "buechsen",
-  luftdruckwaffen: "freie-waffen",
+  buechsen: "langwaffen",
+  flinten: "langwaffen",
+  jagdwaffen: "langwaffen",
+  "freie-waffen": "luftdruckwaffen",
 };
 
 // ─── Rechtsstatus-Filter ─────────────────────────────────────

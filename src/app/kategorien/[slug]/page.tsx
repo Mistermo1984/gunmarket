@@ -10,24 +10,30 @@ const KATEGORIE_DATA: Record<string, { title: string; h1: string; description: s
     description: "Alle Kurzwaffen Inserate in der Schweiz. Pistolen, Revolver und mehr kaufen oder verkaufen auf GunMarket.ch.",
     seoText: "Auf GunMarket.ch finden Sie das grösste Angebot an Kurzwaffen in der Schweiz. Ob Pistolen von SIG Sauer, Glock, CZ oder Beretta — durchsuchen Sie hunderte Inserate von privaten Verkäufern und Händlern. Kurzwaffen sind in der Schweiz WES-pflichtig (Waffenerwerbsschein). Für den Kauf einer Pistole oder eines Revolvers benötigen Sie einen gültigen WES, den Sie bei Ihrer kantonalen Polizeibehörde beantragen können. Auf GunMarket.ch können Sie kostenlos Kurzwaffen inserieren und kaufen. Nutzen Sie unsere Filter, um nach Kaliber, Preis, Zustand und Kanton zu suchen. Alle Inserate werden vor der Veröffentlichung geprüft, um die Sicherheit auf unserer Plattform zu gewährleisten.",
   },
+  langwaffen: {
+    title: "Langwaffen kaufen Schweiz",
+    h1: "Langwaffen kaufen & verkaufen in der Schweiz",
+    description: "Alle Langwaffen Inserate in der Schweiz. Büchsen, Flinten, Jagdwaffen und mehr auf GunMarket.ch.",
+    seoText: "Finden Sie auf GunMarket.ch eine grosse Auswahl an Langwaffen. Von Repetierbüchsen für die Jagd bis hin zu Sportgewehren für den Schiessstand — unser Marktplatz bietet Inserate für jeden Bedarf. Repetierbüchsen können in der Schweiz per schriftlichem Vertrag erworben werden. Halbautomatische Büchsen sind WES-pflichtig. Auf GunMarket.ch finden Sie detaillierte Angaben zum Rechtsstatus jedes Inserats, sodass Sie immer wissen, welche Dokumente Sie benötigen. Nutzen Sie unsere Filterfunktionen, um nach Kaliber, Marke und Zustand zu suchen.",
+  },
+  // Backward compat aliases
   buechsen: {
     title: "Langwaffen kaufen Schweiz",
     h1: "Langwaffen kaufen & verkaufen in der Schweiz",
     description: "Alle Langwaffen Inserate in der Schweiz. Repetierer, Halbautomaten, Jagdgewehre und mehr auf GunMarket.ch.",
-    seoText: "Finden Sie auf GunMarket.ch eine grosse Auswahl an Langwaffen. Von Repetierbüchsen für die Jagd bis hin zu Sportgewehren für den Schiessstand — unser Marktplatz bietet Inserate für jeden Bedarf. Repetierbüchsen können in der Schweiz per schriftlichem Vertrag erworben werden. Halbautomatische Büchsen sind WES-pflichtig. Auf GunMarket.ch finden Sie detaillierte Angaben zum Rechtsstatus jedes Inserats, sodass Sie immer wissen, welche Dokumente Sie benötigen. Nutzen Sie unsere Filterfunktionen, um nach Kaliber, Marke und Zustand zu suchen.",
+    seoText: "Finden Sie auf GunMarket.ch eine grosse Auswahl an Langwaffen. Von Repetierbüchsen für die Jagd bis hin zu Sportgewehren für den Schiessstand — unser Marktplatz bietet Inserate für jeden Bedarf.",
   },
   flinten: {
     title: "Flinten kaufen Schweiz",
     h1: "Flinten kaufen & verkaufen in der Schweiz",
-    description: "Alle Flinten Inserate in der Schweiz. Bockflinten, Querfllinten und mehr kaufen auf GunMarket.ch.",
-    seoText: "Entdecken Sie auf GunMarket.ch das vielfältige Angebot an Flinten in der Schweiz. Ob Bockflinte für den Tontaubensport, Querflinte für die Jagd oder Repetierflinte — hier finden Sie das passende Inserat. Flinten mit glattem Lauf können in der Schweiz per schriftlichem Vertrag erworben werden. Auf GunMarket.ch inserieren sowohl private Verkäufer als auch Fachhändler ihre Flinten. Jedes Inserat enthält detaillierte Angaben zu Kaliber, Zustand und Rechtsstatus.",
+    description: "Alle Flinten Inserate in der Schweiz. Bockflinten, Querflinten und mehr kaufen auf GunMarket.ch.",
+    seoText: "Entdecken Sie auf GunMarket.ch das vielfältige Angebot an Flinten in der Schweiz. Ob Bockflinte für den Tontaubensport, Querflinte für die Jagd oder Repetierflinte — hier finden Sie das passende Inserat.",
   },
-  // jagdwaffen merged into buechsen (Langwaffen) — keep for backward compat with existing URLs
   jagdwaffen: {
     title: "Jagdwaffen kaufen Schweiz",
     h1: "Jagdwaffen kaufen & verkaufen in der Schweiz",
     description: "Alle Jagdwaffen Inserate in der Schweiz. Jagdbüchsen, Drillinge und Kombinationswaffen auf GunMarket.ch.",
-    seoText: "GunMarket.ch ist der führende Marktplatz für Jagdwaffen in der Schweiz. Finden Sie Jagdbüchsen, Drillinge, Bergstutzen und Kombinationswaffen von renommierten Herstellern wie Blaser, Sauer, Mauser und Browning. Für Jäger bieten wir eine umfassende Auswahl an gebrauchten und neuen Jagdwaffen. Der Erwerb von Jagdwaffen unterliegt dem Schweizer Waffengesetz — je nach Waffentyp wird ein schriftlicher Vertrag oder ein WES benötigt. Nutzen Sie unsere Kanton-Filter, um Jagdwaffen in Ihrer Nähe zu finden.",
+    seoText: "GunMarket.ch ist der führende Marktplatz für Jagdwaffen in der Schweiz. Finden Sie Jagdbüchsen, Drillinge, Bergstutzen und Kombinationswaffen von renommierten Herstellern wie Blaser, Sauer, Mauser und Browning.",
   },
   ordonnanzwaffen: {
     title: "Ordonnanzwaffen kaufen Schweiz",
@@ -35,11 +41,18 @@ const KATEGORIE_DATA: Record<string, { title: string; h1: string; description: s
     description: "Alle Ordonnanzwaffen Inserate in der Schweiz. K31, Stgw 57 und weitere Schweizer Militärwaffen auf GunMarket.ch.",
     seoText: "Auf GunMarket.ch finden Sie ein breites Angebot an Schweizer Ordonnanzwaffen. Vom legendären K31 Karabiner über den Stgw 57 bis hin zu historischen Langwaffen der Schweizer Armee — unser Marktplatz verbindet Sammler und Schützen in der ganzen Schweiz. Ordonnanzwaffen haben in der Schweiz einen besonderen rechtlichen Status. Ehemalige Armeewaffen können unter bestimmten Bedingungen per Vertrag oder mit WES erworben werden. Auf GunMarket.ch ist der Rechtsstatus bei jedem Inserat klar angegeben.",
   },
-  "freie-waffen": {
+  luftdruckwaffen: {
     title: "Luftdruckwaffen kaufen Schweiz",
     h1: "Luftdruckwaffen kaufen & verkaufen in der Schweiz",
     description: "Alle Luftdruckwaffen in der Schweiz. Luftgewehre, CO2-Waffen und Schreckschusswaffen auf GunMarket.ch.",
     seoText: "Entdecken Sie auf GunMarket.ch Luftdruckwaffen, die ohne Waffenerwerbsschein erworben werden können. Dazu gehören Luftdruckwaffen, CO2-Waffen und Schreckschusswaffen gemäss Art. 10 des Schweizer Waffengesetzes. Diese Waffen können von jeder Person ab 18 Jahren frei erworben werden. Auf GunMarket.ch finden Sie eine grosse Auswahl an Luftdruckwaffen für Sport, Freizeit und Training.",
+  },
+  // Keep legacy slug for backward compat
+  "freie-waffen": {
+    title: "Luftdruckwaffen kaufen Schweiz",
+    h1: "Luftdruckwaffen kaufen & verkaufen in der Schweiz",
+    description: "Alle Luftdruckwaffen in der Schweiz. Luftgewehre, CO2-Waffen und Schreckschusswaffen auf GunMarket.ch.",
+    seoText: "Entdecken Sie auf GunMarket.ch Luftdruckwaffen, die ohne Waffenerwerbsschein erworben werden können.",
   },
   zubehoer: {
     title: "Waffenzubehör kaufen Schweiz",

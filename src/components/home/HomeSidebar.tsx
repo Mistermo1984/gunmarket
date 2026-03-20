@@ -7,11 +7,9 @@ import { BookOpen, Target, ChevronRight, Shield } from "lucide-react";
 
 const CATEGORY_COLORS: Record<string, string> = {
   kurzwaffen: "#dc2626",
-  buechsen: "#2563eb",
-  flinten: "#16a34a",
-  // jagdwaffen merged into buechsen (Langwaffen)
+  langwaffen: "#2563eb",
   ordonnanzwaffen: "#4b5563",
-  "freie-waffen": "#0891b2",
+  luftdruckwaffen: "#0891b2",
   optik: "#ea580c",
   zubehoer: "#7c3aed",
   munition: "#991b1b",

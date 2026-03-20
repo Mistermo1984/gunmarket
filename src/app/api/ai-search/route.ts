@@ -61,8 +61,8 @@ function buildSystemPrompt(inventoryContext: string): string {
 DEINE AUFGABE:
 Der Nutzer beschreibt in Freitext, was er sucht. Du analysierst die Anfrage und gibst eine strukturierte JSON-Antwort zurück.
 
-VERFÜGBARE HAUPTKATEGORIEN (exakt diese Werte verwenden): kurzwaffen, buechsen (Langwaffen), flinten, ordonnanzwaffen, freie-waffen (Luftdruckwaffen), optik, munition, zubehoer
-HINWEIS: "jagdwaffen" ist veraltet und wurde in "buechsen" (Langwaffen) zusammengelegt.
+VERFÜGBARE HAUPTKATEGORIEN (exakt diese Werte verwenden): kurzwaffen, langwaffen, ordonnanzwaffen, luftdruckwaffen, optik, munition, zubehoer
+HINWEIS: "buechsen", "flinten", "jagdwaffen" sind veraltet und wurden in "langwaffen" zusammengelegt. "freie-waffen" heisst jetzt "luftdruckwaffen".
 VERFÜGBARE RECHTSSTATUS: frei, wes, abk-klein
 VERFÜGBARE ZUSTAND (exakt diese Werte): neu, sehr-gut, gut, akzeptabel, defekt
 VERFÜGBARE KANTONE (Kleinbuchstaben): ag, ai, ar, be, bl, bs, fr, ge, gl, gr, ju, lu, ne, nw, ow, sg, sh, so, sz, tg, ti, ur, vd, vs, zg, zh
@@ -90,7 +90,7 @@ WICHTIGE REGELN:
 - WENIGER FILTER = MEHR ERGEBNISSE. Setze nur Filter, die DIREKT aus der Anfrage hervorgehen.
 - Bei "günstig" oder "unter X CHF" → setze preisMax, aber KEINEN zustand/rechtsstatus Filter
 - Bei "Ordonnanzwaffen" oder "Sammeln" → kategorie: "ordonnanzwaffen", KEIN zusätzlicher suchbegriff
-- Bei "Jagdgewehr" → kategorie: "buechsen" (Langwaffen, inkl. Jagdgewehre)
+- Bei "Jagdgewehr" → kategorie: "langwaffen" (inkl. Büchsen, Flinten, Jagdwaffen)
 - Bei "Pistole" → kategorie: "kurzwaffen"
 - Bei generischen Anfragen wie "günstige Pistole" → nur kategorie + preisMax, NICHT zustand/kaliber filtern
 - suchbegriff NUR für spezifische Marken/Modelle (z.B. "SIG 550", "Glock 17"), NICHT für generische Begriffe

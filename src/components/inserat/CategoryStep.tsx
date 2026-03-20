@@ -77,24 +77,40 @@ export default function CategoryStep({
       </div>
 
       {/* Unterkategorie */}
-      {selectedHK && (
+      {selectedHK && selectedHK.unterkategorien.length > 0 && (
         <div className="mb-8">
           <h2 className="mb-1 font-display text-xl font-bold text-brand-dark">Unterkategorie</h2>
           <p className="mb-4 text-sm text-neutral-500">Wählen Sie die spezifische Kategorie</p>
-          <select
-            value={unterkategorie}
-            onChange={(e) => onUnterkategorie(e.target.value)}
-            className="w-full max-w-md rounded-lg border border-brand-border bg-white px-4 py-3 text-sm text-brand-dark focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-brand-green/20"
-          >
-            <option value="">Bitte wählen...</option>
-            {selectedHK.unterkategorien.map((uk) => (
-              <option key={uk.id} value={uk.id}>
-                {uk.label}
-              </option>
-            ))}
-          </select>
+          <div className="flex flex-wrap gap-3">
+            {selectedHK.unterkategorien.map((uk) => {
+              const Icon = uk.iconComponent;
+              const isSelected = unterkategorie === uk.id;
+              return (
+                <button
+                  key={uk.id}
+                  onClick={() => onUnterkategorie(uk.id)}
+                  className={`flex items-center gap-2 rounded-xl border-2 px-4 py-3 transition-all ${
+                    isSelected
+                      ? "border-brand-green bg-brand-green-light shadow-sm"
+                      : "border-brand-border bg-white hover:border-brand-green/30 hover:shadow-sm"
+                  }`}
+                >
+                  <Icon size={20} className={isSelected ? "text-brand-green" : "text-neutral-400"} />
+                  <span className={`text-sm font-semibold ${isSelected ? "text-brand-green" : "text-neutral-600"}`}>
+                    {uk.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       )}
+      {/* Auto-select unterkategorie for categories with none (Munition) */}
+      {selectedHK && selectedHK.unterkategorien.length === 0 && !unterkategorie && (() => {
+        // Set a default unterkategorie so canProceed works
+        setTimeout(() => onUnterkategorie("allgemein"), 0);
+        return null;
+      })()}
 
       {/* Rechtsstatus */}
       {unterkategorie && (

@@ -78,10 +78,9 @@ function getImageUrl(listing: any): string | null {
 const KAT_FILTERS = [
   { id: "alle", label: "Alle" },
   { id: "kurzwaffen", label: "Kurzwaffen" },
-  { id: "buechsen", label: "Langwaffen" },
-  { id: "flinten", label: "Flinten" },
+  { id: "langwaffen", label: "Langwaffen" },
   { id: "ordonnanzwaffen", label: "Ordonnanz" },
-  { id: "freie-waffen", label: "Luftdruck" },
+  { id: "luftdruckwaffen", label: "Luftdruck" },
   { id: "optik", label: "Optik" },
   { id: "munition", label: "Munition" },
   { id: "zubehoer", label: "Zubehör" },

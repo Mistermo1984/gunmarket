@@ -43,14 +43,16 @@ interface AdminListing {
 
 const KAT_LABELS: Record<string, string> = {
   kurzwaffen: "Kurzwaffen",
-  buechsen: "Langwaffen",
-  flinten: "Flinten",
-  jagdwaffen: "Langwaffen",
+  langwaffen: "Langwaffen",
   ordonnanzwaffen: "Ordonnanz",
-  "freie-waffen": "Luftdruckwaffen",
+  luftdruckwaffen: "Luftdruckwaffen",
   optik: "Optik",
   munition: "Munition",
   zubehoer: "Zubehör",
+  buechsen: "Langwaffen",
+  flinten: "Langwaffen",
+  jagdwaffen: "Langwaffen",
+  "freie-waffen": "Luftdruckwaffen",
 };
 
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {

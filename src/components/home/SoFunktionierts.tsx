@@ -1,33 +1,38 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { UserPlus, FileText, MessageCircle } from "lucide-react";
-
-const SCHRITTE = [
-  {
-    nr: 1,
-    icon: UserPlus,
-    titel: "Konto erstellen",
-    text: "Registriere dich kostenlos in unter einer Minute.",
-  },
-  {
-    nr: 2,
-    icon: FileText,
-    titel: "Inserat aufgeben",
-    text: "Fotos hochladen, beschreiben und Preis setzen.",
-  },
-  {
-    nr: 3,
-    icon: MessageCircle,
-    titel: "Direkt kontaktieren",
-    text: "Interessenten melden sich — ihr klärt alles direkt.",
-  },
-];
+import { useLocale } from "@/lib/locale-context";
 
 export default function SoFunktionierts() {
+  const { t } = useLocale();
+
+  const SCHRITTE = [
+    {
+      nr: 1,
+      icon: UserPlus,
+      titel: t("how_step1_title"),
+      text: t("how_step1_text"),
+    },
+    {
+      nr: 2,
+      icon: FileText,
+      titel: t("how_step2_title"),
+      text: t("how_step2_text"),
+    },
+    {
+      nr: 3,
+      icon: MessageCircle,
+      titel: t("how_step3_title"),
+      text: t("how_step3_text"),
+    },
+  ];
+
   return (
     <div className="mb-10">
       <h2 className="mb-6 font-display text-xl font-black uppercase tracking-tight text-brand-dark md:text-2xl">
-        So funktioniert&apos;s
+        {t("how_title")}
       </h2>
 
       {/* 3 Schritte */}
@@ -69,13 +74,13 @@ export default function SoFunktionierts() {
           {/* Left */}
           <div className="text-center md:text-left">
             <span className="mb-3 inline-block rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-green-400">
-              Kostenlos &amp; sofort
+              {t("how_cta_badge")}
             </span>
             <h3 className="mb-1.5 text-2xl font-bold text-white md:text-[28px]">
-              Bereit loszulegen?
+              {t("how_cta_title")}
             </h3>
             <p className="text-sm text-[#9ca3af]">
-              Erstelle jetzt dein kostenloses Konto und starte sofort.
+              {t("how_cta_text")}
             </p>
           </div>
           {/* Right: buttons */}
@@ -84,13 +89,13 @@ export default function SoFunktionierts() {
               href="/register"
               className="rounded-lg bg-[#16a34a] px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#15803d]"
             >
-              Jetzt registrieren
+              {t("how_cta_register")}
             </Link>
             <Link
               href="/inserat/neu"
               className="rounded-lg border border-[#16a34a] px-7 py-3 text-sm font-semibold text-[#16a34a] transition-colors hover:bg-[#16a34a]/10"
             >
-              Inserat aufgeben
+              {t("nav_create_long")}
             </Link>
           </div>
         </div>

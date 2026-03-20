@@ -34,6 +34,7 @@ import ImageLightbox from "@/components/inserat/ImageLightbox";
 import KontaktModal from "@/components/inserat/KontaktModal";
 import MeldenModal from "@/components/inserat/MeldenModal";
 import { apiListingToCard } from "@/lib/listing-helpers";
+import { useLocale } from "@/lib/locale-context";
 
 interface ListingData {
   id: string;
@@ -90,6 +91,7 @@ function formatDate(dateStr: string): string {
 export default function InseratDetailPage() {
   const params = useParams();
   const { data: session } = useSession();
+  const { t } = useLocale();
   const id = params.id as string;
 
   const [listing, setListing] = useState<ListingData | null>(null);
@@ -232,9 +234,9 @@ export default function InseratDetailPage() {
   if (!listing) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-        <p className="text-lg font-semibold text-brand-dark">Inserat nicht gefunden</p>
+        <p className="text-lg font-semibold text-brand-dark">{t("detail_not_found")}</p>
         <Link href="/suche" className="text-brand-green hover:underline">
-          Zurück zur Suche
+          {t("detail_back_search")}
         </Link>
       </div>
     );
@@ -252,14 +254,14 @@ export default function InseratDetailPage() {
     : "";
 
   const SPECS = [
-    { label: "Marke", value: listing.marke, icon: Tag },
+    { label: t("filter_brand"), value: listing.marke, icon: Tag },
     { label: "Modell", value: listing.modell, icon: Box },
-    { label: "Kaliber", value: listing.kaliber, icon: Crosshair },
-    { label: "Zustand", value: listing.zustand, icon: CheckCircle },
+    { label: t("filter_caliber"), value: listing.kaliber, icon: Crosshair },
+    { label: t("filter_condition"), value: listing.zustand, icon: CheckCircle },
     { label: "Baujahr", value: listing.baujahr, icon: Calendar },
     { label: "Lauflänge", value: listing.lauflaenge, icon: Ruler },
     { label: "Magazin", value: listing.magazin, icon: Layers },
-    { label: "Kategorie", value: listing.unterkategorie, icon: Tag },
+    { label: t("filter_category"), value: listing.unterkategorie, icon: Tag },
   ].filter((s) => s.value);
 
   return (
@@ -272,12 +274,12 @@ export default function InseratDetailPage() {
             className="flex items-center gap-1 font-medium text-green-700 hover:underline"
           >
             <ArrowLeft size={14} />
-            Zurück
+            {t("listing_back")}
           </Link>
           <span className="text-gray-400">/</span>
           <nav className="flex items-center gap-1.5 text-neutral-500">
             <Link href="/" className="hover:text-brand-green transition-colors">
-              Startseite
+              {t("breadcrumb_home")}
             </Link>
             <ChevronRight size={14} className="text-neutral-300" />
             <Link
@@ -299,10 +301,10 @@ export default function InseratDetailPage() {
             <ExternalLink size={20} className="shrink-0 text-blue-600" />
             <div className="flex-1">
               <p className="text-sm font-medium text-blue-800">
-                Dieses Inserat stammt von <strong>{sourceName}</strong>
+                {t("detail_external_from")} <strong>{sourceName}</strong>
               </p>
               <p className="text-xs text-blue-600">
-                Für Kontaktaufnahme werden Sie zur Originalseite weitergeleitet.
+                {t("detail_external_hint")}
               </p>
             </div>
             {listing.source_url && (
@@ -310,7 +312,7 @@ export default function InseratDetailPage() {
                 href={`/weiterleitung?url=${encodeURIComponent(listing.source_url)}&titel=${encodeURIComponent(listing.titel)}`}
                 className="shrink-0 rounded-lg bg-blue-600 px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-blue-700"
               >
-                Original ansehen
+                {t("detail_view_original")}
               </a>
             )}
           </div>
@@ -336,7 +338,7 @@ export default function InseratDetailPage() {
                   />
                 ) : (
                   <div className="flex h-[400px] w-full items-center justify-center bg-gray-100 text-gray-300">
-                    Kein Bild
+                    {t("detail_no_image")}
                   </div>
                 )}
                 {images.length > 1 && (
@@ -401,7 +403,7 @@ export default function InseratDetailPage() {
             {SPECS.length > 0 && (
               <div className="mb-6 rounded-xl bg-white p-6 shadow-sm">
                 <h2 className="mb-4 font-display text-lg font-bold uppercase text-brand-dark">
-                  Spezifikationen
+                  {t("detail_specs")}
                 </h2>
                 <div className="grid grid-cols-2 gap-4">
                   {SPECS.map((spec) => (
@@ -422,7 +424,7 @@ export default function InseratDetailPage() {
             {/* Description */}
             <div className="mb-6 rounded-xl bg-white p-6 shadow-sm">
               <h2 className="mb-3 font-display text-lg font-bold uppercase text-brand-dark">
-                Beschreibung
+                {t("detail_description")}
               </h2>
               <p
                 className={`text-sm leading-relaxed text-neutral-600 ${!beschreibungExpanded ? "line-clamp-5" : ""}`}
@@ -434,7 +436,7 @@ export default function InseratDetailPage() {
                   onClick={() => setBeschreibungExpanded(!beschreibungExpanded)}
                   className="mt-2 text-sm font-medium text-brand-green hover:underline"
                 >
-                  {beschreibungExpanded ? "Weniger anzeigen" : "Mehr anzeigen"}
+                  {beschreibungExpanded ? t("detail_show_less") : t("detail_show_more")}
                 </button>
               )}
             </div>
@@ -464,12 +466,12 @@ export default function InseratDetailPage() {
                   className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 py-3 text-lg font-medium text-white transition-colors hover:bg-blue-700"
                 >
                   <ExternalLink size={20} />
-                  Auf {sourceName} ansehen
+                  {t("detail_view_on").replace("{source}", sourceName || "")}
                 </a>
               ) : isExternal ? (
                 <div className="flex w-full items-center justify-center gap-2 rounded-lg bg-neutral-100 py-3 text-sm text-neutral-500">
                   <ExternalLink size={16} />
-                  Externes Inserat — Kontakt über {sourceName}
+                  {t("detail_external_contact")} {sourceName}
                 </div>
               ) : (
                 <button
@@ -477,7 +479,7 @@ export default function InseratDetailPage() {
                   className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 py-3 text-lg font-medium text-white transition-colors hover:bg-blue-700"
                 >
                   <MessageSquare size={20} />
-                  Nachricht senden
+                  {t("detail_send_message")}
                 </button>
               )}
 
@@ -491,7 +493,7 @@ export default function InseratDetailPage() {
                       </div>
                       <div>
                         <p className="font-semibold text-brand-dark">{sourceName}</p>
-                        <span className="text-sm text-neutral-500">Externes Inserat</span>
+                        <span className="text-sm text-neutral-500">{t("detail_external_listing")}</span>
                       </div>
                     </div>
                     <p className="text-xs text-neutral-500">
@@ -508,14 +510,14 @@ export default function InseratDetailPage() {
                         <p className="font-semibold text-brand-dark">{verkaeuferName}</p>
                         <div className="flex items-center gap-2">
                           <span className="text-sm text-neutral-500">
-                            {listing.verkaeufer_typ === "Händler" ? "Händler" : "Privater Nutzer"}
+                            {listing.verkaeufer_typ === "Händler" ? t("reg_dealer") : t("detail_private_user")}
                           </span>
                         </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 text-xs text-neutral-500">
                       <User size={14} />
-                      Aktiv seit {mitgliedSeit}
+                      {t("detail_active_since")} {mitgliedSeit}
                     </div>
                   </>
                 )}
@@ -534,14 +536,14 @@ export default function InseratDetailPage() {
                   className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-brand-border bg-white px-3 py-2 text-sm text-neutral-600 transition-colors hover:border-brand-green hover:text-brand-green"
                 >
                   <Share2 size={14} />
-                  Teilen
+                  {t("detail_share")}
                 </button>
                 <button
                   onClick={() => setMeldenOpen(true)}
                   className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-brand-border bg-white px-3 py-2 text-sm text-neutral-600 transition-colors hover:border-red-300 hover:text-red-600"
                 >
                   <Flag size={14} />
-                  Melden
+                  {t("detail_report")}
                 </button>
               </div>
 
@@ -555,20 +557,20 @@ export default function InseratDetailPage() {
                 }`}
               >
                 <Heart size={18} fill={isMerkliste ? "currentColor" : "none"} />
-                {isMerkliste ? "Von Merkliste entfernen" : "Auf Merkliste setzen"}
+                {isMerkliste ? t("detail_watchlist_remove") : t("detail_watchlist_add")}
               </button>
 
               {/* Location */}
               <div className="rounded-xl bg-white p-5 shadow-sm">
                 <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-brand-dark">
                   <MapPin size={16} className="text-brand-green" />
-                  Standort
+                  {t("listing_location")}
                 </h3>
                 <p className="mb-3 text-sm text-neutral-600">
-                  {listing.ortschaft}, Kanton {listing.kanton}
+                  {listing.ortschaft}, {t("filter_canton")} {listing.kanton}
                 </p>
                 <div className="h-40 rounded-lg bg-gray-100 flex items-center justify-center text-sm text-neutral-400">
-                  Karte wird geladen...
+                  {t("detail_loading_map")}
                 </div>
               </div>
 
@@ -577,12 +579,11 @@ export default function InseratDetailPage() {
                 <div className="flex items-start gap-2">
                   <Shield size={18} className="mt-0.5 shrink-0 text-amber-600" />
                   <div>
-                    <p className="text-sm font-medium text-amber-800">Sicherheitshinweis</p>
+                    <p className="text-sm font-medium text-amber-800">{t("detail_safety_title")}</p>
                     <p className="mt-1 text-xs text-amber-700">
-                      Treffen Sie sich zur Übergabe an einem öffentlichen Ort. Leisten Sie keine
-                      Vorauszahlungen.{" "}
+                      {t("detail_safety_text")}{" "}
                       <Link href="/sicherheit" className="font-medium underline hover:no-underline">
-                        Mehr erfahren
+                        {t("detail_safety_more")}
                       </Link>
                     </p>
                   </div>
@@ -600,15 +601,15 @@ export default function InseratDetailPage() {
           </span>
           <span className="flex items-center gap-1">
             <Eye size={14} />
-            {listing.aufrufe} Aufrufe
+            {listing.aufrufe} {t("detail_views")}
           </span>
           <span className="flex items-center gap-1">
             <Calendar size={14} />
-            Eingestellt am {formatDate(listing.created_at)}
+            {t("detail_listed")} {formatDate(listing.created_at)}
           </span>
           <span className="flex items-center gap-1">
             <RefreshCw size={14} />
-            Aktualisiert am {formatDate(listing.updated_at)}
+            {t("detail_updated")} {formatDate(listing.updated_at)}
           </span>
         </div>
 
@@ -616,7 +617,7 @@ export default function InseratDetailPage() {
         {similarListings.length > 0 && (
           <div className="mt-10">
             <h2 className="mb-4 font-display text-xl font-bold uppercase text-brand-dark">
-              Ähnliche Inserate
+              {t("detail_similar")}
             </h2>
             <div className="snap-scroll scrollbar-hide flex gap-4 overflow-x-auto pb-4">
               {similarListings.map((l) => {
@@ -648,7 +649,7 @@ export default function InseratDetailPage() {
               className="flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white touch-target"
             >
               <ExternalLink size={16} />
-              Auf {sourceName}
+              {t("detail_view_on").replace("{source}", sourceName || "")}
             </a>
           ) : !isExternal ? (
             <button
@@ -656,7 +657,7 @@ export default function InseratDetailPage() {
               className="flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white touch-target"
             >
               <MessageSquare size={16} />
-              Nachricht senden
+              {t("detail_send_message")}
             </button>
           ) : null}
         </div>

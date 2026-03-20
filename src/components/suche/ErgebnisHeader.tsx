@@ -2,6 +2,7 @@
 
 import React from "react";
 import { LayoutGrid, List, Map, SlidersHorizontal } from "lucide-react";
+import { useLocale } from "@/lib/locale-context";
 
 interface ErgebnisHeaderProps {
   resultCount: number;
@@ -15,13 +16,6 @@ interface ErgebnisHeaderProps {
   onToggleMap?: () => void;
 }
 
-const SORT_OPTIONS = [
-  { value: "preis-asc", label: "Preis aufsteigend" },
-  { value: "preis-desc", label: "Preis absteigend" },
-  { value: "neueste", label: "Neueste" },
-  { value: "aelteste", label: "Älteste" },
-];
-
 export default function ErgebnisHeader({
   resultCount,
   sort,
@@ -33,6 +27,14 @@ export default function ErgebnisHeader({
   showMap,
   onToggleMap,
 }: ErgebnisHeaderProps) {
+  const { t } = useLocale();
+
+  const SORT_OPTIONS = [
+    { value: "preis-asc", label: t("sort_price_asc") },
+    { value: "preis-desc", label: t("sort_price_desc") },
+    { value: "neueste", label: t("sort_newest") },
+    { value: "aelteste", label: t("sort_oldest") },
+  ];
   return (
     <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
       <div className="flex items-center gap-3">
@@ -42,7 +44,7 @@ export default function ErgebnisHeader({
           className="relative inline-flex items-center gap-2 rounded-lg border border-brand-border px-3 py-2 text-sm font-medium text-neutral-700 hover:bg-brand-grey lg:hidden"
         >
           <SlidersHorizontal size={16} />
-          Filter
+          {t("filter_title")}
           {activeFilterCount > 0 && (
             <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand-green text-[10px] font-bold text-white">
               {activeFilterCount}
@@ -51,7 +53,7 @@ export default function ErgebnisHeader({
         </button>
 
         <h1 className="font-display text-xl font-black uppercase tracking-tight text-brand-dark md:text-2xl">
-          {resultCount} Inserate
+          {resultCount} {t("nav_listings")}
         </h1>
       </div>
 
@@ -80,7 +82,7 @@ export default function ErgebnisHeader({
             }`}
           >
             <Map size={14} />
-            Karte
+            {t("map_view")}
           </button>
         )}
 

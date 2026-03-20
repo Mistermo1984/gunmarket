@@ -8,6 +8,7 @@ import { Eye, EyeOff, Info, Loader2, CheckCircle, MailWarning } from "lucide-rea
 import AuthPanel from "@/components/auth/AuthPanel";
 import { RECHTLICHER_DISCLAIMER } from "@/lib/constants";
 import Logo from "@/components/ui/Logo";
+import { useLocale } from "@/lib/locale-context";
 
 // Metadata must be in a separate layout since this is a client component
 // See: src/app/login/layout.tsx
@@ -21,6 +22,7 @@ export default function LoginPage() {
 }
 
 function LoginContent() {
+  const { t } = useLocale();
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
@@ -54,9 +56,9 @@ function LoginContent() {
     if (result?.error) {
       if (result.error.includes("EMAIL_NOT_VERIFIED")) {
         setShowVerifyHint(true);
-        setError("Bitte bestätigen Sie zuerst Ihre E-Mail-Adresse.");
+        setError(t("auth_confirm_email_first"));
       } else {
-        setError("E-Mail oder Passwort ist falsch");
+        setError(t("auth_wrong_credentials"));
       }
     } else {
       router.push(callbackUrl);
@@ -66,7 +68,7 @@ function LoginContent() {
 
   async function handleResendVerification() {
     if (!email) {
-      setError("Bitte geben Sie Ihre E-Mail-Adresse ein");
+      setError(t("auth_enter_email"));
       return;
     }
     setResending(true);
@@ -97,8 +99,8 @@ function LoginContent() {
             <div className="mb-6 flex items-center gap-3 rounded-lg bg-green-50 border border-green-200 p-4">
               <CheckCircle size={20} className="shrink-0 text-green-600" />
               <div>
-                <p className="text-sm font-semibold text-green-800">E-Mail bestätigt!</p>
-                <p className="text-xs text-green-600">Sie können sich jetzt anmelden.</p>
+                <p className="text-sm font-semibold text-green-800">{t("auth_email_confirmed")}</p>
+                <p className="text-xs text-green-600">{t("auth_email_confirmed_msg")}</p>
               </div>
             </div>
           )}
@@ -107,23 +109,23 @@ function LoginContent() {
           {tokenError === "invalid-token" && (
             <div className="mb-6 flex items-center gap-3 rounded-lg bg-red-50 border border-red-200 p-4">
               <MailWarning size={20} className="shrink-0 text-red-600" />
-              <p className="text-sm text-red-700">Ungültiger Bestätigungslink. Bitte fordern Sie einen neuen an.</p>
+              <p className="text-sm text-red-700">{t("auth_invalid_link")}</p>
             </div>
           )}
           {tokenError === "token-expired" && (
             <div className="mb-6 flex items-center gap-3 rounded-lg bg-amber-50 border border-amber-200 p-4">
               <MailWarning size={20} className="shrink-0 text-amber-600" />
-              <p className="text-sm text-amber-700">Der Bestätigungslink ist abgelaufen. Bitte fordern Sie einen neuen an.</p>
+              <p className="text-sm text-amber-700">{t("auth_link_expired")}</p>
             </div>
           )}
 
           <h1 className="mb-2 font-display text-3xl font-black text-brand-dark">
-            Willkommen zurück
+            {t("auth_welcome")}
           </h1>
           <p className="mb-8 text-sm text-neutral-500">
-            Noch kein Konto?{" "}
+            {t("auth_no_account")}{" "}
             <Link href="/register" className="font-medium text-brand-green hover:underline">
-              Jetzt registrieren &rarr;
+              {t("auth_register_now")}
             </Link>
           </p>
 
@@ -131,14 +133,14 @@ function LoginContent() {
             {/* Email */}
             <div>
               <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-brand-dark">
-                E-Mail
+                {t("auth_email")}
               </label>
               <input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="name@beispiel.ch"
+                placeholder={t("auth_email_placeholder")}
                 required
                 className="w-full rounded-lg border border-brand-border bg-white px-4 py-3 text-sm text-brand-dark placeholder:text-neutral-400 focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-brand-green/20"
               />
@@ -147,7 +149,7 @@ function LoginContent() {
             {/* Password */}
             <div>
               <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-brand-dark">
-                Passwort
+                {t("auth_password")}
               </label>
               <div className="relative">
                 <input
@@ -155,7 +157,7 @@ function LoginContent() {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Passwort eingeben"
+                  placeholder={t("auth_password_placeholder")}
                   required
                   className="w-full rounded-lg border border-brand-border bg-white px-4 py-3 pr-11 text-sm text-brand-dark placeholder:text-neutral-400 focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-brand-green/20"
                 />
@@ -163,7 +165,7 @@ function LoginContent() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600"
-                  aria-label={showPassword ? "Passwort verbergen" : "Passwort anzeigen"}
+                  aria-label={showPassword ? t("login_hide_password") : t("login_show_password")}
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -179,10 +181,10 @@ function LoginContent() {
                   onChange={() => setRememberMe(!rememberMe)}
                   className="h-4 w-4 rounded accent-brand-green"
                 />
-                <span className="text-sm text-neutral-600">Angemeldet bleiben</span>
+                <span className="text-sm text-neutral-600">{t("auth_stay_logged_in")}</span>
               </label>
               <Link href="/passwort-vergessen" className="text-xs text-neutral-500 hover:text-brand-green">
-                Passwort vergessen?
+                {t("auth_forgot")}
               </Link>
             </div>
 
@@ -197,10 +199,10 @@ function LoginContent() {
             {showVerifyHint && (
               <div className="rounded-lg bg-amber-50 border border-amber-200 p-3">
                 <p className="text-xs text-amber-800 mb-2">
-                  Prüfen Sie Ihren Posteingang. Falls Sie keine E-Mail erhalten haben:
+                  {t("auth_check_inbox")}
                 </p>
                 {resendSuccess ? (
-                  <p className="text-xs font-semibold text-green-700">Bestätigungsmail wurde erneut gesendet!</p>
+                  <p className="text-xs font-semibold text-green-700">{t("auth_resend_success")}</p>
                 ) : (
                   <button
                     type="button"
@@ -208,7 +210,7 @@ function LoginContent() {
                     disabled={resending}
                     className="text-xs font-semibold text-amber-700 underline hover:text-amber-900"
                   >
-                    {resending ? "Wird gesendet..." : "Bestätigungsmail erneut senden"}
+                    {resending ? t("auth_sending") : t("auth_resend_confirmation")}
                   </button>
                 )}
               </div>
@@ -221,14 +223,14 @@ function LoginContent() {
               className="flex w-full items-center justify-center gap-2 rounded-lg bg-brand-green py-3.5 text-sm font-semibold text-white transition-colors hover:bg-brand-green-dark disabled:opacity-60"
             >
               {loading && <Loader2 size={16} className="animate-spin" />}
-              {loading ? "Wird angemeldet..." : "Anmelden"}
+              {loading ? t("auth_logging_in") : t("auth_login")}
             </button>
           </form>
 
           {/* Divider */}
           <div className="my-6 flex items-center gap-3">
             <div className="h-px flex-1 bg-brand-border" />
-            <span className="text-xs text-neutral-400">oder</span>
+            <span className="text-xs text-neutral-400">{t("auth_or")}</span>
             <div className="h-px flex-1 bg-brand-border" />
           </div>
 
@@ -236,7 +238,7 @@ function LoginContent() {
           <div className="flex gap-3 rounded-lg bg-amber-50 p-4">
             <Info size={16} className="mt-0.5 shrink-0 text-amber-600" />
             <p className="text-xs leading-relaxed text-amber-800">
-              Sie benötigen ein Konto um Inserate aufzugeben oder Verkäufer zu kontaktieren.
+              {t("auth_info_text")}
             </p>
           </div>
 

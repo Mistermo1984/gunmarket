@@ -14,6 +14,7 @@ import ListingGrid from "@/components/suche/ListingGrid";
 import DynamicMap from "@/components/map/DynamicMap";
 import { HAUPTKATEGORIEN, KANTONE } from "@/lib/constants";
 import { apiListingToCard } from "@/lib/listing-helpers";
+import { useLocale } from "@/lib/locale-context";
 import type { ListingCardData } from "@/components/ui/ListingCard";
 
 export default function SuchePage() {
@@ -26,6 +27,7 @@ export default function SuchePage() {
 
 function SucheContent() {
   const searchParams = useSearchParams();
+  const { t } = useLocale();
 
   const [filters, setFilters] = useState<FilterState>(() => {
     const initial = { ...INITIAL_FILTERS };
@@ -161,11 +163,11 @@ function SucheContent() {
       <div className="border-b border-brand-border bg-brand-grey/50">
         <div className="mx-auto flex max-w-7xl items-center gap-1.5 px-4 py-3 text-xs text-neutral-500">
           <Link href="/" className="hover:text-brand-green transition-colors">
-            Startseite
+            {t("breadcrumb_home")}
           </Link>
           <ChevronRight size={12} className="text-neutral-300" />
           <Link href="/suche" className="hover:text-brand-green transition-colors">
-            Suche
+            {t("breadcrumb_search")}
           </Link>
           {activeKatLabel && (
             <>
@@ -274,7 +276,7 @@ function SucheContent() {
       <Link
         href="/dashboard/inserat-erstellen"
         className="fixed bottom-20 right-4 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-brand-green text-white shadow-lg animate-bounce-in lg:hidden hover:bg-brand-green-dark transition-colors"
-        aria-label="Inserat aufgeben"
+        aria-label={t("nav_create_long")}
       >
         <Plus size={24} />
       </Link>

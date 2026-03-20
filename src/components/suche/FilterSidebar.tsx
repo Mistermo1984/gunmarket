@@ -7,6 +7,7 @@ import {
   Search,
   RotateCcw,
 } from "lucide-react";
+import { useLocale } from "@/lib/locale-context";
 import {
   HAUPTKATEGORIEN,
   WAFFEN_IDS,
@@ -129,6 +130,7 @@ function FilterDropdown({
   children: React.ReactNode;
   selectedCount?: number;
 }) {
+  const { t } = useLocale();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -155,7 +157,7 @@ function FilterDropdown({
         }`}
       >
         <span className={selectedCount ? "text-brand-dark font-medium" : "text-neutral-400"}>
-          {selectedCount ? `${selectedCount} ausgewählt` : placeholder}
+          {selectedCount ? `${selectedCount} ${t("filter_selected")}` : placeholder}
         </span>
         <ChevronDown
           size={14}
@@ -286,6 +288,7 @@ export default function FilterSidebar({
   isMobile = false,
   counts,
 }: FilterSidebarProps) {
+  const { t } = useLocale();
   const [kaliberSuche, setKaliberSuche] = useState("");
   const [kantonSuche, setKantonSuche] = useState("");
 
@@ -327,7 +330,7 @@ export default function FilterSidebar({
       {/* Header */}
       <div className="flex items-center justify-between px-4 pb-3 pt-4">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-bold text-brand-dark">Filter</span>
+          <span className="text-sm font-bold text-brand-dark">{t("filter_title")}</span>
           {activeCount > 0 && (
             <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-brand-green px-1 text-[10px] font-bold text-white">
               {activeCount}
@@ -341,7 +344,7 @@ export default function FilterSidebar({
               className="flex items-center gap-1 text-[11px] font-medium text-neutral-400 transition-colors hover:text-brand-green"
             >
               <RotateCcw size={11} />
-              Zurücksetzen
+              {t("filter_reset")}
             </button>
           )}
           {isMobile && onClose && (
@@ -355,8 +358,8 @@ export default function FilterSidebar({
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto px-4 pb-4">
         {/* ── KATEGORIE ── */}
-        <SectionLabel>Kategorie</SectionLabel>
-        <span className="mb-1 block text-[9px] font-semibold uppercase tracking-wider text-neutral-300">Waffen</span>
+        <SectionLabel>{t("filter_category")}</SectionLabel>
+        <span className="mb-1 block text-[9px] font-semibold uppercase tracking-wider text-neutral-300">{t("filter_weapons")}</span>
         <div className="flex flex-wrap gap-1.5">
           {HAUPTKATEGORIEN.filter((hk) => WAFFEN_IDS.includes(hk.id)).map((hk) => (
             <CategoryPillWithSubs
@@ -376,7 +379,7 @@ export default function FilterSidebar({
             />
           ))}
         </div>
-        <span className="mb-1 mt-2.5 block text-[9px] font-semibold uppercase tracking-wider text-neutral-300">Zubehör & Mehr</span>
+        <span className="mb-1 mt-2.5 block text-[9px] font-semibold uppercase tracking-wider text-neutral-300">{t("filter_accessories")}</span>
         <div className="flex flex-wrap gap-1.5">
           {HAUPTKATEGORIEN.filter((hk) => ZUBEHOER_IDS.includes(hk.id)).map((hk) => (
             <CategoryPillWithSubs
@@ -400,16 +403,16 @@ export default function FilterSidebar({
         <FilterDivider />
 
         {/* ── ZUSTAND ── */}
-        <SectionLabel>Zustand</SectionLabel>
+        <SectionLabel>{t("filter_condition")}</SectionLabel>
         <div className="flex flex-wrap gap-1.5">
           <Pill
-            label="Alle"
+            label={t("filter_all")}
             active={filters.zustand.length === 0}
             onClick={() => update({ zustand: [] })}
             count={counts?.total}
           />
           <Pill
-            label="Neu"
+            label={t("filter_new")}
             active={filters.zustand.length === 1 && filters.zustand[0] === "neu"}
             onClick={() =>
               filters.zustand.length === 1 && filters.zustand[0] === "neu"
@@ -419,7 +422,7 @@ export default function FilterSidebar({
             count={neuCount}
           />
           <Pill
-            label="Gebraucht"
+            label={t("filter_used")}
             active={filters.zustand.length > 0 && !filters.zustand.includes("neu")}
             onClick={() => {
               const gebrauchtIds = ZUSTAND_OPTIONEN.filter((z) => z.id !== "neu").map((z) => z.id);
@@ -433,13 +436,13 @@ export default function FilterSidebar({
         <FilterDivider />
 
         {/* ── PREIS ── */}
-        <SectionLabel>Preis (CHF)</SectionLabel>
+        <SectionLabel>{t("filter_price")}</SectionLabel>
         <div className="mb-2.5 flex items-center gap-2">
           <input
             type="number"
             value={filters.preisMin}
             onChange={(e) => update({ preisMin: e.target.value })}
-            placeholder="Min. CHF"
+            placeholder={t("filter_min")}
             className="w-full rounded-lg border-0 bg-neutral-50 px-3 py-2 text-xs text-brand-dark placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-brand-green/30"
           />
           <span className="text-neutral-300">—</span>
@@ -447,7 +450,7 @@ export default function FilterSidebar({
             type="number"
             value={filters.preisMax}
             onChange={(e) => update({ preisMax: e.target.value })}
-            placeholder="Max. CHF"
+            placeholder={t("filter_max")}
             className="w-full rounded-lg border-0 bg-neutral-50 px-3 py-2 text-xs text-brand-dark placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-brand-green/30"
           />
         </div>
@@ -473,8 +476,8 @@ export default function FilterSidebar({
 
         {/* ── KALIBER ── */}
         <FilterDropdown
-          label="Kaliber"
-          placeholder="Alle Kaliber"
+          label={t("filter_caliber")}
+          placeholder={t("filter_all_calibers")}
           selectedCount={filters.kaliber.length || undefined}
         >
           <div className="sticky top-0 z-10 border-b border-neutral-100 bg-white px-3 py-2">
@@ -484,7 +487,7 @@ export default function FilterSidebar({
                 type="text"
                 value={kaliberSuche}
                 onChange={(e) => setKaliberSuche(e.target.value)}
-                placeholder="Suchen..."
+                placeholder={t("filter_search")}
                 className="flex-1 bg-transparent text-xs text-brand-dark placeholder:text-neutral-400 focus:outline-none"
               />
             </div>
@@ -516,8 +519,8 @@ export default function FilterSidebar({
 
         {/* ── KANTON ── */}
         <FilterDropdown
-          label="Kanton"
-          placeholder="Alle Kantone"
+          label={t("filter_canton")}
+          placeholder={t("filter_all_cantons")}
           selectedCount={filters.kantone.length || undefined}
         >
           <div className="sticky top-0 z-10 border-b border-neutral-100 bg-white px-3 py-2">
@@ -527,7 +530,7 @@ export default function FilterSidebar({
                 type="text"
                 value={kantonSuche}
                 onChange={(e) => setKantonSuche(e.target.value)}
-                placeholder="Suchen..."
+                placeholder={t("filter_search")}
                 className="flex-1 bg-transparent text-xs text-brand-dark placeholder:text-neutral-400 focus:outline-none"
               />
             </div>
@@ -545,12 +548,12 @@ export default function FilterSidebar({
         <FilterDivider />
 
         {/* ── MARKE ── */}
-        <SectionLabel>Marke</SectionLabel>
+        <SectionLabel>{t("filter_brand")}</SectionLabel>
         <input
           type="text"
           value={filters.marke}
           onChange={(e) => update({ marke: e.target.value })}
-          placeholder="Marke eingeben..."
+          placeholder={t("filter_brand_placeholder")}
           className="mb-2.5 w-full rounded-lg border-0 bg-neutral-50 px-3 py-2 text-xs text-brand-dark placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-brand-green/30"
         />
         <div className="flex flex-wrap gap-1.5">
@@ -567,12 +570,12 @@ export default function FilterSidebar({
         <FilterDivider />
 
         {/* ── ANBIETER ── */}
-        <SectionLabel>Anbieter</SectionLabel>
+        <SectionLabel>{t("filter_provider")}</SectionLabel>
         <div className="flex flex-wrap gap-1.5">
           {[
-            { id: "alle", label: "Alle" },
-            { id: "privat", label: "Privat" },
-            { id: "haendler", label: "Händler" },
+            { id: "alle", label: t("filter_all") },
+            { id: "privat", label: t("filter_private") },
+            { id: "haendler", label: t("filter_dealer") },
           ].map((a) => (
             <Pill
               key={a.id}
@@ -593,10 +596,10 @@ export default function FilterSidebar({
         <FilterDivider />
 
         {/* ── RECHTSSTATUS ── */}
-        <SectionLabel>Rechtsstatus</SectionLabel>
+        <SectionLabel>{t("filter_legal_status")}</SectionLabel>
         <div className="flex flex-wrap gap-1.5">
           <Pill
-            label="Alle"
+            label={t("filter_all")}
             active={filters.rechtsstatus.length === 0}
             onClick={() => update({ rechtsstatus: [] })}
           />
@@ -619,7 +622,7 @@ export default function FilterSidebar({
             onClick={onClose}
             className="w-full rounded-xl bg-brand-green py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-green-dark"
           >
-            {resultCount.toLocaleString("de-CH")} Inserate anzeigen
+            {resultCount.toLocaleString("de-CH")} {t("filter_show_listings")}
           </button>
         </div>
       )}

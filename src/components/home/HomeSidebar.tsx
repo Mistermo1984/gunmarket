@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { HAUPTKATEGORIEN } from "@/lib/constants";
+import { useLocale } from "@/lib/locale-context";
 import { BookOpen, Target, ChevronRight, Shield } from "lucide-react";
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -20,13 +21,14 @@ interface HomeSidebarProps {
 }
 
 export default function HomeSidebar({ inserateCounts }: HomeSidebarProps) {
+  const { t } = useLocale();
   return (
     <aside className="hidden w-[240px] shrink-0 lg:block">
       <div className="sticky top-[60px] space-y-4">
         {/* Kategorien */}
         <div className="rounded-xl border border-brand-border bg-white">
           <div className="border-b border-brand-border px-4 py-3">
-            <h3 className="text-sm font-semibold text-brand-dark">Kategorien</h3>
+            <h3 className="text-sm font-semibold text-brand-dark">{t("sidebar_categories")}</h3>
           </div>
           <nav className="p-2">
             {HAUPTKATEGORIEN.map((hk) => {
@@ -60,7 +62,7 @@ export default function HomeSidebar({ inserateCounts }: HomeSidebarProps) {
         {/* Wissen Quick Links */}
         <div className="rounded-xl border border-brand-border bg-white">
           <div className="border-b border-brand-border px-4 py-3">
-            <h3 className="text-sm font-semibold text-brand-dark">Waffen-Wiki</h3>
+            <h3 className="text-sm font-semibold text-brand-dark">{t("nav_wiki")}</h3>
           </div>
           <nav className="p-2">
             <Link
@@ -71,7 +73,7 @@ export default function HomeSidebar({ inserateCounts }: HomeSidebarProps) {
                 <BookOpen size={14} className="text-white" />
               </div>
               <span className="flex-1 font-medium text-neutral-700 group-hover:text-brand-dark">
-                Waffen-Wiki
+                {t("nav_wiki")}
               </span>
               <ChevronRight size={14} className="text-neutral-400 transition-transform group-hover:translate-x-0.5" />
             </Link>
@@ -83,7 +85,7 @@ export default function HomeSidebar({ inserateCounts }: HomeSidebarProps) {
                 <Target size={14} className="text-white" />
               </div>
               <span className="flex-1 font-medium text-neutral-700 group-hover:text-brand-dark">
-                Kaliber-Guide
+                {t("sidebar_caliber_guide")}
               </span>
               <ChevronRight size={14} className="text-neutral-400 transition-transform group-hover:translate-x-0.5" />
             </Link>
@@ -95,7 +97,7 @@ export default function HomeSidebar({ inserateCounts }: HomeSidebarProps) {
                 <Shield size={14} className="text-white" />
               </div>
               <span className="flex-1 font-medium text-neutral-700 group-hover:text-brand-dark">
-                Waffenrecht CH
+                {t("sidebar_gun_law")}
               </span>
               <ChevronRight size={14} className="text-neutral-400 transition-transform group-hover:translate-x-0.5" />
             </Link>
@@ -107,7 +109,7 @@ export default function HomeSidebar({ inserateCounts }: HomeSidebarProps) {
           href="/dashboard/inserat-erstellen"
           className="flex items-center justify-center gap-2 rounded-xl bg-brand-green px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-green-dark"
         >
-          Inserat aufgeben
+          {t("nav_create_long")}
         </Link>
       </div>
     </aside>

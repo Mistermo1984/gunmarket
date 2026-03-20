@@ -8,9 +8,11 @@ import AuthPanel from "@/components/auth/AuthPanel";
 import PasswordStrength from "@/components/ui/PasswordStrength";
 import { KANTONE } from "@/lib/constants";
 import Logo from "@/components/ui/Logo";
+import { useLocale } from "@/lib/locale-context";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { t } = useLocale();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [anbieterTyp, setAnbieterTyp] = useState<"privat" | "haendler">("privat");
@@ -67,7 +69,7 @@ export default function RegisterPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "Registrierung fehlgeschlagen");
+        setError(data.error || t("reg_failed"));
         setLoading(false);
         return;
       }
@@ -77,7 +79,7 @@ export default function RegisterPage() {
       // Redirect to verification page instead of auto-login
       router.push(`/email-bestaetigung?email=${encodeURIComponent(email)}`);
     } catch {
-      setError("Netzwerkfehler. Bitte versuchen Sie es erneut.");
+      setError(t("reg_network_error"));
       setLoading(false);
     }
   }
@@ -96,12 +98,12 @@ export default function RegisterPage() {
           </div>
 
           <h1 className="mb-2 font-display text-3xl font-black text-brand-dark">
-            Konto erstellen
+            {t("auth_create_account")}
           </h1>
           <p className="mb-8 text-sm text-neutral-500">
-            Bereits registriert?{" "}
+            {t("auth_has_account")}{" "}
             <Link href="/login" className="font-medium text-brand-green hover:underline">
-              Anmelden &rarr;
+              {t("auth_login_now")}
             </Link>
           </p>
 
@@ -125,9 +127,9 @@ export default function RegisterPage() {
                   anbieterTyp === "privat" ? "text-brand-green" : "text-brand-dark"
                 }`}
               >
-                Privat
+                {t("reg_private")}
               </span>
-              <span className="text-[11px] text-neutral-500">Privatperson</span>
+              <span className="text-[11px] text-neutral-500">{t("reg_private_desc")}</span>
             </button>
             <button
               type="button"
@@ -147,9 +149,9 @@ export default function RegisterPage() {
                   anbieterTyp === "haendler" ? "text-brand-green" : "text-brand-dark"
                 }`}
               >
-                Händler
+                {t("reg_dealer")}
               </span>
-              <span className="text-[11px] text-neutral-500">Gewerblicher Waffenhändler</span>
+              <span className="text-[11px] text-neutral-500">{t("reg_dealer_desc")}</span>
             </button>
           </div>
 
@@ -158,7 +160,7 @@ export default function RegisterPage() {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label htmlFor="vorname" className="mb-1.5 block text-sm font-medium text-brand-dark">
-                  Vorname
+                  {t("reg_firstname")}
                 </label>
                 <input
                   id="vorname"
@@ -171,7 +173,7 @@ export default function RegisterPage() {
               </div>
               <div>
                 <label htmlFor="nachname" className="mb-1.5 block text-sm font-medium text-brand-dark">
-                  Nachname
+                  {t("reg_lastname")}
                 </label>
                 <input
                   id="nachname"
@@ -187,14 +189,14 @@ export default function RegisterPage() {
             {/* Email */}
             <div>
               <label htmlFor="reg-email" className="mb-1.5 block text-sm font-medium text-brand-dark">
-                E-Mail
+                {t("auth_email")}
               </label>
               <input
                 id="reg-email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="name@beispiel.ch"
+                placeholder={t("auth_email_placeholder")}
                 required
                 className="w-full rounded-lg border border-brand-border bg-white px-4 py-3 text-sm text-brand-dark placeholder:text-neutral-400 focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-brand-green/20"
               />
@@ -203,7 +205,7 @@ export default function RegisterPage() {
             {/* Password */}
             <div>
               <label htmlFor="reg-password" className="mb-1.5 block text-sm font-medium text-brand-dark">
-                Passwort
+                {t("auth_password")}
               </label>
               <div className="relative">
                 <input
@@ -211,7 +213,7 @@ export default function RegisterPage() {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Min. 8 Zeichen"
+                  placeholder={t("reg_min_8_chars")}
                   required
                   minLength={8}
                   className="w-full rounded-lg border border-brand-border bg-white px-4 py-3 pr-11 text-sm text-brand-dark placeholder:text-neutral-400 focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-brand-green/20"
@@ -230,7 +232,7 @@ export default function RegisterPage() {
             {/* Confirm password */}
             <div>
               <label htmlFor="reg-password-confirm" className="mb-1.5 block text-sm font-medium text-brand-dark">
-                Passwort bestätigen
+                {t("reg_confirm_password")}
               </label>
               <div className="relative">
                 <input
@@ -238,7 +240,7 @@ export default function RegisterPage() {
                   type={showPasswordConfirm ? "text" : "password"}
                   value={passwordConfirm}
                   onChange={(e) => setPasswordConfirm(e.target.value)}
-                  placeholder="Passwort wiederholen"
+                  placeholder={t("reg_password_repeat")}
                   required
                   className={`w-full rounded-lg border bg-white px-4 py-3 pr-11 text-sm text-brand-dark placeholder:text-neutral-400 focus:outline-none focus:ring-2 ${
                     passwordConfirm && passwordConfirm !== password
@@ -255,14 +257,14 @@ export default function RegisterPage() {
                 </button>
               </div>
               {passwordConfirm && passwordConfirm !== password && (
-                <p className="mt-1 text-xs text-red-500">Passwörter stimmen nicht überein</p>
+                <p className="mt-1 text-xs text-red-500">{t("reg_passwords_mismatch")}</p>
               )}
             </div>
 
             {/* Kanton */}
             <div>
               <label htmlFor="kanton" className="mb-1.5 block text-sm font-medium text-brand-dark">
-                Kanton
+                {t("reg_canton")}
               </label>
               <select
                 id="kanton"
@@ -271,7 +273,7 @@ export default function RegisterPage() {
                 required
                 className="w-full rounded-lg border border-brand-border bg-white px-4 py-3 text-sm text-brand-dark focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-brand-green/20"
               >
-                <option value="">Kanton wählen...</option>
+                <option value="">{t("reg_canton_placeholder")}</option>
                 {KANTONE.map((k) => (
                   <option key={k.id} value={k.id}>
                     {k.label}
@@ -283,7 +285,7 @@ export default function RegisterPage() {
             {/* Nationalität / Aufenthaltsstatus */}
             <div>
               <label htmlFor="nationalitaet" className="mb-1.5 block text-sm font-medium text-brand-dark">
-                Nationalität / Aufenthaltsstatus
+                {t("reg_nationality")}
               </label>
               <select
                 id="nationalitaet"
@@ -292,18 +294,15 @@ export default function RegisterPage() {
                 required
                 className="w-full rounded-lg border border-brand-border bg-white px-4 py-3 text-sm text-brand-dark focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-brand-green/20"
               >
-                <option value="">Bitte wählen...</option>
-                <option value="ch-c">Schweizer Bürger / Niederlassungsbewilligung C</option>
-                <option value="b">Aufenthaltsbewilligung B</option>
-                <option value="andere">Andere / Ausland</option>
+                <option value="">{t("reg_nationality_placeholder")}</option>
+                <option value="ch-c">{t("reg_swiss")}</option>
+                <option value="b">{t("reg_permit_b")}</option>
+                <option value="andere">{t("reg_other")}</option>
               </select>
               <div className="mt-3 flex items-start gap-2.5 rounded-lg bg-amber-50 border border-amber-200 p-3">
                 <AlertTriangle size={16} className="mt-0.5 shrink-0 text-amber-600" />
                 <p className="text-xs leading-relaxed text-amber-800">
-                  Gemäss Art. 12 WV sind Staatsangehörige folgender Länder vom Waffenerwerb in der
-                  Schweiz ausgeschlossen: Serbien, Bosnien-Herzegowina, Kosovo, Nordmazedonien,
-                  Türkei, Sri Lanka, Algerien, Albanien. Personen mit Aufenthaltsbewilligung B
-                  benötigen für alle Waffen zwingend einen Waffenerwerbsschein (WES).
+                  {t("reg_nationality_warning")}
                 </p>
               </div>
             </div>
@@ -311,7 +310,7 @@ export default function RegisterPage() {
             {/* Telefon */}
             <div>
               <label htmlFor="telefon" className="mb-1.5 block text-sm font-medium text-brand-dark">
-                Telefon <span className="text-neutral-400">(optional)</span>
+                {t("reg_phone")} <span className="text-neutral-400">(optional)</span>
               </label>
               <div className="flex">
                 <span className="inline-flex items-center rounded-l-lg border border-r-0 border-brand-border bg-brand-grey px-3 text-sm text-neutral-500">
@@ -332,12 +331,12 @@ export default function RegisterPage() {
             {anbieterTyp === "haendler" && (
               <div className="space-y-4 rounded-xl border border-brand-border bg-brand-grey/50 p-4">
                 <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
-                  Händler-Angaben
+                  {t("reg_dealer_section")}
                 </p>
 
                 <div>
                   <label htmlFor="firmenname" className="mb-1.5 block text-sm font-medium text-brand-dark">
-                    Firmenname
+                    {t("reg_company")}
                   </label>
                   <input
                     id="firmenname"
@@ -351,21 +350,21 @@ export default function RegisterPage() {
 
                 <div>
                   <label htmlFor="uid" className="mb-1.5 block text-sm font-medium text-brand-dark">
-                    UID-Nummer
+                    {t("reg_uid")}
                   </label>
                   <input
                     id="uid"
                     type="text"
                     value={uidNummer}
                     onChange={(e) => setUidNummer(e.target.value)}
-                    placeholder="CHE-123.456.789"
+                    placeholder={t("reg_uid_placeholder")}
                     className="w-full rounded-lg border border-brand-border bg-white px-4 py-3 text-sm text-brand-dark placeholder:text-neutral-400 focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-brand-green/20"
                   />
                 </div>
 
                 <div>
                   <label htmlFor="bewilligung" className="mb-1.5 block text-sm font-medium text-brand-dark">
-                    Waffenhandelsbewilligungs-Nr.
+                    {t("reg_license_nr")}
                   </label>
                   <input
                     id="bewilligung"
@@ -379,7 +378,7 @@ export default function RegisterPage() {
 
                 <div>
                   <label htmlFor="bew-kanton" className="mb-1.5 block text-sm font-medium text-brand-dark">
-                    Kanton der Bewilligung
+                    {t("reg_license_canton")}
                   </label>
                   <select
                     id="bew-kanton"
@@ -388,7 +387,7 @@ export default function RegisterPage() {
                     required
                     className="w-full rounded-lg border border-brand-border bg-white px-4 py-3 text-sm text-brand-dark focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-brand-green/20"
                   >
-                    <option value="">Kanton wählen...</option>
+                    <option value="">{t("reg_canton_placeholder")}</option>
                     {KANTONE.map((k) => (
                       <option key={k.id} value={k.id}>
                         {k.label}
@@ -399,14 +398,14 @@ export default function RegisterPage() {
 
                 <div>
                   <label htmlFor="website" className="mb-1.5 block text-sm font-medium text-brand-dark">
-                    Website <span className="text-neutral-400">(optional)</span>
+                    {t("reg_website")} <span className="text-neutral-400">(optional)</span>
                   </label>
                   <input
                     id="website"
                     type="url"
                     value={website}
                     onChange={(e) => setWebsite(e.target.value)}
-                    placeholder="https://www.beispiel.ch"
+                    placeholder={t("reg_website_placeholder")}
                     className="w-full rounded-lg border border-brand-border bg-white px-4 py-3 text-sm text-brand-dark placeholder:text-neutral-400 focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-brand-green/20"
                   />
                 </div>
@@ -424,7 +423,7 @@ export default function RegisterPage() {
                   className="mt-0.5 h-4 w-4 shrink-0 rounded accent-brand-green"
                 />
                 <span className="text-sm text-neutral-700">
-                  Ich bestätige, dass ich mindestens 18 Jahre alt bin
+                  {t("reg_age_confirm")}
                 </span>
               </label>
               <label className="flex cursor-pointer items-start gap-2.5">
@@ -436,11 +435,7 @@ export default function RegisterPage() {
                   className="mt-0.5 h-4 w-4 shrink-0 rounded accent-brand-green"
                 />
                 <span className="text-sm text-neutral-700">
-                  Ich habe die{" "}
-                  <Link href="/agb" className="text-brand-green hover:underline">
-                    AGB
-                  </Link>{" "}
-                  gelesen und akzeptiere diese
+                  {t("reg_agb_confirm")}
                 </span>
               </label>
               <label className="flex cursor-pointer items-start gap-2.5">
@@ -452,8 +447,7 @@ export default function RegisterPage() {
                   className="mt-0.5 h-4 w-4 shrink-0 rounded accent-brand-green"
                 />
                 <span className="text-sm text-neutral-700">
-                  Ich bestätige, die gesetzlichen Voraussetzungen für Waffenerwerb und -verkauf in
-                  der Schweiz zu kennen
+                  {t("reg_law_confirm")}
                 </span>
               </label>
               <label className="flex cursor-pointer items-start gap-2.5">
@@ -465,8 +459,7 @@ export default function RegisterPage() {
                   className="mt-0.5 h-4 w-4 shrink-0 rounded accent-brand-green"
                 />
                 <span className="text-sm text-neutral-700">
-                  Ich bestätige, dass ich gemäss Art. 12 WV zum Erwerb von Waffen in der Schweiz
-                  berechtigt bin.
+                  {t("reg_eligible_confirm")}
                 </span>
               </label>
             </div>
@@ -485,18 +478,18 @@ export default function RegisterPage() {
               className="flex w-full items-center justify-center gap-2 rounded-lg bg-brand-green py-3.5 text-sm font-semibold text-white transition-colors hover:bg-brand-green-dark disabled:opacity-60"
             >
               {loading && <Loader2 size={16} className="animate-spin" />}
-              {loading ? "Wird erstellt..." : "Konto erstellen"}
+              {loading ? t("auth_creating") : t("auth_create_account")}
             </button>
           </form>
 
           {/* Trust line */}
           <div className="mt-6 flex items-center justify-center gap-2 text-xs text-neutral-400">
             <Lock size={12} />
-            <span>Kostenlos</span>
+            <span>{t("reg_free")}</span>
             <span>·</span>
-            <span>Kein Spam</span>
+            <span>{t("reg_no_spam")}</span>
             <span>·</span>
-            <span>Jederzeit löschbar</span>
+            <span>{t("reg_deletable")}</span>
           </div>
         </div>
       </div>

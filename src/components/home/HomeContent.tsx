@@ -9,6 +9,7 @@ import FilterSidebar, {
   type FilterState,
 } from "@/components/suche/FilterSidebar";
 import { apiListingToCard } from "@/lib/listing-helpers";
+import { useLocale } from "@/lib/locale-context";
 
 export default function HomeContent() {
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
@@ -16,6 +17,7 @@ export default function HomeContent() {
   const [totalResults, setTotalResults] = useState(0);
   const [loading, setLoading] = useState(true);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const { t } = useLocale();
 
   // Fetch listings based on filters
   useEffect(() => {
@@ -85,10 +87,10 @@ export default function HomeContent() {
         <div className="mb-4 flex items-end justify-between">
           <div>
             <h2 className="font-display text-xl font-black uppercase tracking-tight text-brand-dark md:text-2xl">
-              Neueste Inserate
+              {t("listings_title")}
             </h2>
             <p className="mt-0.5 text-sm text-neutral-500">
-              {totalResults} Inserate gefunden
+              {totalResults} {t("home_found")}
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -98,7 +100,7 @@ export default function HomeContent() {
               className="flex items-center gap-1.5 rounded-lg border border-brand-border bg-white px-3 py-2 text-xs font-medium text-neutral-600 lg:hidden"
             >
               <SlidersHorizontal size={14} />
-              Filter
+              {t("filter_title")}
               {activeFilterCount > 0 && (
                 <span className="flex h-4 w-4 items-center justify-center rounded-full bg-brand-green text-[9px] font-bold text-white">
                   {activeFilterCount}
@@ -109,7 +111,7 @@ export default function HomeContent() {
               href="/suche"
               className="hidden text-sm font-medium text-brand-green hover:underline sm:inline-flex"
             >
-              Alle anzeigen &rarr;
+              {t("listings_show_all")} &rarr;
             </Link>
           </div>
         </div>
@@ -122,7 +124,7 @@ export default function HomeContent() {
               className="flex items-center gap-1 rounded-full bg-red-50 px-3 py-1.5 text-xs font-medium text-red-600 transition-colors hover:bg-red-100"
             >
               <X size={12} />
-              Alle Filter löschen ({activeFilterCount})
+              {t("home_clear_filters")} ({activeFilterCount})
             </button>
           </div>
         )}
@@ -142,15 +144,15 @@ export default function HomeContent() {
           </div>
         ) : (
           <div className="py-12 text-center">
-            <p className="text-base font-semibold text-brand-dark">Keine Inserate gefunden</p>
+            <p className="text-base font-semibold text-brand-dark">{t("listings_no_results")}</p>
             <p className="mt-1 text-sm text-neutral-500">
-              Versuche es mit weniger Filtern.
+              {t("home_no_results_hint")}
             </p>
             <button
               onClick={() => setFilters(INITIAL_FILTERS)}
               className="mt-3 text-sm font-medium text-brand-green hover:underline"
             >
-              Alle Filter zurücksetzen
+              {t("listings_reset_filters")}
             </button>
           </div>
         )}

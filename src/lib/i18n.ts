@@ -185,6 +185,90 @@ export const translations = {
     loading: "Laden...",
     no_results: "Keine Inserate gefunden",
     error: "Fehler",
+
+    // Filter sidebar
+    filter_brand: "Marke",
+    filter_brand_placeholder: "Marke eingeben...",
+    filter_provider: "Anbieter",
+    filter_private: "Privat",
+    filter_dealer: "Händler",
+    filter_legal_status: "Rechtsstatus",
+    filter_show_listings: "Inserate anzeigen",
+    filter_selected: "ausgewählt",
+    filter_search: "Suchen...",
+
+    // Sort
+    sort_price_asc: "Preis aufsteigend",
+    sort_price_desc: "Preis absteigend",
+    sort_newest: "Neueste",
+    sort_oldest: "Älteste",
+
+    // Search page
+    breadcrumb_home: "Startseite",
+    breadcrumb_search: "Suche",
+    map_view: "Karte",
+
+    // How it works
+    how_title: "So funktioniert's",
+    how_step1_title: "Konto erstellen",
+    how_step1_text: "Registriere dich kostenlos in unter einer Minute.",
+    how_step2_title: "Inserat aufgeben",
+    how_step2_text: "Fotos hochladen, beschreiben und Preis setzen.",
+    how_step3_title: "Direkt kontaktieren",
+    how_step3_text: "Interessenten melden sich — ihr klärt alles direkt.",
+    how_cta_badge: "Kostenlos & sofort",
+    how_cta_title: "Bereit loszulegen?",
+    how_cta_text: "Erstelle jetzt dein kostenloses Konto und starte sofort.",
+    how_cta_register: "Jetzt registrieren",
+
+    // Home content
+    home_clear_filters: "Alle Filter löschen",
+    home_no_results_hint: "Versuche es mit weniger Filtern.",
+    home_found: "Inserate gefunden",
+
+    // Sidebar
+    sidebar_categories: "Kategorien",
+    sidebar_caliber_guide: "Kaliber-Guide",
+    sidebar_gun_law: "Waffenrecht CH",
+
+    // Listing detail
+    detail_specs: "Spezifikationen",
+    detail_description: "Beschreibung",
+    detail_show_more: "Mehr anzeigen",
+    detail_show_less: "Weniger anzeigen",
+    detail_no_image: "Kein Bild",
+    detail_not_found: "Inserat nicht gefunden",
+    detail_back_search: "Zurück zur Suche",
+    detail_send_message: "Nachricht senden",
+    detail_share: "Teilen",
+    detail_report: "Melden",
+    detail_watchlist_add: "Auf Merkliste setzen",
+    detail_watchlist_remove: "Von Merkliste entfernen",
+    detail_views: "Aufrufe",
+    detail_listed: "Eingestellt am",
+    detail_updated: "Aktualisiert am",
+    detail_similar: "Ähnliche Inserate",
+    detail_external_from: "Dieses Inserat stammt von",
+    detail_external_hint: "Für Kontaktaufnahme werden Sie zur Originalseite weitergeleitet.",
+    detail_view_original: "Original ansehen",
+    detail_view_on: "Auf {source} ansehen",
+    detail_external_listing: "Externes Inserat",
+    detail_external_contact: "Externes Inserat — Kontakt über",
+    detail_private_user: "Privater Nutzer",
+    detail_active_since: "Aktiv seit",
+    detail_safety_title: "Sicherheitshinweis",
+    detail_safety_text: "Treffen Sie sich zur Übergabe an einem öffentlichen Ort. Leisten Sie keine Vorauszahlungen.",
+    detail_safety_more: "Mehr erfahren",
+    detail_loading_map: "Karte wird geladen...",
+
+    // Login
+    login_hide_password: "Passwort verbergen",
+    login_show_password: "Passwort anzeigen",
+
+    // Register
+    reg_network_error: "Netzwerkfehler. Bitte versuchen Sie es erneut.",
+    reg_failed: "Registrierung fehlgeschlagen",
+    reg_password_repeat: "Passwort wiederholen",
   },
 
   fr: {
@@ -355,6 +439,90 @@ export const translations = {
     loading: "Chargement...",
     no_results: "Aucune annonce trouvée",
     error: "Erreur",
+
+    // Filter sidebar
+    filter_brand: "Marque",
+    filter_brand_placeholder: "Entrer une marque...",
+    filter_provider: "Type",
+    filter_private: "Particulier",
+    filter_dealer: "Professionnel",
+    filter_legal_status: "Statut juridique",
+    filter_show_listings: "Afficher les annonces",
+    filter_selected: "sélectionné(s)",
+    filter_search: "Rechercher...",
+
+    // Sort
+    sort_price_asc: "Prix croissant",
+    sort_price_desc: "Prix décroissant",
+    sort_newest: "Plus récentes",
+    sort_oldest: "Plus anciennes",
+
+    // Search page
+    breadcrumb_home: "Accueil",
+    breadcrumb_search: "Recherche",
+    map_view: "Carte",
+
+    // How it works
+    how_title: "Comment ça marche",
+    how_step1_title: "Créer un compte",
+    how_step1_text: "Inscrivez-vous gratuitement en moins d'une minute.",
+    how_step2_title: "Publier une annonce",
+    how_step2_text: "Télécharger des photos, décrire et fixer le prix.",
+    how_step3_title: "Contact direct",
+    how_step3_text: "Les intéressés vous contactent — vous réglez tout directement.",
+    how_cta_badge: "Gratuit & immédiat",
+    how_cta_title: "Prêt à commencer ?",
+    how_cta_text: "Créez maintenant votre compte gratuit et commencez immédiatement.",
+    how_cta_register: "S'inscrire",
+
+    // Home content
+    home_clear_filters: "Supprimer tous les filtres",
+    home_no_results_hint: "Essayez avec moins de filtres.",
+    home_found: "annonces trouvées",
+
+    // Sidebar
+    sidebar_categories: "Catégories",
+    sidebar_caliber_guide: "Guide des calibres",
+    sidebar_gun_law: "Droit des armes CH",
+
+    // Listing detail
+    detail_specs: "Spécifications",
+    detail_description: "Description",
+    detail_show_more: "Afficher plus",
+    detail_show_less: "Afficher moins",
+    detail_no_image: "Pas d'image",
+    detail_not_found: "Annonce non trouvée",
+    detail_back_search: "Retour à la recherche",
+    detail_send_message: "Envoyer un message",
+    detail_share: "Partager",
+    detail_report: "Signaler",
+    detail_watchlist_add: "Ajouter aux favoris",
+    detail_watchlist_remove: "Retirer des favoris",
+    detail_views: "Vues",
+    detail_listed: "Publié le",
+    detail_updated: "Mis à jour le",
+    detail_similar: "Annonces similaires",
+    detail_external_from: "Cette annonce provient de",
+    detail_external_hint: "Vous serez redirigé vers le site original pour le contact.",
+    detail_view_original: "Voir l'original",
+    detail_view_on: "Voir sur {source}",
+    detail_external_listing: "Annonce externe",
+    detail_external_contact: "Annonce externe — Contact via",
+    detail_private_user: "Utilisateur privé",
+    detail_active_since: "Actif depuis",
+    detail_safety_title: "Avis de sécurité",
+    detail_safety_text: "Rencontrez-vous dans un lieu public pour la remise. Ne faites pas de paiement anticipé.",
+    detail_safety_more: "En savoir plus",
+    detail_loading_map: "Chargement de la carte...",
+
+    // Login
+    login_hide_password: "Masquer le mot de passe",
+    login_show_password: "Afficher le mot de passe",
+
+    // Register
+    reg_network_error: "Erreur réseau. Veuillez réessayer.",
+    reg_failed: "Inscription échouée",
+    reg_password_repeat: "Répéter le mot de passe",
   },
 
   it: {
@@ -525,6 +693,90 @@ export const translations = {
     loading: "Caricamento...",
     no_results: "Nessun annuncio trovato",
     error: "Errore",
+
+    // Filter sidebar
+    filter_brand: "Marca",
+    filter_brand_placeholder: "Inserire marca...",
+    filter_provider: "Offerente",
+    filter_private: "Privato",
+    filter_dealer: "Commerciante",
+    filter_legal_status: "Stato giuridico",
+    filter_show_listings: "Mostra annunci",
+    filter_selected: "selezionato/i",
+    filter_search: "Cerca...",
+
+    // Sort
+    sort_price_asc: "Prezzo crescente",
+    sort_price_desc: "Prezzo decrescente",
+    sort_newest: "Più recenti",
+    sort_oldest: "Più vecchi",
+
+    // Search page
+    breadcrumb_home: "Home",
+    breadcrumb_search: "Ricerca",
+    map_view: "Mappa",
+
+    // How it works
+    how_title: "Come funziona",
+    how_step1_title: "Crea account",
+    how_step1_text: "Registrati gratuitamente in meno di un minuto.",
+    how_step2_title: "Pubblica annuncio",
+    how_step2_text: "Carica foto, descrivi e imposta il prezzo.",
+    how_step3_title: "Contatto diretto",
+    how_step3_text: "Gli interessati ti contattano — risolvete tutto direttamente.",
+    how_cta_badge: "Gratuito & immediato",
+    how_cta_title: "Pronto per iniziare?",
+    how_cta_text: "Crea ora il tuo account gratuito e inizia subito.",
+    how_cta_register: "Registrati ora",
+
+    // Home content
+    home_clear_filters: "Cancella tutti i filtri",
+    home_no_results_hint: "Prova con meno filtri.",
+    home_found: "annunci trovati",
+
+    // Sidebar
+    sidebar_categories: "Categorie",
+    sidebar_caliber_guide: "Guida calibri",
+    sidebar_gun_law: "Diritto armi CH",
+
+    // Listing detail
+    detail_specs: "Specifiche",
+    detail_description: "Descrizione",
+    detail_show_more: "Mostra di più",
+    detail_show_less: "Mostra meno",
+    detail_no_image: "Nessuna immagine",
+    detail_not_found: "Annuncio non trovato",
+    detail_back_search: "Torna alla ricerca",
+    detail_send_message: "Invia messaggio",
+    detail_share: "Condividi",
+    detail_report: "Segnala",
+    detail_watchlist_add: "Aggiungi ai preferiti",
+    detail_watchlist_remove: "Rimuovi dai preferiti",
+    detail_views: "Visualizzazioni",
+    detail_listed: "Pubblicato il",
+    detail_updated: "Aggiornato il",
+    detail_similar: "Annunci simili",
+    detail_external_from: "Questo annuncio proviene da",
+    detail_external_hint: "Per il contatto verrete reindirizzati al sito originale.",
+    detail_view_original: "Vedi originale",
+    detail_view_on: "Vedi su {source}",
+    detail_external_listing: "Annuncio esterno",
+    detail_external_contact: "Annuncio esterno — Contatto tramite",
+    detail_private_user: "Utente privato",
+    detail_active_since: "Attivo da",
+    detail_safety_title: "Avviso di sicurezza",
+    detail_safety_text: "Incontratevi in un luogo pubblico per la consegna. Non effettuate pagamenti anticipati.",
+    detail_safety_more: "Scopri di più",
+    detail_loading_map: "Caricamento mappa...",
+
+    // Login
+    login_hide_password: "Nascondi password",
+    login_show_password: "Mostra password",
+
+    // Register
+    reg_network_error: "Errore di rete. Riprova.",
+    reg_failed: "Registrazione fallita",
+    reg_password_repeat: "Ripeti password",
   },
 
   en: {
@@ -695,6 +947,90 @@ export const translations = {
     loading: "Loading...",
     no_results: "No listings found",
     error: "Error",
+
+    // Filter sidebar
+    filter_brand: "Brand",
+    filter_brand_placeholder: "Enter brand...",
+    filter_provider: "Seller Type",
+    filter_private: "Private",
+    filter_dealer: "Dealer",
+    filter_legal_status: "Legal Status",
+    filter_show_listings: "Show listings",
+    filter_selected: "selected",
+    filter_search: "Search...",
+
+    // Sort
+    sort_price_asc: "Price ascending",
+    sort_price_desc: "Price descending",
+    sort_newest: "Newest",
+    sort_oldest: "Oldest",
+
+    // Search page
+    breadcrumb_home: "Home",
+    breadcrumb_search: "Search",
+    map_view: "Map",
+
+    // How it works
+    how_title: "How it works",
+    how_step1_title: "Create Account",
+    how_step1_text: "Register for free in under a minute.",
+    how_step2_title: "Create Listing",
+    how_step2_text: "Upload photos, describe and set price.",
+    how_step3_title: "Direct Contact",
+    how_step3_text: "Interested buyers contact you — settle everything directly.",
+    how_cta_badge: "Free & instant",
+    how_cta_title: "Ready to get started?",
+    how_cta_text: "Create your free account now and start right away.",
+    how_cta_register: "Register now",
+
+    // Home content
+    home_clear_filters: "Clear all filters",
+    home_no_results_hint: "Try with fewer filters.",
+    home_found: "listings found",
+
+    // Sidebar
+    sidebar_categories: "Categories",
+    sidebar_caliber_guide: "Caliber Guide",
+    sidebar_gun_law: "Swiss Gun Law",
+
+    // Listing detail
+    detail_specs: "Specifications",
+    detail_description: "Description",
+    detail_show_more: "Show more",
+    detail_show_less: "Show less",
+    detail_no_image: "No image",
+    detail_not_found: "Listing not found",
+    detail_back_search: "Back to search",
+    detail_send_message: "Send message",
+    detail_share: "Share",
+    detail_report: "Report",
+    detail_watchlist_add: "Add to watchlist",
+    detail_watchlist_remove: "Remove from watchlist",
+    detail_views: "Views",
+    detail_listed: "Listed on",
+    detail_updated: "Updated on",
+    detail_similar: "Similar listings",
+    detail_external_from: "This listing is from",
+    detail_external_hint: "You will be redirected to the original site for contact.",
+    detail_view_original: "View original",
+    detail_view_on: "View on {source}",
+    detail_external_listing: "External listing",
+    detail_external_contact: "External listing — Contact via",
+    detail_private_user: "Private seller",
+    detail_active_since: "Active since",
+    detail_safety_title: "Safety notice",
+    detail_safety_text: "Meet in a public place for handover. Do not make advance payments.",
+    detail_safety_more: "Learn more",
+    detail_loading_map: "Loading map...",
+
+    // Login
+    login_hide_password: "Hide password",
+    login_show_password: "Show password",
+
+    // Register
+    reg_network_error: "Network error. Please try again.",
+    reg_failed: "Registration failed",
+    reg_password_repeat: "Repeat password",
   },
 
   rm: {
@@ -865,6 +1201,90 @@ export const translations = {
     loading: "Chargiar...",
     no_results: "Nagins annunzis chattads",
     error: "Errur",
+
+    // Filter sidebar
+    filter_brand: "Marca",
+    filter_brand_placeholder: "Endatar marca...",
+    filter_provider: "Tip d'offerider",
+    filter_private: "Privat",
+    filter_dealer: "Commerciant",
+    filter_legal_status: "Status giuridic",
+    filter_show_listings: "Mussar annunzis",
+    filter_selected: "tschernì",
+    filter_search: "Tschertgar...",
+
+    // Sort
+    sort_price_asc: "Pretsch creschent",
+    sort_price_desc: "Pretsch decreschent",
+    sort_newest: "Ils pli novs",
+    sort_oldest: "Ils pli vegls",
+
+    // Search page
+    breadcrumb_home: "Pagina principala",
+    breadcrumb_search: "Tschertga",
+    map_view: "Charta",
+
+    // How it works
+    how_title: "Co che quai funcziuna",
+    how_step1_title: "Crear conto",
+    how_step1_text: "Registrescha ti gratuitamain en main ch'ina minuta.",
+    how_step2_title: "Publitgar annunzi",
+    how_step2_text: "Chargiar si fotos, descriver e fixar il pretsch.",
+    how_step3_title: "Contact direct",
+    how_step3_text: "Interessads sa annunzian — vus reglais tut directamain.",
+    how_cta_badge: "Gratuit & immediat",
+    how_cta_title: "Pront per cumenzar?",
+    how_cta_text: "Creescha ussa tes conto gratuit e cumenza immediat.",
+    how_cta_register: "S'inscriver ussa",
+
+    // Home content
+    home_clear_filters: "Stizzar tuts ils filters",
+    home_no_results_hint: "Emprova cun main filters.",
+    home_found: "annunzis chattads",
+
+    // Sidebar
+    sidebar_categories: "Categorias",
+    sidebar_caliber_guide: "Guida da calibers",
+    sidebar_gun_law: "Dretg d'armas CH",
+
+    // Listing detail
+    detail_specs: "Specificaziuns",
+    detail_description: "Descripziun",
+    detail_show_more: "Mussar dapli",
+    detail_show_less: "Mussar main",
+    detail_no_image: "Nagin maletg",
+    detail_not_found: "Annunzi betg chattà",
+    detail_back_search: "Enavos a la tschertga",
+    detail_send_message: "Trametter messadi",
+    detail_share: "Cundivider",
+    detail_report: "Annunziar",
+    detail_watchlist_add: "Agiuntar a la glista da preferids",
+    detail_watchlist_remove: "Allontanar da la glista da preferids",
+    detail_views: "Vistas",
+    detail_listed: "Publitgà ils",
+    detail_updated: "Actualisà ils",
+    detail_similar: "Annunzis sumegliants",
+    detail_external_from: "Quest annunzi deriva da",
+    detail_external_hint: "Per il contact vegnis Vus renvià a la pagina originala.",
+    detail_view_original: "Vesair l'original",
+    detail_view_on: "Vesair sin {source}",
+    detail_external_listing: "Annunzi extern",
+    detail_external_contact: "Annunzi extern — Contact via",
+    detail_private_user: "Utilisader privat",
+    detail_active_since: "Activ dapi",
+    detail_safety_title: "Avis da segirtad",
+    detail_safety_text: "Entupai en in lieu public per la surdada. Na fatschei nagins pajaments anticipads.",
+    detail_safety_more: "Emprender dapli",
+    detail_loading_map: "Chargiar charta...",
+
+    // Login
+    login_hide_password: "Zuppar pled-clav",
+    login_show_password: "Mussar pled-clav",
+
+    // Register
+    reg_network_error: "Errur da rait. Emprova anc ina giada.",
+    reg_failed: "Registraziun betg reussida",
+    reg_password_repeat: "Repeter pled-clav",
   },
 } as const;
 

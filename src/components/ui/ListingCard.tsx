@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Star, MapPin, Camera, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 import { PistolenIcon, RepetierIcon, BockflinteIcon, OptikIcon } from "@/components/ui/WeaponIcons";
+import { useLocale } from "@/lib/locale-context";
 
 export interface ListingCardData {
   id: string;
@@ -37,6 +38,7 @@ const waffenIconMap = {
 };
 
 function ImageSlider({ images, alt }: { images: string[]; alt: string }) {
+  const { t } = useLocale();
   const [current, setCurrent] = useState(0);
 
   function prev(e: React.MouseEvent) {
@@ -65,14 +67,14 @@ function ImageSlider({ images, alt }: { images: string[]; alt: string }) {
           <button
             onClick={prev}
             className="absolute left-1.5 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-0 transition-opacity hover:bg-black/70 group-hover/slider:opacity-100 max-sm:opacity-70"
-            aria-label="Vorheriges Bild"
+            aria-label={t("listing_prev_image")}
           >
             <ChevronLeft size={16} />
           </button>
           <button
             onClick={next}
             className="absolute right-1.5 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white opacity-0 transition-opacity hover:bg-black/70 group-hover/slider:opacity-100 max-sm:opacity-70"
-            aria-label="Nächstes Bild"
+            aria-label={t("listing_next_image")}
           >
             <ChevronRight size={16} />
           </button>
@@ -100,6 +102,7 @@ interface ListingCardProps {
 }
 
 export default function ListingCard({ listing, variant = "grid", onFavoriteToggle }: ListingCardProps) {
+  const { t } = useLocale();
   const WaffenIcon = waffenIconMap[listing.waffenTyp];
   const [isFav, setIsFav] = useState(false);
 
@@ -195,7 +198,7 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
         <button
           onClick={handleFavClick}
           className="absolute right-2 top-2 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-sm transition-transform duration-200 hover:scale-110"
-          aria-label="Merken"
+          aria-label={t("listing_favorite")}
         >
           <Star
             size={16}

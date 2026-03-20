@@ -96,13 +96,17 @@ export async function GET(req: NextRequest) {
       params.push(term, term, term);
     }
 
+    // Sort: default to price ascending. CAST ensures numeric sort even if column type changes.
+    // For price sorts, exclude price=0 ("Auf Anfrage") and outliers >50k so real listings show first.
     let orderBy: string;
+    let priceWhere = "";
     switch (sortierung) {
-      case "preis-asc":
-        orderBy = "ORDER BY CASE WHEN l.preis > 1 AND l.preis < 50000 THEN 0 ELSE 1 END, l.preis ASC";
-        break;
       case "preis-desc":
-        orderBy = "ORDER BY CASE WHEN l.preis > 1 AND l.preis < 50000 THEN 0 ELSE 1 END, l.preis DESC";
+        orderBy = "ORDER BY CAST(l.preis AS REAL) DESC";
+        priceWhere = " AND l.preis > 1 AND l.preis < 50000";
+        break;
+      case "neueste":
+        orderBy = "ORDER BY l.created_at DESC";
         break;
       case "aelteste":
         orderBy = "ORDER BY l.created_at ASC";
@@ -110,14 +114,15 @@ export async function GET(req: NextRequest) {
       case "aufrufe":
         orderBy = "ORDER BY l.aufrufe DESC";
         break;
-      case "neueste":
+      case "preis-asc":
       default:
-        orderBy = "ORDER BY l.created_at DESC";
+        orderBy = "ORDER BY CAST(l.preis AS REAL) ASC";
+        priceWhere = " AND l.preis > 1 AND l.preis < 50000";
         break;
     }
 
     const countRow = await dbGet<{ total: number }>(
-      `SELECT COUNT(*) as total FROM listings l ${where}`,
+      `SELECT COUNT(*) as total FROM listings l ${where}${priceWhere}`,
       params
     );
 
@@ -125,7 +130,7 @@ export async function GET(req: NextRequest) {
       `SELECT l.*, u.vorname, u.nachname, u.anbieter_typ as verkaeufer_typ
        FROM listings l
        JOIN users u ON l.user_id = u.id
-       ${where} ${orderBy}
+       ${where}${priceWhere} ${orderBy}
        LIMIT ? OFFSET ?`,
       [...params, limit, offset]
     );

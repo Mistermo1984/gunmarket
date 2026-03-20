@@ -7,6 +7,7 @@ import { ChevronRight, Plus } from "lucide-react";
 import FilterSidebar, {
   INITIAL_FILTERS,
   type FilterState,
+  type FilterCounts,
 } from "@/components/suche/FilterSidebar";
 import ErgebnisHeader from "@/components/suche/ErgebnisHeader";
 import ListingGrid from "@/components/suche/ListingGrid";
@@ -52,6 +53,15 @@ function SucheContent() {
   const [totalResults, setTotalResults] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [filterCounts, setFilterCounts] = useState<FilterCounts | null>(null);
+
+  // Fetch filter counts once on mount
+  useEffect(() => {
+    fetch("/api/listings/counts")
+      .then((res) => res.json())
+      .then((data) => setFilterCounts(data))
+      .catch(() => {});
+  }, []);
 
   // Build shared filter params
   const buildFilterParams = useCallback(() => {
@@ -188,6 +198,7 @@ function SucheContent() {
               filters={filters}
               onChange={handleFilterChange}
               resultCount={totalResults}
+              counts={filterCounts}
             />
           </div>
         </aside>
@@ -282,6 +293,7 @@ function SucheContent() {
               onClose={() => setMobileFilterOpen(false)}
               resultCount={totalResults}
               isMobile
+              counts={filterCounts}
             />
           </div>
         </>

@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useState, useMemo, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   ChevronDown,
   X,
-  Info,
   Search,
-  SlidersHorizontal,
+  RotateCcw,
 } from "lucide-react";
 import {
   HAUPTKATEGORIEN,
@@ -14,7 +13,6 @@ import {
   KALIBER_GRUPPEN,
   ZUSTAND_OPTIONEN,
   KANTONE,
-  ANBIETER_TYP,
 } from "@/lib/constants";
 
 // ─── Types ───────────────────────────────────────────────────
@@ -51,163 +49,84 @@ export const INITIAL_FILTERS: FilterState = {
   preisreduziert: false,
 };
 
+export interface FilterCounts {
+  total: number;
+  categories: Record<string, number>;
+  conditions: Record<string, number>;
+  statuses: Record<string, number>;
+  types: Record<string, number>;
+}
+
 interface FilterSidebarProps {
   filters: FilterState;
   onChange: (filters: FilterState) => void;
   onClose?: () => void;
   resultCount: number;
   isMobile?: boolean;
+  counts?: FilterCounts | null;
 }
 
-// ─── Collapsible Section with smooth animation ───────────────
+// ─── Shared Components ───────────────────────────────────────
 
-function FilterSection({
-  title,
-  defaultOpen = true,
-  children,
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="mb-2 block text-[10px] font-bold uppercase tracking-[0.08em] text-neutral-400">
+      {children}
+    </span>
+  );
+}
+
+function Pill({
+  label,
+  active,
+  onClick,
+  count,
 }: {
-  title: string;
-  defaultOpen?: boolean;
+  label: string;
+  active: boolean;
+  onClick: () => void;
+  count?: number;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-150 ${
+        active
+          ? "bg-brand-green text-white shadow-sm"
+          : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
+      }`}
+    >
+      {label}
+      {count != null && count > 0 && (
+        <span
+          className={`text-[10px] tabular-nums ${
+            active ? "text-white/70" : "text-neutral-400"
+          }`}
+        >
+          {count}
+        </span>
+      )}
+    </button>
+  );
+}
+
+function FilterDivider() {
+  return <div className="my-4 border-t border-neutral-100" />;
+}
+
+// ─── Dropdown component ──────────────────────────────────────
+
+function FilterDropdown({
+  label,
+  placeholder,
+  children,
+  selectedCount,
+}: {
+  label: string;
+  placeholder: string;
   children: React.ReactNode;
+  selectedCount?: number;
 }) {
-  const [open, setOpen] = useState(defaultOpen);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [maxHeight, setMaxHeight] = useState<string>(defaultOpen ? "1000px" : "0px");
-
-  useEffect(() => {
-    if (open) {
-      setMaxHeight(`${contentRef.current?.scrollHeight ?? 1000}px`);
-    } else {
-      setMaxHeight("0px");
-    }
-  }, [open]);
-
-  return (
-    <div className="border-b border-brand-border py-4">
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between text-left"
-      >
-        <span className="text-sm font-semibold text-brand-dark">{title}</span>
-        <ChevronDown
-          size={16}
-          className={`text-neutral-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-        />
-      </button>
-      <div
-        ref={contentRef}
-        className="overflow-hidden transition-all duration-200 ease-out"
-        style={{ maxHeight }}
-      >
-        <div className="mt-3">{children}</div>
-      </div>
-    </div>
-  );
-}
-
-// ─── Quick pills ─────────────────────────────────────────────
-
-const MARKE_PILLS = [
-  "SIG Sauer", "Glock", "Beretta", "Walther",
-  "CZ", "Browning", "Steyr", "H&K", "Ruger", "S&W",
-];
-
-const PREIS_PILLS = [
-  { label: "< 500", min: "0", max: "500" },
-  { label: "500–1500", min: "500", max: "1500" },
-  { label: "1500–3000", min: "1500", max: "3000" },
-  { label: "3000+", min: "3000", max: "10000" },
-];
-
-// ─── Custom Preis Slider ─────────────────────────────────────
-
-function PreisSlider({ min, max, onMinChange, onMaxChange }: {
-  min: string; max: string;
-  onMinChange: (v: string) => void;
-  onMaxChange: (v: string) => void;
-}) {
-  const minVal = parseInt(min) || 0;
-  const maxVal = parseInt(max) || 10000;
-  const rangeMin = 0;
-  const rangeMax = 10000;
-
-  return (
-    <div className="mb-3">
-      <div className="relative mb-4 h-2 rounded-full bg-gray-200">
-        <div
-          className="absolute h-2 rounded-full bg-brand-green"
-          style={{
-            left: `${(minVal / rangeMax) * 100}%`,
-            right: `${100 - (maxVal / rangeMax) * 100}%`,
-          }}
-        />
-        <input
-          type="range"
-          min={rangeMin}
-          max={rangeMax}
-          step={50}
-          value={minVal}
-          onChange={(e) => onMinChange(e.target.value === "0" ? "" : e.target.value)}
-          className="pointer-events-none absolute inset-0 h-2 w-full appearance-none bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-brand-green [&::-webkit-slider-thumb]:shadow-md"
-        />
-        <input
-          type="range"
-          min={rangeMin}
-          max={rangeMax}
-          step={50}
-          value={maxVal}
-          onChange={(e) => onMaxChange(e.target.value === "10000" ? "" : e.target.value)}
-          className="pointer-events-none absolute inset-0 h-2 w-full appearance-none bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-brand-green [&::-webkit-slider-thumb]:shadow-md"
-        />
-      </div>
-      <div className="flex items-center gap-2">
-        <input
-          type="number"
-          value={min}
-          onChange={(e) => onMinChange(e.target.value)}
-          placeholder="Min"
-          className="w-full rounded-lg border border-brand-border bg-brand-grey px-3 py-2 text-xs text-brand-dark placeholder:text-neutral-400 focus:border-brand-green focus:outline-none focus:ring-1 focus:ring-brand-green/20"
-        />
-        <span className="text-xs text-neutral-400">–</span>
-        <input
-          type="number"
-          value={max}
-          onChange={(e) => onMaxChange(e.target.value)}
-          placeholder="Max"
-          className="w-full rounded-lg border border-brand-border bg-brand-grey px-3 py-2 text-xs text-brand-dark placeholder:text-neutral-400 focus:border-brand-green focus:outline-none focus:ring-1 focus:ring-brand-green/20"
-        />
-      </div>
-    </div>
-  );
-}
-
-// ─── Custom Checkbox ─────────────────────────────────────────
-
-function GreenCheckbox({ checked, onChange, label, small = false }: {
-  checked: boolean; onChange: () => void; label: string; small?: boolean;
-}) {
-  return (
-    <label className="flex cursor-pointer items-center gap-2">
-      <div
-        onClick={onChange}
-        className={`flex items-center justify-center rounded transition-colors ${
-          small ? "h-3.5 w-3.5" : "h-4 w-4"
-        } ${checked ? "bg-brand-green" : "border border-neutral-300 bg-white"}`}
-      >
-        {checked && (
-          <svg width={small ? 8 : 10} height={small ? 8 : 10} viewBox="0 0 10 10" fill="none">
-            <path d="M2 5L4 7L8 3" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        )}
-      </div>
-      <span className={`${small ? "text-xs text-neutral-600" : "text-sm text-neutral-700"}`}>{label}</span>
-    </label>
-  );
-}
-
-// ─── Rechtsinfo Tooltip (click-based, always readable) ──────
-
-function RechtsinfoTooltip({ text }: { text: string }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -223,23 +142,80 @@ function RechtsinfoTooltip({ text }: { text: string }) {
   }, [open]);
 
   return (
-    <div ref={ref} className="relative ml-auto">
+    <div ref={ref} className="relative">
+      <SectionLabel>{label}</SectionLabel>
       <button
-        type="button"
-        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setOpen(!open); }}
-        className="flex h-5 w-5 items-center justify-center rounded-full transition-colors hover:bg-gray-100"
+        onClick={() => setOpen(!open)}
+        className={`flex w-full items-center justify-between rounded-lg border px-3 py-2 text-xs transition-colors ${
+          open
+            ? "border-brand-green bg-white"
+            : "border-neutral-200 bg-neutral-50 hover:border-neutral-300"
+        }`}
       >
-        <Info size={13} className={`transition-colors ${open ? "text-brand-green" : "text-neutral-400 hover:text-neutral-600"}`} />
+        <span className={selectedCount ? "text-brand-dark font-medium" : "text-neutral-400"}>
+          {selectedCount ? `${selectedCount} ausgewählt` : placeholder}
+        </span>
+        <ChevronDown
+          size={14}
+          className={`text-neutral-400 transition-transform duration-150 ${open ? "rotate-180" : ""}`}
+        />
       </button>
       {open && (
-        <div className="absolute right-0 top-full z-[60] mt-1.5 w-64 rounded-lg border border-neutral-200 bg-white p-3.5 text-xs leading-relaxed text-neutral-700 shadow-lg">
-          <div className="absolute -top-1.5 right-2 h-3 w-3 rotate-45 border-l border-t border-neutral-200 bg-white" />
-          {text}
+        <div className="absolute left-0 top-full z-20 mt-1 max-h-56 w-full overflow-y-auto rounded-lg border border-neutral-200 bg-white py-1 shadow-lg">
+          {children}
         </div>
       )}
     </div>
   );
 }
+
+function DropdownCheckItem({
+  checked,
+  label,
+  onChange,
+  groupLabel,
+}: {
+  checked: boolean;
+  label: string;
+  onChange: () => void;
+  groupLabel?: boolean;
+}) {
+  return (
+    <button
+      onClick={onChange}
+      className={`flex w-full items-center gap-2.5 px-3 py-1.5 text-left text-xs transition-colors hover:bg-neutral-50 ${
+        groupLabel ? "font-semibold text-neutral-500 pt-2" : ""
+      }`}
+    >
+      <div
+        className={`flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded transition-colors ${
+          checked ? "bg-brand-green" : "border border-neutral-300"
+        }`}
+      >
+        {checked && (
+          <svg width={8} height={8} viewBox="0 0 10 10" fill="none">
+            <path d="M2 5L4 7L8 3" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        )}
+      </div>
+      <span className={checked ? "text-brand-dark font-medium" : "text-neutral-600"}>{label}</span>
+    </button>
+  );
+}
+
+// ─── Marke quick-pills ──────────────────────────────────────
+
+const MARKE_PILLS = [
+  "SIG Sauer", "Glock", "Beretta", "Walther",
+  "CZ", "Browning", "Steyr", "H&K", "Ruger", "S&W",
+];
+
+const PREIS_PILLS = [
+  { label: "< 500", min: "0", max: "500" },
+  { label: "500 – 1'500", min: "500", max: "1500" },
+  { label: "1'500 – 3'000", min: "1500", max: "3000" },
+  { label: "3'000+", min: "3000", max: "10000" },
+];
 
 // ─── Component ───────────────────────────────────────────────
 
@@ -249,28 +225,10 @@ export default function FilterSidebar({
   onClose,
   resultCount,
   isMobile = false,
+  counts,
 }: FilterSidebarProps) {
   const [kaliberSuche, setKaliberSuche] = useState("");
   const [kantonSuche, setKantonSuche] = useState("");
-  const [kantonDropdownOpen, setKantonDropdownOpen] = useState(false);
-
-  // Count active filters
-  const activeCount = useMemo(() => {
-    let c = 0;
-    if (filters.anbieter !== "alle") c++;
-    c += filters.kategorien.length;
-    c += filters.unterkategorien.length;
-    c += filters.rechtsstatus.length;
-    c += filters.kaliber.length;
-    c += filters.zustand.length;
-    if (filters.preisMin || filters.preisMax) c++;
-    c += filters.kantone.length;
-    if (filters.marke) c++;
-    if (filters.mitFotos) c++;
-    if (filters.neuEingestellt) c++;
-    if (filters.preisreduziert) c++;
-    return c;
-  }, [filters]);
 
   function update(partial: Partial<FilterState>) {
     onChange({ ...filters, ...partial });
@@ -284,402 +242,302 @@ export default function FilterSidebar({
     update({ [key]: next });
   }
 
-  function removeChip(key: keyof FilterState, value: string) {
-    const arr = filters[key] as string[];
-    update({ [key]: arr.filter((v) => v !== value) });
-  }
-
-  // Active filter chips
-  const chips: { key: keyof FilterState; value: string; label: string }[] = [];
-  if (filters.anbieter !== "alle") {
-    const t = ANBIETER_TYP.find((a) => a.id === filters.anbieter);
-    chips.push({ key: "anbieter", value: filters.anbieter, label: `Nur ${t?.label ?? filters.anbieter}` });
-  }
-  filters.kategorien.forEach((k) => {
-    const hk = HAUPTKATEGORIEN.find((h) => h.id === k);
-    chips.push({ key: "kategorien", value: k, label: hk?.label ?? k });
-  });
-  filters.rechtsstatus.forEach((r) => {
-    const rs = RECHTSSTATUS_FILTER.find((s) => s.id === r);
-    chips.push({ key: "rechtsstatus", value: r, label: rs?.kurzlabel ?? r });
-  });
-  filters.zustand.forEach((z) => {
-    chips.push({ key: "zustand", value: z, label: z });
-  });
-  filters.kaliber.forEach((k) => {
-    chips.push({ key: "kaliber", value: k, label: k });
-  });
-  filters.kantone.forEach((k) => {
-    const kt = KANTONE.find((kn) => kn.id === k);
-    chips.push({ key: "kantone", value: k, label: `Kanton: ${kt?.label ?? k}` });
-  });
-  if (filters.preisMin || filters.preisMax) {
-    chips.push({
-      key: "preisMin",
-      value: "",
-      label: `Preis: CHF ${filters.preisMin || "0"} – ${filters.preisMax || "∞"}`,
-    });
-  }
-  if (filters.marke) {
-    chips.push({ key: "marke", value: filters.marke, label: filters.marke });
-  }
+  // Count active filters
+  let activeCount = 0;
+  if (filters.anbieter !== "alle") activeCount++;
+  activeCount += filters.kategorien.length;
+  activeCount += filters.rechtsstatus.length;
+  activeCount += filters.kaliber.length;
+  activeCount += filters.zustand.length;
+  if (filters.preisMin || filters.preisMax) activeCount++;
+  activeCount += filters.kantone.length;
+  if (filters.marke) activeCount++;
 
   const filteredKantone = KANTONE.filter((k) =>
     k.label.toLowerCase().includes(kantonSuche.toLowerCase())
   );
 
+  // Map zustand groups for simplified pills
+  const neuCount = (counts?.conditions?.["neu"] ?? 0) + (counts?.conditions?.["Neu"] ?? 0);
+  const gebrauchtCount = Object.entries(counts?.conditions ?? {})
+    .filter(([k]) => k !== "neu" && k !== "Neu")
+    .reduce((s, [, v]) => s + v, 0);
+
   return (
     <div className="flex h-full flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-brand-border px-4 py-3">
+      <div className="flex items-center justify-between px-4 pb-3 pt-4">
         <div className="flex items-center gap-2">
-          <SlidersHorizontal size={16} className="text-brand-green" />
-          <span className="text-base font-semibold text-brand-dark">Filter</span>
+          <span className="text-sm font-bold text-brand-dark">Filter</span>
           {activeCount > 0 && (
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand-green text-[10px] font-bold text-white">
+            <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-brand-green px-1 text-[10px] font-bold text-white">
               {activeCount}
             </span>
           )}
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           {activeCount > 0 && (
             <button
               onClick={() => onChange(INITIAL_FILTERS)}
-              className="text-xs font-medium text-brand-green hover:underline"
+              className="flex items-center gap-1 text-[11px] font-medium text-neutral-400 transition-colors hover:text-brand-green"
             >
-              Alle Filter löschen
+              <RotateCcw size={11} />
+              Zurücksetzen
             </button>
           )}
           {isMobile && onClose && (
-            <button onClick={onClose} className="text-neutral-500 hover:text-brand-dark">
-              <X size={20} />
+            <button onClick={onClose} className="ml-1 text-neutral-400 hover:text-brand-dark">
+              <X size={18} />
             </button>
           )}
         </div>
       </div>
 
       {/* Scrollable content */}
-      <div className="flex-1 overflow-y-auto px-4">
-        {/* Active chips */}
-        {chips.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 border-b border-brand-border py-3">
-            {chips.map((chip, i) => (
-              <span
-                key={`${chip.key}-${chip.value}-${i}`}
-                className="inline-flex items-center gap-1 rounded-full bg-brand-green-light px-2.5 py-1 text-xs font-medium text-brand-green animate-chip-in"
-              >
-                {chip.label}
-                <button
-                  onClick={() => {
-                    if (chip.key === "anbieter") update({ anbieter: "alle" });
-                    else if (chip.key === "marke") update({ marke: "" });
-                    else if (chip.key === "preisMin") update({ preisMin: "", preisMax: "" });
-                    else removeChip(chip.key, chip.value);
-                  }}
-                  className="ml-0.5 hover:text-brand-green-dark"
-                >
-                  <X size={12} />
-                </button>
-              </span>
-            ))}
-          </div>
-        )}
-
-        {/* A) Anbieter */}
-        <FilterSection title="Anbieter">
-          <div className="space-y-2">
-            {[{ id: "alle", label: "Alle" }, ...ANBIETER_TYP].map((a) => (
-              <label key={a.id} className="flex cursor-pointer items-center gap-2">
-                <input
-                  type="radio"
-                  name="anbieter"
-                  checked={filters.anbieter === a.id}
-                  onChange={() => update({ anbieter: a.id })}
-                  className="h-4 w-4 accent-brand-green"
-                />
-                <span className="text-sm text-neutral-700">{a.label}</span>
-              </label>
-            ))}
-          </div>
-        </FilterSection>
-
-        {/* B) Kategorie */}
-        <FilterSection title="Kategorie">
-          <div className="space-y-1.5">
-            {HAUPTKATEGORIEN.map((hk) => {
-              const checked = filters.kategorien.includes(hk.id);
-              return (
-                <div key={hk.id}>
-                  <GreenCheckbox
-                    checked={checked}
-                    onChange={() => toggleArray("kategorien", hk.id)}
-                    label={hk.label}
-                  />
-                  {checked && (
-                    <div className="ml-6 mt-1 space-y-1">
-                      {hk.unterkategorien.map((uk) => (
-                        <GreenCheckbox
-                          key={uk.id}
-                          checked={filters.unterkategorien.includes(uk.id)}
-                          onChange={() => toggleArray("unterkategorien", uk.id)}
-                          label={uk.label}
-                          small
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </FilterSection>
-
-        {/* C) Rechtsstatus */}
-        <FilterSection title="Rechtsstatus">
-          <div className="space-y-2">
-            {RECHTSSTATUS_FILTER.map((rs) => (
-              <div key={rs.id} className="flex cursor-pointer items-center gap-2">
-                <GreenCheckbox
-                  checked={filters.rechtsstatus.includes(rs.id)}
-                  onChange={() => toggleArray("rechtsstatus", rs.id)}
-                  label=""
-                />
-                <span
-                  className={`text-sm font-medium ${rs.textfarbe}`}
-                  onClick={() => toggleArray("rechtsstatus", rs.id)}
-                >
-                  {rs.kurzlabel}
-                </span>
-                <RechtsinfoTooltip text={rs.tooltip} />
-              </div>
-            ))}
-          </div>
-        </FilterSection>
-
-        {/* D) Kaliber */}
-        <FilterSection title="Kaliber" defaultOpen={false}>
-          <div className="mb-3 flex items-center gap-2 rounded-lg border border-brand-border bg-brand-grey px-3 py-2">
-            <Search size={14} className="text-neutral-400" />
-            <input
-              type="text"
-              value={kaliberSuche}
-              onChange={(e) => setKaliberSuche(e.target.value)}
-              placeholder="Kaliber suchen..."
-              className="flex-1 bg-transparent text-xs text-brand-dark placeholder:text-neutral-400 focus:outline-none"
-            />
-          </div>
-          <div className="space-y-3">
-            {KALIBER_GRUPPEN.map((gruppe) => {
-              const filtered = gruppe.kaliber.filter((k) =>
-                k.toLowerCase().includes(kaliberSuche.toLowerCase())
-              );
-              if (filtered.length === 0) return null;
-              return (
-                <KaliberGruppeSection key={gruppe.gruppe} label={gruppe.gruppe}>
-                  {filtered.map((k) => (
-                    <GreenCheckbox
-                      key={k}
-                      checked={filters.kaliber.includes(k)}
-                      onChange={() => toggleArray("kaliber", k)}
-                      label={k}
-                      small
-                    />
-                  ))}
-                </KaliberGruppeSection>
-              );
-            })}
-          </div>
-        </FilterSection>
-
-        {/* E) Zustand */}
-        <FilterSection title="Zustand">
-          <div className="space-y-2">
-            {ZUSTAND_OPTIONEN.map((z) => (
-              <GreenCheckbox
-                key={z.id}
-                checked={filters.zustand.includes(z.id)}
-                onChange={() => toggleArray("zustand", z.id)}
-                label={z.label}
+      <div className="flex-1 overflow-y-auto px-4 pb-4">
+        {/* ── KATEGORIE ── */}
+        <SectionLabel>Kategorie</SectionLabel>
+        <div className="flex flex-wrap gap-1.5">
+          {HAUPTKATEGORIEN.map((hk) => {
+            const active = filters.kategorien.includes(hk.id);
+            return (
+              <Pill
+                key={hk.id}
+                label={hk.label}
+                active={active}
+                onClick={() => toggleArray("kategorien", hk.id)}
+                count={counts?.categories?.[hk.id]}
               />
-            ))}
-          </div>
-        </FilterSection>
+            );
+          })}
+        </div>
 
-        {/* F) Preis */}
-        <FilterSection title="Preis (CHF)">
-          <PreisSlider
-            min={filters.preisMin}
-            max={filters.preisMax}
-            onMinChange={(v) => update({ preisMin: v })}
-            onMaxChange={(v) => update({ preisMax: v })}
+        <FilterDivider />
+
+        {/* ── ZUSTAND ── */}
+        <SectionLabel>Zustand</SectionLabel>
+        <div className="flex flex-wrap gap-1.5">
+          <Pill
+            label="Alle"
+            active={filters.zustand.length === 0}
+            onClick={() => update({ zustand: [] })}
+            count={counts?.total}
           />
-          <div className="flex flex-wrap gap-1.5">
-            {PREIS_PILLS.map((p) => {
-              const active = filters.preisMin === p.min && filters.preisMax === p.max;
-              return (
-                <button
-                  key={p.label}
-                  onClick={() =>
-                    active
-                      ? update({ preisMin: "", preisMax: "" })
-                      : update({ preisMin: p.min, preisMax: p.max })
-                  }
-                  className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                    active
-                      ? "bg-brand-green text-white"
-                      : "bg-brand-grey text-neutral-600 hover:bg-brand-green-light hover:text-brand-green"
-                  }`}
-                >
-                  {p.label}
-                </button>
-              );
-            })}
-          </div>
-        </FilterSection>
+          <Pill
+            label="Neu"
+            active={filters.zustand.length === 1 && filters.zustand[0] === "neu"}
+            onClick={() =>
+              filters.zustand.length === 1 && filters.zustand[0] === "neu"
+                ? update({ zustand: [] })
+                : update({ zustand: ["neu"] })
+            }
+            count={neuCount}
+          />
+          <Pill
+            label="Gebraucht"
+            active={filters.zustand.length > 0 && !filters.zustand.includes("neu")}
+            onClick={() => {
+              const gebrauchtIds = ZUSTAND_OPTIONEN.filter((z) => z.id !== "neu").map((z) => z.id);
+              const isGebraucht = filters.zustand.length > 0 && !filters.zustand.includes("neu");
+              update({ zustand: isGebraucht ? [] : gebrauchtIds });
+            }}
+            count={gebrauchtCount}
+          />
+        </div>
 
-        {/* G) Kanton */}
-        <FilterSection title="Kanton" defaultOpen={false}>
-          {filters.kantone.length > 0 && (
-            <div className="mb-2 flex flex-wrap gap-1">
-              {filters.kantone.map((kid) => {
-                const kt = KANTONE.find((k) => k.id === kid);
-                return (
-                  <span
-                    key={kid}
-                    className="inline-flex items-center gap-1 rounded-full bg-brand-green-light px-2 py-0.5 text-[10px] font-medium text-brand-green"
-                  >
-                    {kt?.label}
-                    <button onClick={() => removeChip("kantone", kid)}>
-                      <X size={10} />
-                    </button>
-                  </span>
-                );
-              })}
-            </div>
-          )}
-          <div className="relative">
-            <div className="flex items-center gap-2 rounded-lg border border-brand-border bg-brand-grey px-3 py-2">
-              <Search size={14} className="text-neutral-400" />
+        <FilterDivider />
+
+        {/* ── PREIS ── */}
+        <SectionLabel>Preis (CHF)</SectionLabel>
+        <div className="mb-2.5 flex items-center gap-2">
+          <input
+            type="number"
+            value={filters.preisMin}
+            onChange={(e) => update({ preisMin: e.target.value })}
+            placeholder="Min. CHF"
+            className="w-full rounded-lg border-0 bg-neutral-50 px-3 py-2 text-xs text-brand-dark placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-brand-green/30"
+          />
+          <span className="text-neutral-300">—</span>
+          <input
+            type="number"
+            value={filters.preisMax}
+            onChange={(e) => update({ preisMax: e.target.value })}
+            placeholder="Max. CHF"
+            className="w-full rounded-lg border-0 bg-neutral-50 px-3 py-2 text-xs text-brand-dark placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-brand-green/30"
+          />
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          {PREIS_PILLS.map((p) => {
+            const active = filters.preisMin === p.min && filters.preisMax === p.max;
+            return (
+              <Pill
+                key={p.label}
+                label={p.label}
+                active={active}
+                onClick={() =>
+                  active
+                    ? update({ preisMin: "", preisMax: "" })
+                    : update({ preisMin: p.min, preisMax: p.max })
+                }
+              />
+            );
+          })}
+        </div>
+
+        <FilterDivider />
+
+        {/* ── KALIBER ── */}
+        <FilterDropdown
+          label="Kaliber"
+          placeholder="Alle Kaliber"
+          selectedCount={filters.kaliber.length || undefined}
+        >
+          <div className="sticky top-0 z-10 border-b border-neutral-100 bg-white px-3 py-2">
+            <div className="flex items-center gap-2 rounded-md bg-neutral-50 px-2 py-1.5">
+              <Search size={12} className="text-neutral-400" />
               <input
                 type="text"
-                value={kantonSuche}
-                onChange={(e) => {
-                  setKantonSuche(e.target.value);
-                  setKantonDropdownOpen(true);
-                }}
-                onFocus={() => setKantonDropdownOpen(true)}
-                placeholder="Kanton suchen..."
+                value={kaliberSuche}
+                onChange={(e) => setKaliberSuche(e.target.value)}
+                placeholder="Suchen..."
                 className="flex-1 bg-transparent text-xs text-brand-dark placeholder:text-neutral-400 focus:outline-none"
               />
             </div>
-            {kantonDropdownOpen && (
-              <div className="absolute left-0 top-full z-10 mt-1 max-h-40 w-full overflow-y-auto rounded-lg border border-brand-border bg-white py-1 shadow-lg">
-                {filteredKantone.map((k) => (
-                  <button
-                    key={k.id}
-                    onClick={() => {
-                      toggleArray("kantone", k.id);
-                      setKantonSuche("");
-                      setKantonDropdownOpen(false);
-                    }}
-                    className={`flex w-full items-center gap-2 px-3 py-1.5 text-left text-xs hover:bg-brand-grey ${
-                      filters.kantone.includes(k.id) ? "text-brand-green font-medium" : "text-neutral-700"
-                    }`}
-                  >
-                    {filters.kantone.includes(k.id) && (
-                      <span className="text-brand-green">✓</span>
-                    )}
-                    {k.label}
-                  </button>
+          </div>
+          {KALIBER_GRUPPEN.map((gruppe) => {
+            const filtered = gruppe.kaliber.filter((k) =>
+              k.toLowerCase().includes(kaliberSuche.toLowerCase())
+            );
+            if (filtered.length === 0) return null;
+            return (
+              <div key={gruppe.gruppe}>
+                <div className="px-3 pt-2.5 pb-0.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+                  {gruppe.gruppe}
+                </div>
+                {filtered.map((k) => (
+                  <DropdownCheckItem
+                    key={k}
+                    checked={filters.kaliber.includes(k)}
+                    label={k}
+                    onChange={() => toggleArray("kaliber", k)}
+                  />
                 ))}
               </div>
-            )}
-          </div>
-        </FilterSection>
+            );
+          })}
+        </FilterDropdown>
 
-        {/* H) Marke */}
-        <FilterSection title="Marke" defaultOpen={false}>
-          <input
-            type="text"
-            value={filters.marke}
-            onChange={(e) => update({ marke: e.target.value })}
-            placeholder="Marke eingeben..."
-            className="mb-3 w-full rounded-lg border border-brand-border bg-brand-grey px-3 py-2 text-xs text-brand-dark placeholder:text-neutral-400 focus:border-brand-green focus:outline-none focus:ring-1 focus:ring-brand-green/20"
-          />
-          <div className="flex flex-wrap gap-1.5">
-            {MARKE_PILLS.map((m) => (
-              <button
-                key={m}
-                onClick={() => update({ marke: filters.marke === m ? "" : m })}
-                className={`rounded-full px-2.5 py-1 text-[11px] font-medium transition-colors ${
-                  filters.marke === m
-                    ? "bg-brand-green text-white"
-                    : "bg-brand-grey text-neutral-600 hover:bg-brand-green-light hover:text-brand-green"
-                }`}
-              >
-                {m}
-              </button>
-            ))}
-          </div>
-        </FilterSection>
+        <FilterDivider />
 
-        {/* I) Nur anzeigen */}
-        <FilterSection title="Nur anzeigen" defaultOpen={false}>
-          <div className="space-y-2">
-            {[
-              { key: "mitFotos" as const, label: "Mit Fotos" },
-              { key: "neuEingestellt" as const, label: "Neu eingestellt (7 Tage)" },
-              { key: "preisreduziert" as const, label: "Preisreduziert" },
-            ].map((opt) => (
-              <GreenCheckbox
-                key={opt.key}
-                checked={filters[opt.key]}
-                onChange={() => update({ [opt.key]: !filters[opt.key] })}
-                label={opt.label}
+        {/* ── KANTON ── */}
+        <FilterDropdown
+          label="Kanton"
+          placeholder="Alle Kantone"
+          selectedCount={filters.kantone.length || undefined}
+        >
+          <div className="sticky top-0 z-10 border-b border-neutral-100 bg-white px-3 py-2">
+            <div className="flex items-center gap-2 rounded-md bg-neutral-50 px-2 py-1.5">
+              <Search size={12} className="text-neutral-400" />
+              <input
+                type="text"
+                value={kantonSuche}
+                onChange={(e) => setKantonSuche(e.target.value)}
+                placeholder="Suchen..."
+                className="flex-1 bg-transparent text-xs text-brand-dark placeholder:text-neutral-400 focus:outline-none"
               />
-            ))}
+            </div>
           </div>
-        </FilterSection>
+          {filteredKantone.map((k) => (
+            <DropdownCheckItem
+              key={k.id}
+              checked={filters.kantone.includes(k.id)}
+              label={k.label}
+              onChange={() => toggleArray("kantone", k.id)}
+            />
+          ))}
+        </FilterDropdown>
+
+        <FilterDivider />
+
+        {/* ── MARKE ── */}
+        <SectionLabel>Marke</SectionLabel>
+        <input
+          type="text"
+          value={filters.marke}
+          onChange={(e) => update({ marke: e.target.value })}
+          placeholder="Marke eingeben..."
+          className="mb-2.5 w-full rounded-lg border-0 bg-neutral-50 px-3 py-2 text-xs text-brand-dark placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-brand-green/30"
+        />
+        <div className="flex flex-wrap gap-1.5">
+          {MARKE_PILLS.map((m) => (
+            <Pill
+              key={m}
+              label={m}
+              active={filters.marke === m}
+              onClick={() => update({ marke: filters.marke === m ? "" : m })}
+            />
+          ))}
+        </div>
+
+        <FilterDivider />
+
+        {/* ── ANBIETER ── */}
+        <SectionLabel>Anbieter</SectionLabel>
+        <div className="flex flex-wrap gap-1.5">
+          {[
+            { id: "alle", label: "Alle" },
+            { id: "privat", label: "Privat" },
+            { id: "haendler", label: "Händler" },
+          ].map((a) => (
+            <Pill
+              key={a.id}
+              label={a.label}
+              active={filters.anbieter === a.id}
+              onClick={() => update({ anbieter: a.id })}
+              count={
+                a.id === "alle"
+                  ? counts?.total
+                  : a.id === "privat"
+                  ? counts?.types?.["Privat"]
+                  : counts?.types?.["Händler"]
+              }
+            />
+          ))}
+        </div>
+
+        <FilterDivider />
+
+        {/* ── RECHTSSTATUS ── */}
+        <SectionLabel>Rechtsstatus</SectionLabel>
+        <div className="flex flex-wrap gap-1.5">
+          <Pill
+            label="Alle"
+            active={filters.rechtsstatus.length === 0}
+            onClick={() => update({ rechtsstatus: [] })}
+          />
+          {RECHTSSTATUS_FILTER.map((rs) => (
+            <Pill
+              key={rs.id}
+              label={rs.kurzlabel}
+              active={filters.rechtsstatus.includes(rs.id)}
+              onClick={() => toggleArray("rechtsstatus", rs.id)}
+              count={counts?.statuses?.[rs.id]}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Mobile footer */}
       {isMobile && (
-        <div className="border-t border-brand-border p-4">
+        <div className="border-t border-neutral-100 p-4">
           <button
             onClick={onClose}
-            className="w-full rounded-lg bg-brand-green py-3 text-sm font-medium text-white transition-colors hover:bg-brand-green-dark touch-target"
+            className="w-full rounded-xl bg-brand-green py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-green-dark"
           >
-            {resultCount} Inserate anzeigen
+            {resultCount.toLocaleString("de-CH")} Inserate anzeigen
           </button>
         </div>
       )}
-    </div>
-  );
-}
-
-// ─── Kaliber Gruppe (collapsible) ────────────────────────────
-
-function KaliberGruppeSection({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div>
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between text-left"
-      >
-        <span className="text-xs font-semibold text-neutral-500">{label}</span>
-        <ChevronDown
-          size={12}
-          className={`text-neutral-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-        />
-      </button>
-      {open && <div className="ml-1 mt-1.5 space-y-1">{children}</div>}
     </div>
   );
 }

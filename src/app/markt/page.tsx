@@ -11,6 +11,7 @@ interface MarketData {
     total: number;
     avgPreis: number;
     todayNew: number;
+    weekNew: number;
     topKategorie: string;
     topKaliber: string;
   };
@@ -42,10 +43,12 @@ const KATEGORIE_LABELS: Record<string, string> = {
 
 const ZUSTAND_LABELS: Record<string, string> = {
   neu: "Neu",
+  "wie-neu": "Wie neu",
   "sehr-gut": "Sehr gut",
   gut: "Gut",
   akzeptabel: "Akzeptabel",
   defekt: "Defekt",
+  unbekannt: "Nicht angegeben",
 };
 
 const RECHTS_LABELS: Record<string, { label: string; color: string }> = {
@@ -192,7 +195,11 @@ export default function MarktInsightsPage() {
           <StatCard label="Ø Preis" value={`CHF ${overview.avgPreis.toLocaleString("de-CH")}`} />
           <StatCard label="Top Kategorie" value={KATEGORIE_LABELS[overview.topKategorie] || overview.topKategorie} />
           <StatCard label="Top Kaliber" value={overview.topKaliber || "—"} />
-          <StatCard label="Heute neu" value={String(overview.todayNew)} sub="in den letzten 24h" />
+          <StatCard
+            label={overview.todayNew > 0 ? "Heute neu" : "Diese Woche"}
+            value={String(overview.todayNew > 0 ? overview.todayNew : overview.weekNew || 0)}
+            sub={overview.todayNew > 0 ? "in den letzten 24h" : "letzte 7 Tage"}
+          />
         </div>
 
         {/* ═══ SECTION 2: AVG PRICE + ZUSTAND ═══ */}

@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import Link from "next/link";
-import { MapPin, ChevronRight } from "lucide-react";
+import Image from "next/image";
+import { MapPin, ChevronRight, X, Loader2 } from "lucide-react";
 import type { MapHandle, MapMarker } from "./HomeMapView";
 
 // Lazy-load map only on client
@@ -81,6 +82,14 @@ interface Listing {
   lng?: number;
 }
 
+interface PanelState {
+  open: boolean;
+  listings: Listing[];
+  title: string;
+  loading: boolean;
+  searchLink: string;
+}
+
 // ─── Component ──────────────────────────────────────────────────
 
 export default function HomeMapSection() {
@@ -88,6 +97,9 @@ export default function HomeMapSection() {
   const [selectedKantone, setSelectedKantone] = useState<Set<string>>(new Set());
   const [kantonCounts, setKantonCounts] = useState<Record<string, number>>({});
   const [mounted, setMounted] = useState(false);
+  const [panel, setPanel] = useState<PanelState>({
+    open: false, listings: [], title: "", loading: false, searchLink: "/suche",
+  });
 
   const mapHandleRef = useRef<MapHandle>(null);
 
@@ -153,7 +165,45 @@ export default function HomeMapSection() {
     [filtered]
   );
 
-  // Canton click — simple toggle + fly
+  // Fetch panel listings for selected cantons
+  async function fetchCantonListings(kantone: Set<string>) {
+    if (kantone.size === 0) {
+      setPanel((p) => ({ ...p, open: false, listings: [], loading: false }));
+      return;
+    }
+    const abbrArr = Array.from(kantone);
+    const label = abbrArr.length === 1
+      ? KANTONE.find((k) => k.abbr === abbrArr[0])?.label || abbrArr[0]
+      : `${abbrArr.length} Kantone`;
+    const link = `/suche?kanton=${abbrArr.join(",")}`;
+
+    setPanel({ open: true, listings: [], title: label, loading: true, searchLink: link });
+    console.log("[MapPanel] Fetching canton listings:", abbrArr.join(","));
+
+    try {
+      const res = await fetch(`/api/listings?kanton=${abbrArr.join(",")}&limit=50`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      const items: Listing[] = (data.listings || []).map((l: Record<string, unknown>) => ({
+        id: String(l.id || ""),
+        titel: String(l.titel || ""),
+        preis: Number(l.preis) || 0,
+        zustand: String(l.zustand || ""),
+        kanton: String(l.kanton || ""),
+        rechtsstatus: String(l.rechtsstatus || ""),
+        ortschaft: String(l.ortschaft || ""),
+        hauptkategorie: String(l.hauptkategorie || ""),
+        image_url: (l.image_url as string) || null,
+      }));
+      console.log("[MapPanel] Canton results:", items.length);
+      setPanel((p) => ({ ...p, listings: items, loading: false }));
+    } catch (err) {
+      console.error("[MapPanel] Canton fetch failed:", err);
+      setPanel((p) => ({ ...p, loading: false }));
+    }
+  }
+
+  // Canton click — toggle + fly + fetch panel
   function handleKantonClick(abbr: string) {
     setSelectedKantone((prev) => {
       const next = new Set(prev);
@@ -163,20 +213,68 @@ export default function HomeMapSection() {
         const single = Array.from(next)[0];
         const center = CANTON_CENTERS[single];
         if (center) mapHandleRef.current?.flyTo(center.lat, center.lng, center.zoom);
+      } else if (next.size === 0) {
+        mapHandleRef.current?.resetView();
       } else {
         mapHandleRef.current?.resetView();
       }
+
+      fetchCantonListings(next);
       return next;
     });
   }
 
   function handleReset() {
     setSelectedKantone(new Set());
+    setPanel({ open: false, listings: [], title: "", loading: false, searchLink: "/suche" });
     mapHandleRef.current?.resetView();
   }
 
-  // Cluster click — no-op for now (stable version)
-  const handleClusterClick = useCallback(() => {}, []);
+  // Cluster click — fetch nearby listings
+  const handleClusterClick = useCallback((markerIds: string[]) => {
+    if (!markerIds.length) return;
+    console.log("[MapPanel] Cluster click, marker IDs:", markerIds.length);
+
+    // Find center of clicked markers from allListings
+    const matched = allListings.filter((l) => markerIds.includes(l.id) && l.lat && l.lng);
+    if (matched.length === 0) return;
+
+    const avgLat = matched.reduce((s, l) => s + (l.lat || 0), 0) / matched.length;
+    const avgLng = matched.reduce((s, l) => s + (l.lng || 0), 0) / matched.length;
+
+    setPanel({ open: true, listings: [], title: "Inserate in der Nähe", loading: true, searchLink: "/suche" });
+
+    fetch(`/api/listings/nearby?lat=${avgLat}&lng=${avgLng}&radius=15&limit=30`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        const items: Listing[] = (data.listings || []).map((l: Record<string, unknown>) => ({
+          id: String(l.id || ""),
+          titel: String(l.titel || ""),
+          preis: Number(l.preis) || 0,
+          zustand: String(l.zustand || ""),
+          kanton: String(l.kanton || ""),
+          rechtsstatus: String(l.rechtsstatus || ""),
+          ortschaft: String(l.ortschaft || ""),
+          hauptkategorie: String(l.hauptkategorie || ""),
+          image_url: (l.image_url as string) || null,
+        }));
+        console.log("[MapPanel] Nearby results:", items.length);
+        setPanel((p) => ({ ...p, listings: items, loading: false }));
+      })
+      .catch((err) => {
+        console.error("[MapPanel] Nearby fetch failed:", err);
+        setPanel((p) => ({ ...p, loading: false }));
+      });
+  }, [allListings]);
+
+  // Invalidate map size when panel opens/closes
+  useEffect(() => {
+    const timer = setTimeout(() => mapHandleRef.current?.invalidateSize(), 350);
+    return () => clearTimeout(timer);
+  }, [panel.open]);
 
   // Canton list sorted by count
   const sortedKantone = KANTONE
@@ -274,22 +372,125 @@ export default function HomeMapSection() {
             </div>
           </div>
 
-          {/* Right: Map only */}
+          {/* Right: Map + Panel */}
           <div
             className="relative flex-1 overflow-hidden rounded-xl border bg-[#f1f5f1]"
             style={{ borderColor: "#e5e7eb", height: 600 }}
           >
-            {mounted ? (
-              <HomeMapView
-                ref={mapHandleRef}
-                markers={mapMarkers}
-                onClusterClick={handleClusterClick}
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center">
-                <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#16a34a] border-t-transparent" />
+            {/* Map */}
+            <div
+              className="absolute inset-0 transition-all duration-300"
+              style={{ right: panel.open ? 340 : 0 }}
+            >
+              {mounted ? (
+                <HomeMapView
+                  ref={mapHandleRef}
+                  markers={mapMarkers}
+                  onClusterClick={handleClusterClick}
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center">
+                  <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#16a34a] border-t-transparent" />
+                </div>
+              )}
+            </div>
+
+            {/* Listing Panel */}
+            <div
+              className="absolute top-0 right-0 h-full w-[340px] border-l bg-white transition-transform duration-300"
+              style={{
+                borderColor: "#e5e7eb",
+                transform: panel.open ? "translateX(0)" : "translateX(100%)",
+              }}
+            >
+              {/* Panel Header */}
+              <div className="flex items-center justify-between border-b px-4 py-3" style={{ borderColor: "#e5e7eb" }}>
+                <div>
+                  <h3 className="text-sm font-bold text-[#1a2e1a]">{panel.title}</h3>
+                  {!panel.loading && (
+                    <p className="text-[11px] text-neutral-500">
+                      {panel.listings.length} Inserate
+                    </p>
+                  )}
+                </div>
+                <button
+                  onClick={() => setPanel((p) => ({ ...p, open: false }))}
+                  className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600"
+                  aria-label="Panel schliessen"
+                >
+                  <X size={16} />
+                </button>
               </div>
-            )}
+
+              {/* Panel Content */}
+              <div
+                className="overflow-y-auto px-3 py-2"
+                style={{ height: "calc(100% - 110px)", scrollbarWidth: "thin", scrollbarColor: "#16a34a #f3f4f6" }}
+              >
+                {panel.loading ? (
+                  <div className="flex flex-col items-center justify-center py-12 text-neutral-400">
+                    <Loader2 size={24} className="animate-spin" />
+                    <span className="mt-2 text-xs">Lade Inserate…</span>
+                  </div>
+                ) : panel.listings.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-12 text-neutral-400">
+                    <MapPin size={24} className="mb-2" />
+                    <span className="text-xs">Keine Inserate gefunden</span>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-2">
+                    {panel.listings.map((l) => (
+                      <Link
+                        key={l.id}
+                        href={`/inserat/${l.id}`}
+                        className="flex gap-3 rounded-lg border p-2 transition-colors hover:bg-[#f0fdf4]"
+                        style={{ borderColor: "#e5e7eb" }}
+                      >
+                        <div className="h-16 w-16 shrink-0 overflow-hidden rounded-md bg-neutral-100">
+                          {l.image_url ? (
+                            <Image
+                              src={l.image_url}
+                              alt={l.titel}
+                              width={64}
+                              height={64}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <div className="flex h-full w-full items-center justify-center text-neutral-300">
+                              <MapPin size={16} />
+                            </div>
+                          )}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-xs font-semibold text-[#1a2e1a]">{l.titel}</p>
+                          <p className="mt-0.5 text-sm font-bold text-[#16a34a]">
+                            CHF {l.preis.toLocaleString("de-CH")}
+                          </p>
+                          <div className="mt-1 flex items-center gap-1.5 text-[10px] text-neutral-500">
+                            {l.ortschaft && <span>{l.ortschaft}</span>}
+                            {l.ortschaft && l.zustand && <span>·</span>}
+                            {l.zustand && <span>{l.zustand}</span>}
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Panel Footer */}
+              {panel.listings.length > 0 && (
+                <div className="absolute bottom-0 left-0 right-0 border-t bg-white px-4 py-3" style={{ borderColor: "#e5e7eb" }}>
+                  <Link
+                    href={panel.searchLink}
+                    className="flex items-center justify-center gap-1 rounded-lg bg-[#16a34a] px-3 py-2 text-xs font-semibold text-white hover:bg-[#15803d]"
+                  >
+                    Alle Inserate anzeigen
+                    <ChevronRight size={14} />
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

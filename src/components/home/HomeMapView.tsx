@@ -39,11 +39,7 @@ const KANTON_CENTERS: Record<string, { lat: number; lng: number; zoom: number }>
 };
 
 const ZUSTAND_LABELS: Record<string, string> = {
-  neu: "Neu",
-  "sehr-gut": "Sehr gut",
-  gut: "Gut",
-  akzeptabel: "Akzeptabel",
-  defekt: "Defekt",
+  neu: "Neu", "sehr-gut": "Sehr gut", gut: "Gut", akzeptabel: "Akzeptabel", defekt: "Defekt",
 };
 
 const RECHTS_LABELS: Record<string, { label: string; bg: string; text: string }> = {
@@ -54,9 +50,9 @@ const RECHTS_LABELS: Record<string, { label: string; bg: string; text: string }>
   "abk-gross": { label: "ABK", bg: "#fee2e2", text: "#991b1b" },
 };
 
-// Small circle marker icon
+// Small green circle marker
 const circleIcon = new L.DivIcon({
-  html: '<div style="width:12px;height:12px;background:#4ade80;border:2px solid #166534;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,0.3);"></div>',
+  html: '<div style="width:12px;height:12px;background:#16a34a;border:2px solid white;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,0.25);"></div>',
   iconSize: [12, 12],
   iconAnchor: [6, 6],
   className: "",
@@ -88,10 +84,10 @@ function buildTooltipHtml(m: MapMarker): string {
 
 interface HomeMapViewProps {
   markers: MapMarker[];
-  selectedKanton: string | null;
+  selectedKantone: Set<string>;
 }
 
-export default function HomeMapView({ markers, selectedKanton }: HomeMapViewProps) {
+export default function HomeMapView({ markers, selectedKantone }: HomeMapViewProps) {
   const mapRef = useRef<L.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const clusterRef = useRef<L.MarkerClusterGroup | null>(null);
@@ -109,8 +105,8 @@ export default function HomeMapView({ markers, selectedKanton }: HomeMapViewProp
       zoomControl: true,
     });
 
-    // Dark-styled tiles
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+    // Light CartoDB tiles
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
       subdomains: "abcd",
       maxZoom: 19,
@@ -124,7 +120,7 @@ export default function HomeMapView({ markers, selectedKanton }: HomeMapViewProp
     };
   }, []);
 
-  // Update markers when data changes
+  // Update markers when data or selection changes
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
@@ -135,7 +131,6 @@ export default function HomeMapView({ markers, selectedKanton }: HomeMapViewProp
       clusterRef.current = null;
     }
 
-    // Create cluster group with custom styling
     const cluster = L.markerClusterGroup({
       maxClusterRadius: 50,
       spiderfyOnMaxZoom: true,
@@ -145,11 +140,11 @@ export default function HomeMapView({ markers, selectedKanton }: HomeMapViewProp
         return L.divIcon({
           html: `<div style="
             width:36px;height:36px;border-radius:50%;
-            background:rgba(22,163,74,0.85);
-            border:2px solid #4ade80;
+            background:#16a34a;
+            border:2px solid white;
             display:flex;align-items:center;justify-content:center;
             font-size:12px;font-weight:700;color:white;
-            box-shadow:0 2px 8px rgba(0,0,0,0.3);
+            box-shadow:0 2px 8px rgba(0,0,0,0.2);
           ">${count}</div>`,
           className: "",
           iconSize: [36, 36],
@@ -163,7 +158,6 @@ export default function HomeMapView({ markers, selectedKanton }: HomeMapViewProp
     for (const m of valid) {
       const marker = L.marker([m.lat, m.lng], { icon: circleIcon });
 
-      // Hover tooltip
       marker.bindTooltip(buildTooltipHtml(m), {
         direction: "top",
         offset: [0, -8],
@@ -171,7 +165,6 @@ export default function HomeMapView({ markers, selectedKanton }: HomeMapViewProp
         className: "home-map-tooltip",
       });
 
-      // Click → open in new tab
       marker.on("click", () => {
         window.open(`/inserat/${m.id}`, "_blank");
       });
@@ -182,9 +175,10 @@ export default function HomeMapView({ markers, selectedKanton }: HomeMapViewProp
     map.addLayer(cluster);
     clusterRef.current = cluster;
 
-    // Zoom to canton or fit all
-    if (selectedKanton && KANTON_CENTERS[selectedKanton]) {
-      const c = KANTON_CENTERS[selectedKanton];
+    // Zoom logic
+    const kantoneArr = Array.from(selectedKantone);
+    if (kantoneArr.length === 1 && KANTON_CENTERS[kantoneArr[0]]) {
+      const c = KANTON_CENTERS[kantoneArr[0]];
       map.flyTo([c.lat, c.lng], c.zoom, { duration: 0.8 });
     } else if (valid.length > 0) {
       const bounds = L.latLngBounds(valid.map((m) => [m.lat, m.lng] as L.LatLngExpression));
@@ -192,7 +186,7 @@ export default function HomeMapView({ markers, selectedKanton }: HomeMapViewProp
     } else {
       map.setView([46.8, 8.2], 8);
     }
-  }, [markers, selectedKanton]);
+  }, [markers, selectedKantone]);
 
   return (
     <>
@@ -200,8 +194,9 @@ export default function HomeMapView({ markers, selectedKanton }: HomeMapViewProp
         .home-map-tooltip {
           background: white !important;
           border: none !important;
+          border-left: 3px solid #16a34a !important;
           border-radius: 10px !important;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.12) !important;
           padding: 10px !important;
           max-width: 320px !important;
         }
@@ -209,7 +204,7 @@ export default function HomeMapView({ markers, selectedKanton }: HomeMapViewProp
           display: none !important;
         }
         .leaflet-container {
-          background: #0d1a0d !important;
+          background: white !important;
         }
       `}</style>
       <div ref={containerRef} className="h-full w-full" style={{ minHeight: 480 }} />

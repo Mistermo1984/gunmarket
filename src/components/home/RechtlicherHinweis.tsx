@@ -4,10 +4,10 @@ import { RECHTLICHER_DISCLAIMER } from "@/lib/constants";
 
 export default function RechtlicherHinweis() {
   return (
-    <section style={{ backgroundColor: "#fef9ec" }}>
-      <div className="mx-auto flex max-w-7xl items-start gap-3 px-4 py-4">
-        <Info size={16} className="mt-0.5 shrink-0 text-amber-600" />
-        <p className="text-xs leading-relaxed text-amber-800">
+    <section>
+      <div className="mx-auto flex max-w-7xl items-center gap-3 border-t px-4 py-4" style={{ borderColor: "rgba(229,231,235,0.5)" }}>
+        <Info size={14} className="shrink-0 text-[#9ca3af]" />
+        <p className="text-xs leading-relaxed text-[#9ca3af]">
           {RECHTLICHER_DISCLAIMER}
         </p>
       </div>

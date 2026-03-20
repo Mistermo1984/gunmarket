@@ -56,19 +56,44 @@ export default function SoFunktionierts() {
       </div>
 
       {/* CTA Box */}
-      <div className="rounded-xl bg-brand-green px-6 py-8 text-center">
-        <h3 className="mb-2 font-display text-xl font-black uppercase text-white">
-          Bereit loszulegen?
-        </h3>
-        <p className="mb-4 text-sm text-white/80">
-          Erstelle jetzt dein kostenloses Konto und starte sofort.
-        </p>
-        <Link
-          href="/register"
-          className="inline-flex items-center rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-brand-green transition-colors hover:bg-gray-50"
-        >
-          Jetzt kostenlos registrieren
-        </Link>
+      <div
+        className="rounded-xl border px-6 py-10 md:px-12"
+        style={{
+          backgroundColor: "#0d1a0d",
+          backgroundImage: "radial-gradient(rgba(74,222,128,0.08) 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
+          borderColor: "rgba(74,222,128,0.2)",
+        }}
+      >
+        <div className="flex flex-col items-center gap-6 md:flex-row md:items-center md:justify-between">
+          {/* Left */}
+          <div className="text-center md:text-left">
+            <span className="mb-3 inline-block rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-green-400">
+              Kostenlos &amp; sofort
+            </span>
+            <h3 className="mb-1.5 text-2xl font-bold text-white md:text-[28px]">
+              Bereit loszulegen?
+            </h3>
+            <p className="text-sm text-[#9ca3af]">
+              Erstelle jetzt dein kostenloses Konto und starte sofort.
+            </p>
+          </div>
+          {/* Right: buttons */}
+          <div className="flex shrink-0 gap-3">
+            <Link
+              href="/register"
+              className="rounded-lg bg-[#16a34a] px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#15803d]"
+            >
+              Jetzt registrieren
+            </Link>
+            <Link
+              href="/inserat/neu"
+              className="rounded-lg border border-[#16a34a] px-7 py-3 text-sm font-semibold text-[#16a34a] transition-colors hover:bg-[#16a34a]/10"
+            >
+              Inserat aufgeben
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

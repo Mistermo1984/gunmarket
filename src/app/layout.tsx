@@ -4,6 +4,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ChatWrapper from "@/components/chatbot/ChatWrapper";
 import SessionProvider from "@/components/auth/SessionProvider";
+import CookieConsent from "@/components/CookieConsent";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
@@ -111,6 +112,7 @@ export default function RootLayout({
           </div>
           <ChatWrapper />
         </SessionProvider>
+        <CookieConsent />
         <Analytics />
       </body>
     </html>

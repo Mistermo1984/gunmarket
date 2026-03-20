@@ -84,9 +84,10 @@ function FitBounds({ listings, center, radius }: { listings: MapListing[]; cente
       return;
     }
     // Otherwise fit to markers
-    if (listings.length > 0) {
+    const validListings = listings.filter((l) => l.lat != null && l.lng != null && !isNaN(l.lat) && !isNaN(l.lng));
+    if (validListings.length > 0) {
       const bounds = L.latLngBounds(
-        listings.map((l) => [l.lat, l.lng] as L.LatLngExpression)
+        validListings.map((l) => [l.lat, l.lng] as L.LatLngExpression)
       );
       map.fitBounds(bounds, { padding: [40, 40], maxZoom: 12 });
     } else {
@@ -103,6 +104,9 @@ export default function MapView({
   hoveredId,
   onMarkerClick,
 }: MapViewProps) {
+  const validListings = listings.filter(
+    (l) => l.lat != null && l.lng != null && !isNaN(l.lat) && !isNaN(l.lng)
+  );
   return (
     <MapContainer
       center={DEFAULT_CENTER}
@@ -117,7 +121,7 @@ export default function MapView({
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      <FitBounds listings={listings} center={center} radius={radius} />
+      <FitBounds listings={validListings} center={center} radius={radius} />
 
       {center && radius && (
         <Circle
@@ -132,7 +136,7 @@ export default function MapView({
         />
       )}
 
-      {listings.map((listing) => (
+      {validListings.map((listing) => (
         <Marker
           key={listing.id}
           position={[listing.lat, listing.lng]}
@@ -153,7 +157,7 @@ export default function MapView({
               )}
               <p className="text-sm font-semibold">{listing.titel}</p>
               <p className="text-sm font-bold text-[#2d6a4f]">
-                CHF {listing.preis.toLocaleString("de-CH")}
+                {listing.preis != null ? `CHF ${listing.preis.toLocaleString("de-CH")}` : "Preis auf Anfrage"}
               </p>
               <a
                 href={`/inserat/${listing.id}`}

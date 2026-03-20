@@ -46,7 +46,7 @@ export default function LocationSearch({
           { headers: { "User-Agent": "GunMarket.ch/1.0", "Accept-Language": "de" } }
         );
         const data = await res.json();
-        setSuggestions(data);
+        setSuggestions(Array.isArray(data) ? data : []);
         setShowSuggestions(true);
       } catch {
         setSuggestions([]);
@@ -59,15 +59,21 @@ export default function LocationSearch({
   }, [query]);
 
   const handleSelect = (result: NominatimResult) => {
-    const parts = result.display_name.split(",");
-    const label = parts.slice(0, 2).join(",").trim();
-    setQuery(label);
-    setShowSuggestions(false);
-    onLocationChange({
-      lat: parseFloat(result.lat),
-      lng: parseFloat(result.lon),
-      label,
-    });
+    try {
+      const lat = parseFloat(result.lat);
+      const lng = parseFloat(result.lon);
+      if (isNaN(lat) || isNaN(lng)) {
+        console.error("Invalid coordinates from Nominatim:", result);
+        return;
+      }
+      const parts = result.display_name.split(",");
+      const label = parts.slice(0, 2).join(",").trim();
+      setQuery(label);
+      setShowSuggestions(false);
+      onLocationChange({ lat, lng, label });
+    } catch (err) {
+      console.error("Error selecting location:", err);
+    }
   };
 
   const handleGeolocation = () => {

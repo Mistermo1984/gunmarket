@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { getCrawlSteps, runCrawlStep, getCrawlStatus } from "@/lib/crawl-waffengebraucht";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 async function isAdmin() {
   const session = await getServerSession(authOptions);

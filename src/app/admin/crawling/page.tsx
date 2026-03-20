@@ -80,11 +80,15 @@ export default function CrawlingPage() {
       setStepResults([...results]);
 
       try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 290000); // 290s — just under server maxDuration
         const res = await fetch("/api/admin/crawl", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ step: step.id }),
+          signal: controller.signal,
         });
+        clearTimeout(timeout);
         const data = await res.json();
 
         if (res.ok && data.success) {
@@ -95,9 +99,9 @@ export default function CrawlingPage() {
           results[i].status = "error";
           results[i].error = data.error || "Unbekannter Fehler";
         }
-      } catch {
+      } catch (err) {
         results[i].status = "error";
-        results[i].error = "Netzwerkfehler";
+        results[i].error = `Netzwerkfehler: ${err instanceof Error ? err.message : String(err)}`;
       }
 
       setStepResults([...results]);

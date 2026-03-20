@@ -255,8 +255,8 @@ export interface Kanton {
 
 export const KANTONE: Kanton[] = [
   { id: "ag", label: "Aargau" },
-  { id: "ai", label: "Appenzell Innerrhoden" },
-  { id: "ar", label: "Appenzell Ausserrhoden" },
+  { id: "ai", label: "Appenzell I." },
+  { id: "ar", label: "Appenzell A." },
   { id: "be", label: "Bern" },
   { id: "bl", label: "Basel-Landschaft" },
   { id: "bs", label: "Basel-Stadt" },

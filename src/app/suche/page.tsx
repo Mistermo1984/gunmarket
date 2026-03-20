@@ -12,7 +12,6 @@ import FilterSidebar, {
 import ErgebnisHeader from "@/components/suche/ErgebnisHeader";
 import ListingGrid from "@/components/suche/ListingGrid";
 import DynamicMap from "@/components/map/DynamicMap";
-import LocationSearch from "@/components/map/LocationSearch";
 import { HAUPTKATEGORIEN, KANTONE } from "@/lib/constants";
 import { apiListingToCard } from "@/lib/listing-helpers";
 import type { ListingCardData } from "@/components/ui/ListingCard";
@@ -45,8 +44,6 @@ function SucheContent() {
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [showMap, setShowMap] = useState(() => searchParams.get("map") === "true");
   const [hoveredListingId] = useState<string | null>(null);
-  const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | null>(null);
-  const [mapRadius, setMapRadius] = useState(50);
 
   const [listings, setListings] = useState<ListingCardData[]>([]);
   const [mapListings, setMapListings] = useState<{ id: string; titel: string; preis: number; lat: number; lng: number }[]>([]);
@@ -124,18 +121,11 @@ function SucheContent() {
     if (!showMap) return;
     const params = buildFilterParams();
 
-    // When center is set, add radius params for proximity filtering
-    if (mapCenter) {
-      params.set("lat", String(mapCenter.lat));
-      params.set("lng", String(mapCenter.lng));
-      params.set("radius", String(mapRadius));
-    }
-
     fetch(`/api/listings/map?${params}`)
       .then((res) => res.json())
       .then((data) => setMapListings(data.markers || []))
       .catch(() => setMapListings([]));
-  }, [filters, showMap, buildFilterParams, mapCenter, mapRadius]);
+  }, [filters, showMap, buildFilterParams]);
 
   // Count active filters
   const activeFilterCount = useMemo(() => {
@@ -217,26 +207,12 @@ function SucheContent() {
             onToggleMap={() => setShowMap(!showMap)}
           />
 
-          {showMap && (
-            <div className="mb-4 rounded-xl border border-brand-border bg-white p-4 shadow-sm animate-fade-in">
-              <LocationSearch
-                onLocationChange={(loc) =>
-                  setMapCenter(loc ? { lat: loc.lat, lng: loc.lng } : null)
-                }
-                onRadiusChange={setMapRadius}
-                radius={mapRadius}
-              />
-            </div>
-          )}
-
-          {/* Map — full width on mobile, side-by-side on desktop */}
+          {/* Map — full width on mobile */}
           {showMap && (
             <div className="mb-4 lg:hidden">
               <div className="h-[350px] rounded-xl overflow-hidden border border-brand-border shadow-sm">
                 <DynamicMap
                   listings={mapListings}
-                  center={mapCenter || undefined}
-                  radius={mapCenter ? mapRadius : undefined}
                   hoveredId={hoveredListingId}
                   onMarkerClick={(id) => {
                     window.location.href = `/inserat/${id}`;
@@ -262,8 +238,6 @@ function SucheContent() {
                 <div className="sticky top-[140px] h-[calc(100vh-180px)] rounded-xl overflow-hidden border border-brand-border shadow-sm">
                   <DynamicMap
                     listings={mapListings}
-                    center={mapCenter || undefined}
-                    radius={mapCenter ? mapRadius : undefined}
                     hoveredId={hoveredListingId}
                     onMarkerClick={(id) => {
                       window.location.href = `/inserat/${id}`;

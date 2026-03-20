@@ -224,7 +224,13 @@ export function classifyRechtsstatus(input: ClassificationInput): string {
     return "wes";
   }
 
-  // 4. Ordonnanzwaffen: alle WES (Stgw 90, SIG 550, Ordonnanzpistolen etc.)
+  // 3b. Keyword-based WES: Pistol/Revolver brands regardless of category
+  const isKurzwaffeKeyword = /\b(pistol|revolver|glock|sig\s*sauer|beretta|cz\s+\d|walther\s+(p|ppq|pdp|creed)|smith\s*&?\s*wesson|s&w|ruger\s+(sr|lc|security|mk)|hk\s+(usp|vp|p\d)|fn\s+(five|57|509))\b/i.test(text);
+  if (isKurzwaffeKeyword && !/\bsoftair|airsoft|co2|luftpistole|schreckschuss|gas[\s-]?pistol|holster|magazin\b/i.test(text)) {
+    return "wes";
+  }
+
+  // 4. Ordonnanzwaffen: alle WES (Stgw 90, SIG 550, K31, Ordonnanzpistolen etc.)
   if (hauptkategorie === "ordonnanzwaffen") {
     return "wes";
   }

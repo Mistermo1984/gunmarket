@@ -746,7 +746,7 @@ export function getCityCoordinates(city: string): { lat: number; lng: number } |
 // ─── Kanton name / abbreviation mapping ─────────────────────
 
 const KANTON_ABBREV_TO_NAME: Record<string, string> = {
-  ag: "Aargau", ai: "Appenzell Innerrhoden", ar: "Appenzell Ausserrhoden",
+  ag: "Aargau", ai: "Appenzell I.", ar: "Appenzell A.",
   be: "Bern", bl: "Basel-Landschaft", bs: "Basel-Stadt",
   fr: "Freiburg", ge: "Genf", gl: "Glarus", gr: "Graubünden",
   ju: "Jura", lu: "Luzern", ne: "Neuenburg", nw: "Nidwalden",
@@ -760,8 +760,8 @@ for (const [abbr, name] of Object.entries(KANTON_ABBREV_TO_NAME)) {
   KANTON_NAME_TO_ABBREV[name.toLowerCase()] = abbr;
 }
 // Additional aliases for crawler edge cases
-KANTON_NAME_TO_ABBREV["appenzell a."] = "ar";
-KANTON_NAME_TO_ABBREV["appenzell i."] = "ai";
+KANTON_NAME_TO_ABBREV["appenzell ausserrhoden"] = "ar";
+KANTON_NAME_TO_ABBREV["appenzell innerrhoden"] = "ai";
 KANTON_NAME_TO_ABBREV["st.gallen"] = "sg";
 KANTON_NAME_TO_ABBREV["saint-gall"] = "sg";
 KANTON_NAME_TO_ABBREV["genève"] = "ge";

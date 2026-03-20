@@ -34,8 +34,8 @@ const GW_CRAWLER_USER = {
   anbieter_typ: "Händler",
 };
 
-// All categories to crawl — exact slugs from gebrauchtwaffen.com (verified live)
-// NOTE: 'munition' does not exist as a standalone category on gebrauchtwaffen.com
+// All categories — exact slugs verified live on gebrauchtwaffen.com
+// NOTE: 'munition' does NOT exist as a standalone category
 const CATEGORIES = [
   { slug: "kurzwaffen", hauptkategorie: "kurzwaffen" },
   { slug: "langwaffen", hauptkategorie: "langwaffen" },
@@ -104,32 +104,98 @@ async function fetchPage(url: string, retries = 2): Promise<string | null> {
 
 // ─── gebrauchtwaffen.com ─────────────────────────────────────
 
-/** Detect last page number from » pagination link */
+/**
+ * Detect last page number using multiple methods:
+ * 1. searchPaginationLast class link (most reliable)
+ * 2. » link matching the category slug
+ * 3. Highest page number in pagination links
+ * 4. Calculate from "X von Y" total count text
+ */
 function getLastPage(html: string, categorySlug: string): number {
-  // Try specific category slug pattern: href="/kurzwaffen/57">»
-  const match = html.match(
-    new RegExp(`href="\\/${categorySlug}\\/(\\d+)"[^>]*>\\s*[»»]`)
+  // Method 1: searchPaginationLast class link — <a href=".../57" class="searchPaginationLast ...">»</a>
+  const m1 = html.match(
+    /class="searchPaginationLast[^"]*"[^>]*href="[^"]*\/(\d+)"|href="[^"]*\/(\d+)"[^>]*class="searchPaginationLast/
   );
-  if (match) return parseInt(match[1]);
-  // Fallback: any pagination » link
-  const match2 = html.match(/href="\/[a-z-]+\/(\d+)"[^>]*>\s*[»»]/);
-  if (match2) return parseInt(match2[1]);
+  if (m1) return parseInt(m1[1] || m1[2]);
+
+  // Method 2: » link (Unicode 187) for this category slug
+  const escaped = categorySlug.replace(/-/g, "\\-");
+  const m2 = html.match(
+    new RegExp(
+      `href="(?:https://www\\.gebrauchtwaffen\\.com)?/${escaped}/(\\d+)"[^>]*>\\s*(?:»|&raquo;|\\u00BB)`,
+      "i"
+    )
+  );
+  if (m2) return parseInt(m2[1]);
+
+  // Method 3: highest page number in any pagination link for this slug
+  const allMatches = Array.from(
+    html.matchAll(
+      new RegExp(
+        `href="(?:https://www\\.gebrauchtwaffen\\.com)?/${escaped}/(\\d+)"`,
+        "g"
+      )
+    )
+  );
+  if (allMatches.length > 0) {
+    return Math.max(...allMatches.map((m) => parseInt(m[1])));
+  }
+
+  // Method 4: calculate from "X von Y" total count
+  const m4 = html.match(/(\d+)\s+von\s+(\d+)/i);
+  if (m4) {
+    const perPage = parseInt(m4[1]);
+    const total = parseInt(m4[2]);
+    if (perPage > 0 && total > 0) return Math.ceil(total / perPage);
+  }
+
   return 1;
 }
 
-/** Extract listing URLs from category page using onclick patterns */
+/**
+ * Extract listing URLs from category page.
+ * Listings are in <tr onclick="..."> rows containing <a href="URL_with_i_i12345">.
+ * Pattern: href="https://www.gebrauchtwaffen.com/.../..._i107304"
+ */
 function extractListingUrls(html: string): string[] {
-  const matches = Array.from(
+  // Primary: absolute URLs with _i pattern
+  const absMatches = Array.from(
+    html.matchAll(
+      /href="(https:\/\/www\.gebrauchtwaffen\.com\/[^"]+_i\d+)"/g
+    )
+  );
+  if (absMatches.length > 0) {
+    return Array.from(new Set(absMatches.map((m) => m[1])));
+  }
+
+  // Fallback: relative URLs with _i pattern
+  const relMatches = Array.from(html.matchAll(/href="(\/[^"]+_i\d+)"/g));
+  if (relMatches.length > 0) {
+    return Array.from(
+      new Set(relMatches.map((m) => GW_BASE_URL + m[1]))
+    );
+  }
+
+  // Legacy fallback: onclick location.href pattern
+  const onclickMatches = Array.from(
     html.matchAll(
       /location\.href='(https:\/\/www\.gebrauchtwaffen\.com\/[^']+_i\d+)'/g
     )
   );
-  return Array.from(new Set(matches.map((m) => m[1])));
+  return Array.from(new Set(onclickMatches.map((m) => m[1])));
 }
 
-/** URL-based category mapping — accessories override weapon parent categories */
+/**
+ * URL-based category mapping — accessories override weapon parent categories.
+ * Returns hauptkategorie slug for DB storage.
+ */
 function mapCategoryFromUrl(url: string): string {
   // Accessories first — these appear under weapon categories but are Zubehör
+  if (
+    url.includes("/pistolen") ||
+    url.includes("/revolver")
+  )
+    return "kurzwaffen";
   if (
     url.includes("/magazine") ||
     url.includes("/holster") ||
@@ -140,15 +206,21 @@ function mapCategoryFromUrl(url: string): string {
     url.includes("/chokes")
   )
     return "zubehoer";
-  // Main categories
   if (url.includes("/kurzwaffen")) return "kurzwaffen";
+  if (
+    url.includes("/flinten") ||
+    url.includes("/buchsen") ||
+    url.includes("/kombinierte")
+  )
+    return "langwaffen";
   if (url.includes("/langwaffen")) return "langwaffen";
   if (url.includes("/sammler") || url.includes("/ordonanz"))
     return "ordonnanzwaffen";
   if (url.includes("/luftdruck") || url.includes("/softair"))
     return "luftdruckwaffen";
   if (url.includes("/optik")) return "optik";
-  if (url.includes("/messer") || url.includes("/blank")) return "zubehoer";
+  if (url.includes("/messer") || url.includes("/blankwaffen"))
+    return "zubehoer";
   if (url.includes("/wiederladen")) return "zubehoer";
   if (url.includes("/wild") || url.includes("/jagd")) return "langwaffen";
   if (url.includes("/bogenschiesen")) return "zubehoer";
@@ -156,55 +228,119 @@ function mapCategoryFromUrl(url: string): string {
   return "zubehoer";
 }
 
-/** Scrape individual gebrauchtwaffen.com listing page for full data */
-async function scrapeGwListing(
-  url: string
-): Promise<CrawledItem | null> {
+/**
+ * Scrape individual gebrauchtwaffen.com listing page.
+ * All selectors verified by live inspection.
+ */
+async function scrapeGwListing(url: string): Promise<CrawledItem | null> {
   const html = await fetchPage(url);
   if (!html) return null;
 
   const idMatch = url.match(/_i(\d+)/);
   if (!idMatch) return null;
 
-  // Title — remove category prefix like "Pistolen – "
+  // Title: <h1> — remove category prefix like "Pistolen - " or "Ausrüstung – "
   let titel = html.match(/<h1[^>]*>([^<]+)<\/h1>/)?.[1]?.trim() || "";
   titel = titel.replace(/^[^–\-]+ [–\-] /, "").trim();
   if (!titel) return null;
 
-  // Price
-  const priceMatch = html.match(/CHF\s*([\d.']+)/);
-  const preis = priceMatch
-    ? parseFloat(
-        priceMatch[1].replace(/\./g, "").replace(/'/g, "").replace(",", ".")
-      )
-    : 0;
+  // Price: div.price.round3 — format "CHF 1.440,00"
+  const priceMatch = html.match(/class="price[^"]*"[^>]*>\s*CHF\s*([\d.,'+]+)/);
+  let preis = 0;
+  if (priceMatch) {
+    preis =
+      parseFloat(
+        priceMatch[1]
+          .replace(/\./g, "")
+          .replace(/'/g, "")
+          .replace(",", ".")
+      ) || 0;
+  } else {
+    // Fallback: any CHF mention
+    const fallback = html.match(/CHF\s*([\d.,'+]+)/);
+    if (fallback) {
+      preis =
+        parseFloat(
+          fallback[1]
+            .replace(/\./g, "")
+            .replace(/'/g, "")
+            .replace(",", ".")
+        ) || 0;
+    }
+  }
 
-  // Description
-  const descMatch = html.match(
-    /class="item-description"[^>]*>([\s\S]*?)<\/div>/
+  // Description: second div.desc.round3 (first is structured attributes, second is free text)
+  const descMatches = Array.from(
+    html.matchAll(/class="desc round3"[^>]*>([\s\S]*?)<\/div>/g)
   );
-  const beschreibung =
-    descMatch?.[1]
-      ?.replace(/<[^>]+>/g, " ")
+  let beschreibung = "";
+  if (descMatches.length >= 2) {
+    beschreibung = descMatches[1][1]
+      .replace(/<[^>]+>/g, " ")
       .replace(/\s+/g, " ")
       .trim()
-      .substring(0, 2000) || "";
+      .substring(0, 2000);
+  }
+  if (!beschreibung) {
+    // Fallback: div.text
+    const textMatch = html.match(/class="text"[^>]*>([\s\S]*?)<\/div>/);
+    if (textMatch) {
+      beschreibung = textMatch[1]
+        .replace(/<[^>]+>/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+        .substring(0, 2000);
+    }
+  }
+  if (!beschreibung) {
+    // Legacy fallback
+    const descMatch = html.match(
+      /class="item-description"[^>]*>([\s\S]*?)<\/div>/
+    );
+    if (descMatch) {
+      beschreibung = descMatch[1]
+        .replace(/<[^>]+>/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+        .substring(0, 2000);
+    }
+  }
 
-  // Canton
+  // Canton: <a class="breadcrumb region" ...><span itemprop="title">Graubünden</span></a>
+  let kanton = "";
   const cantonMatch =
-    html.match(/Schweiz-Switzerland\s*·\s*([^·\n<]+)/) ||
-    html.match(/class="region"[^>]*>\s*([^<]+)/) ||
-    html.match(/Standort[^<]*<[^>]+>\s*([^<]+)/);
-  const kanton = cantonMatch?.[1]?.trim().split("·")[0]?.trim() || "";
+    html.match(
+      /class="[^"]*breadcrumb[^"]*region[^"]*"[^>]*>[\s\S]*?<span[^>]*>([^<]+)<\/span>/i
+    ) ||
+    html.match(
+      /class="[^"]*region[^"]*breadcrumb[^"]*"[^>]*>[\s\S]*?<span[^>]*>([^<]+)<\/span>/i
+    ) ||
+    html.match(/class="region"[^>]*>[\s\S]*?<span[^>]*>([^<]+)<\/span>/i) ||
+    html.match(/itemprop="addressRegion"[^>]*>([^<]+)/i) ||
+    html.match(/Schweiz-Switzerland\s*·\s*([^·\n<]+)/);
+  if (cantonMatch) {
+    kanton = cantonMatch[1].trim().split("·")[0].trim();
+  }
 
-  // Images — CloudFront thumbnail URLs → full size
+  // City: <span class="city">Chur</span>
+  let ortschaft = "";
+  const cityMatch =
+    html.match(/class="city"[^>]*>([^<]+)</) ||
+    html.match(/itemprop="addressLocality"[^>]*>([^<]+)/i);
+  if (cityMatch) {
+    ortschaft = cityMatch[1].trim();
+  }
+
+  // Images: ONLY from d9c3dmdj8vwy7.cloudfront.net (listing CDN)
+  // DO NOT use dkdbo8c81igf8.cloudfront.net (ads/sponsors)
+  // Thumbnail: d9c3dmdj8vwy7.cloudfront.net/375960_thumbnail.jpg → full: .../375960.jpg
   const thumbMatches = Array.from(
     html.matchAll(
-      /https:\/\/d9c3dmdj8vwy7\.cloudfront\.net\/\d+_thumbnail\.(?:jpg|jpeg|png)/g
+      /d9c3dmdj8vwy7\.cloudfront\.net\/\d+_thumbnail\.(?:jpg|jpeg|png)/gi
     )
   ).map((m) => m[0]);
   const imageUrls = Array.from(new Set(thumbMatches)).map((u) =>
-    u.replace("_thumbnail", "")
+    "https://" + u.replace(/_thumbnail\./, ".")
   );
 
   // Category: URL-based mapping for hauptkategorie, classifier for unterkategorie
@@ -217,7 +353,7 @@ async function scrapeGwListing(
     titel,
     preis,
     verhandelbar: 0,
-    ortschaft: "",
+    ortschaft,
     plz: "",
     kanton,
     hauptkategorie,

@@ -16,6 +16,7 @@ export async function GET(req: NextRequest) {
     const rechtsstatus = searchParams.get("rechtsstatus");
     const kanton = searchParams.get("kanton");
     const zustand = searchParams.get("zustand");
+    const kaliber = searchParams.get("kaliber");
     const minPreis = searchParams.get("minPreis");
     const maxPreis = searchParams.get("maxPreis");
     const userId = searchParams.get("user_id");
@@ -82,6 +83,16 @@ export async function GET(req: NextRequest) {
       } else if (zs.length > 1) {
         where += ` AND l.zustand IN (${zs.map(() => "?").join(",")})`;
         params.push(...zs);
+      }
+    }
+    if (kaliber) {
+      const kals = kaliber.split(",").map((k) => k.trim()).filter(Boolean);
+      if (kals.length === 1) {
+        where += " AND l.kaliber LIKE ?";
+        params.push(`%${kals[0]}%`);
+      } else if (kals.length > 1) {
+        where += ` AND (${kals.map(() => "l.kaliber LIKE ?").join(" OR ")})`;
+        params.push(...kals.map((k) => `%${k}%`));
       }
     }
     if (minPreis) {

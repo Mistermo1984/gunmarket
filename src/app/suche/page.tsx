@@ -82,6 +82,9 @@ function SucheContent() {
     if (filters.zustand.length > 0) {
       params.set("zustand", filters.zustand.join(","));
     }
+    if (filters.kaliber.length > 0) {
+      params.set("kaliber", filters.kaliber.join(","));
+    }
     if (filters.preisMin) params.set("minPreis", filters.preisMin);
     if (filters.preisMax) params.set("maxPreis", filters.preisMax);
     if (filters.marke) params.set("suche", filters.marke);

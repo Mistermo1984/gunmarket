@@ -15,6 +15,7 @@ export interface MapMarker {
 export interface MapHandle {
   flyTo: (lat: number, lng: number, zoom: number) => void;
   resetView: () => void;
+  invalidateSize: () => void;
 }
 
 interface HomeMapViewProps {
@@ -37,21 +38,18 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const LRef = useRef<any>(null);
   const [ready, setReady] = useState(false);
-  const markersDataRef = useRef<MapMarker[]>([]);
-  markersDataRef.current = markers;
   const onClusterClickRef = useRef(onClusterClick);
   onClusterClickRef.current = onClusterClick;
 
   useImperativeHandle(ref, () => ({
     flyTo(lat: number, lng: number, zoom: number) {
-      if (mapRef.current) {
-        mapRef.current.flyTo([lat, lng], zoom, { duration: 1.2 });
-      }
+      mapRef.current?.flyTo([lat, lng], zoom, { duration: 1.2 });
     },
     resetView() {
-      if (mapRef.current) {
-        mapRef.current.flyTo(SWITZERLAND_CENTER, SWITZERLAND_ZOOM, { duration: 1.0 });
-      }
+      mapRef.current?.flyTo(SWITZERLAND_CENTER, SWITZERLAND_ZOOM, { duration: 1.0 });
+    },
+    invalidateSize() {
+      setTimeout(() => mapRef.current?.invalidateSize(), 100);
     },
   }));
 
@@ -98,7 +96,7 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
     }).addTo(map);
     mapRef.current = map;
 
-    // Custom cluster + marker styles
+    // Custom cluster styles — hide individual markers, only show cluster bubbles
     const style = document.createElement("style");
     style.textContent = `
       .gun-cluster {
@@ -107,6 +105,7 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
       }
       .gun-cluster-inner {
         background: #16a34a;
@@ -120,12 +119,26 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
         justify-content: center;
         box-shadow: 0 2px 6px rgba(0,0,0,.25);
       }
-      .gun-pin {
-        width: 12px; height: 12px;
-        background: #16a34a;
-        border: 2px solid white;
-        border-radius: 50%;
-        box-shadow: 0 1px 3px rgba(0,0,0,.3);
+      /* Hide ALL individual markers — only clusters should be visible */
+      .leaflet-marker-icon:not(.marker-cluster):not(.gun-cluster-icon) {
+        opacity: 0 !important;
+        pointer-events: none !important;
+        width: 0 !important;
+        height: 0 !important;
+      }
+      /* Hide spider legs completely */
+      .leaflet-cluster-anim .leaflet-marker-icon,
+      .leaflet-cluster-spider-leg {
+        display: none !important;
+      }
+      /* Override default MarkerCluster styles */
+      .marker-cluster-small,
+      .marker-cluster-medium,
+      .marker-cluster-large {
+        background: none !important;
+      }
+      .marker-cluster div {
+        background: none !important;
       }
     `;
     document.head.appendChild(style);
@@ -148,10 +161,12 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const cluster = new (L as any).MarkerClusterGroup({
-      maxClusterRadius: 50,
-      spiderfyOnMaxZoom: true,
-      showCoverageOnHover: false,
+      maxClusterRadius: 60,
+      spiderfyOnMaxZoom: false,
+      spiderfyDistanceMultiplier: 0,
       zoomToBoundsOnClick: false,
+      showCoverageOnHover: false,
+      singleMarkerMode: true,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       iconCreateFunction: (c: any) => {
         const count = c.getChildCount();
@@ -159,24 +174,18 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
         const inner = size - 10;
         return L.divIcon({
           html: `<div class="gun-cluster" style="width:${size}px;height:${size}px"><div class="gun-cluster-inner" style="width:${inner}px;height:${inner}px">${count}</div></div>`,
-          className: "",
+          className: "gun-cluster-icon",
           iconSize: L.point(size, size),
         });
       },
     });
 
-    // Cluster click → zoom in + notify parent with marker IDs
+    // Cluster click → notify parent (no zoom, no spiderfy)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     cluster.on("clusterclick", (e: any) => {
       const childMarkers = e.layer.getAllChildMarkers();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const ids = childMarkers.map((cm: any) => cm.options._listingId).filter(Boolean);
-
-      // Zoom into cluster
-      const bounds = e.layer.getBounds();
-      map.flyToBounds(bounds, { padding: [40, 40], duration: 0.8 });
-
-      // Notify parent
       if (onClusterClickRef.current && ids.length > 0) {
         onClusterClickRef.current(ids);
       }
@@ -184,26 +193,13 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
 
     for (const m of markers) {
       if (!m.lat || !m.lng) continue;
-
+      // Individual markers are invisible (CSS hides them), but they feed into clusters
       const icon = L.divIcon({
-        html: `<div class="gun-pin"></div>`,
-        className: "",
-        iconSize: L.point(12, 12),
-        iconAnchor: L.point(6, 6),
+        html: "",
+        className: "gun-hidden-marker",
+        iconSize: L.point(0, 0),
       });
-
       const marker = L.marker([m.lat, m.lng], { icon, _listingId: m.id });
-
-      const priceStr = m.preis > 0 ? `CHF ${m.preis.toLocaleString("de-CH")}` : "Auf Anfrage";
-      marker.bindTooltip(
-        `<div style="font-size:12px;font-weight:600;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.titel}</div><div style="font-size:11px;color:#16a34a;font-weight:700">${priceStr}</div>`,
-        { direction: "top", offset: L.point(0, -8) }
-      );
-
-      marker.on("click", () => {
-        window.open(`/inserat/${m.id}`, "_blank");
-      });
-
       cluster.addLayer(marker);
     }
 

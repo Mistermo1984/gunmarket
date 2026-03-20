@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { initializeSchema, dbAll } from "@/lib/db";
 import { haversineDistance } from "@/lib/geocoding";
+import { kantonToFullName } from "@/lib/plz-coordinates";
 
 export const dynamic = "force-dynamic";
 
@@ -45,7 +46,8 @@ export async function GET(req: NextRequest) {
       params.push(rechtsstatus);
     }
     if (kanton) {
-      const kantone = kanton.split(",").map((k) => k.trim()).filter(Boolean);
+      const kantone = kanton.split(",").map((k) => k.trim()).filter(Boolean)
+        .map((k) => kantonToFullName(k) || k);
       if (kantone.length === 1) {
         where += " AND l.kanton = ?";
         params.push(kantone[0]);

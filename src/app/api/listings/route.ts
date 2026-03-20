@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { initializeSchema, dbGet, dbAll, dbRun } from "@/lib/db";
+import { kantonToFullName } from "@/lib/plz-coordinates";
 import { v4 as uuidv4 } from "uuid";
 
 export const dynamic = "force-dynamic";
@@ -61,7 +62,8 @@ export async function GET(req: NextRequest) {
       }
     }
     if (kanton) {
-      const kantone = kanton.split(",").map((k) => k.trim()).filter(Boolean);
+      const kantone = kanton.split(",").map((k) => k.trim()).filter(Boolean)
+        .map((k) => kantonToFullName(k) || k);
       if (kantone.length === 1) {
         where += " AND l.kanton = ?";
         params.push(kantone[0]);

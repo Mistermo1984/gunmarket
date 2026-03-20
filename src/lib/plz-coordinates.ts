@@ -742,3 +742,134 @@ export function getCityCoordinates(city: string): { lat: number; lng: number } |
   }
   return null;
 }
+
+// ─── Kanton name / abbreviation mapping ─────────────────────
+
+const KANTON_ABBREV_TO_NAME: Record<string, string> = {
+  ag: "Aargau", ai: "Appenzell Innerrhoden", ar: "Appenzell Ausserrhoden",
+  be: "Bern", bl: "Basel-Landschaft", bs: "Basel-Stadt",
+  fr: "Freiburg", ge: "Genf", gl: "Glarus", gr: "Graubünden",
+  ju: "Jura", lu: "Luzern", ne: "Neuenburg", nw: "Nidwalden",
+  ow: "Obwalden", sg: "St. Gallen", sh: "Schaffhausen", so: "Solothurn",
+  sz: "Schwyz", tg: "Thurgau", ti: "Tessin", ur: "Uri",
+  vd: "Waadt", vs: "Wallis", zg: "Zug", zh: "Zürich",
+};
+
+const KANTON_NAME_TO_ABBREV: Record<string, string> = {};
+for (const [abbr, name] of Object.entries(KANTON_ABBREV_TO_NAME)) {
+  KANTON_NAME_TO_ABBREV[name.toLowerCase()] = abbr;
+}
+// Additional aliases for crawler edge cases
+KANTON_NAME_TO_ABBREV["appenzell a."] = "ar";
+KANTON_NAME_TO_ABBREV["appenzell i."] = "ai";
+KANTON_NAME_TO_ABBREV["st.gallen"] = "sg";
+KANTON_NAME_TO_ABBREV["saint-gall"] = "sg";
+KANTON_NAME_TO_ABBREV["genève"] = "ge";
+KANTON_NAME_TO_ABBREV["vaud"] = "vd";
+KANTON_NAME_TO_ABBREV["valais"] = "vs";
+KANTON_NAME_TO_ABBREV["neuchâtel"] = "ne";
+KANTON_NAME_TO_ABBREV["fribourg"] = "fr";
+KANTON_NAME_TO_ABBREV["ticino"] = "ti";
+KANTON_NAME_TO_ABBREV["grisons"] = "gr";
+KANTON_NAME_TO_ABBREV["grigioni"] = "gr";
+KANTON_NAME_TO_ABBREV["berne"] = "be";
+KANTON_NAME_TO_ABBREV["lucerne"] = "lu";
+KANTON_NAME_TO_ABBREV["zurich"] = "zh";
+KANTON_NAME_TO_ABBREV["zürich"] = "zh";
+KANTON_NAME_TO_ABBREV["basel"] = "bs";
+KANTON_NAME_TO_ABBREV["basel-land"] = "bl";
+
+/** Convert any kanton value (abbreviation, full name, or alias) to full name. */
+export function kantonToFullName(value: string): string {
+  if (!value) return "";
+  const lower = value.toLowerCase().trim();
+  // Already a full name?
+  if (KANTON_NAME_TO_ABBREV[lower]) {
+    const abbr = KANTON_NAME_TO_ABBREV[lower];
+    return KANTON_ABBREV_TO_NAME[abbr] || value;
+  }
+  // Abbreviation?
+  if (KANTON_ABBREV_TO_NAME[lower]) {
+    return KANTON_ABBREV_TO_NAME[lower];
+  }
+  return value;
+}
+
+/** Convert any kanton value to its 2-letter abbreviation. */
+export function kantonToAbbrev(value: string): string {
+  if (!value) return "";
+  const lower = value.toLowerCase().trim();
+  if (KANTON_ABBREV_TO_NAME[lower]) return lower;
+  if (KANTON_NAME_TO_ABBREV[lower]) return KANTON_NAME_TO_ABBREV[lower];
+  return "";
+}
+
+/** City name → kanton full name lookup (common Swiss cities). */
+const CITY_TO_KANTON: Record<string, string> = {
+  zürich: "Zürich", zurich: "Zürich", winterthur: "Zürich", uster: "Zürich", dübendorf: "Zürich", dietikon: "Zürich",
+  kloten: "Zürich", bülach: "Zürich", wädenswil: "Zürich", horgen: "Zürich", thalwil: "Zürich", opfikon: "Zürich",
+  bern: "Bern", thun: "Bern", biel: "Bern", bienne: "Bern", burgdorf: "Bern", langenthal: "Bern",
+  köniz: "Bern", ostermundigen: "Bern", münsingen: "Bern", spiez: "Bern", interlaken: "Bern", steffisburg: "Bern",
+  luzern: "Luzern", lucerne: "Luzern", emmen: "Luzern", kriens: "Luzern", horw: "Luzern", sursee: "Luzern",
+  uri: "Uri", altdorf: "Uri",
+  schwyz: "Schwyz", einsiedeln: "Schwyz", freienbach: "Schwyz",
+  sarnen: "Obwalden",
+  stans: "Nidwalden",
+  glarus: "Glarus",
+  zug: "Zug", baar: "Zug", cham: "Zug",
+  freiburg: "Freiburg", fribourg: "Freiburg", bulle: "Freiburg",
+  solothurn: "Solothurn", olten: "Solothurn", grenchen: "Solothurn",
+  basel: "Basel-Stadt",
+  liestal: "Basel-Landschaft", allschwil: "Basel-Landschaft", reinach: "Basel-Landschaft", muttenz: "Basel-Landschaft", binningen: "Basel-Landschaft",
+  schaffhausen: "Schaffhausen",
+  herisau: "Appenzell Ausserrhoden", teufen: "Appenzell Ausserrhoden",
+  appenzell: "Appenzell Innerrhoden",
+  "st. gallen": "St. Gallen", "st.gallen": "St. Gallen", rapperswil: "St. Gallen", wil: "St. Gallen", gossau: "St. Gallen", buchs: "St. Gallen", rorschach: "St. Gallen",
+  chur: "Graubünden", davos: "Graubünden", "st. moritz": "Graubünden",
+  aarau: "Aargau", baden: "Aargau", wettingen: "Aargau", brugg: "Aargau", rheinfelden: "Aargau", lenzburg: "Aargau", wohlen: "Aargau",
+  frauenfeld: "Thurgau", kreuzlingen: "Thurgau", amriswil: "Thurgau", weinfelden: "Thurgau", arbon: "Thurgau", aadorf: "Thurgau",
+  lugano: "Tessin", bellinzona: "Tessin", locarno: "Tessin", mendrisio: "Tessin", chiasso: "Tessin",
+  lausanne: "Waadt", montreux: "Waadt", vevey: "Waadt", nyon: "Waadt", morges: "Waadt", yverdon: "Waadt", renens: "Waadt",
+  sion: "Wallis", sierre: "Wallis", visp: "Wallis", brig: "Wallis", martigny: "Wallis",
+  "neuchâtel": "Neuenburg", neuchatel: "Neuenburg", "la chaux-de-fonds": "Neuenburg",
+  "genève": "Genf", genf: "Genf", geneve: "Genf", carouge: "Genf", vernier: "Genf", lancy: "Genf", meyrin: "Genf", onex: "Genf",
+  delémont: "Jura", delemont: "Jura",
+  diepoldsau: "St. Gallen", embrach: "Zürich", widnau: "St. Gallen",
+  // French city names (non-duplicates only)
+  zoug: "Zug", berne: "Bern", bâle: "Basel-Stadt", "bale": "Basel-Stadt",
+  monthey: "Wallis", saxon: "Wallis", lens: "Wallis", treyvaux: "Freiburg",
+  aigle: "Waadt", villeneuve: "Waadt", pully: "Waadt", lutry: "Waadt",
+  prilly: "Waadt", ecublens: "Waadt", crissier: "Waadt", bussigny: "Waadt",
+  orbe: "Waadt", payerne: "Waadt", moudon: "Waadt", avenches: "Freiburg",
+  romont: "Freiburg", "châtel-st-denis": "Freiburg",
+  thônex: "Genf", thonex: "Genf", plan: "Genf", "grand-lancy": "Genf",
+  "le locle": "Neuenburg", fleurier: "Neuenburg",
+  porrentruy: "Jura", "saignelégier": "Jura", saignelegier: "Jura",
+  conthey: "Wallis", naters: "Wallis", "brig-glis": "Wallis",
+  collombey: "Wallis", "collombey-muraz": "Wallis", vouvry: "Wallis",
+  "val-de-travers": "Neuenburg",
+  soleure: "Solothurn", "saint-gall": "St. Gallen",
+  coire: "Graubünden", bellinzone: "Tessin",
+  schwytz: "Schwyz", thoune: "Bern",
+  // Small Swiss villages / edge cases
+  thierrens: "Waadt", troistorrents: "Wallis", niederbipp: "Bern",
+  "savièse": "Wallis", saviese: "Wallis", valais: "Wallis", "canton du valais": "Wallis",
+  estavayer: "Freiburg", "estavayer-le-lac": "Freiburg",
+  "léchelles": "Freiburg", lechelles: "Freiburg",
+  "venthône": "Wallis", venthone: "Wallis",
+  "val de travers": "Neuenburg", sembrancher: "Wallis",
+  jura: "Jura", "jura suisse": "Jura",
+  ollon: "Waadt", leytron: "Wallis",
+  "châtel-saint-denis": "Freiburg", "chatel-saint-denis": "Freiburg",
+  aproz: "Wallis", gland: "Waadt", nendaz: "Wallis",
+  "châtonnaye": "Freiburg", chatonnaye: "Freiburg",
+  "viège": "Wallis", viege: "Wallis",
+  suisse: "", // generic, can't determine kanton
+};
+
+/** Try to determine kanton from city name. Returns full name or "". */
+export function kantonFromCity(city: string): string {
+  if (!city) return "";
+  const normalized = city.toLowerCase().trim();
+  return CITY_TO_KANTON[normalized] || "";
+}

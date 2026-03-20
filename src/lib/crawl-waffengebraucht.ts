@@ -2,7 +2,7 @@ import { initializeSchema, dbGet, dbAll, dbRun, dbBatch, dbExec } from "./db";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcryptjs";
 import * as cheerio from "cheerio";
-import { getPlzCoordinates, getCityCoordinates } from "./plz-coordinates";
+import { getPlzCoordinates, getCityCoordinates, kantonFromCity } from "./plz-coordinates";
 import { classifyRechtsstatus } from "./rechtsstatus-classifier";
 
 const BASE_URL = "https://waffengebraucht.ch";
@@ -179,13 +179,22 @@ function parseListingCards(html: string, hauptkategorie: string): CrawledItem[] 
       plz = ortschaft;
       ortschaft = "";
     }
+    // Fix swapped fields: city name stored in plz field
+    if (plz && !/^\d+$/.test(plz)) {
+      if (!ortschaft) ortschaft = plz;
+      plz = "";
+    }
 
     const imgEl = $el.find("img.lazyload");
     const imageUrl = imgEl.attr("data-src") || imgEl.attr("src") || "";
 
     const beschreibung = $el.find(".__ProductDescription").text().trim().substring(0, 500);
 
-    const kanton = kantonFromPlz(plz);
+    // Derive kanton: try PLZ first, then city name
+    let kanton = kantonFromPlz(plz);
+    if (!kanton && ortschaft) {
+      kanton = kantonFromCity(ortschaft);
+    }
 
     if (titel && sourceId) {
       items.push({

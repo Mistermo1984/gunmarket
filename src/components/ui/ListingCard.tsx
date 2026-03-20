@@ -63,10 +63,10 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
     return (
       <Link href={href} className="group flex overflow-hidden rounded-lg bg-white transition-all duration-200 hover:shadow-md hover:scale-[1.01]">
         {/* Photo */}
-        <div className="relative flex h-[100px] w-[120px] shrink-0 items-center justify-center overflow-hidden bg-gray-100">
+        <div className="relative flex shrink-0 items-center justify-center overflow-hidden" style={{ width: 120, height: 90, background: "#f8faf8" }}>
           {listing.imageUrl ? (
             /* eslint-disable-next-line @next/next/no-img-element */
-            <img src={listing.imageUrl} alt={listing.titel} className="h-full w-full object-cover" />
+            <img src={listing.imageUrl} alt={listing.titel} className="h-full w-full object-contain object-center" />
           ) : (
             <WaffenIcon size={36} className="text-gray-300" />
           )}
@@ -109,10 +109,10 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
   return (
     <Link href={href} className="group flex flex-col overflow-hidden rounded-lg bg-white transition-all duration-200 hover:shadow-md hover:scale-[1.01]">
       {/* Photo */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+      <div className="relative w-full overflow-hidden" style={{ aspectRatio: "4/3", background: "#f8faf8" }}>
         {listing.imageUrl ? (
           /* eslint-disable-next-line @next/next/no-img-element */
-          <img src={listing.imageUrl} alt={listing.titel} className="h-full w-full object-cover" />
+          <img src={listing.imageUrl} alt={listing.titel} className="h-full w-full object-contain object-center" />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
             <WaffenIcon size={48} className="text-gray-300" />

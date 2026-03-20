@@ -1,14 +1,34 @@
 import { createClient, Client, InStatement, Row } from "@libsql/client";
 
 let client: Client;
+let usingLocal = false;
+
+function createTursoClient(): Client {
+  const remoteUrl = process.env.TURSO_DATABASE_URL;
+  const authToken = process.env.TURSO_AUTH_TOKEN;
+  if (remoteUrl && authToken) {
+    return createClient({ url: remoteUrl, authToken });
+  }
+  return createClient({ url: "file:gunmarket.db" });
+}
+
+function createLocalClient(): Client {
+  usingLocal = true;
+  return createClient({ url: "file:gunmarket.db" });
+}
 
 export function getClient(): Client {
   if (!client) {
-    client = createClient({
-      url: process.env.TURSO_DATABASE_URL || "file:gunmarket.db",
-      authToken: process.env.TURSO_AUTH_TOKEN,
-    });
+    client = usingLocal ? createLocalClient() : createTursoClient();
   }
+  return client;
+}
+
+/** Switch to local SQLite if Turso is blocked */
+function fallbackToLocal(): Client {
+  if (usingLocal) throw new Error("Local DB also failed");
+  console.warn("[db] Turso blocked — falling back to local gunmarket.db");
+  client = createLocalClient();
   return client;
 }
 
@@ -23,14 +43,28 @@ function toPlain(row: Row): Record<string, unknown> {
   return obj;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isBlocked(err: any): boolean {
+  return err?.code === "BLOCKED" || String(err?.message || "").includes("BLOCKED");
+}
+
+async function execute(sql: string, args: (string | number | null | undefined)[]) {
+  const sanitized = args.map((a) => a ?? null);
+  try {
+    return await getClient().execute({ sql, args: sanitized });
+  } catch (err) {
+    if (isBlocked(err) && !usingLocal) {
+      return await fallbackToLocal().execute({ sql, args: sanitized });
+    }
+    throw err;
+  }
+}
+
 export async function dbGet<T = Record<string, unknown>>(
   sql: string,
   args: (string | number | null | undefined)[] = []
 ): Promise<T | undefined> {
-  const result = await getClient().execute({
-    sql,
-    args: args.map((a) => a ?? null),
-  });
+  const result = await execute(sql, args);
   if (result.rows.length === 0) return undefined;
   return toPlain(result.rows[0]) as T;
 }
@@ -39,10 +73,7 @@ export async function dbAll<T = Record<string, unknown>>(
   sql: string,
   args: (string | number | null | undefined)[] = []
 ): Promise<T[]> {
-  const result = await getClient().execute({
-    sql,
-    args: args.map((a) => a ?? null),
-  });
+  const result = await execute(sql, args);
   return result.rows.map((r) => toPlain(r)) as T[];
 }
 
@@ -50,24 +81,40 @@ export async function dbRun(
   sql: string,
   args: (string | number | null | undefined)[] = []
 ): Promise<{ changes: number }> {
-  const result = await getClient().execute({
-    sql,
-    args: args.map((a) => a ?? null),
-  });
+  const result = await execute(sql, args);
   return { changes: result.rowsAffected };
 }
 
 export async function dbBatch(statements: InStatement[]): Promise<void> {
   if (statements.length === 0) return;
   const CHUNK_SIZE = 500;
-  const db = getClient();
-  for (let i = 0; i < statements.length; i += CHUNK_SIZE) {
-    await db.batch(statements.slice(i, i + CHUNK_SIZE), "write");
+  try {
+    const db = getClient();
+    for (let i = 0; i < statements.length; i += CHUNK_SIZE) {
+      await db.batch(statements.slice(i, i + CHUNK_SIZE), "write");
+    }
+  } catch (err) {
+    if (isBlocked(err) && !usingLocal) {
+      const db = fallbackToLocal();
+      for (let i = 0; i < statements.length; i += CHUNK_SIZE) {
+        await db.batch(statements.slice(i, i + CHUNK_SIZE), "write");
+      }
+      return;
+    }
+    throw err;
   }
 }
 
 export async function dbExec(sql: string): Promise<void> {
-  await getClient().executeMultiple(sql);
+  try {
+    await getClient().executeMultiple(sql);
+  } catch (err) {
+    if (isBlocked(err) && !usingLocal) {
+      await fallbackToLocal().executeMultiple(sql);
+      return;
+    }
+    throw err;
+  }
 }
 
 let schemaInitialized = false;

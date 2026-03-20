@@ -68,6 +68,13 @@ export default function Header() {
             Inserate
           </Link>
           <Link
+            href="/markt"
+            className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-grey hover:text-brand-dark"
+          >
+            <BarChart3 size={15} />
+            Marktdaten
+          </Link>
+          <Link
             href="/wissen"
             className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-grey hover:text-brand-dark"
           >
@@ -79,13 +86,6 @@ export default function Header() {
             className="rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-grey hover:text-brand-dark"
           >
             Schützenvereine
-          </Link>
-          <Link
-            href="/markt"
-            className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-grey hover:text-brand-dark"
-          >
-            <BarChart3 size={15} />
-            Marktdaten
           </Link>
           <Link
             href="/waffenrecht"

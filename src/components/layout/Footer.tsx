@@ -25,6 +25,7 @@ const footerSections = [
   {
     title: "Rechtliches",
     links: [
+      { label: "Kontakt", href: "/kontakt" },
       { label: "AGB", href: "/agb" },
       { label: "Datenschutz", href: "/datenschutz" },
       { label: "Impressum", href: "/impressum" },

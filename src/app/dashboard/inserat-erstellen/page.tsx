@@ -11,6 +11,7 @@ import PhotosStep from "@/components/inserat/PhotosStep";
 import PreviewStep from "@/components/inserat/PreviewStep";
 import { classifyRechtsstatus } from "@/lib/rechtsstatus-classifier";
 import { RECHTSSTATUS_FILTER } from "@/lib/constants";
+import { isCaliberRequired } from "@/lib/calibers";
 
 const INITIAL_DETAILS: InseratDetails = {
   titel: "",
@@ -76,6 +77,9 @@ export default function InseratErstellenPage() {
     if (!details.titel.trim()) newErrors.titel = "Titel ist erforderlich";
     if (!details.marke) newErrors.marke = "Marke ist erforderlich";
     if (!details.modell.trim()) newErrors.modell = "Modell ist erforderlich";
+    if (isCaliberRequired(hauptkategorie) && !details.kaliber) {
+      newErrors.kaliber = "Kaliber ist erforderlich für diese Kategorie";
+    }
     if (!details.zustand) newErrors.zustand = "Zustand ist erforderlich";
     if (!details.preis || Number(details.preis) <= 0) newErrors.preis = "Gültiger Preis erforderlich";
     if (!details.kanton) newErrors.kanton = "Kanton ist erforderlich";
@@ -235,6 +239,7 @@ export default function InseratErstellenPage() {
               onChange={handleDetailsChange}
               onBack={() => setStep(1)}
               onNext={handleNextFromDetails}
+              hauptkategorie={hauptkategorie}
             />
           </>
         )}

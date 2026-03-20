@@ -284,57 +284,10 @@ export const KANTONE: Kanton[] = [
 ];
 
 // ─── Kaliber-Gruppen ─────────────────────────────────────────
+// Re-exported from calibers.ts (single source of truth)
 
-export interface KaliberGruppe {
-  gruppe: string;
-  kaliber: string[];
-}
-
-export const KALIBER_GRUPPEN: KaliberGruppe[] = [
-  {
-    gruppe: "Randfeuer",
-    kaliber: [
-      ".17 HMR", ".22 short", ".22 LR", ".22 WMR", "6mm Flobert", "9mm Flobert",
-    ],
-  },
-  {
-    gruppe: "Pistolen",
-    kaliber: [
-      "4.6x30mm", "5.7x28mm", "6.35 Browning", "7.65 Browning", "7.65 Para",
-      ".380 ACP / 9mm kurz", "9mm Makarov", "9mm Para / 9x19", "9x21",
-      ".38 Super Auto", ".357 SIG", ".40 S&W", "10mm Auto", ".45 ACP", ".50 AE",
-    ],
-  },
-  {
-    gruppe: "Revolver",
-    kaliber: [
-      ".32 S&W Long", ".38 Special", ".357 Mag", ".44 Mag", ".45 Colt",
-      ".454 Casull", "7.5 Swiss Revolver", ".460 S&W Mag", ".500 S&W Mag",
-    ],
-  },
-  {
-    gruppe: "Gewehr",
-    kaliber: [
-      ".22 Hornet", ".222 Rem", ".223 Rem / 5.56 NATO", ".243 Win",
-      "6.5 Creedmoor", "6.5x55 Swedish", ".270 Win", "7x57", "7x64", "7x65R",
-      "7mm Rem Mag", "7.62x39", "7.62x54R", ".300 BLK", ".300 Win Mag",
-      ".30-06 Springfield", ".308 Win / 7.62x51", "7.5x55 Swiss / GP11",
-      "8x57 IS", ".338 Lapua Mag", "9.3x62", "9.3x74R", ".45-70 Gov.", ".50 BMG",
-    ],
-  },
-  {
-    gruppe: "Flinten",
-    kaliber: [
-      "12/70", "12/76", "12/89", "16/70", "20/70", "20/76", ".410",
-    ],
-  },
-  {
-    gruppe: "Luftdruck",
-    kaliber: [
-      "4.5mm (.177)", "5.5mm (.22)", "6.35mm (.25)",
-    ],
-  },
-];
+export type { CaliberGroup as KaliberGruppe } from "@/lib/calibers";
+export { CALIBER_GROUPS as KALIBER_GRUPPEN } from "@/lib/calibers";
 
 // ─── Zustand ─────────────────────────────────────────────────
 

@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
-import { KALIBER_GRUPPEN, KANTONE, ZUSTAND_OPTIONEN } from "@/lib/constants";
+import { KANTONE, ZUSTAND_OPTIONEN } from "@/lib/constants";
+import { isCaliberRequired } from "@/lib/calibers";
+import CaliberSelect from "@/components/ui/CaliberSelect";
 
 export interface InseratDetails {
   titel: string;
@@ -27,6 +29,7 @@ interface DetailsStepProps {
   onChange: (field: keyof InseratDetails, value: string | boolean) => void;
   onBack: () => void;
   onNext: () => void;
+  hauptkategorie?: string;
 }
 
 const MARKEN = [
@@ -47,7 +50,9 @@ export default function DetailsStep({
   onChange,
   onBack,
   onNext,
+  hauptkategorie = "",
 }: DetailsStepProps) {
+  const caliberRequired = isCaliberRequired(hauptkategorie);
   return (
     <div className="mx-auto max-w-4xl">
       <h2 className="mb-1 font-display text-xl font-bold text-brand-dark">Details</h2>
@@ -116,21 +121,16 @@ export default function DetailsStep({
 
           {/* Kaliber */}
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-brand-dark">Kaliber</label>
-            <select
+            <label className="mb-1.5 block text-sm font-medium text-brand-dark">
+              Kaliber{caliberRequired && <span className="text-red-500"> *</span>}
+            </label>
+            <CaliberSelect
               value={details.kaliber}
-              onChange={(e) => onChange("kaliber", e.target.value)}
-              className="w-full rounded-lg border border-brand-border px-4 py-2.5 text-sm text-brand-dark focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-brand-green/20"
-            >
-              <option value="">Bitte wählen...</option>
-              {KALIBER_GRUPPEN.map((gruppe) => (
-                <optgroup key={gruppe.gruppe} label={gruppe.gruppe}>
-                  {gruppe.kaliber.map((k) => (
-                    <option key={k} value={k}>{k}</option>
-                  ))}
-                </optgroup>
-              ))}
-            </select>
+              onChange={(v) => onChange("kaliber", v)}
+              required={caliberRequired}
+              placeholder={caliberRequired ? "Kaliber wählen..." : "Optional — Kaliber wählen..."}
+              error={errors.kaliber}
+            />
           </div>
 
           {/* Zustand */}

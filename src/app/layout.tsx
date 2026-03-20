@@ -4,6 +4,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ChatWrapper from "@/components/chatbot/ChatWrapper";
 import SessionProvider from "@/components/auth/SessionProvider";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 const barlowCondensed = Barlow_Condensed({
@@ -110,6 +111,7 @@ export default function RootLayout({
           </div>
           <ChatWrapper />
         </SessionProvider>
+        <Analytics />
       </body>
     </html>
   );

@@ -142,15 +142,23 @@ export default function MarktInsightsPage() {
     );
   }
 
-  const { overview, avgByCategory, byZustand, priceRanges, byRechtsstatus, topMarken, topKaliber, byKanton, cheapestPerCategory } = data;
+  const overview = data.overview;
+  const avgByCategory = data.avgByCategory || [];
+  const byZustand = data.byZustand || [];
+  const priceRanges = data.priceRanges || [];
+  const byRechtsstatus = data.byRechtsstatus || [];
+  const topMarken = data.topMarken || [];
+  const topKaliber = data.topKaliber || [];
+  const byKanton = data.byKanton || [];
+  const cheapestPerCategory = data.cheapestPerCategory || [];
 
-  const totalZustand = byZustand.reduce((s, z) => s + z.count, 0);
-  const totalRecht = byRechtsstatus.reduce((s, r) => s + r.count, 0);
-  const maxPrice = Math.max(...priceRanges.map((p) => p.count), 1);
-  const maxMarke = Math.max(...topMarken.map((m) => m.count), 1);
-  const maxKaliber = Math.max(...topKaliber.map((k) => k.count), 1);
-  const maxKanton = Math.max(...byKanton.map((k) => k.count), 1);
-  const maxAvgCat = Math.max(...avgByCategory.map((c) => c.avg_preis), 1);
+  const totalZustand = byZustand.reduce((s, z) => s + (z.count || 0), 0);
+  const totalRecht = byRechtsstatus.reduce((s, r) => s + (r.count || 0), 0);
+  const maxPrice = priceRanges.length > 0 ? Math.max(...priceRanges.map((p) => p.count || 0), 1) : 1;
+  const maxMarke = topMarken.length > 0 ? Math.max(...topMarken.map((m) => m.count || 0), 1) : 1;
+  const maxKaliber = topKaliber.length > 0 ? Math.max(...topKaliber.map((k) => k.count || 0), 1) : 1;
+  const maxKanton = byKanton.length > 0 ? Math.max(...byKanton.map((k) => k.count || 0), 1) : 1;
+  const maxAvgCat = avgByCategory.length > 0 ? Math.max(...avgByCategory.map((c) => c.avg_preis || 0), 1) : 1;
 
   const today = new Date().toLocaleDateString("de-CH", { day: "2-digit", month: "long", year: "numeric" });
 

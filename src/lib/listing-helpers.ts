@@ -39,29 +39,31 @@ function formatDate(dateStr: string): string {
 }
 
 export function apiListingToCard(listing: Record<string, unknown>): ListingCardData {
+  if (!listing) listing = {};
   const rechts = RECHTS_MAP[listing.rechtsstatus as string] || RECHTS_MAP.frei;
-  const images = (listing.images as Record<string, unknown>[]) || [];
+  const images = Array.isArray(listing.images) ? listing.images : [];
+  const firstImage = images.length > 0 && images[0] ? images[0] : null;
 
   return {
-    id: listing.id as string,
-    titel: listing.titel as string,
-    kaliber: (listing.kaliber as string) || "",
-    preis: listing.preis as number,
-    zustand: listing.zustand as string,
-    kanton: listing.kanton as string,
-    kategorie: (listing.unterkategorie as string) || (listing.hauptkategorie as string),
-    rechtsstatus: listing.rechtsstatus as string,
+    id: String(listing.id || ""),
+    titel: String(listing.titel || ""),
+    kaliber: String(listing.kaliber || ""),
+    preis: Number(listing.preis) || 0,
+    zustand: String(listing.zustand || ""),
+    kanton: String(listing.kanton || ""),
+    kategorie: String(listing.unterkategorie || listing.hauptkategorie || ""),
+    rechtsstatus: String(listing.rechtsstatus || "frei"),
     rechtsstatusLabel: rechts.label,
     rechtsstatusFarbe: rechts.farbe,
     rechtsstatusTextfarbe: rechts.textfarbe,
     anbieterTyp: (listing.verkaeufer_typ as "Privat" | "Händler") || "Privat",
-    datum: formatDate((listing.created_at as string) || ""),
+    datum: formatDate(String(listing.created_at || "")),
     waffenTyp: WAFFEN_TYP_MAP[listing.hauptkategorie as string] || "zubehoer",
-    aufrufe: (listing.aufrufe as number) || 0,
+    aufrufe: Number(listing.aufrufe) || 0,
     verhandelbar: !!(listing.verhandelbar as number),
     bildAnzahl: images.length,
-    source: (listing.source as string) || "gunmarket",
+    source: String(listing.source || "gunmarket"),
     sourceUrl: (listing.source_url as string) || null,
-    imageUrl: images.length > 0 ? (images[0].url as string) : null,
+    imageUrl: firstImage ? String((firstImage as Record<string, unknown>).url || "") || null : null,
   };
 }

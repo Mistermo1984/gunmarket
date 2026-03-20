@@ -97,26 +97,35 @@ export default function HomeListingsSection() {
     fetch("/api/listings?limit=2000&sort=neueste")
       .then((r) => r.json())
       .then((data) => {
-        const listings: Listing[] = (data.listings || []).map((l: Record<string, unknown>) => ({
-          id: l.id,
-          titel: l.titel,
-          preis: l.preis,
-          zustand: l.zustand,
-          kanton: l.kanton,
-          rechtsstatus: l.rechtsstatus,
-          ortschaft: l.ortschaft,
-          hauptkategorie: l.hauptkategorie,
-          image_url: Array.isArray(l.images) && l.images.length > 0 ? (l.images[0] as Record<string, string>).url : null,
-        }));
-        setAllListings(listings);
-        const counts: Record<string, number> = {};
-        for (const m of listings) {
-          if (m.kanton) {
-            const abbr = CANTON_NAME_TO_ABBR[m.kanton];
-            if (abbr) counts[abbr] = (counts[abbr] || 0) + 1;
+        try {
+          const raw = Array.isArray(data?.listings) ? data.listings : [];
+          const listings: Listing[] = raw.map((l: Record<string, unknown>) => {
+            const images = Array.isArray(l.images) ? l.images : [];
+            const firstImg = images.length > 0 && images[0] ? (images[0] as Record<string, string>).url : null;
+            return {
+              id: String(l.id || ""),
+              titel: String(l.titel || ""),
+              preis: Number(l.preis) || 0,
+              zustand: String(l.zustand || ""),
+              kanton: String(l.kanton || ""),
+              rechtsstatus: String(l.rechtsstatus || ""),
+              ortschaft: String(l.ortschaft || ""),
+              hauptkategorie: String(l.hauptkategorie || ""),
+              image_url: firstImg || null,
+            };
+          });
+          setAllListings(listings);
+          const counts: Record<string, number> = {};
+          for (const m of listings) {
+            if (m.kanton) {
+              const abbr = CANTON_NAME_TO_ABBR[m.kanton];
+              if (abbr) counts[abbr] = (counts[abbr] || 0) + 1;
+            }
           }
+          setKantonCounts(counts);
+        } catch {
+          // Silently handle malformed data
         }
-        setKantonCounts(counts);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -347,7 +356,7 @@ export default function HomeListingsSection() {
                 // Listing cards
                 <div>
                   {displayListings.map((l) => {
-                    const rs = RECHTS_BADGE[l.rechtsstatus] || { label: l.rechtsstatus, bg: "#f3f4f6", text: "#374151" };
+                    const rs = RECHTS_BADGE[l.rechtsstatus] || { label: l.rechtsstatus || "—", bg: "#f3f4f6", text: "#374151" };
                     const zLabel = ZUSTAND_LABELS[l.zustand] || l.zustand || "";
                     return (
                       <a

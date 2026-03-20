@@ -4,6 +4,7 @@ import HomeContent from "@/components/home/HomeContent";
 import HomeMapSection from "@/components/home/HomeMapSection";
 import SoFunktionierts from "@/components/home/SoFunktionierts";
 import RechtlicherHinweis from "@/components/home/RechtlicherHinweis";
+import ErrorBoundary from "@/components/ui/ErrorBoundary";
 import Link from "next/link";
 import { initializeSchema } from "@/lib/db";
 
@@ -143,13 +144,19 @@ export default function Home() {
       />
 
       {/* 1. Hero with integrated search */}
-      <HeroSection />
+      <ErrorBoundary>
+        <HeroSection />
+      </ErrorBoundary>
 
       {/* 2. Main content: FilterSidebar + Neueste Inserate */}
-      <HomeContent />
+      <ErrorBoundary>
+        <HomeContent />
+      </ErrorBoundary>
 
-      {/* Map section — full width dark */}
-      <HomeMapSection />
+      {/* Listings section */}
+      <ErrorBoundary>
+        <HomeMapSection />
+      </ErrorBoundary>
 
       {/* So funktioniert's */}
       <div className="mx-auto max-w-7xl px-4 pb-8 pt-10">

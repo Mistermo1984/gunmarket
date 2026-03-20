@@ -38,7 +38,7 @@ function SucheContent() {
     return initial;
   });
 
-  const [sort, setSort] = useState("neueste");
+  const [sort, setSort] = useState("preis-asc");
   const [view, setView] = useState<"grid" | "list">("grid");
   const [page, setPage] = useState(1);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
@@ -92,13 +92,7 @@ function SucheContent() {
   useEffect(() => {
     setIsLoading(true);
     const params = buildFilterParams();
-    const sortMap: Record<string, string> = {
-      neueste: "neueste",
-      "preis-aufsteigend": "preis-asc",
-      "preis-absteigend": "preis-desc",
-      aufrufe: "aufrufe",
-    };
-    params.set("sort", sortMap[sort] || "neueste");
+    params.set("sort", sort || "preis-asc");
     params.set("seite", String(page));
     params.set("limit", "12");
 

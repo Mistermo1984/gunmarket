@@ -16,11 +16,10 @@ interface ErgebnisHeaderProps {
 }
 
 const SORT_OPTIONS = [
-  { value: "neueste", label: "Neueste" },
-  { value: "aelteste", label: "Älteste" },
   { value: "preis-asc", label: "Preis aufsteigend" },
   { value: "preis-desc", label: "Preis absteigend" },
-  { value: "relevanz", label: "Relevanz" },
+  { value: "neueste", label: "Neueste" },
+  { value: "aelteste", label: "Älteste" },
 ];
 
 export default function ErgebnisHeader({

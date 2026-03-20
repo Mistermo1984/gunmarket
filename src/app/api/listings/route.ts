@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
     const maxPreis = searchParams.get("maxPreis");
     const userId = searchParams.get("user_id");
     const suche = searchParams.get("suche");
-    const sortierung = searchParams.get("sort") || "neueste";
+    const sortierung = searchParams.get("sort") || "preis-asc";
     const seite = parseInt(searchParams.get("seite") || "1");
     const limit = parseInt(searchParams.get("limit") || "20");
     const offset = (seite - 1) * limit;
@@ -96,10 +96,25 @@ export async function GET(req: NextRequest) {
       params.push(term, term, term);
     }
 
-    let orderBy = "ORDER BY l.created_at DESC";
-    if (sortierung === "preis-asc") orderBy = "ORDER BY l.preis ASC";
-    if (sortierung === "preis-desc") orderBy = "ORDER BY l.preis DESC";
-    if (sortierung === "aufrufe") orderBy = "ORDER BY l.aufrufe DESC";
+    let orderBy: string;
+    switch (sortierung) {
+      case "preis-asc":
+        orderBy = "ORDER BY CASE WHEN l.preis > 1 AND l.preis < 50000 THEN 0 ELSE 1 END, l.preis ASC";
+        break;
+      case "preis-desc":
+        orderBy = "ORDER BY CASE WHEN l.preis > 1 AND l.preis < 50000 THEN 0 ELSE 1 END, l.preis DESC";
+        break;
+      case "aelteste":
+        orderBy = "ORDER BY l.created_at ASC";
+        break;
+      case "aufrufe":
+        orderBy = "ORDER BY l.aufrufe DESC";
+        break;
+      case "neueste":
+      default:
+        orderBy = "ORDER BY l.created_at DESC";
+        break;
+    }
 
     const countRow = await dbGet<{ total: number }>(
       `SELECT COUNT(*) as total FROM listings l ${where}`,

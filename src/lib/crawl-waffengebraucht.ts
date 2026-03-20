@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import * as cheerio from "cheerio";
 import { getPlzCoordinates, getCityCoordinates, kantonFromCity } from "./plz-coordinates";
 import { classifyRechtsstatus } from "./rechtsstatus-classifier";
+import { classifyCategory } from "./category-classifier";
 
 const BASE_URL = "https://waffengebraucht.ch";
 const USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
@@ -240,7 +241,10 @@ function parseListingCards(html: string, hauptkategorie: string): CrawledItem[] 
     }
 
     if (titel && sourceId) {
-      const unterkategorie = detectSubcategory(hauptkategorie, titel, beschreibung);
+      const classified = classifyCategory(titel, beschreibung);
+      // Use classifier result, but fall back to source category if classifier defaults to zubehoer with low confidence
+      const finalHaupt = classified.hauptkategorie;
+      const finalUnter = classified.unterkategorie;
       items.push({
         sourceId,
         titel,
@@ -249,8 +253,8 @@ function parseListingCards(html: string, hauptkategorie: string): CrawledItem[] 
         ortschaft,
         plz,
         kanton,
-        hauptkategorie,
-        unterkategorie,
+        hauptkategorie: finalHaupt,
+        unterkategorie: finalUnter,
         beschreibung,
         imageUrl: imageUrl.startsWith("http") ? imageUrl : (imageUrl ? `${BASE_URL}/${imageUrl}` : ""),
         sourceUrl: href.startsWith("http") ? href : `${BASE_URL}${href}`,
@@ -342,8 +346,7 @@ async function crawlNextgun(): Promise<CrawledItem[]> {
       const imageUrl = l.hasImage ? `https://marketplace.nextgun.ch/api/image/annonce/${l.id}` : "";
       const slug = l.weaponName.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_-]/g, "");
 
-      const ngHauptkategorie = "kurzwaffen";
-      const ngUnterkategorie = detectSubcategory(ngHauptkategorie, l.weaponName, "");
+      const ngClassified = classifyCategory(l.weaponName, "");
       allItems.push({
         sourceId: `ng-${l.id}`,
         titel: l.weaponName,
@@ -352,8 +355,8 @@ async function crawlNextgun(): Promise<CrawledItem[]> {
         ortschaft,
         plz,
         kanton,
-        hauptkategorie: ngHauptkategorie,
-        unterkategorie: ngUnterkategorie,
+        hauptkategorie: ngClassified.hauptkategorie,
+        unterkategorie: ngClassified.unterkategorie,
         beschreibung: "",
         imageUrl,
         sourceUrl: `https://marketplace.nextgun.ch/annonce/view/${slug}-id-${l.id}`,

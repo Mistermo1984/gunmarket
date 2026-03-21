@@ -183,16 +183,11 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
           </div>
         )}
 
-        {/* Top-left badge */}
-        {isExternal ? (
-          <span className="absolute left-2 top-2 z-20 flex items-center gap-1 rounded bg-blue-600 px-2 py-1 text-[10px] font-medium text-white backdrop-blur-sm">
-            <ExternalLink size={10} />{sourceName}
-          </span>
-        ) : imageCount > 0 ? (
-          <span className="absolute left-2 top-2 z-20 flex items-center gap-1 rounded bg-white/80 px-1.5 py-0.5 text-[10px] text-neutral-500 backdrop-blur-sm">
-            <Camera size={10} />{imageCount}
-          </span>
-        ) : null}
+        {/* Availability badge */}
+        <div className="absolute top-2 left-2 z-20 flex items-center gap-1 bg-white/90 backdrop-blur-sm rounded-full px-2 py-0.5 text-xs font-medium text-green-700 shadow-sm">
+          <div className="w-1.5 h-1.5 bg-green-500 rounded-full" />
+          Verfügbar
+        </div>
 
         {/* Top-right: star button */}
         <button
@@ -213,6 +208,13 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
         <h3 className="mb-1 truncate text-sm font-medium text-brand-dark">
           {listing.titel}
         </h3>
+
+        {/* Source badge */}
+        {isExternal && (
+          <span className="mb-1 inline-flex items-center gap-1 text-[10px] font-medium text-blue-600">
+            <ExternalLink size={9} />{sourceName}
+          </span>
+        )}
 
         {/* Price */}
         <div className="mb-2 flex items-baseline gap-1.5">

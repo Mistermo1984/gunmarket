@@ -12,7 +12,6 @@ import {
   Eye,
   Calendar,
   RefreshCw,
-  Shield,
   CheckCircle,
   User,
   Award,

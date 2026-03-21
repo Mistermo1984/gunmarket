@@ -18,6 +18,7 @@ import {
   ZUSTAND_OPTIONEN,
   KANTONE,
 } from "@/lib/constants";
+import PriceHistogramSlider from "@/components/filters/PriceHistogramSlider";
 
 // ─── Types ───────────────────────────────────────────────────
 
@@ -215,13 +216,6 @@ function DropdownCheckItem({
 const MARKE_PILLS = [
   "SIG Sauer", "Glock", "Beretta", "Walther",
   "CZ", "Browning", "Steyr", "H&K", "Ruger", "S&W",
-];
-
-const PREIS_PILLS = [
-  { label: "< 500", min: "0", max: "500" },
-  { label: "500 – 1'500", min: "500", max: "1500" },
-  { label: "1'500 – 3'000", min: "1500", max: "3000" },
-  { label: "3'000+", min: "3000", max: "10000" },
 ];
 
 // ─── Category pill with inline subcategories ────────────────
@@ -474,42 +468,24 @@ export default function FilterSidebar({
 
         <FilterDivider />
 
-        {/* ── PREIS ── */}
+        {/* ── PREIS (Histogram Range Slider) ── */}
         <SectionLabel>{t("filter_price")}</SectionLabel>
-        <div className="mb-2.5 flex items-center gap-2">
-          <input
-            type="number"
-            value={filters.preisMin}
-            onChange={(e) => update({ preisMin: e.target.value })}
-            placeholder={t("filter_min")}
-            className="w-full rounded-lg border-0 bg-neutral-50 px-3 py-2 text-xs text-brand-dark placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-brand-green/30"
-          />
-          <span className="text-neutral-300">—</span>
-          <input
-            type="number"
-            value={filters.preisMax}
-            onChange={(e) => update({ preisMax: e.target.value })}
-            placeholder={t("filter_max")}
-            className="w-full rounded-lg border-0 bg-neutral-50 px-3 py-2 text-xs text-brand-dark placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-brand-green/30"
-          />
-        </div>
-        <div className="flex flex-wrap gap-1.5">
-          {PREIS_PILLS.map((p) => {
-            const active = filters.preisMin === p.min && filters.preisMax === p.max;
-            return (
-              <Pill
-                key={p.label}
-                label={p.label}
-                active={active}
-                onClick={() =>
-                  active
-                    ? update({ preisMin: "", preisMax: "" })
-                    : update({ preisMin: p.min, preisMax: p.max })
-                }
-              />
-            );
-          })}
-        </div>
+        <PriceHistogramSlider
+          minPrice={parseInt(filters.preisMin) || 0}
+          maxPrice={parseInt(filters.preisMax) || 0}
+          onChange={(min, max) => {
+            update({
+              preisMin: min > 0 ? String(min) : "",
+              preisMax: max > 0 ? String(max) : "",
+            });
+          }}
+          filterParams={{
+            ...(filters.kategorien.length > 0 && { kategorie: filters.kategorien.join(",") }),
+            ...(filters.kantone.length > 0 && { kanton: filters.kantone.join(",") }),
+            ...(filters.rechtsstatus.length > 0 && { rechtsstatus: filters.rechtsstatus.join(",") }),
+            ...(filters.zustand.length > 0 && { zustand: filters.zustand.join(",") }),
+          }}
+        />
 
         <FilterDivider />
 

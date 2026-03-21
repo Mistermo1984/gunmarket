@@ -28,9 +28,49 @@ export const metadata = {
   },
 };
 
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Welche Waffen sind in der Schweiz frei erwerbbar?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'In der Schweiz sind Waffen der Kategorie C (z.B. Repetiergewehre, Einzellader) für Personen ab 18 Jahren ohne Bewilligung frei erwerbbar, sofern kein Ausschlussgrund vorliegt.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Was ist der Waffenerwerbsschein (WES) in der Schweiz?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Der Waffenerwerbsschein (WES) ist eine Bewilligung für den Erwerb von Waffen der Kategorie B (z.B. Halbautomaten, Pistolen). Er wird beim kantonalen Waffenbüro beantragt und kostet je nach Kanton CHF 20–50.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Darf ich meine Ordonnanzwaffe nach dem Militärdienst behalten?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Ja, Schweizer Militärangehörige können ihre persönliche Ordonnanzwaffe nach dem Dienst behalten. Das Sturmgewehr wird dabei auf halbautomatisch umgebaut und als Kategorie-B-Waffe eingetragen.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Wie transportiere ich eine Waffe legal in der Schweiz?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Waffen müssen ungeladen und wenn möglich in einem geschlossenen Behältnis transportiert werden. Munition ist getrennt von der Waffe aufzubewahren. Für den Transport zum Schiessstand, Büchsenmacher oder auf die Jagd gelten Ausnahmen.',
+      },
+    },
+  ],
+};
+
 export default function WaffenrechtPage() {
   return (
     <LegalLayout title="Waffenrecht Schweiz" updated="1. März 2026" toc={toc}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <WaffenrechtHeader />
       <WarnBox>
         Diese Seite dient ausschliesslich der allgemeinen Information und ersetzt keine

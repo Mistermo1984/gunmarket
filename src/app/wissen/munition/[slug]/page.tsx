@@ -21,6 +21,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${muni.bezeichnung} — GunMarket.ch Kaliber-Guide`,
     description: muni.kurzbeschreibung,
+    alternates: {
+      canonical: `https://gunmarket.ch/wissen/munition/${slug}`,
+    },
+    openGraph: {
+      title: `${muni.bezeichnung} — GunMarket.ch Kaliber-Guide`,
+      description: muni.kurzbeschreibung,
+      url: `https://gunmarket.ch/wissen/munition/${slug}`,
+    },
   }
 }
 

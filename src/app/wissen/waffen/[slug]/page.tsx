@@ -23,6 +23,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${waffe.titel} — GunMarket.ch Waffen-Wiki`,
     description: waffe.kurzbeschreibung,
+    alternates: {
+      canonical: `https://gunmarket.ch/wissen/waffen/${slug}`,
+    },
+    openGraph: {
+      title: `${waffe.titel} — GunMarket.ch Waffen-Wiki`,
+      description: waffe.kurzbeschreibung,
+      url: `https://gunmarket.ch/wissen/waffen/${slug}`,
+    },
   }
 }
 

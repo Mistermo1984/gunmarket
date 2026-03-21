@@ -127,16 +127,19 @@ export function classifyListing(
     }
   } catch {}
 
-  // STUFE 2: Title + description keyword matching
+  // STUFE 2: Use the existing scoring classifier which handles anti-patterns
+  // (e.g. "Holster für Glock" → zubehoer, "für SIG P226" → zubehoer)
+  const classified = classifyCategory(titel, beschreibung);
+
+  // Check if title keywords match to determine confidence
   const text = `${titel} ${(beschreibung || "").substring(0, 200)}`.toLowerCase();
   for (const rule of TITLE_KEYWORDS) {
     if (rule.pattern.test(text)) {
-      return { hauptkategorie: rule.hauptkategorie, unterkategorie: rule.unterkategorie, confidence: "title" };
+      return { ...classified, confidence: "title" };
     }
   }
 
-  // STUFE 3: Fallback — use existing scoring classifier
-  const classified = classifyCategory(titel, beschreibung);
+  // If scoring classifier found something meaningful, trust it
   if (classified.hauptkategorie !== "zubehoer" || classified.unterkategorie !== "andere-zubehoer") {
     return { ...classified, confidence: "title" };
   }

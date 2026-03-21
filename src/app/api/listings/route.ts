@@ -105,9 +105,9 @@ export async function GET(req: NextRequest) {
       params.push(parseFloat(maxPreis));
     }
     if (suche) {
-      where += " AND (l.titel LIKE ? OR l.beschreibung LIKE ? OR l.marke LIKE ?)";
+      where += " AND (l.titel LIKE ? OR l.beschreibung LIKE ? OR l.marke LIKE ? OR l.modell LIKE ? OR l.kaliber LIKE ?)";
       const term = `%${suche}%`;
-      params.push(term, term, term);
+      params.push(term, term, term, term, term);
     }
     const neuSeitTagen = searchParams.get("neu_seit_tagen");
     if (neuSeitTagen) {

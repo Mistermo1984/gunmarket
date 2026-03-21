@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { initializeSchema, dbGet, dbAll } from "@/lib/db";
+import { getKategorieLabel } from "@/lib/kategorie-labels";
 
 interface ListingRow {
   id: string;
@@ -135,7 +136,7 @@ async function BreadcrumbJsonLd({ id }: { id: string }) {
       {
         "@type": "ListItem",
         position: 2,
-        name: listing.hauptkategorie,
+        name: getKategorieLabel(listing.hauptkategorie),
         item: `https://gunmarket.ch/kategorien/${listing.hauptkategorie}`,
       },
       {

@@ -37,6 +37,7 @@ import GoodDealButton from "@/components/listing/GoodDealButton";
 import PriceHistory from "@/components/listing/PriceHistory";
 import { apiListingToCard } from "@/lib/listing-helpers";
 import { useLocale } from "@/lib/locale-context";
+import { getKategorieLabel } from "@/lib/kategorie-labels";
 
 interface ListingData {
   id: string;
@@ -264,7 +265,7 @@ export default function InseratDetailPage() {
     { label: "Baujahr", value: listing.baujahr, icon: Calendar },
     { label: "Lauflänge", value: listing.lauflaenge, icon: Ruler },
     { label: "Magazin", value: listing.magazin, icon: Layers },
-    { label: t("filter_category"), value: listing.unterkategorie, icon: Tag },
+    { label: t("filter_category"), value: listing.unterkategorie ? getKategorieLabel(listing.unterkategorie) : "", icon: Tag },
   ].filter((s) => s.value);
 
   return (
@@ -289,7 +290,7 @@ export default function InseratDetailPage() {
               href={`/?kategorie=${listing.hauptkategorie}`}
               className="hover:text-brand-green transition-colors"
             >
-              {listing.hauptkategorie}
+              {getKategorieLabel(listing.hauptkategorie)}
             </Link>
             <ChevronRight size={14} className="text-neutral-300" />
             <span className="text-brand-dark font-medium">{listing.titel}</span>
@@ -338,6 +339,8 @@ export default function InseratDetailPage() {
                     src={images[selectedImage]}
                     alt={listing.titel}
                     className={`h-[400px] w-full object-cover transition-opacity duration-300 ${imageTransition ? "opacity-0" : "opacity-100"}`}
+                    loading="eager"
+                    decoding="async"
                   />
                 ) : (
                   <div className="flex h-[400px] w-full items-center justify-center bg-gray-100 text-gray-300">
@@ -383,7 +386,7 @@ export default function InseratDetailPage() {
                       }`}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={img} alt={`Bild ${i + 1}`} className="h-full w-full object-cover" />
+                      <img src={img} alt={`Bild ${i + 1}`} className="h-full w-full object-cover" loading="lazy" decoding="async" />
                     </button>
                   ))}
                 </div>
@@ -581,17 +584,22 @@ export default function InseratDetailPage() {
               </div>
 
             {/* Safety */}
-              <div className="rounded-xl bg-amber-50 p-4">
-                <div className="flex items-start gap-2">
-                  <Shield size={18} className="mt-0.5 shrink-0 text-amber-600" />
+              <div className="rounded-xl border border-[#4d8230]/20 bg-[#f5faf2] p-4">
+                <div className="flex items-start gap-3">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4d8230" strokeWidth="2" className="mt-0.5 shrink-0">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
                   <div>
-                    <p className="text-sm font-medium text-amber-800">{t("detail_safety_title")}</p>
-                    <p className="mt-1 text-xs text-amber-700">
-                      {t("detail_safety_text")}{" "}
-                      <Link href="/sicherheit" className="font-medium underline hover:no-underline">
-                        {t("detail_safety_more")}
-                      </Link>
-                    </p>
+                    <p className="mb-1 text-sm font-semibold text-[#3a6224]">{t("detail_safety_title")}</p>
+                    <ul className="space-y-1 text-xs text-gray-600">
+                      <li>• Treffen Sie den Verkäufer persönlich an einem öffentlichen Ort</li>
+                      <li>• Prüfen Sie die Waffe vor dem Kauf</li>
+                      <li>• Verlangen Sie den Waffenerwerbsschein wenn nötig</li>
+                      <li>• Bezahlen Sie nie im Voraus per Überweisung</li>
+                    </ul>
+                    <Link href="/sicherheit" className="mt-2 inline-block text-xs font-medium text-[#4d8230] hover:underline">
+                      {t("detail_safety_more")} →
+                    </Link>
                   </div>
                 </div>
               </div>

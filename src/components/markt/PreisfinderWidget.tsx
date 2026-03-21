@@ -149,7 +149,7 @@ export default function PreisfinderWidget() {
                     >
                       <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-[#0f1a0a]">
                         {imgUrl && (
-                          <img src={imgUrl} alt="" className="h-full w-full object-cover" />
+                          <img src={imgUrl} alt="" className="h-full w-full object-cover" loading="lazy" decoding="async" />
                         )}
                       </div>
                       <div className="min-w-0 flex-1">

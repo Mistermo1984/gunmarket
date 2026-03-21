@@ -63,6 +63,8 @@ function ImageSlider({ images, alt }: { images: string[]; alt: string }) {
         src={images[current]}
         alt={alt}
         className="h-full w-full object-contain object-center"
+        loading="lazy"
+        decoding="async"
       />
 
       {images.length > 1 && (

@@ -153,6 +153,8 @@ export default function MapView({
                   src={listing.imageUrl}
                   alt={listing.titel}
                   className="mb-2 h-24 w-full rounded object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
               )}
               <p className="text-sm font-semibold">{listing.titel}</p>

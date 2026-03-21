@@ -4,6 +4,7 @@ import HomeContent from "@/components/home/HomeContent";
 import BannerZone from "@/components/home/BannerZone";
 import HomeMapSection from "@/components/home/HomeMapSection";
 import SoFunktionierts from "@/components/home/SoFunktionierts";
+import SellerValueProp from "@/components/home/SellerValueProp";
 import RechtlicherHinweis from "@/components/home/RechtlicherHinweis";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
 import SeoLinksSection from "@/components/home/SeoLinksSection";
@@ -122,6 +123,9 @@ export default function Home() {
 
       {/* 2. Banner zone: Events / Händler / Aktionen */}
       <BannerZone />
+
+      {/* 2b. Seller value proposition — only when no search active */}
+      <SellerValueProp />
 
       {/* 3. Main content: FilterSidebar + Neueste Inserate */}
       <ErrorBoundary>

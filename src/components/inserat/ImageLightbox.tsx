@@ -71,6 +71,7 @@ export default function ImageLightbox({
           src={images[currentIndex]}
           alt={`Bild ${currentIndex + 1}`}
           className="max-h-[85vh] max-w-[85vw] rounded-lg object-contain"
+          decoding="async"
         />
       </div>
 

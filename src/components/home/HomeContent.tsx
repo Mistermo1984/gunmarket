@@ -179,19 +179,57 @@ function HomeContentInner() {
       {mobileFilterOpen && (
         <>
           <div
-            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-40 bg-black/60 lg:hidden"
             onClick={() => setMobileFilterOpen(false)}
           />
-          <div className="fixed inset-x-0 bottom-0 z-50 max-h-[85vh] overflow-hidden rounded-t-2xl bg-white shadow-xl lg:hidden animate-slide-up">
-            <div className="mx-auto my-2 h-1 w-10 rounded-full bg-neutral-300" />
-            <FilterSidebar
-              filters={filters}
-              onChange={handleFilterChange}
-              onClose={() => setMobileFilterOpen(false)}
-              resultCount={totalResults}
-              isMobile
-              counts={filterCounts}
-            />
+          <div
+            className="fixed bottom-0 left-0 right-0 z-50 flex flex-col rounded-t-3xl bg-white shadow-2xl lg:hidden animate-slide-up"
+            style={{ maxHeight: "92dvh" }}
+          >
+            {/* Handle */}
+            <div className="flex justify-center pt-3 pb-1 shrink-0">
+              <div className="h-1 w-12 rounded-full bg-gray-200" />
+            </div>
+            {/* Header */}
+            <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100 shrink-0">
+              <h2 className="text-base font-bold text-gray-900">{t("filter_title")}</h2>
+              <div className="flex items-center gap-3">
+                {activeFilterCount > 0 && (
+                  <button
+                    onClick={() => setFilters(INITIAL_FILTERS)}
+                    className="text-sm text-red-500 font-medium"
+                  >
+                    {t("home_clear_filters")}
+                  </button>
+                )}
+                <button
+                  onClick={() => setMobileFilterOpen(false)}
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            </div>
+            {/* Filter Content */}
+            <div className="overflow-y-auto flex-1">
+              <FilterSidebar
+                filters={filters}
+                onChange={handleFilterChange}
+                onClose={() => setMobileFilterOpen(false)}
+                resultCount={totalResults}
+                isMobile
+                counts={filterCounts}
+              />
+            </div>
+            {/* CTA */}
+            <div className="shrink-0 px-5 pb-8 pt-4 border-t border-gray-100 bg-white">
+              <button
+                onClick={() => setMobileFilterOpen(false)}
+                className="w-full rounded-2xl bg-[#4d8230] py-4 font-bold text-base text-white transition-colors hover:bg-[#5a9a38]"
+              >
+                {totalResults} {t("filter_show_listings")}
+              </button>
+            </div>
           </div>
         </>
       )}

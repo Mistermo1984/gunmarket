@@ -137,6 +137,8 @@ export default function PhotosStep({ photos, onPhotosChange, onBack, onNext }: P
                 src={photo}
                 alt={`Foto ${i + 1}`}
                 className="h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
               />
 
               {/* Main photo badge */}

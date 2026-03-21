@@ -76,7 +76,7 @@ export default function HeroSection() {
   const { t } = useLocale();
   const [query, setQuery] = useState("");
   const [searchKanton, setSearchKanton] = useState("");
-  const [stats, setStats] = useState({ inserate: 0, verkaeufer: 0, kantone: 0 });
+  const [stats, setStats] = useState({ inserate: 0, haendler: 0, kantone: 0 });
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [activeIdx, setActiveIdx] = useState(-1);
@@ -89,7 +89,7 @@ export default function HeroSection() {
       .then((data) => {
         setStats({
           inserate: data.inserate || 0,
-          verkaeufer: data.verkaeufer || 0,
+          haendler: data.haendler || 0,
           kantone: data.kantone || 0,
         });
       })
@@ -309,9 +309,9 @@ export default function HeroSection() {
           </div>
           <div className="flex flex-col items-center px-8">
             <span className="font-display text-xl font-black md:text-2xl" style={{ color: "#4ade80" }}>
-              <CountUp end={stats.verkaeufer} />
+              <CountUp end={stats.haendler} />
             </span>
-            <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-500">{t("stats_sellers")}</span>
+            <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-500">{t("stats_dealers")}</span>
           </div>
           <div className="flex flex-col items-center px-8">
             <span className="font-display text-xl font-black md:text-2xl" style={{ color: "#4ade80" }}>

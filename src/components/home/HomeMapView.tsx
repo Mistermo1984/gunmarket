@@ -168,6 +168,8 @@ function PanelImage({ url }: { url: string | null }) {
       alt=""
       style={{ width: 56, height: 56, borderRadius: 6, objectFit: "cover", flexShrink: 0, background: "#e5e7eb" }}
       onError={() => setFailed(true)}
+      loading="lazy"
+      decoding="async"
     />
   );
 }

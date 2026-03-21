@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
     const minPreis = searchParams.get("minPreis");
     const maxPreis = searchParams.get("maxPreis");
     const userId = searchParams.get("user_id");
-    const suche = searchParams.get("suche");
+    const suche = searchParams.get("suche") || searchParams.get("q");
     const sortierung = searchParams.get("sort") || "preis-asc";
     const seite = parseInt(searchParams.get("seite") || "1");
     const limit = parseInt(searchParams.get("limit") || "25");

@@ -184,6 +184,26 @@ export default function InseratErstellenPage() {
 
   return (
     <div className="min-h-[calc(100vh-64px)] bg-brand-grey/50 pb-12">
+      {/* Social Proof */}
+      {step === 1 && (
+        <div className="border-b border-[#4d8230]/10 bg-[#f5faf2] px-4 py-4">
+          <div className="mx-auto flex max-w-4xl items-center justify-center gap-6 text-center sm:gap-10">
+            <div className="border-r border-[#4d8230]/20 pr-6 sm:pr-10">
+              <p className="text-2xl font-black text-[#4d8230]">1&apos;700+</p>
+              <p className="text-[11px] text-gray-500">aktive Inserate</p>
+            </div>
+            <div className="border-r border-[#4d8230]/20 pr-6 sm:pr-10">
+              <p className="text-2xl font-black text-[#4d8230]">26</p>
+              <p className="text-[11px] text-gray-500">Kantone abgedeckt</p>
+            </div>
+            <div>
+              <p className="text-2xl font-black text-[#4d8230]">100%</p>
+              <p className="text-[11px] text-gray-500">kostenlos</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Progress */}
       <div className="border-b border-brand-border bg-white py-6">
         <ProgressBar currentStep={step} />

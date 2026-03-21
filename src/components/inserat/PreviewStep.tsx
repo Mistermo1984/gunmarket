@@ -61,6 +61,8 @@ export default function PreviewStep({
               src={photos[0]}
               alt={details.titel}
               className="h-full w-full object-contain"
+              loading="eager"
+              decoding="async"
             />
             <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
               <span className="rounded-md bg-brand-green px-2 py-0.5 text-[10px] font-semibold text-white">
@@ -83,7 +85,7 @@ export default function PreviewStep({
                 key={i}
                 className="h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-brand-border"
               >
-                <img src={photo} alt={`Foto ${i + 1}`} className="h-full w-full object-cover" />
+                <img src={photo} alt={`Foto ${i + 1}`} className="h-full w-full object-cover" loading="lazy" decoding="async" />
               </div>
             ))}
           </div>

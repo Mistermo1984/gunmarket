@@ -32,6 +32,7 @@ export const translations = {
     // Stats
     stats_listings: "Inserate",
     stats_sellers: "Verkäufer",
+    stats_dealers: "Händler",
     stats_cantons: "Kantone",
 
     // Listings
@@ -365,6 +366,7 @@ export const translations = {
 
     stats_listings: "Annonces",
     stats_sellers: "Vendeurs",
+    stats_dealers: "Marchands",
     stats_cantons: "Cantons",
 
     listings_title: "Dernières annonces",
@@ -680,6 +682,7 @@ export const translations = {
 
     stats_listings: "Annunci",
     stats_sellers: "Venditori",
+    stats_dealers: "Commercianti",
     stats_cantons: "Cantoni",
 
     listings_title: "Ultimi annunci",
@@ -995,6 +998,7 @@ export const translations = {
 
     stats_listings: "Listings",
     stats_sellers: "Sellers",
+    stats_dealers: "Dealers",
     stats_cantons: "Cantons",
 
     listings_title: "Latest Listings",
@@ -1310,6 +1314,7 @@ export const translations = {
 
     stats_listings: "Annunzis",
     stats_sellers: "Vendiders",
+    stats_dealers: "Comerciants",
     stats_cantons: "Chantuns",
 
     listings_title: "Ils pli novs annunzis",

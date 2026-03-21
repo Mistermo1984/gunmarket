@@ -1,0 +1,85 @@
+const KATEGORIE_LABELS: Record<string, Record<string, string>> = {
+  de: {
+    kurzwaffen: "Kurzwaffen",
+    langwaffen: "Langwaffen",
+    ordonnanz: "Ordonnanzwaffen",
+    ordonnanzwaffen: "Ordonnanzwaffen",
+    luftdruck: "Luftdruckwaffen",
+    luftdruckwaffen: "Luftdruckwaffen",
+    zubehoer: "Zubehör",
+    munition: "Munition",
+    optik: "Optik",
+    messer: "Messer",
+    wiederladen: "Wiederladen",
+    andere: "Andere",
+    buechsen: "Büchsen",
+    flinten: "Flinten",
+    jagdwaffen: "Jagdwaffen",
+    "freie-waffen": "Freie Waffen",
+    pistole: "Pistolen",
+    pistolen: "Pistolen",
+    revolver: "Revolver",
+    buechse: "Büchsen",
+    flinte: "Flinten",
+    magazine: "Magazine",
+    holster: "Holster",
+    griffschalen: "Griffschalen",
+    reinigung: "Reinigung",
+    selbstverteidigung: "Selbstverteidigung",
+  },
+  fr: {
+    kurzwaffen: "Armes de poing",
+    langwaffen: "Armes longues",
+    ordonnanz: "Armes d'ordonnance",
+    ordonnanzwaffen: "Armes d'ordonnance",
+    luftdruck: "Armes à air comprimé",
+    luftdruckwaffen: "Armes à air comprimé",
+    zubehoer: "Accessoires",
+    munition: "Munition",
+    optik: "Optique",
+    pistole: "Pistolets",
+    revolver: "Revolvers",
+    buechse: "Carabines",
+    flinte: "Fusils de chasse",
+  },
+  it: {
+    kurzwaffen: "Armi corte",
+    langwaffen: "Armi lunghe",
+    ordonnanz: "Armi d'ordinanza",
+    ordonnanzwaffen: "Armi d'ordinanza",
+    luftdruck: "Armi ad aria compressa",
+    luftdruckwaffen: "Armi ad aria compressa",
+    zubehoer: "Accessori",
+    munition: "Munizioni",
+    optik: "Ottica",
+    pistole: "Pistole",
+    revolver: "Rivoltelle",
+    buechse: "Carabine",
+    flinte: "Fucili da caccia",
+  },
+  en: {
+    kurzwaffen: "Handguns",
+    langwaffen: "Long Guns",
+    ordonnanz: "Ordnance Weapons",
+    ordonnanzwaffen: "Ordnance Weapons",
+    luftdruck: "Air Guns",
+    luftdruckwaffen: "Air Guns",
+    zubehoer: "Accessories",
+    munition: "Ammunition",
+    optik: "Optics",
+    pistole: "Pistols",
+    revolver: "Revolvers",
+    buechse: "Rifles",
+    flinte: "Shotguns",
+  },
+};
+
+export function getKategorieLabel(key: string, locale = "de"): string {
+  const normalized = key?.toLowerCase().trim();
+  if (!normalized) return key;
+  return (
+    KATEGORIE_LABELS[locale]?.[normalized] ||
+    KATEGORIE_LABELS["de"]?.[normalized] ||
+    key
+  );
+}

@@ -38,11 +38,60 @@ const ALL_EVENTS = [
   { name: 'STAC 2026 — Swiss Tank & Artillery Challenge', date: '2026-09-18', dateEnd: '2026-09-18', ort: 'Thun BE', inhalt: 'Militär', href: 'https://www.vtg.admin.ch' },
 ];
 
-// ─── HÄNDLER ────────────────────────────────────────────────────────────────
+// ─── WAFFENHÄNDLER ──────────────────────────────────────────────────────────
 const DEALERS = [
-  { name: 'Ingold Waffen',  meta: 'Partnerhändler · Schaffhausen', href: '#' },
-  { name: 'Aebi Waffen',    meta: 'Partnerhändler · Luzern',       href: '#' },
-  { name: 'Swiss Guns',     meta: 'Partnerhändler · Bern',         href: '#' },
+  // Top-Adressen
+  { name: 'Gun Factory',              meta: 'Rümlang ZH',               href: 'https://www.gunfactory.ch' },
+  { name: 'Munitionsdepot.ch',        meta: 'Zwingen BL',               href: 'https://www.munitionsdepot.ch' },
+  { name: 'W. Glaser Waffen',         meta: 'Zürich ZH',                href: 'https://www.wglaser.ch' },
+  { name: 'Natur Aktiv / Waffenbörse',meta: 'Dietikon ZH',              href: 'https://www.waffenboerse.ch' },
+  { name: 'Felder Jagdhof',           meta: 'Ebikon LU',                href: 'https://www.felder-jagdhof.ch' },
+  { name: 'B&T Shop',                 meta: 'Thun / Wallisellen',        href: 'https://www.bt-ag.ch' },
+  { name: 'Waffen Ingold',            meta: 'Oensingen SO',             href: 'https://www.waffen-ingold.ch' },
+  { name: 'Aebi Waffen',              meta: 'Hasle-Rüegsau BE',         href: 'https://www.aebiwaffen.ch' },
+  { name: 'Lagardère',                meta: 'Morges VD',                href: 'https://www.lagardere.ch' },
+  { name: 'Wyss Waffen',              meta: 'Burgdorf BE',              href: 'https://www.wysswaffen.ch' },
+  { name: 'Schild Waffen',            meta: 'Wallisellen ZH',           href: 'https://www.schildwaffen.ch' },
+  { name: 'Gundam.ch / René Hild',    meta: 'Friltschen TG',            href: 'https://www.gundam.ch' },
+  { name: 'Geissbühler Schiesssport', meta: 'Zuchwil SO',               href: 'https://www.geissbuehler.ch' },
+  { name: 'Grünig & Elmiger',         meta: 'Malters LU',               href: 'https://www.gruenel.ch' },
+  { name: 'Treehuggers Supply',       meta: 'Bülach ZH',                href: 'https://www.treehuggers.ch' },
+  { name: 'Waffen Dobler',            meta: 'Kaltbrunn SG',             href: 'https://www.waffendobler.ch' },
+  { name: 'Gunlex',                   meta: 'Lyss BE',                  href: 'https://www.gunlex.ch' },
+  { name: 'Brownells Schweiz',        meta: 'Online / Luzern',          href: 'https://www.brownells.ch' },
+  { name: 'Poyet AG',                 meta: 'Bern BE',                  href: 'https://www.poyet.ch' },
+  { name: 'Outdoor Enterprise',       meta: 'Le Mont-sur-Lausanne VD',  href: 'https://www.outdoor-enterprise.ch' },
+  { name: 'Hebeisen Hunting',         meta: 'Zürich ZH',                href: 'https://www.hebeisen.ch' },
+  { name: 'Waffenshop Gerber',        meta: 'Trubschachen BE',          href: 'https://www.waffenshop-gerber.ch' },
+  { name: 'Birkenast',                meta: 'Zuzwil SG',                href: 'https://www.birkenast.ch' },
+  { name: 'Forney Waffen',            meta: 'Zürich ZH',                href: 'https://www.forney-waffen.ch' },
+  { name: 'Schwyzer Waffen',          meta: 'Goldau SZ',                href: 'https://www.schwyzerwaffen.ch' },
+  { name: 'Tanner Waffen',            meta: 'Thayngen SH',              href: 'https://www.tanner-waffen.ch' },
+  { name: 'Fischlin Waffen',          meta: 'Goldau SZ',                href: 'https://www.fischlin-waffen.ch' },
+  { name: 'Bürchler Waffen',          meta: 'Zürich ZH',                href: 'https://www.waffen-buerchler.ch' },
+  { name: 'Hausammann',               meta: 'Uttwil TG',                href: 'https://www.hausammann.ch' },
+  { name: 'Waffen-Zentrum',           meta: 'Gampelen BE',              href: 'https://www.waffen-zentrum.ch' },
+  // Weitere Fachgeschäfte
+  { name: 'Armurerie du Château',     meta: 'Puidoux VD',               href: 'https://www.armurerie-du-chateau.ch' },
+  { name: 'Armurerie de la Bourse',   meta: 'Genève GE',                href: 'https://www.armurerie-bourse.ch' },
+  { name: 'Petitpierre Armurerie',    meta: 'Auvernier NE',             href: 'https://www.armurerie-petitpierre.ch' },
+  { name: 'Ducret Armurerie',         meta: 'Orbe VD',                  href: 'https://www.armurerie-ducret.ch' },
+  { name: 'Tissot Armurerie',         meta: 'Fribourg FR',              href: 'https://www.tissot-armurerie.ch' },
+  { name: 'Armeria Bioggio',          meta: 'Bioggio TI',               href: 'https://www.armeriabioggio.ch' },
+  { name: 'Armeria del Ceresio',      meta: 'Melano TI',                href: 'https://www.armeriadelceresio.ch' },
+  { name: 'Waffen Schuler',           meta: 'Brunnen SZ',               href: 'https://www.waffenschuler.ch' },
+  { name: 'Kessler Waffen',           meta: 'Degersheim SG',            href: 'https://www.kesslerwaffen.ch' },
+  { name: 'Waffen-Pfister',           meta: 'Pfäffikon ZH',             href: 'https://www.waffen-pfister.ch' },
+  { name: 'Antikschuss',              meta: 'Aadorf TG',                href: 'https://www.antikschuss.ch' },
+  { name: 'Militaria-Shop',           meta: 'Online / Bern',            href: 'https://www.militaria-shop.ch' },
+  { name: 'Salvisberg Waffen',        meta: 'Bern BE',                  href: 'https://www.salvisberg-waffen.ch' },
+  { name: 'Richner Waffen',           meta: 'Lenzburg AG',              href: 'https://www.richner-waffen.ch' },
+  { name: 'Waffen-Friedlin',          meta: 'Zug ZG',                   href: 'https://www.waffenfriedlin.ch' },
+  { name: 'Brünig Indoor',            meta: 'Brünig OW',                href: 'https://www.bruenigindoor.ch' },
+  { name: 'Waffen Widmer',            meta: 'Horgen ZH',                href: 'https://www.waffen-widmer.ch' },
+  { name: 'Swiss P Defence / RUAG',   meta: 'Thun BE',                  href: 'https://www.swissp-defence.com' },
+  { name: 'Waffen Zimmermann',        meta: 'Luzern LU',                href: 'https://www.waffen-zimmermann.ch' },
+  { name: 'Armurerie Saint-Hubert',   meta: 'Martigny VS',              href: 'https://www.armureriesainthubert.ch' },
 ];
 
 // ─── AKTIONEN ────────────────────────────────────────────────────────────────
@@ -99,7 +148,7 @@ export default function BannerZone() {
 
   const tabs: { key: TabKey; label: string }[] = [
     { key: 'ev', label: 'Events' },
-    { key: 'sh', label: 'Händler' },
+    { key: 'sh', label: 'Waffenhändler' },
     { key: 'pr', label: 'Aktionen' },
   ];
 
@@ -123,6 +172,11 @@ export default function BannerZone() {
               {key === 'ev' && (
                 <span className="ml-1.5 text-[10px] bg-[#4d8230] text-white rounded-full px-1.5 py-0.5">
                   {upcomingEvents.length}
+                </span>
+              )}
+              {key === 'sh' && (
+                <span className="ml-1.5 text-[10px] bg-gray-400 text-white rounded-full px-1.5 py-0.5">
+                  {DEALERS.length}
                 </span>
               )}
             </button>

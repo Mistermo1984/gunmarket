@@ -34,11 +34,11 @@ export default function ImpressumPage() {
 
       <Section id="kontakt" title="Kontakt">
         <p>
-          E-Mail: info@gunmarket.ch<br />
+          Kontakt: <a href="/kontakt" className="text-[#4d8230] hover:underline">Kontaktformular</a><br />
           Web: www.gunmarket.ch
         </p>
         <InfoBox>
-          Für rechtliche Anfragen nutzen Sie bitte: legal@gunmarket.ch
+          Für rechtliche Anfragen nutzen Sie bitte unser <a href="/kontakt" className="text-[#4d8230] hover:underline">Kontaktformular</a>.
         </InfoBox>
       </Section>
 
@@ -89,7 +89,7 @@ export default function ImpressumPage() {
         </p>
         <p>
           Wir sind bemüht, Streitigkeiten aussergerichtlich beizulegen. Bei Beschwerden oder
-          Anliegen wenden Sie sich bitte zunächst an legal@gunmarket.ch.
+          Anliegen nutzen Sie bitte unser <a href="/kontakt" className="text-[#4d8230] hover:underline">Kontaktformular</a>.
         </p>
       </Section>
     </LegalLayout>

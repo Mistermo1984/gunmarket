@@ -139,7 +139,7 @@ export default function SicherheitPage() {
           Melden Sie verdächtige Aktivitäten umgehend:
         </p>
         <ul className="list-disc space-y-1 pl-5">
-          <li><strong>An GunMarket.ch:</strong> Nutzen Sie die Meldefunktion im Inserat oder schreiben Sie an abuse@gunmarket.ch</li>
+          <li><strong>An GunMarket.ch:</strong> Nutzen Sie die Meldefunktion im Inserat oder unser <a href="/kontakt" className="text-[#4d8230] hover:underline">Kontaktformular</a></li>
           <li><strong>An die Polizei:</strong> Bei konkretem Verdacht auf Straftaten, Notruf 117</li>
           <li><strong>An fedpol:</strong> Bei Verdacht auf illegalen Waffenhandel</li>
         </ul>

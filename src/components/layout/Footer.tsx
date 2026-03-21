@@ -83,13 +83,13 @@ export default function Footer() {
               {t("footer_tagline")}
             </p>
             <div className="flex items-center gap-3">
-              <a
-                href="mailto:info@gunmarket.ch"
+              <Link
+                href="/kontakt"
                 className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-border text-neutral-500 transition-colors hover:border-brand-green hover:text-brand-green"
-                aria-label="E-Mail"
+                aria-label="Kontakt"
               >
                 <Mail size={16} />
-              </a>
+              </Link>
               <a
                 href="#"
                 className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-border text-neutral-500 transition-colors hover:border-brand-green hover:text-brand-green"

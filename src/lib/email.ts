@@ -338,7 +338,7 @@ export async function sendContactFormEmail(
 ) {
   return getResend().emails.send({
     from: FROM,
-    to: "info@gunmarket.ch",
+    to: "maurice.acker@gmail.com",
     replyTo: email,
     subject: t.contact.subject[locale](name),
     html: emailTemplate(

@@ -39,7 +39,7 @@ export default function DatenschutzPage() {
           Schweiz
         </p>
         <p className="mt-2">
-          E-Mail: datenschutz@gunmarket.ch
+          Kontakt: <a href="/kontakt" className="text-[#4d8230] hover:underline">Kontaktformular</a>
         </p>
       </Section>
 
@@ -149,7 +149,7 @@ export default function DatenschutzPage() {
           <li><strong>Widerspruchsrecht:</strong> Sie können der Verarbeitung Ihrer Daten widersprechen</li>
         </ul>
         <InfoBox>
-          Zur Ausübung Ihrer Rechte kontaktieren Sie uns unter datenschutz@gunmarket.ch. Wir
+          Zur Ausübung Ihrer Rechte nutzen Sie bitte unser <a href="/kontakt" className="text-[#4d8230] hover:underline">Kontaktformular</a>. Wir
           beantworten Ihre Anfrage innerhalb von 30 Tagen.
         </InfoBox>
         <p>

@@ -1,20 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sendContactFormEmail } from "@/lib/email";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY || "");
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, message, locale } = await req.json();
-    if (!name || !email || !message) {
-      return NextResponse.json({ error: "Fehlende Felder" }, { status: 400 });
+    const body = await req.json();
+
+    // Honeypot
+    if (body.website) {
+      return NextResponse.json({ error: "Spam" }, { status: 400 });
     }
-    await sendContactFormEmail(name, email, message, locale || "de");
+
+    if (!body.name || !body.email || !body.message) {
+      return NextResponse.json({ error: "Pflichtfelder fehlen" }, { status: 400 });
+    }
+
+    await resend.emails.send({
+      from: process.env.EMAIL_FROM || "GunMarket.ch <noreply@gunmarket.ch>",
+      to: "maurice.acker@gmail.com",
+      replyTo: body.email,
+      subject: `[GunMarket Kontakt] ${body.subject || "Allgemeine Anfrage"} — ${body.name}`,
+      text: `Name: ${body.name}\nE-Mail: ${body.email}\nBetreff: ${body.subject || "—"}\n\nNachricht:\n${body.message}`,
+    });
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Contact form error:", error);
     return NextResponse.json(
-      { error: "E-Mail konnte nicht gesendet werden" },
+      { error: "Fehler beim Senden" },
       { status: 500 }
     );
   }

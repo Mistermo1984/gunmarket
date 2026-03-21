@@ -215,7 +215,7 @@ export default function AGBPage() {
           sich vor, diese AGB jederzeit zu aktualisieren.
         </p>
         <InfoBox>
-          Bei Fragen zu diesen AGB kontaktieren Sie uns unter legal@gunmarket.ch.
+          Bei Fragen zu diesen AGB nutzen Sie bitte unser <a href="/kontakt" className="text-[#4d8230] hover:underline">Kontaktformular</a>.
         </InfoBox>
       </Section>
     </LegalLayout>

@@ -404,16 +404,16 @@ export default function BannerZone() {
 
   return (
     <div ref={bannerRef} className="w-full bg-gray-50 border-t border-b border-gray-200">
-      <div className="max-w-screen-xl mx-auto flex items-center h-11 px-8">
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-8">
 
-        {/* Tabs links */}
-        <div className="flex items-center shrink-0 border-r border-gray-200 h-11 gap-0">
+        {/* Top row: tabs */}
+        <div className="flex items-center h-11 gap-0">
           {tabs.map(({ key, label, count }) => (
             <button
               key={key}
               onClick={() => { setActive(key as TabKey); setOpenCanton(null); setOpenMonth(null); }}
-              className={`text-xs px-2.5 h-11 whitespace-nowrap font-medium transition-colors outline-none border-b-0 ${
-                active === key ? 'text-[#4d8230]' : 'text-gray-400 hover:text-gray-600'
+              className={`text-xs px-2.5 h-11 whitespace-nowrap font-medium transition-colors outline-none ${
+                active === key ? 'text-[#4d8230] border-b-2 border-[#4d8230]' : 'text-gray-400 hover:text-gray-600 border-b-2 border-transparent'
               }`}
             >
               {label}
@@ -428,70 +428,71 @@ export default function BannerZone() {
           ))}
         </div>
 
-        {/* EVENTS: month pills */}
-        {active === 'ev' && (
-          <div className="flex items-center gap-1.5 flex-1 min-w-0 overflow-x-auto px-3 scrollbar-none">
-            {eventsByMonth.map(month => (
-              <MonthPill
-                key={month.key}
-                month={month}
-                isOpen={openMonth === month.key}
-                onToggle={(key) => { setOpenMonth(openMonth === key ? null : key); setOpenCanton(null); }}
-              />
-            ))}
-            <div className="shrink-0 w-4" />
-          </div>
-        )}
+        {/* Content row: pills wrap */}
+        <div className="pb-2.5">
+          {/* EVENTS: month pills */}
+          {active === 'ev' && (
+            <div className="flex flex-wrap items-center gap-1.5">
+              {eventsByMonth.map(month => (
+                <MonthPill
+                  key={month.key}
+                  month={month}
+                  isOpen={openMonth === month.key}
+                  onToggle={(key) => { setOpenMonth(openMonth === key ? null : key); setOpenCanton(null); }}
+                />
+              ))}
+            </div>
+          )}
 
-        {/* WAFFENHÄNDLER: canton pills */}
-        {active === 'sh' && (
-          <div className="flex items-center gap-1.5 flex-1 min-w-0 overflow-x-auto px-3 scrollbar-none">
-            {CANTONS.map(kt => (
-              <CantonPill
-                key={kt}
-                kt={kt}
-                isOpen={openCanton === kt}
-                onToggle={(k) => { setOpenCanton(openCanton === k ? null : k); setOpenMonth(null); }}
-              />
-            ))}
-            <div className="shrink-0 w-4" />
-          </div>
-        )}
+          {/* WAFFENHÄNDLER: canton pills — wrap so all are visible */}
+          {active === 'sh' && (
+            <div className="flex flex-wrap items-center gap-1.5">
+              {CANTONS.map(kt => (
+                <CantonPill
+                  key={kt}
+                  kt={kt}
+                  isOpen={openCanton === kt}
+                  onToggle={(k) => { setOpenCanton(openCanton === k ? null : k); setOpenMonth(null); }}
+                />
+              ))}
+            </div>
+          )}
 
-        {/* AKTIONEN: horizontal scroll cards */}
-        {active === 'pr' && (
-          <div
-            ref={scrollRef}
-            onMouseDown={onMouseDown}
-            onMouseMove={onMouseMove}
-            onMouseUp={onMouseUp}
-            onMouseLeave={onMouseUp}
-            className="flex items-center gap-2 flex-1 min-w-0 overflow-x-auto select-none px-3 scrollbar-none"
-            style={{ cursor: 'grab', touchAction: 'pan-x', WebkitOverflowScrolling: 'touch' }}
-          >
-            {PROMOS.map((item, i) => (
-              <div key={i} className="flex items-center gap-2 shrink-0">
-                {i > 0 && <div className="w-px h-4 bg-gray-200 shrink-0" />}
-                <a
-                  href={item.href}
-                  onMouseDown={e => e.stopPropagation()}
-                  className="flex items-center gap-0 bg-white border border-gray-200 rounded-lg hover:border-[#4d8230] transition-colors group overflow-hidden whitespace-nowrap shrink-0"
-                >
-                  <div className="bg-[#eef5e8] px-2.5 self-stretch flex items-center border-r border-gray-100">
-                    <span className="text-[10px] font-semibold text-[#4d8230] leading-none">
-                      {item.meta.split('·')[0].trim()}
-                    </span>
-                  </div>
-                  <div className="px-2.5 py-1.5 leading-none">
-                    <div className="text-[11px] font-medium text-gray-800 group-hover:text-[#4d8230] transition-colors">{item.name}</div>
-                    <div className="text-[10px] text-gray-400 mt-0.5">{item.meta.split('·').slice(1).join('·').trim()}</div>
-                  </div>
-                </a>
-              </div>
-            ))}
-            <div className="shrink-0 w-4" />
-          </div>
-        )}
+          {/* AKTIONEN: horizontal scroll cards */}
+          {active === 'pr' && (
+            <div
+              ref={scrollRef}
+              onMouseDown={onMouseDown}
+              onMouseMove={onMouseMove}
+              onMouseUp={onMouseUp}
+              onMouseLeave={onMouseUp}
+              className="flex items-center gap-2 overflow-x-auto select-none scrollbar-none"
+              style={{ cursor: 'grab', touchAction: 'pan-x', WebkitOverflowScrolling: 'touch' }}
+            >
+              {PROMOS.map((item, i) => (
+                <div key={i} className="flex items-center gap-2 shrink-0">
+                  {i > 0 && <div className="w-px h-4 bg-gray-200 shrink-0" />}
+                  <a
+                    href={item.href}
+                    onMouseDown={e => e.stopPropagation()}
+                    className="flex items-center gap-0 bg-white border border-gray-200 rounded-lg hover:border-[#4d8230] transition-colors group overflow-hidden whitespace-nowrap shrink-0"
+                  >
+                    <div className="bg-[#eef5e8] px-2.5 self-stretch flex items-center border-r border-gray-100">
+                      <span className="text-[10px] font-semibold text-[#4d8230] leading-none">
+                        {item.meta.split('·')[0].trim()}
+                      </span>
+                    </div>
+                    <div className="px-2.5 py-1.5 leading-none">
+                      <div className="text-[11px] font-medium text-gray-800 group-hover:text-[#4d8230] transition-colors">{item.name}</div>
+                      <div className="text-[10px] text-gray-400 mt-0.5">{item.meta.split('·').slice(1).join('·').trim()}</div>
+                    </div>
+                  </a>
+                </div>
+              ))}
+              <div className="shrink-0 w-4" />
+            </div>
+          )}
+        </div>
 
       </div>
     </div>

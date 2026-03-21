@@ -270,23 +270,48 @@ function parseCity(html: string): string {
 }
 
 function parseImages(html: string): string[] {
-  // ONLY extract images from div.main-effect.effect6 (the listing's own gallery)
-  // Related listings use <tr class="effect6">, NOT <div class="main-effect effect6">
-  const mainEffectMatch =
-    html.match(/class="main-effect effect6"[^>]*>([\s\S]*?)<\/div>/i) ||
-    html.match(/class="[^"]*main-effect[^"]*effect6[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
+  // Extract images from #right (main photo) and #photos-block (gallery thumbnails)
+  // These are the ONLY containers with the listing's own images
+  // Do NOT use #left-block or #rel_ads — those contain related listings
 
-  if (!mainEffectMatch) return [];
+  // Extract #right block content
+  const rightMatch = html.match(/id="right"[^>]*>([\s\S]*?)<div id="photos-block"/i);
+  const rightHtml = rightMatch?.[1] || '';
 
-  const galleryHtml = mainEffectMatch[0];
-  const matches =
-    galleryHtml.match(
-      /d9c3dmdj8vwy7\.cloudfront\.net\/\d+_thumbnail\.(?:jpg|jpeg|png)/gi
+  // Extract #photos-block content
+  const photosMatch = html.match(/id="photos-block"[^>]*>([\s\S]*?)<\/div>/i);
+  const photosHtml = photosMatch?.[1] || '';
+
+  // Combine both sections
+  const combinedHtml = rightHtml + photosHtml;
+
+  // Extract all d9c3dmdj8vwy7.cloudfront.net image URLs (with OR without _thumbnail)
+  const matches = combinedHtml.match(
+    /https?:\/\/d9c3dmdj8vwy7\.cloudfront\.net\/\d+(?:_thumbnail)?\.(jpg|jpeg|png)/gi
+  ) || [];
+
+  // If combined approach finds nothing, fallback: extract from full HTML
+  // but STOP before id="left-block" or id="rel_ads"
+  if (matches.length === 0) {
+    const stopMarkers = ['id="left-block"', 'id="rel_ads"', 'class="related_ads'];
+    let cutIndex = html.length;
+    for (const marker of stopMarkers) {
+      const idx = html.indexOf(marker);
+      if (idx > 0 && idx < cutIndex) cutIndex = idx;
+    }
+    const safeHtml = html.substring(0, cutIndex);
+    const fallbackMatches = safeHtml.match(
+      /https?:\/\/d9c3dmdj8vwy7\.cloudfront\.net\/\d+(?:_thumbnail)?\.(jpg|jpeg|png)/gi
     ) || [];
+    return [...new Set(fallbackMatches.map(url =>
+      url.replace(/_thumbnail\.(jpg|jpeg|png)$/i, m => m.replace('_thumbnail', ''))
+    ))];
+  }
 
-  return Array.from(new Set(matches)).map(
-    (u) => "https://" + u.replace(/_thumbnail\./, ".")
-  );
+  // Convert thumbnails to full size, then deduplicate
+  return [...new Set(matches.map(url =>
+    url.replace(/_thumbnail\.(jpg|jpeg|png)$/i, m => m.replace('_thumbnail', ''))
+  ))];
 }
 
 async function scrapeListing(url: string): Promise<ScrapedListing | null> {

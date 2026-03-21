@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Barlow_Condensed, DM_Sans, DM_Mono } from "next/font/google";
 import Header from "@/components/layout/Header";
-import CategoryBar from "@/components/CategoryBar";
 import Footer from "@/components/layout/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import ChatWrapper from "@/components/chatbot/ChatWrapper";
@@ -130,7 +129,6 @@ export default function RootLayout({
           <LocaleProvider>
             <div className="flex min-h-screen flex-col">
               <Header />
-              <CategoryBar />
               <main className="flex-1 pb-16 md:pb-0">{children}</main>
               <Footer />
             </div>

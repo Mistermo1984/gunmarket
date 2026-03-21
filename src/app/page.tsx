@@ -148,36 +148,6 @@ export default function Home() {
         <HeroSection />
       </ErrorBoundary>
 
-      {/* Category tiles */}
-      <section className="py-8 px-4 max-w-6xl mx-auto">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Nach Kategorie suchen</h2>
-        <div className="grid grid-cols-4 gap-3 md:grid-cols-8">
-          {[
-            { id: 'kurzwaffen', label: 'Kurzwaffen', emoji: '🔫', color: 'bg-slate-800' },
-            { id: 'langwaffen', label: 'Langwaffen', emoji: '🎯', color: 'bg-green-800' },
-            { id: 'ordonnanzwaffen', label: 'Ordonnanz', emoji: '🪖', color: 'bg-amber-700' },
-            { id: 'optik', label: 'Optik', emoji: '🔭', color: 'bg-blue-800' },
-            { id: 'munition', label: 'Munition', emoji: '🔶', color: 'bg-orange-700' },
-            { id: 'zubehoer', label: 'Zubehör', emoji: '🔧', color: 'bg-gray-700' },
-            { id: 'messer', label: 'Messer', emoji: '🗡️', color: 'bg-red-800' },
-            { id: 'luftdruck', label: 'Luftdruck', emoji: '💨', color: 'bg-cyan-800' },
-          ].map(cat => (
-            <Link
-              key={cat.id}
-              href={`/inserate?kategorie=${cat.id}`}
-              className="flex flex-col items-center gap-2 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors text-center group"
-            >
-              <div className={`w-12 h-12 ${cat.color} rounded-xl flex items-center justify-center text-2xl`}>
-                {cat.emoji}
-              </div>
-              <span className="text-xs font-medium text-gray-700 group-hover:text-green-700 leading-tight">
-                {cat.label}
-              </span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
       {/* 2. Main content: FilterSidebar + Neueste Inserate */}
       <ErrorBoundary>
         <HomeContent />

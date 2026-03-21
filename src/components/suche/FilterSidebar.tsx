@@ -569,32 +569,6 @@ export default function FilterSidebar({
 
         <FilterDivider />
 
-        {/* ── ANBIETER ── */}
-        <SectionLabel>{t("filter_provider")}</SectionLabel>
-        <div className="flex flex-wrap gap-1.5">
-          {[
-            { id: "alle", label: t("filter_all") },
-            { id: "privat", label: t("filter_private") },
-            { id: "haendler", label: t("filter_dealer") },
-          ].map((a) => (
-            <Pill
-              key={a.id}
-              label={a.label}
-              active={filters.anbieter === a.id}
-              onClick={() => update({ anbieter: a.id })}
-              count={
-                a.id === "alle"
-                  ? counts?.total
-                  : a.id === "privat"
-                  ? counts?.types?.["Privat"]
-                  : counts?.types?.["Händler"]
-              }
-            />
-          ))}
-        </div>
-
-        <FilterDivider />
-
         {/* ── RECHTSSTATUS ── */}
         <SectionLabel>{t("filter_legal_status")}</SectionLabel>
         <div className="flex flex-wrap gap-1.5">

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { BarChart3, TrendingUp, Clock, ExternalLink } from "lucide-react";
+import { BarChart3, TrendingUp, Clock, ExternalLink, ChevronRight } from "lucide-react";
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -116,12 +116,28 @@ function Card({ children, className = "" }: { children: React.ReactNode; classNa
 export default function MarktInsightsPage() {
   const [data, setData] = useState<MarketData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [neuHeute, setNeuHeute] = useState<{ id: string; titel: string; preis: number; kanton: string; image_url: string | null }[]>([]);
+  const [guenstig, setGuenstig] = useState<{ id: string; titel: string; preis: number; kanton: string; image_url: string | null }[]>([]);
 
   useEffect(() => {
     fetch("/api/stats/market")
       .then((r) => r.json())
       .then((d) => { setData(d); setLoading(false); })
       .catch(() => setLoading(false));
+    fetch("/api/listings?sort=neueste&limit=6")
+      .then((r) => r.json())
+      .then((d) => setNeuHeute((d.listings || []).map((l: Record<string, unknown>) => ({
+        id: l.id, titel: l.titel, preis: l.preis, kanton: l.kanton,
+        image_url: l.image_url || null,
+      }))))
+      .catch(() => {});
+    fetch("/api/listings?maxPreis=200&sort=neueste&limit=6")
+      .then((r) => r.json())
+      .then((d) => setGuenstig((d.listings || []).map((l: Record<string, unknown>) => ({
+        id: l.id, titel: l.titel, preis: l.preis, kanton: l.kanton,
+        image_url: l.image_url || null,
+      }))))
+      .catch(() => {});
   }, []);
 
   if (loading) {
@@ -204,6 +220,75 @@ export default function MarktInsightsPage() {
           />
         </div>
 
+        {/* ═══ HEUTE NEU EINGETROFFEN ═══ */}
+        {neuHeute.length > 0 && (
+          <div className="mb-10">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                <span className="w-2 h-2 bg-[#7dc855] rounded-full animate-pulse" />
+                Heute neu eingetroffen
+                <span className="text-sm font-normal text-[#9ca3af] ml-1">{neuHeute.length} Inserate</span>
+              </h2>
+              <Link href="/?sort=neueste" className="text-sm text-[#4ade80] hover:underline">Alle neuen →</Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+              {neuHeute.map((listing) => (
+                <Link key={listing.id} href={`/inserat/${listing.id}`}
+                  className="overflow-hidden rounded-xl border border-[#2d4a2d] bg-[#1a2e1a] hover:border-[#4ade80]/50 hover:bg-[#1a2e1a]/80 transition-all group">
+                  <div className="aspect-square bg-[#0f1a0f] relative overflow-hidden">
+                    {listing.image_url ? (
+                      <img src={listing.image_url} alt={listing.titel} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-[#2d4a2d]">
+                        <BarChart3 size={24} />
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-2">
+                    <div className="text-xs text-[#9ca3af] truncate leading-tight">{listing.titel?.substring(0, 30)}</div>
+                    <div className="text-sm font-bold text-[#4ade80] mt-0.5">CHF {listing.preis?.toLocaleString("de-CH")}</div>
+                    {listing.kanton && <div className="text-[10px] text-[#6b7280] mt-0.5">{listing.kanton}</div>}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ═══ GÜNSTIGE DEALS ═══ */}
+        {guenstig.length > 0 && (
+          <div className="mb-10">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                🏷️ Günstige Deals
+                <span className="text-sm font-normal text-[#9ca3af]">unter CHF 200</span>
+              </h2>
+              <Link href="/?maxPreis=200&sort=neueste" className="text-sm text-[#4ade80] hover:underline">Alle ansehen →</Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+              {guenstig.map((listing) => (
+                <Link key={listing.id} href={`/inserat/${listing.id}`}
+                  className="overflow-hidden rounded-xl border border-[#2d4a2d] bg-[#1a2e1a] hover:border-[#4ade80]/50 hover:bg-[#1a2e1a]/80 transition-all group">
+                  <div className="aspect-square bg-[#0f1a0f] relative overflow-hidden">
+                    {listing.image_url ? (
+                      <img src={listing.image_url} alt={listing.titel} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-[#2d4a2d]">
+                        <BarChart3 size={24} />
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-2">
+                    <div className="text-xs text-[#9ca3af] truncate leading-tight">{listing.titel?.substring(0, 30)}</div>
+                    <div className="text-sm font-bold text-[#4ade80] mt-0.5">CHF {listing.preis?.toLocaleString("de-CH")}</div>
+                    {listing.kanton && <div className="text-[10px] text-[#6b7280] mt-0.5">{listing.kanton}</div>}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* ═══ SECTION 2: AVG PRICE + ZUSTAND ═══ */}
         <div className="mb-10 grid gap-6 lg:grid-cols-2">
           {/* Left: Average price by category */}
@@ -211,15 +296,19 @@ export default function MarktInsightsPage() {
             <SectionTitle>Durchschnittspreis nach Kategorie</SectionTitle>
             <div className="space-y-3">
               {avgByCategory.map((cat) => (
-                <div key={cat.hauptkategorie} className="flex items-center gap-3">
-                  <span className="w-24 shrink-0 text-xs font-medium text-[#9ca3af]">
+                <Link
+                  key={cat.hauptkategorie}
+                  href={`/?kategorie=${encodeURIComponent(cat.hauptkategorie)}`}
+                  className="group flex items-center gap-3 rounded-lg px-1 py-1 transition-colors hover:bg-white/5"
+                >
+                  <span className="w-24 shrink-0 text-xs font-medium text-[#9ca3af] group-hover:text-[#4ade80] transition-colors">
                     {KATEGORIE_LABELS[cat.hauptkategorie] || cat.hauptkategorie}
                   </span>
                   <HBar value={cat.avg_preis} max={maxAvgCat} />
                   <span className="w-20 shrink-0 text-right font-mono text-sm font-bold text-white">
                     CHF {cat.avg_preis.toLocaleString("de-CH")}
                   </span>
-                </div>
+                </Link>
               ))}
             </div>
           </Card>
@@ -257,14 +346,22 @@ export default function MarktInsightsPage() {
             <div className="flex items-end gap-2 pt-4" style={{ height: 200 }}>
               {priceRanges.map((r) => {
                 const hPct = maxPrice > 0 ? Math.max((r.count / maxPrice) * 100, 5) : 5;
+                // Parse range label like "<500", "500-1500", "5000+" into URL params
+                const rangeMatch = r.range_label.match(/^<\s*(\d+)/);
+                const rangeBetween = r.range_label.match(/(\d+)\s*[-–]\s*(\d+)/);
+                const rangeAbove = r.range_label.match(/(\d+)\s*\+/);
+                let priceHref = "/?sort=preis-asc";
+                if (rangeMatch) priceHref = `/?maxPreis=${rangeMatch[1]}`;
+                else if (rangeBetween) priceHref = `/?minPreis=${rangeBetween[1]}&maxPreis=${rangeBetween[2]}`;
+                else if (rangeAbove) priceHref = `/?minPreis=${rangeAbove[1]}`;
                 return (
-                  <div key={r.range_label} className="flex flex-1 flex-col items-center gap-2">
+                  <Link key={r.range_label} href={priceHref} className="flex flex-1 flex-col items-center gap-2 group cursor-pointer">
                     <span className="font-mono text-xs font-bold text-white">{r.count}</span>
-                    <div className="w-full overflow-hidden rounded-t-md bg-white/5" style={{ height: `${hPct}%` }}>
-                      <div className="h-full w-full rounded-t-md bg-gradient-to-t from-[#166534] to-[#4ade80]" />
+                    <div className="w-full overflow-hidden rounded-t-md bg-white/5 group-hover:bg-white/10 transition-colors" style={{ height: `${hPct}%` }}>
+                      <div className="h-full w-full rounded-t-md bg-gradient-to-t from-[#166534] to-[#4ade80] group-hover:from-[#16a34a] group-hover:to-[#86efac] transition-colors" />
                     </div>
-                    <span className="text-[10px] leading-tight text-[#9ca3af]">{r.range_label}</span>
-                  </div>
+                    <span className="text-[10px] leading-tight text-[#9ca3af] group-hover:text-[#4ade80] transition-colors">{r.range_label}</span>
+                  </Link>
                 );
               })}
             </div>
@@ -327,12 +424,17 @@ export default function MarktInsightsPage() {
             <SectionTitle>Beliebteste Kaliber</SectionTitle>
             <div className="space-y-3">
               {topKaliber.map((k, i) => (
-                <div key={k.kaliber} className="flex items-center gap-3 px-2 py-1.5">
+                <Link
+                  key={k.kaliber}
+                  href={`/?suche=${encodeURIComponent(k.kaliber)}`}
+                  className="group flex items-center gap-3 rounded-lg px-2 py-1.5 transition-colors hover:bg-white/5"
+                >
                   <span className="w-5 shrink-0 font-mono text-xs text-[#4ade80]">{i + 1}</span>
-                  <span className="w-32 shrink-0 text-sm font-medium text-white">{k.kaliber}</span>
+                  <span className="w-32 shrink-0 text-sm font-medium text-white group-hover:text-[#4ade80] transition-colors">{k.kaliber}</span>
                   <HBar value={k.count} max={maxKaliber} color={i < 5 ? "#4ade80" : "#2dd4bf"} />
                   <span className="w-12 shrink-0 text-right font-mono text-sm text-[#86efac]">{k.count}</span>
-                </div>
+                  <ChevronRight size={12} className="shrink-0 text-[#2d4a2d] group-hover:text-[#4ade80] transition-colors" />
+                </Link>
               ))}
             </div>
           </Card>

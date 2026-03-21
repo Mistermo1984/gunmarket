@@ -334,13 +334,7 @@ export default function HeroSection() {
 
       {/* 5. Stats Bar */}
       <div className="relative mt-8 border-t" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-        <div className="mx-auto flex max-w-md items-center justify-center divide-x divide-white/[0.08] py-4">
-          <div className="flex flex-col items-center px-8">
-            <span className="font-display text-xl font-black md:text-2xl" style={{ color: "#4ade80" }}>
-              <CountUp end={stats.inserate} />
-            </span>
-            <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-500">{t("stats_listings")}</span>
-          </div>
+        <div className="mx-auto flex max-w-xs items-center justify-center divide-x divide-white/[0.08] py-4">
           <div className="flex flex-col items-center px-8">
             <span className="font-display text-xl font-black md:text-2xl" style={{ color: "#4ade80" }}>
               <CountUp end={stats.haendler} />

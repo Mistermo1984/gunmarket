@@ -180,7 +180,6 @@ export default function BannerZone() {
   const [active, setActive] = useState<TabKey>('ev');
   const [openItem, setOpenItem] = useState<string | null>(null);
   const [locale, setLocale] = useState('de');
-  const scrollRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
   useEffect(() => { setLocale(getLocale()); }, []);

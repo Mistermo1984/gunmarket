@@ -45,9 +45,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: `Unknown step: ${stepId}` }, { status: 400 });
     }
 
+    console.log(`[Admin Crawl] Starting step: ${stepId}`);
     const result = await runCrawlStep(stepId);
+    console.log(`[Admin Crawl] Step ${stepId} done:`, JSON.stringify(result));
     return NextResponse.json({ success: true, ...result });
   } catch (err) {
+    console.error(`[Admin Crawl] Step failed:`, err);
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }

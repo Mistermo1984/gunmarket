@@ -997,12 +997,8 @@ export async function runCrawlStep(
     ".ch"
   );
 
-  // Check stop signal
-  if (await isCrawlerStopRequested()) {
-    await setCrawlerState({ status: "stopped", stopped_at: new Date().toISOString() });
-    console.log("[Crawl] Stop requested, aborting step:", stepId);
-    return { inserted: 0, updated: 0, unchanged: 0, deleted: 0, source: stepId };
-  }
+  // Reset stop flag so single-step calls don't get stuck from a previous abort
+  await setCrawlerState({ stop_requested: 0, status: "running", current_source: stepId });
 
   // Build map of existing listings for upsert
   const existingRows = await dbAll<{ source_id: string; source: string; id: string; preis: number }>(

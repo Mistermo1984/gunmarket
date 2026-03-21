@@ -91,14 +91,14 @@ function getLastPage(html: string, slug: string): number {
   );
   if (m2) return parseInt(m2[1]);
 
-  const allMatches = [
-    ...html.matchAll(
+  const allMatches = Array.from(
+    html.matchAll(
       new RegExp(
         `href="(?:https://www\\.gebrauchtwaffen\\.com)?/${escaped}/(\\d+)"`,
         "g"
       )
-    ),
-  ];
+    )
+  );
   if (allMatches.length > 0)
     return Math.max(...allMatches.map((m) => parseInt(m[1])));
 
@@ -112,24 +112,24 @@ function getLastPage(html: string, slug: string): number {
 }
 
 function extractListingUrls(html: string): string[] {
-  const absMatches = [
-    ...html.matchAll(
+  const absMatches = Array.from(
+    html.matchAll(
       /href="(https:\/\/www\.gebrauchtwaffen\.com\/[^"]+_i\d+)"/g
-    ),
-  ];
+    )
+  );
   if (absMatches.length > 0)
-    return [...new Set(absMatches.map((m) => m[1]))];
+    return Array.from(new Set(absMatches.map((m) => m[1])));
 
-  const relMatches = [...html.matchAll(/href="(\/[^"]+_i\d+)"/g)];
+  const relMatches = Array.from(html.matchAll(/href="(\/[^"]+_i\d+)"/g));
   if (relMatches.length > 0)
-    return [...new Set(relMatches.map((m) => BASE + m[1]))];
+    return Array.from(new Set(relMatches.map((m) => BASE + m[1])));
 
-  const onclickMatches = [
-    ...html.matchAll(
+  const onclickMatches = Array.from(
+    html.matchAll(
       /location\.href='(https:\/\/www\.gebrauchtwaffen\.com\/[^']+_i\d+)'/g
-    ),
-  ];
-  return [...new Set(onclickMatches.map((m) => m[1]))];
+    )
+  );
+  return Array.from(new Set(onclickMatches.map((m) => m[1])));
 }
 
 // ─── Category mapping ───────────────────────────────────────
@@ -213,9 +213,9 @@ function parsePrice(html: string): number {
 }
 
 function parseDescription(html: string): string {
-  const descMatches = [
-    ...html.matchAll(/class="desc round3"[^>]*>([\s\S]*?)<\/div>/g),
-  ];
+  const descMatches = Array.from(
+    html.matchAll(/class="desc round3"[^>]*>([\s\S]*?)<\/div>/g)
+  );
   if (descMatches.length >= 2) {
     return descMatches[1][1]
       .replace(/<[^>]+>/g, " ")
@@ -268,12 +268,12 @@ function parseCity(html: string): string {
 }
 
 function parseImages(html: string): string[] {
-  const thumbMatches = [
-    ...html.matchAll(
+  const thumbMatches = Array.from(
+    html.matchAll(
       /d9c3dmdj8vwy7\.cloudfront\.net\/\d+_thumbnail\.(?:jpg|jpeg|png)/gi
-    ),
-  ].map((m) => m[0]);
-  return [...new Set(thumbMatches)].map(
+    )
+  ).map((m) => m[0]);
+  return Array.from(new Set(thumbMatches)).map(
     (u) => "https://" + u.replace(/_thumbnail\./, ".")
   );
 }

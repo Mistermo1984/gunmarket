@@ -77,7 +77,7 @@ Ordonnanzwaffe — Käufer muss Schweizer Bürger oder Niederlassungsbewilligung
     rechtsstatus: 'ordonnanz',
     typischeKaliber: ['5,56×45mm NATO'],
     tags: ['Ordonnanz', 'Sturmgewehr', 'Schweiz', 'SIG', 'Armee', 'Stgw90', 'PE90'],
-    youtubeVideoId: 'wbundle2FuZE',
+    youtubeVideoId: 'IdCJNilFjVM',
     youtubeQuelle: 'Forgotten Weapons / Ian McCollum',
   },
 

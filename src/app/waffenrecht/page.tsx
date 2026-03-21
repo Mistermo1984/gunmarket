@@ -25,6 +25,7 @@ export const metadata = {
     title: "Waffenrecht Schweiz — GunMarket.ch",
     description: "Alles zum Schweizer Waffengesetz: Kategorien, Bewilligungen und Pflichten.",
     url: "https://gunmarket.ch/waffenrecht",
+    images: [{ url: "https://gunmarket.ch/opengraph-image", width: 1200, height: 630 }],
   },
 };
 

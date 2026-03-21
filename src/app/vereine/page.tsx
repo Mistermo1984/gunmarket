@@ -70,6 +70,20 @@ export default function VereinePage() {
 
   return (
     <div className="min-h-screen bg-brand-grey">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: 'Schützenvereine Schweiz',
+        description: 'Verzeichnis aller Schweizer Schützenvereine nach Kanton.',
+        url: 'https://gunmarket.ch/vereine',
+        breadcrumb: {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://gunmarket.ch' },
+            { '@type': 'ListItem', position: 2, name: 'Schützenvereine', item: 'https://gunmarket.ch/vereine' },
+          ],
+        },
+      }) }} />
       {/* Hero */}
       <div className="bg-brand-dark py-12">
         <div className="mx-auto max-w-7xl px-4 text-center">

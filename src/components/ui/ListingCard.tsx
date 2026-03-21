@@ -134,7 +134,7 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
         {/* Photo */}
         <div className="relative flex shrink-0 items-center justify-center overflow-hidden" style={{ width: 120, height: 90, background: "#f8faf8" }}>
           {images.length > 0 ? (
-            <ImageSlider images={images} alt={listing.titel} />
+            <ImageSlider images={images} alt={`${listing.titel} — ${listing.kategorie} kaufen Schweiz`} />
           ) : (
             <WaffenIcon size={36} className="text-gray-300" />
           )}
@@ -175,7 +175,7 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
       {/* Photo */}
       <div className="relative w-full overflow-hidden" style={{ aspectRatio: "4/3", background: "#f8faf8" }}>
         {images.length > 0 ? (
-          <ImageSlider images={images} alt={listing.titel} />
+          <ImageSlider images={images} alt={`${listing.titel} — ${listing.kategorie} kaufen Schweiz`} />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
             <WaffenIcon size={48} className="text-gray-300" />

@@ -235,6 +235,21 @@ export default function MarktInsightsPage() {
 
   return (
     <div className="min-h-screen bg-[#0f1a0f]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: 'Waffenpreise Schweiz — Marktanalyse',
+        description: 'Aktuelle Waffenpreise und Marktdaten für den Schweizer Waffenmarkt.',
+        url: 'https://gunmarket.ch/markt',
+        publisher: { '@type': 'Organization', name: 'GunMarket.ch', url: 'https://gunmarket.ch' },
+        breadcrumb: {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://gunmarket.ch' },
+            { '@type': 'ListItem', position: 2, name: 'Marktanalyse', item: 'https://gunmarket.ch/markt' },
+          ],
+        },
+      }) }} />
       <div className="mx-auto max-w-7xl px-4 py-8 md:py-12">
 
         {/* ═══ 1. HERO HEADER ═══ */}

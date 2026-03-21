@@ -65,12 +65,6 @@ export default function Header() {
         {/* Center: Navigation links (Desktop) */}
         <nav className="hidden items-center gap-1 lg:flex">
           <Link
-            href="/"
-            className="rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-grey hover:text-brand-dark"
-          >
-            {t("nav_listings")}
-          </Link>
-          <Link
             href="/markt"
             className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-grey hover:text-brand-dark"
           >
@@ -174,14 +168,6 @@ export default function Header() {
 
           {/* Mobile links */}
           <div className="flex flex-col gap-1 border-t border-brand-border px-4 py-3">
-            <Link
-              href="/"
-              className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-neutral-600 hover:bg-brand-grey touch-target"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <Search size={16} />
-              {t("nav_all_listings")}
-            </Link>
             <Link
               href="/wissen"
               className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-neutral-600 hover:bg-brand-grey touch-target"

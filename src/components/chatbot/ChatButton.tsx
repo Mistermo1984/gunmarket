@@ -63,7 +63,7 @@ export default function ChatButton({ onClick, isOpen }: ChatButtonProps) {
 
         {/* NEU Badge */}
         {showNeu && (
-          <span className="absolute -right-1 -top-1 rounded-full bg-brand-amber px-1.5 py-0.5 text-[9px] font-bold text-white shadow-sm">
+          <span className="absolute -right-1 -top-1 rounded-full bg-brand-amber px-1.5 py-0.5 text-[11px] font-bold text-white shadow-sm">
             NEU
           </span>
         )}

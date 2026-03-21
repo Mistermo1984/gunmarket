@@ -126,7 +126,7 @@ export default function Header() {
             >
               <Heart size={18} className={favCount > 0 ? "fill-red-400 text-red-400" : ""} />
               {favCount > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-red-500 px-1 text-[9px] font-bold text-white">
+                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-red-500 px-1 text-[11px] font-bold text-white">
                   {favCount > 99 ? "99+" : favCount}
                 </span>
               )}

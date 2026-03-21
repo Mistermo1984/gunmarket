@@ -366,7 +366,7 @@ export default function BannerZone() {
                       isOpen={openItem === id}
                       onClose={() => setOpenItem(null)}
                     >
-                      <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
+                      <div className="px-3 py-1.5 text-[11px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
                         Kanton {kt} — {dealers.length} Händler
                       </div>
                       {dealers.map((d, i) => (
@@ -394,7 +394,7 @@ export default function BannerZone() {
                   <a href={item.href}
                     className="flex items-center gap-0 bg-white border border-gray-200 rounded-lg hover:border-[#4d8230] transition-colors group overflow-hidden whitespace-nowrap">
                     <div className="bg-[#eef5e8] px-2.5 self-stretch flex items-center border-r border-gray-100">
-                      <span className="text-[9px] font-semibold text-[#4d8230]">Aktion</span>
+                      <span className="text-[11px] font-semibold text-[#4d8230]">Aktion</span>
                     </div>
                     <div className="px-2.5 py-1.5">
                       <div className="text-[11px] font-medium text-gray-800 group-hover:text-[#4d8230]">{item.name}</div>
@@ -425,13 +425,13 @@ export default function BannerZone() {
 
       {/* ── MOBILE ── */}
       <div className="md:hidden w-full bg-white border-b border-gray-200">
-        {/* Mobile Tab Bar */}
-        <div className="flex items-center gap-0 border-b border-gray-100 px-4">
+        {/* Mobile Tab Bar — compact single row */}
+        <div className="flex items-center gap-0 border-b border-gray-100 px-3">
           {tabs.map(({ key, label, count }) => (
             <button
               key={key}
               onClick={() => setActive(key)}
-              className={`flex items-center gap-1.5 px-3 py-2.5 text-xs font-medium border-b-2 transition-all whitespace-nowrap ${
+              className={`flex items-center gap-1 px-2.5 h-8 text-[11px] font-medium border-b-2 transition-all whitespace-nowrap ${
                 active === key
                   ? 'text-[#4d8230] border-[#4d8230]'
                   : 'text-gray-500 border-transparent'
@@ -447,8 +447,8 @@ export default function BannerZone() {
           ))}
         </div>
 
-        {/* Mobile Content: horizontal scroll */}
-        <div className="overflow-x-auto px-4 py-2" style={{ scrollbarWidth: 'none' }}>
+        {/* Mobile Content: horizontal scroll — compact */}
+        <div className="overflow-x-auto px-3 py-1.5" style={{ scrollbarWidth: 'none' }}>
           <div className="flex items-center gap-2" style={{ width: 'max-content' }}>
             {active === 'ev' && eventsByMonth.map(({ key, label, events }) => {
               const id = `mob-ev-${key}`;
@@ -457,7 +457,7 @@ export default function BannerZone() {
                   <button
                     ref={el => { itemRefs.current[id] = el; }}
                     onClick={e => { e.stopPropagation(); setOpenItem(openItem === id ? null : id); }}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-medium whitespace-nowrap ${
+                    className={`flex items-center gap-1 px-2.5 h-6 rounded-full border text-[11px] font-medium whitespace-nowrap ${
                       openItem === id ? 'bg-[#4d8230] text-white border-[#4d8230]' : 'bg-white text-gray-600 border-gray-200'
                     }`}
                   >
@@ -502,7 +502,7 @@ export default function BannerZone() {
                   <button
                     ref={el => { itemRefs.current[id] = el; }}
                     onClick={e => { e.stopPropagation(); setOpenItem(openItem === id ? null : id); }}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-medium whitespace-nowrap ${
+                    className={`flex items-center gap-1 px-2.5 h-6 rounded-full border text-[11px] font-medium whitespace-nowrap ${
                       openItem === id ? 'bg-[#4d8230] text-white border-[#4d8230]' : 'bg-white text-gray-600 border-gray-200'
                     }`}
                   >
@@ -516,7 +516,7 @@ export default function BannerZone() {
                     isOpen={openItem === id}
                     onClose={() => setOpenItem(null)}
                   >
-                    <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
+                    <div className="px-3 py-1.5 text-[11px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
                       Kanton {kt}
                     </div>
                     {dealers.map((d, i) => (
@@ -541,7 +541,7 @@ export default function BannerZone() {
               <a key={i} href={item.href}
                 className="flex items-center gap-0 bg-white border border-gray-200 rounded-lg overflow-hidden whitespace-nowrap shrink-0">
                 <div className="bg-[#eef5e8] px-2 self-stretch flex items-center border-r border-gray-100">
-                  <span className="text-[9px] font-semibold text-[#4d8230]">Aktion</span>
+                  <span className="text-[11px] font-semibold text-[#4d8230]">Aktion</span>
                 </div>
                 <div className="px-2.5 py-1.5">
                   <div className="text-[11px] font-medium text-gray-800">{item.name}</div>

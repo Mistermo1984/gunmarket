@@ -377,7 +377,7 @@ export default function FilterSidebar({
 
         {/* ── KATEGORIE ── */}
         <SectionLabel>{t("filter_category")}</SectionLabel>
-        <span className="mb-1 block text-[9px] font-semibold uppercase tracking-wider text-neutral-300">{t("filter_weapons")}</span>
+        <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-neutral-300">{t("filter_weapons")}</span>
         <div className="flex flex-wrap gap-1.5">
           {HAUPTKATEGORIEN.filter((hk) => WAFFEN_IDS.includes(hk.id)).map((hk) => (
             <CategoryPillWithSubs
@@ -400,7 +400,7 @@ export default function FilterSidebar({
             />
           ))}
         </div>
-        <span className="mb-1 mt-2.5 block text-[9px] font-semibold uppercase tracking-wider text-neutral-300">{t("filter_accessories")}</span>
+        <span className="mb-1 mt-2.5 block text-[11px] font-semibold uppercase tracking-wider text-neutral-300">{t("filter_accessories")}</span>
         <div className="flex flex-wrap gap-1.5">
           {HAUPTKATEGORIEN.filter((hk) => ZUBEHOER_IDS.includes(hk.id)).map((hk) => (
             <CategoryPillWithSubs
@@ -598,7 +598,7 @@ export default function FilterSidebar({
         <FilterDivider />
 
         {/* ── RECHTSSTATUS ── */}
-        <SectionLabel>{t("filter_legal_status")} <em className="text-[9px] font-normal normal-case tracking-normal text-neutral-300">beta</em></SectionLabel>
+        <SectionLabel>{t("filter_legal_status")} <em className="text-[11px] font-normal normal-case tracking-normal text-neutral-300">beta</em></SectionLabel>
         <div className="flex flex-wrap gap-1.5">
           <Pill
             label={t("filter_all")}

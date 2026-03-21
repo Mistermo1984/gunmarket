@@ -127,7 +127,7 @@ export default function NeusteInserate() {
             onClick={resetFilters}
             className="ml-auto flex items-center gap-1 rounded-md bg-white px-2 py-1 text-xs font-medium text-neutral-500 transition hover:text-red-600"
           >
-            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-brand-green text-[9px] font-bold text-white">
+            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-brand-green text-[11px] font-bold text-white">
               {activeFilterCount}
             </span>
             <X className="h-3 w-3" />

@@ -149,6 +149,7 @@ function formatDateRange(date: string, dateEnd: string): string {
 export default function BannerZone() {
   const [active, setActive] = useState<TabKey>('ev');
   const [openCanton, setOpenCanton] = useState<string | null>(null);
+  const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number } | null>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -157,16 +158,13 @@ export default function BannerZone() {
   const startX = useRef(0);
   const startScrollLeft = useRef(0);
 
-  // Dropdown schliessen bei Klick ausserhalb
+  // Close dropdown on scroll (reposition would be stale)
   useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setOpenCanton(null);
-      }
-    };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, []);
+    if (!openCanton) return;
+    const close = () => { setOpenCanton(null); setDropdownPos(null); };
+    window.addEventListener('scroll', close, true);
+    return () => window.removeEventListener('scroll', close, true);
+  }, [openCanton]);
 
   const upcomingEvents = useMemo(() => {
     const today = new Date();
@@ -304,59 +302,35 @@ export default function BannerZone() {
           </div>
         )}
 
-        {/* WAFFENHÄNDLER: Kanton-Pills mit Dropdown */}
+        {/* WAFFENHÄNDLER: Kanton-Pills (dropdown rendered outside via fixed position) */}
         {active === 'sh' && (
-          <div ref={dropdownRef} className="flex items-center gap-1.5 flex-1 min-w-0 overflow-x-auto px-3 relative scrollbar-none">
+          <div className="flex items-center gap-1.5 flex-1 min-w-0 overflow-x-auto px-3 scrollbar-none">
             {CANTONS.map(kt => (
-              <div key={kt} className="relative shrink-0">
-                <button
-                  onClick={() => setOpenCanton(openCanton === kt ? null : kt)}
-                  className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full border transition-colors whitespace-nowrap ${
-                    openCanton === kt
-                      ? 'bg-[#4d8230] text-white border-[#4d8230]'
-                      : 'bg-white text-gray-600 border-gray-200 hover:border-[#4d8230] hover:text-[#4d8230]'
-                  }`}
-                >
-                  {kt}
-                  <span className={`text-[9px] rounded-full px-1 ${
-                    openCanton === kt ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-400'
-                  }`}>
-                    {DEALERS_BY_CANTON[kt].length}
-                  </span>
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
-                    style={{ transform: openCanton === kt ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }}>
-                    <path d="m6 9 6 6 6-6"/>
-                  </svg>
-                </button>
-
-                {/* Dropdown */}
-                {openCanton === kt && (
-                  <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-50 min-w-[200px] py-1 overflow-hidden">
-                    <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
-                      Kanton {kt} — {DEALERS_BY_CANTON[kt].length} Händler
-                    </div>
-                    {DEALERS_BY_CANTON[kt].map((dealer, i) => (
-                      <a
-                        key={i}
-                        href={dealer.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-between px-3 py-2 hover:bg-[#f5faf2] transition-colors group"
-                      >
-                        <div>
-                          <div className="text-[12px] font-medium text-gray-800 group-hover:text-[#4d8230] transition-colors">
-                            {dealer.name}
-                          </div>
-                          <div className="text-[10px] text-gray-400">{dealer.ort}</div>
-                        </div>
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-300 group-hover:text-[#4d8230] ml-2 shrink-0">
-                          <path d="m9 18 6-6-6-6"/>
-                        </svg>
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <button
+                key={kt}
+                onClick={(e) => {
+                  if (openCanton === kt) { setOpenCanton(null); setDropdownPos(null); return; }
+                  const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                  setDropdownPos({ top: rect.bottom + 4, left: Math.max(8, rect.left) });
+                  setOpenCanton(kt);
+                }}
+                className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full border transition-colors whitespace-nowrap shrink-0 ${
+                  openCanton === kt
+                    ? 'bg-[#4d8230] text-white border-[#4d8230]'
+                    : 'bg-white text-gray-600 border-gray-200 hover:border-[#4d8230] hover:text-[#4d8230]'
+                }`}
+              >
+                {kt}
+                <span className={`text-[9px] rounded-full px-1 ${
+                  openCanton === kt ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-400'
+                }`}>
+                  {DEALERS_BY_CANTON[kt].length}
+                </span>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                  style={{ transform: openCanton === kt ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }}>
+                  <path d="m6 9 6 6 6-6"/>
+                </svg>
+              </button>
             ))}
             <div className="shrink-0 w-4" />
           </div>
@@ -370,6 +344,41 @@ export default function BannerZone() {
         )}
 
       </div>
+
+      {/* Dealer dropdown — rendered outside scroll container to avoid clipping */}
+      {openCanton && dropdownPos && DEALERS_BY_CANTON[openCanton] && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => { setOpenCanton(null); setDropdownPos(null); }} />
+          <div
+            ref={dropdownRef}
+            className="fixed bg-white border border-gray-200 rounded-xl shadow-lg z-50 min-w-[220px] py-1 overflow-hidden"
+            style={{ top: dropdownPos.top, left: dropdownPos.left }}
+          >
+            <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
+              Kanton {openCanton} — {DEALERS_BY_CANTON[openCanton].length} Händler
+            </div>
+            {DEALERS_BY_CANTON[openCanton].map((dealer, i) => (
+              <a
+                key={i}
+                href={dealer.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between px-3 py-2 hover:bg-[#f5faf2] transition-colors group"
+              >
+                <div>
+                  <div className="text-[12px] font-medium text-gray-800 group-hover:text-[#4d8230] transition-colors">
+                    {dealer.name}
+                  </div>
+                  <div className="text-[10px] text-gray-400">{dealer.ort}</div>
+                </div>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-300 group-hover:text-[#4d8230] ml-2 shrink-0">
+                  <path d="m9 18 6-6-6-6"/>
+                </svg>
+              </a>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

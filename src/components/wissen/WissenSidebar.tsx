@@ -9,6 +9,7 @@ import {
   Shield,
   ChevronRight,
 } from "lucide-react";
+import { useLocale } from "@/lib/locale-context";
 import {
   KurzwaffenIcon,
   BuechsenIcon,
@@ -60,6 +61,7 @@ export default function WissenSidebar({
   activeMunTyp,
   onMunTypChange,
 }: WissenSidebarProps) {
+  const { t } = useLocale();
   const pathname = usePathname();
   const isWaffen = pathname.startsWith("/wissen/waffen");
   const isMunition = pathname.startsWith("/wissen/munition");
@@ -120,7 +122,7 @@ export default function WissenSidebar({
         {(isWaffen || (!isWaffen && !isMunition)) && (
           <div className="rounded-xl border border-brand-border bg-white">
             <div className="border-b border-brand-border px-4 py-3">
-              <h3 className="text-sm font-semibold text-brand-dark">Waffenkategorien</h3>
+              <h3 className="text-sm font-semibold text-brand-dark">{t("wiki_weapon_categories")}</h3>
             </div>
             <nav className="p-2">
               {onKategorieChange && (
@@ -192,7 +194,7 @@ export default function WissenSidebar({
         {(isMunition || (!isWaffen && !isMunition)) && (
           <div className="rounded-xl border border-brand-border bg-white">
             <div className="border-b border-brand-border px-4 py-3">
-              <h3 className="text-sm font-semibold text-brand-dark">Munitionstypen</h3>
+              <h3 className="text-sm font-semibold text-brand-dark">{t("wiki_ammo_types")}</h3>
             </div>
             <nav className="p-2">
               {onMunTypChange && (

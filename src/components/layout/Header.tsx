@@ -23,10 +23,15 @@ export default function Header() {
   // Fetch favorites count for logged-in user
   useEffect(() => {
     if (!user?.id) { setFavCount(0); return; }
-    fetch(`/api/favorites/count?user_id=${user.id}`)
-      .then((r) => r.json())
-      .then((d) => setFavCount(d.count || 0))
-      .catch(() => {});
+    const fetchCount = () => {
+      fetch(`/api/favorites/count?user_id=${user.id}`)
+        .then((r) => r.json())
+        .then((d) => setFavCount(d.count || 0))
+        .catch(() => {});
+    };
+    fetchCount();
+    window.addEventListener('merkliste-updated', fetchCount);
+    return () => window.removeEventListener('merkliste-updated', fetchCount);
   }, [user?.id]);
   const initials = user
     ? `${user.vorname?.[0] || ""}${user.nachname?.[0] || ""}`.toUpperCase()

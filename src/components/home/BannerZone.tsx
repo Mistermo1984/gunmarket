@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { useLocale } from '@/lib/locale-context';
 
 const ALL_EVENTS = [
   { name: 'Grauholzschiessen',              date: '2026-02-28', dateEnd: '2026-03-01', ort: 'Grauholz',      href: 'https://www.grauholzschiessen.ch' },
@@ -191,6 +192,7 @@ function CantonPill({
   isOpen: boolean;
   onToggle: (kt: string) => void;
 }) {
+  const { t } = useLocale();
   const btnRef = useRef<HTMLButtonElement>(null);
   const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
 
@@ -234,7 +236,7 @@ function CantonPill({
           style={{ top: pos.top, left: pos.left }}
         >
           <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100 sticky top-0 bg-white">
-            Kanton {kt} — {dealers.length} Händler
+            Kanton {kt} — {dealers.length} {t("banner_canton_dealers")}
           </div>
           {dealers.map((dealer, i) => (
             <a
@@ -271,6 +273,7 @@ function MonthPill({
   isOpen: boolean;
   onToggle: (key: string) => void;
 }) {
+  const { t } = useLocale();
   const btnRef = useRef<HTMLButtonElement>(null);
   const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
 
@@ -312,7 +315,7 @@ function MonthPill({
           style={{ top: pos.top, left: pos.left }}
         >
           <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100 sticky top-0 bg-white">
-            {month.label} — {month.events.length} Events
+            {month.label} — {month.events.length} {t("banner_events_count")}
           </div>
           {month.events.map((ev, i) => (
             <a
@@ -345,6 +348,7 @@ function MonthPill({
 /* ── Main component ── */
 
 export default function BannerZone() {
+  const { t } = useLocale();
   const [active, setActive] = useState<TabKey>('ev');
   const [openCanton, setOpenCanton] = useState<string | null>(null);
   const [openMonth, setOpenMonth] = useState<string | null>(null);
@@ -397,9 +401,9 @@ export default function BannerZone() {
   };
 
   const tabs: { key: TabKey; label: string; count?: number }[] = [
-    { key: 'ev', label: 'Events', count: totalUpcoming },
-    { key: 'sh', label: 'Waffenhändler', count: TOTAL_DEALERS },
-    { key: 'pr', label: 'Aktionen' },
+    { key: 'ev', label: t('banner_events'), count: totalUpcoming },
+    { key: 'sh', label: t('banner_dealers'), count: TOTAL_DEALERS },
+    { key: 'pr', label: t('banner_promos') },
   ];
 
   return (

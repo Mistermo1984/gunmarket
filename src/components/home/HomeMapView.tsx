@@ -2,6 +2,18 @@
 
 import React, { useEffect, useRef, useState, useMemo, useImperativeHandle, forwardRef } from "react";
 import { MapPin } from "lucide-react";
+import { useLocale } from "@/lib/locale-context";
+import type { TranslationKey } from "@/lib/i18n";
+
+const CAT_LABEL_MAP: Record<string, string> = {
+  kurzwaffen: "cat_kurzwaffen",
+  langwaffen: "cat_langwaffen",
+  ordonnanzwaffen: "cat_ordonnanz",
+  luftdruckwaffen: "cat_luftdruck",
+  optik: "cat_optik",
+  zubehoer: "cat_zubehoer",
+  munition: "cat_munition",
+};
 
 export interface MapMarker {
   id: string;
@@ -75,15 +87,8 @@ function getImageUrl(listing: any): string | null {
 
 // ─── Filter config ──────────────────────────────────────────────
 
-const KAT_FILTERS = [
-  { id: "alle", label: "Alle" },
-  { id: "kurzwaffen", label: "Kurzwaffen" },
-  { id: "langwaffen", label: "Langwaffen" },
-  { id: "ordonnanzwaffen", label: "Ordonnanz" },
-  { id: "luftdruckwaffen", label: "Luftdruck" },
-  { id: "optik", label: "Optik" },
-  { id: "munition", label: "Munition" },
-  { id: "zubehoer", label: "Zubehör" },
+const KAT_FILTER_IDS = [
+  "alle", "kurzwaffen", "langwaffen", "ordonnanzwaffen", "luftdruckwaffen", "optik", "munition", "zubehoer",
 ];
 
 const PREIS_FILTERS = [
@@ -173,6 +178,7 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
   { markers },
   ref
 ) {
+  const { t } = useLocale();
   const mapContainerRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any>(null);
@@ -512,8 +518,8 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
             <div style={{ padding: "8px 12px", borderBottom: "1px solid #f3f4f6", flexShrink: 0 }}>
               {/* Category pills */}
               <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginBottom: 6 }}>
-                {KAT_FILTERS.map((f) => (
-                  <Pill key={f.id} label={f.label} active={filterKat === f.id} onClick={() => setFilterKat(f.id)} />
+                {KAT_FILTER_IDS.map((id) => (
+                  <Pill key={id} label={id === "alle" ? t("filter_all") : (CAT_LABEL_MAP[id] ? t(CAT_LABEL_MAP[id] as TranslationKey) : id)} active={filterKat === id} onClick={() => setFilterKat(id)} />
                 ))}
               </div>
               {/* Price pills */}

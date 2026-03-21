@@ -308,6 +308,35 @@ export const translations = {
     reg_network_error: "Netzwerkfehler. Bitte versuchen Sie es erneut.",
     reg_failed: "Registrierung fehlgeschlagen",
     reg_password_repeat: "Passwort wiederholen",
+
+    // Filter recency
+    filter_recency: "Neuigkeit",
+    filter_today: "Heute",
+    filter_n_days: "Tage",
+
+    // Badges
+    badge_new_listing: "Neues Inserat",
+
+    // Banner
+    banner_events: "Events",
+    banner_dealers: "Waffenhändler",
+    banner_promos: "Aktionen",
+    banner_canton_dealers: "Händler",
+    banner_events_count: "Events",
+
+    // Detail
+    detail_imported_hint: "Dieses Inserat wird automatisch von {source} importiert. Verkäufer-Kontakt nur über die Originalseite.",
+
+    // Wiki sidebar
+    wiki_weapon_categories: "Waffenkategorien",
+    wiki_ammo_types: "Munitionstypen",
+
+    // Good Deal tooltip
+    good_deal_tooltip_title: "Community-Bewertung",
+    good_deal_tooltip_body: "Findest du dieses Angebot fair? Bewerte es — damit hilfst du anderen.",
+    good_deal_tooltip_note: "Einmal pro Angebot. Anonym.",
+    good_deal_voters: "Personen finden das gut",
+    good_deal_first: "Sei der Erste, der bewertet.",
   },
 
   fr: {
@@ -594,6 +623,35 @@ export const translations = {
     reg_network_error: "Erreur réseau. Veuillez réessayer.",
     reg_failed: "Inscription échouée",
     reg_password_repeat: "Répéter le mot de passe",
+
+    // Filter recency
+    filter_recency: "Récence",
+    filter_today: "Aujourd'hui",
+    filter_n_days: "jours",
+
+    // Badges
+    badge_new_listing: "Nouvelle annonce",
+
+    // Banner
+    banner_events: "Événements",
+    banner_dealers: "Armuriers",
+    banner_promos: "Promotions",
+    banner_canton_dealers: "armuriers",
+    banner_events_count: "événements",
+
+    // Detail
+    detail_imported_hint: "Cette annonce est importée automatiquement depuis {source}. Contactez le vendeur via le site original.",
+
+    // Wiki sidebar
+    wiki_weapon_categories: "Catégories d'armes",
+    wiki_ammo_types: "Types de munitions",
+
+    // Good Deal tooltip
+    good_deal_tooltip_title: "Évaluation communautaire",
+    good_deal_tooltip_body: "Tu trouves cette offre intéressante ? Vote pour aider les autres.",
+    good_deal_tooltip_note: "Une fois par annonce. Anonyme.",
+    good_deal_voters: "personnes trouvent ça bien",
+    good_deal_first: "Sois le premier à évaluer.",
   },
 
   it: {
@@ -880,6 +938,35 @@ export const translations = {
     reg_network_error: "Errore di rete. Riprova.",
     reg_failed: "Registrazione fallita",
     reg_password_repeat: "Ripeti password",
+
+    // Filter recency
+    filter_recency: "Novità",
+    filter_today: "Oggi",
+    filter_n_days: "giorni",
+
+    // Badges
+    badge_new_listing: "Nuovo annuncio",
+
+    // Banner
+    banner_events: "Eventi",
+    banner_dealers: "Armaioli",
+    banner_promos: "Promozioni",
+    banner_canton_dealers: "armaioli",
+    banner_events_count: "eventi",
+
+    // Detail
+    detail_imported_hint: "Questo annuncio è importato automaticamente da {source}. Contattare il venditore tramite il sito originale.",
+
+    // Wiki sidebar
+    wiki_weapon_categories: "Categorie di armi",
+    wiki_ammo_types: "Tipi di munizioni",
+
+    // Good Deal tooltip
+    good_deal_tooltip_title: "Valutazione della community",
+    good_deal_tooltip_body: "Trovi quest'offerta interessante? Vota per aiutare gli altri.",
+    good_deal_tooltip_note: "Una volta per annuncio. Anonimo.",
+    good_deal_voters: "persone lo trovano buono",
+    good_deal_first: "Sii il primo a valutare.",
   },
 
   en: {
@@ -1166,6 +1253,35 @@ export const translations = {
     reg_network_error: "Network error. Please try again.",
     reg_failed: "Registration failed",
     reg_password_repeat: "Repeat password",
+
+    // Filter recency
+    filter_recency: "Recency",
+    filter_today: "Today",
+    filter_n_days: "days",
+
+    // Badges
+    badge_new_listing: "New listing",
+
+    // Banner
+    banner_events: "Events",
+    banner_dealers: "Gun Shops",
+    banner_promos: "Promotions",
+    banner_canton_dealers: "dealers",
+    banner_events_count: "events",
+
+    // Detail
+    detail_imported_hint: "This listing is automatically imported from {source}. Contact the seller via the original site.",
+
+    // Wiki sidebar
+    wiki_weapon_categories: "Weapon categories",
+    wiki_ammo_types: "Ammunition types",
+
+    // Good Deal tooltip
+    good_deal_tooltip_title: "Community rating",
+    good_deal_tooltip_body: "Think this is a good deal? Vote to help other buyers.",
+    good_deal_tooltip_note: "Once per listing. Anonymous.",
+    good_deal_voters: "people think this is good",
+    good_deal_first: "Be the first to rate.",
   },
 
   rm: {
@@ -1452,6 +1568,35 @@ export const translations = {
     reg_network_error: "Errur da rait. Emprova anc ina giada.",
     reg_failed: "Registraziun betg reussida",
     reg_password_repeat: "Repeter pled-clav",
+
+    // Filter recency
+    filter_recency: "Novitads",
+    filter_today: "Oz",
+    filter_n_days: "dis",
+
+    // Badges
+    badge_new_listing: "Nov annunzi",
+
+    // Banner
+    banner_events: "Eveniments",
+    banner_dealers: "Comerziants",
+    banner_promos: "Promoziuns",
+    banner_canton_dealers: "comerziants",
+    banner_events_count: "eveniments",
+
+    // Detail
+    detail_imported_hint: "Quest annunzi vegn importà automaticamain da {source}. Contact mo via la pagina originala.",
+
+    // Wiki sidebar
+    wiki_weapon_categories: "Categorias d'armas",
+    wiki_ammo_types: "Tips da muniziun",
+
+    // Good Deal tooltip
+    good_deal_tooltip_title: "Valitaziun communautara",
+    good_deal_tooltip_body: "Chattas questa offerta buna? Vota per gidar auters.",
+    good_deal_tooltip_note: "Ina giada per annunzi.",
+    good_deal_voters: "persunas chattan quai bun",
+    good_deal_first: "Sii il prim che valitescha.",
   },
 } as const;
 

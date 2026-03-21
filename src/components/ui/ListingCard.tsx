@@ -114,6 +114,7 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
     e.stopPropagation();
     setIsFav(!isFav);
     onFavoriteToggle?.(listing.id, !isFav);
+    window.dispatchEvent(new Event('merkliste-updated'));
   }
 
   const images = listing.imageUrls && listing.imageUrls.length > 0
@@ -186,7 +187,7 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
         })() && (
           <div className="absolute top-2 left-2 z-20 flex items-center gap-1 bg-[#eef5e8] border border-[#4d8230] rounded-full px-2 py-0.5 text-[10px] font-semibold text-[#3a6224] shadow-sm">
             <div className="w-1.5 h-1.5 bg-[#4d8230] rounded-full" />
-            New listing
+            {t("badge_new_listing")}
           </div>
         )}
 

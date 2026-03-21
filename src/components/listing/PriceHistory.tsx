@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useLocale } from '@/lib/locale-context'
 
 interface PricePoint {
   preis: number
@@ -22,6 +23,7 @@ function formatDate(iso: string): string {
 }
 
 export default function PriceHistory({ listingId }: PriceHistoryProps) {
+  const { t } = useLocale()
   const [history, setHistory] = useState<PricePoint[]>([])
   const [loaded, setLoaded] = useState(false)
 
@@ -76,7 +78,7 @@ export default function PriceHistory({ listingId }: PriceHistoryProps) {
   return (
     <div className="bg-gray-50 rounded-xl p-4">
       <div className="flex items-center gap-2 mb-3">
-        <h3 className="text-sm font-semibold text-gray-800">Preisverlauf</h3>
+        <h3 className="text-sm font-semibold text-gray-800">{t("price_history")}</h3>
         {pctChange !== 0 && (
           <span
             className="text-xs font-medium px-2 py-0.5 rounded-full"

@@ -18,7 +18,18 @@ import {
   ZUSTAND_OPTIONEN,
   KANTONE,
 } from "@/lib/constants";
+import type { TranslationKey } from "@/lib/i18n";
 import PriceHistogramSlider from "@/components/filters/PriceHistogramSlider";
+
+const CAT_LABEL_MAP: Record<string, string> = {
+  kurzwaffen: "cat_kurzwaffen",
+  langwaffen: "cat_langwaffen",
+  ordonnanzwaffen: "cat_ordonnanz",
+  luftdruckwaffen: "cat_luftdruck",
+  optik: "cat_optik",
+  zubehoer: "cat_zubehoer",
+  munition: "cat_munition",
+};
 
 // ─── Types ───────────────────────────────────────────────────
 
@@ -233,13 +244,15 @@ function CategoryPillWithSubs({
   onToggleCategory: () => void;
   onToggleSub: (subId: string) => void;
 }) {
+  const { t } = useLocale();
+  const catLabel = CAT_LABEL_MAP[hk.id] ? t(CAT_LABEL_MAP[hk.id] as TranslationKey) : hk.label;
   const active = filters.kategorien.includes(hk.id);
   const hasSubs = active && hk.unterkategorien.length > 0;
 
   if (!hasSubs) {
     return (
       <Pill
-        label={hk.label}
+        label={catLabel}
         active={active}
         onClick={onToggleCategory}
         count={counts?.categories?.[hk.id]}
@@ -251,7 +264,7 @@ function CategoryPillWithSubs({
   return (
     <div className="flex w-full flex-col">
       <Pill
-        label={hk.label}
+        label={catLabel}
         active={active}
         onClick={onToggleCategory}
         count={counts?.categories?.[hk.id]}
@@ -447,13 +460,13 @@ export default function FilterSidebar({
         <FilterDivider />
 
         {/* ── NEUIGKEIT ── */}
-        <SectionLabel>Neuigkeit</SectionLabel>
+        <SectionLabel>{t("filter_recency")}</SectionLabel>
         <div className="flex flex-wrap gap-1.5">
           {[
-            { label: "Heute", days: 1 },
-            { label: "2 Tage", days: 2 },
-            { label: "3 Tage", days: 3 },
-            { label: "5 Tage", days: 5 },
+            { label: t("filter_today"), days: 1 },
+            { label: `2 ${t("filter_n_days")}`, days: 2 },
+            { label: `3 ${t("filter_n_days")}`, days: 3 },
+            { label: `5 ${t("filter_n_days")}`, days: 5 },
           ].map(({ label, days }) => (
             <Pill
               key={days}

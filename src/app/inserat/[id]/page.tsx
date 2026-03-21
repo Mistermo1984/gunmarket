@@ -223,6 +223,7 @@ export default function InseratDetailPage() {
       });
       setIsMerkliste(true);
     }
+    window.dispatchEvent(new Event('merkliste-updated'));
   }
 
   if (loading) {
@@ -499,7 +500,7 @@ export default function InseratDetailPage() {
                       </div>
                     </div>
                     <p className="text-xs text-neutral-500">
-                      Dieses Inserat wird automatisch von {sourceName} importiert. Verkäufer-Kontakt nur über die Originalseite.
+                      {t("detail_imported_hint").replace("{source}", sourceName || "")}
                     </p>
                   </>
                 ) : (

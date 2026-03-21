@@ -112,8 +112,8 @@ const PROMOS = [
 
 const TAB_LABELS: Record<string, Record<string, string>> = {
   ev: { de: 'Events', fr: 'Événements', it: 'Eventi', en: 'Events', rm: 'Eveniments' },
-  sh: { de: 'Händler', fr: 'Armuriers', it: 'Armaioli', en: 'Shops', rm: 'Comerziants' },
-  pr: { de: 'Aktionen', fr: 'Promos', it: 'Promo', en: 'Deals', rm: 'Promoziuns' },
+  sh: { de: 'Waffenhändler', fr: 'Waffenhändler', it: 'Waffenhändler', en: 'Gun shops', rm: 'Comerziants' },
+  pr: { de: 'Aktionen', fr: 'Promotions', it: 'Promozioni', en: 'Promotions', rm: 'Promoziuns' },
 };
 
 type TabKey = 'ev' | 'sh' | 'pr';
@@ -214,185 +214,219 @@ export default function BannerZone() {
 
   return (
     <>
-      {/* ─── DESKTOP (md+): eine Zeile ─── */}
-      <div className="hidden md:flex w-full bg-white border-t border-b border-gray-100 items-center h-11" style={{ minHeight: 44, maxHeight: 44 }}>
+      {/* ── DESKTOP ── */}
+      <div className="hidden md:block w-full bg-white border-b border-gray-200">
+        <div className="max-w-screen-xl mx-auto px-6">
+          <div className="flex items-center" style={{ height: 48 }}>
 
-        {/* Segmented Control — Tabs */}
-        <div className="flex items-center shrink-0 border-r border-gray-100 h-11 px-3 gap-1">
+            {/* Tab Navigation — grüner Underline-Stil */}
+            <div className="flex items-center shrink-0 h-full border-r border-gray-200 pr-6 mr-6 gap-0">
+              {tabs.map(({ key, label, count }) => (
+                <button
+                  key={key}
+                  onClick={() => { setActive(key); setOpenItem(null); }}
+                  className={`relative flex items-center gap-2 px-3 h-full text-sm font-medium transition-colors whitespace-nowrap border-b-2 ${
+                    active === key
+                      ? 'text-[#4d8230] border-[#4d8230]'
+                      : 'text-gray-500 border-transparent hover:text-gray-800 hover:border-gray-300'
+                  }`}
+                >
+                  {label}
+                  {count !== undefined && (
+                    <span className={`text-[10px] font-semibold rounded-full px-1.5 py-0.5 leading-none ${
+                      active === key
+                        ? 'bg-[#eef5e8] text-[#4d8230]'
+                        : 'bg-gray-100 text-gray-400'
+                    }`}>
+                      {count}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+
+            {/* Scrollbarer Content */}
+            <div
+              className="flex items-center gap-2 flex-1 min-w-0 overflow-x-auto"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
+            >
+              {/* EVENTS: Monats-Pills */}
+              {active === 'ev' && eventsByMonth.map(({ key, label, events }) => {
+                const id = `ev-${key}`;
+                return (
+                  <div key={key} className="shrink-0">
+                    <button
+                      ref={el => { itemRefs.current[id] = el; }}
+                      onClick={e => { e.stopPropagation(); setOpenItem(openItem === id ? null : id); }}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-medium transition-all whitespace-nowrap ${
+                        openItem === id
+                          ? 'bg-[#4d8230] text-white border-[#4d8230]'
+                          : 'bg-white text-gray-600 border-gray-200 hover:border-[#4d8230] hover:text-[#4d8230]'
+                      }`}
+                    >
+                      {label}
+                      <span className={`text-[10px] rounded-full px-1.5 py-0.5 leading-none ${
+                        openItem === id ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500'
+                      }`}>{events.length}</span>
+                      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                        style={{ transform: openItem === id ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }}>
+                        <path d="m6 9 6 6 6-6"/>
+                      </svg>
+                    </button>
+                    <PortalDropdown
+                      anchorRef={{ current: itemRefs.current[id] } as React.RefObject<HTMLElement>}
+                      isOpen={openItem === id}
+                      onClose={() => setOpenItem(null)}
+                    >
+                      {events.map((ev, i) => (
+                        <a key={i} href={ev.href !== '#' ? ev.href : undefined}
+                          target={ev.href !== '#' ? '_blank' : undefined} rel="noopener noreferrer"
+                          className="flex items-center gap-3 px-3 py-2.5 hover:bg-[#f5faf2] transition-colors group border-b border-gray-50 last:border-0">
+                          <div className="bg-[#eef5e8] rounded-lg px-2 py-1 text-center min-w-[44px] shrink-0">
+                            <div className="text-[10px] font-bold text-[#4d8230] leading-none whitespace-nowrap">
+                              {formatDateRange(ev.date, ev.dateEnd)}
+                            </div>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-[12px] font-medium text-gray-800 group-hover:text-[#4d8230] truncate">{ev.name}</div>
+                            <div className="text-[10px] text-gray-400">{ev.ort}</div>
+                          </div>
+                          {ev.href !== '#' && (
+                            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                              className="text-gray-300 group-hover:text-[#4d8230] shrink-0">
+                              <path d="m9 18 6-6-6-6"/>
+                            </svg>
+                          )}
+                        </a>
+                      ))}
+                    </PortalDropdown>
+                  </div>
+                );
+              })}
+
+              {/* WAFFENHÄNDLER: Kanton-Pills */}
+              {active === 'sh' && CANTONS.map(kt => {
+                const id = `sh-${kt}`;
+                const dealers = DEALERS_BY_CANTON[kt];
+                if (!dealers?.length) return null;
+                return (
+                  <div key={kt} className="shrink-0">
+                    <button
+                      ref={el => { itemRefs.current[id] = el; }}
+                      onClick={e => { e.stopPropagation(); setOpenItem(openItem === id ? null : id); }}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-medium transition-all whitespace-nowrap ${
+                        openItem === id
+                          ? 'bg-[#4d8230] text-white border-[#4d8230]'
+                          : 'bg-white text-gray-600 border-gray-200 hover:border-[#4d8230] hover:text-[#4d8230]'
+                      }`}
+                    >
+                      {kt}
+                      <span className={`text-[10px] rounded-full px-1.5 py-0.5 leading-none ${
+                        openItem === id ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500'
+                      }`}>{dealers.length}</span>
+                      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                        style={{ transform: openItem === id ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }}>
+                        <path d="m6 9 6 6 6-6"/>
+                      </svg>
+                    </button>
+                    <PortalDropdown
+                      anchorRef={{ current: itemRefs.current[id] } as React.RefObject<HTMLElement>}
+                      isOpen={openItem === id}
+                      onClose={() => setOpenItem(null)}
+                    >
+                      <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
+                        Kanton {kt} — {dealers.length} Händler
+                      </div>
+                      {dealers.map((d, i) => (
+                        <a key={i} href={d.href} target="_blank" rel="noopener noreferrer"
+                          className="flex items-center justify-between px-3 py-2 hover:bg-[#f5faf2] transition-colors group">
+                          <div>
+                            <div className="text-[12px] font-medium text-gray-800 group-hover:text-[#4d8230]">{d.name}</div>
+                            <div className="text-[10px] text-gray-400">{d.ort}</div>
+                          </div>
+                          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                            className="text-gray-300 group-hover:text-[#4d8230] ml-3 shrink-0">
+                            <path d="m9 18 6-6-6-6"/>
+                          </svg>
+                        </a>
+                      ))}
+                    </PortalDropdown>
+                  </div>
+                );
+              })}
+
+              {/* AKTIONEN */}
+              {active === 'pr' && PROMOS.map((item, i) => (
+                <div key={i} className="flex items-center gap-2 shrink-0">
+                  {i > 0 && <div className="w-px h-4 bg-gray-200 shrink-0" />}
+                  <a href={item.href}
+                    className="flex items-center gap-0 bg-white border border-gray-200 rounded-lg hover:border-[#4d8230] transition-colors group overflow-hidden whitespace-nowrap">
+                    <div className="bg-[#eef5e8] px-2.5 self-stretch flex items-center border-r border-gray-100">
+                      <span className="text-[9px] font-semibold text-[#4d8230]">Aktion</span>
+                    </div>
+                    <div className="px-2.5 py-1.5">
+                      <div className="text-[11px] font-medium text-gray-800 group-hover:text-[#4d8230]">{item.name}</div>
+                      <div className="text-[10px] text-gray-400">{item.meta}</div>
+                    </div>
+                  </a>
+                </div>
+              ))}
+
+              <div className="shrink-0 w-4" />
+            </div>
+
+            {/* Fade rechts */}
+            <div className="shrink-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none h-full" />
+          </div>
+        </div>
+      </div>
+
+      {/* ── MOBILE ── */}
+      <div className="md:hidden w-full bg-white border-b border-gray-200">
+        {/* Mobile Tab Bar */}
+        <div className="flex items-center gap-0 border-b border-gray-100 px-4">
           {tabs.map(({ key, label, count }) => (
             <button
               key={key}
-              onClick={() => { setActive(key); setOpenItem(null); }}
-              className={`flex items-center gap-1.5 px-3 h-7 rounded-full text-xs font-medium transition-all whitespace-nowrap ${
+              onClick={() => setActive(key)}
+              className={`flex items-center gap-1.5 px-3 py-2.5 text-xs font-medium border-b-2 transition-all whitespace-nowrap ${
                 active === key
-                  ? 'bg-[#4d8230] text-white'
-                  : 'text-gray-500 hover:text-gray-800 hover:bg-gray-100'
+                  ? 'text-[#4d8230] border-[#4d8230]'
+                  : 'text-gray-500 border-transparent'
               }`}
             >
               {label}
               {count !== undefined && (
-                <span className={`text-[10px] rounded-full px-1.5 leading-4 ${
-                  active === key ? 'bg-white/25 text-white' : 'bg-gray-100 text-gray-500'
+                <span className={`text-[10px] rounded-full px-1.5 py-0.5 leading-none ${
+                  active === key ? 'bg-[#eef5e8] text-[#4d8230]' : 'bg-gray-100 text-gray-400'
                 }`}>{count}</span>
               )}
             </button>
           ))}
         </div>
 
-        {/* Scrollable Content Area */}
-        <div
-          ref={scrollRef}
-          className="flex items-center gap-1.5 flex-1 min-w-0 overflow-x-auto px-3"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
-        >
-          {/* EVENTS: Monats-Pills */}
-          {active === 'ev' && eventsByMonth.map(({ key, label, events }) => (
-            <div key={key} className="shrink-0">
-              <button
-                ref={el => { itemRefs.current[`ev-${key}`] = el; }}
-                onClick={e => { e.stopPropagation(); setOpenItem(openItem === `ev-${key}` ? null : `ev-${key}`); }}
-                className={`flex items-center gap-1 px-2.5 h-7 rounded-full border text-xs font-medium transition-all whitespace-nowrap ${
-                  openItem === `ev-${key}`
-                    ? 'bg-[#4d8230] text-white border-[#4d8230]'
-                    : 'bg-white text-gray-600 border-gray-200 hover:border-[#4d8230] hover:text-[#4d8230]'
-                }`}
-              >
-                {label}
-                <span className={`text-[9px] rounded-full px-1 ${openItem === `ev-${key}` ? 'bg-white/25 text-white' : 'bg-gray-100 text-gray-500'}`}>
-                  {events.length}
-                </span>
-                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transform: openItem === `ev-${key}` ? 'rotate(180deg)' : undefined, transition: 'transform 0.15s' }}><path d="m6 9 6 6 6-6"/></svg>
-              </button>
-              <PortalDropdown
-                anchorRef={{ current: itemRefs.current[`ev-${key}`] } as React.RefObject<HTMLElement>}
-                isOpen={openItem === `ev-${key}`}
-                onClose={() => setOpenItem(null)}
-              >
-                {events.map((ev, i) => (
-                  <a key={i} href={ev.href !== '#' ? ev.href : undefined} target={ev.href !== '#' ? '_blank' : undefined} rel="noopener noreferrer"
-                    className="flex items-center gap-3 px-3 py-2.5 hover:bg-[#f5faf2] transition-colors group border-b border-gray-50 last:border-0">
-                    <div className="bg-[#eef5e8] rounded-lg px-2 py-1 text-center min-w-[40px] shrink-0">
-                      <div className="text-[10px] font-bold text-[#4d8230] leading-none">{formatDateRange(ev.date, ev.dateEnd)}</div>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-[12px] font-medium text-gray-800 group-hover:text-[#4d8230] truncate">{ev.name}</div>
-                      <div className="text-[10px] text-gray-400">{ev.ort}</div>
-                    </div>
-                    {ev.href !== '#' && <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-300 group-hover:text-[#4d8230] shrink-0"><path d="m9 18 6-6-6-6"/></svg>}
-                  </a>
-                ))}
-              </PortalDropdown>
-            </div>
-          ))}
-
-          {/* HÄNDLER: Kanton-Pills */}
-          {active === 'sh' && CANTONS.map(kt => {
-            const dealers = DEALERS_BY_CANTON[kt];
-            const id = `sh-${kt}`;
-            return (
-              <div key={kt} className="shrink-0">
-                <button
-                  ref={el => { itemRefs.current[id] = el; }}
-                  onClick={e => { e.stopPropagation(); setOpenItem(openItem === id ? null : id); }}
-                  className={`flex items-center gap-1 px-2.5 h-7 rounded-full border text-xs font-medium transition-all whitespace-nowrap ${
-                    openItem === id
-                      ? 'bg-[#4d8230] text-white border-[#4d8230]'
-                      : 'bg-white text-gray-600 border-gray-200 hover:border-[#4d8230] hover:text-[#4d8230]'
-                  }`}
-                >
-                  {kt}
-                  <span className={`text-[9px] rounded-full px-1 ${openItem === id ? 'bg-white/25 text-white' : 'bg-gray-100 text-gray-500'}`}>
-                    {dealers.length}
-                  </span>
-                  <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transform: openItem === id ? 'rotate(180deg)' : undefined, transition: 'transform 0.15s' }}><path d="m6 9 6 6 6-6"/></svg>
-                </button>
-                <PortalDropdown
-                  anchorRef={{ current: itemRefs.current[id] } as React.RefObject<HTMLElement>}
-                  isOpen={openItem === id}
-                  onClose={() => setOpenItem(null)}
-                >
-                  <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
-                    Kanton {kt}
-                  </div>
-                  {dealers.map((d, i) => (
-                    <a key={i} href={d.href} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center justify-between px-3 py-2 hover:bg-[#f5faf2] transition-colors group">
-                      <div>
-                        <div className="text-[12px] font-medium text-gray-800 group-hover:text-[#4d8230]">{d.name}</div>
-                        <div className="text-[10px] text-gray-400">{d.ort}</div>
-                      </div>
-                      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-300 group-hover:text-[#4d8230] ml-3 shrink-0"><path d="m9 18 6-6-6-6"/></svg>
-                    </a>
-                  ))}
-                </PortalDropdown>
-              </div>
-            );
-          })}
-
-          {/* AKTIONEN */}
-          {active === 'pr' && PROMOS.map((item, i) => (
-            <div key={i} className="flex items-center gap-1.5 shrink-0">
-              {i > 0 && <div className="w-px h-4 bg-gray-100 shrink-0" />}
-              <a href={item.href}
-                className="flex items-center gap-0 bg-white border border-gray-200 rounded-lg hover:border-[#4d8230] transition-colors group overflow-hidden whitespace-nowrap">
-                <div className="bg-[#eef5e8] px-2.5 self-stretch flex items-center border-r border-gray-100">
-                  <span className="text-[9px] font-semibold text-[#4d8230]">Aktion</span>
-                </div>
-                <div className="px-2.5 py-1.5">
-                  <div className="text-[11px] font-medium text-gray-800 group-hover:text-[#4d8230]">{item.name}</div>
-                  <div className="text-[10px] text-gray-400">{item.meta}</div>
-                </div>
-              </a>
-            </div>
-          ))}
-
-          <div className="shrink-0 w-3" />
-        </div>
-
-        {/* Fade rechts */}
-        <div className="shrink-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none" style={{ height: 44 }} />
-      </div>
-
-      {/* ─── MOBILE (< md): kompakter Header + Accordion ─── */}
-      <div className="md:hidden w-full bg-white border-t border-b border-gray-100">
-        {/* Mobile Tab Bar */}
-        <div className="flex items-center h-10 px-4 gap-2">
-          {tabs.map(({ key, label, count }) => (
-            <button
-              key={key}
-              onClick={() => setActive(key)}
-              className={`flex items-center gap-1 px-2.5 h-7 rounded-full text-xs font-medium transition-all whitespace-nowrap ${
-                active === key
-                  ? 'bg-[#4d8230] text-white'
-                  : 'text-gray-500 bg-gray-100 hover:bg-gray-200'
-              }`}
-            >
-              {label}
-              {count !== undefined && (
-                <span className={`text-[10px] rounded-full px-1.5 leading-4 ${active === key ? 'bg-white/25 text-white' : 'bg-gray-200 text-gray-500'}`}>
-                  {count}
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
-
         {/* Mobile Content: horizontal scroll */}
-        <div className="overflow-x-auto px-4 pb-2.5" style={{ scrollbarWidth: 'none' }}>
-          <div className="flex items-center gap-1.5" style={{ width: 'max-content' }}>
+        <div className="overflow-x-auto px-4 py-2" style={{ scrollbarWidth: 'none' }}>
+          <div className="flex items-center gap-2" style={{ width: 'max-content' }}>
             {active === 'ev' && eventsByMonth.map(({ key, label, events }) => {
               const id = `mob-ev-${key}`;
               return (
-                <div key={key} className="relative">
+                <div key={key} className="shrink-0">
                   <button
                     ref={el => { itemRefs.current[id] = el; }}
                     onClick={e => { e.stopPropagation(); setOpenItem(openItem === id ? null : id); }}
-                    className={`flex items-center gap-1 px-2.5 h-7 rounded-full border text-xs font-medium whitespace-nowrap ${
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-medium whitespace-nowrap ${
                       openItem === id ? 'bg-[#4d8230] text-white border-[#4d8230]' : 'bg-white text-gray-600 border-gray-200'
                     }`}
                   >
-                    {label} <span className={`text-[9px] rounded-full px-1 ${openItem === id ? 'bg-white/25 text-white' : 'bg-gray-100 text-gray-500'}`}>{events.length}</span>
-                    <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transform: openItem === id ? 'rotate(180deg)' : undefined }}><path d="m6 9 6 6 6-6"/></svg>
+                    {label}
+                    <span className={`text-[10px] rounded-full px-1.5 py-0.5 leading-none ${openItem === id ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500'}`}>
+                      {events.length}
+                    </span>
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                      style={{ transform: openItem === id ? 'rotate(180deg)' : 'none' }}>
+                      <path d="m6 9 6 6 6-6"/>
+                    </svg>
                   </button>
                   <PortalDropdown
                     anchorRef={{ current: itemRefs.current[id] } as React.RefObject<HTMLElement>}
@@ -400,10 +434,11 @@ export default function BannerZone() {
                     onClose={() => setOpenItem(null)}
                   >
                     {events.map((ev, i) => (
-                      <a key={i} href={ev.href !== '#' ? ev.href : undefined} target={ev.href !== '#' ? '_blank' : undefined} rel="noopener noreferrer"
+                      <a key={i} href={ev.href !== '#' ? ev.href : undefined}
+                        target={ev.href !== '#' ? '_blank' : undefined} rel="noopener noreferrer"
                         className="flex items-center gap-3 px-3 py-2.5 hover:bg-[#f5faf2] border-b border-gray-50 last:border-0">
-                        <div className="bg-[#eef5e8] rounded-lg px-2 py-1 text-center shrink-0">
-                          <div className="text-[10px] font-bold text-[#4d8230]">{formatDateRange(ev.date, ev.dateEnd)}</div>
+                        <div className="bg-[#eef5e8] rounded-lg px-2 py-1 shrink-0">
+                          <div className="text-[10px] font-bold text-[#4d8230] whitespace-nowrap">{formatDateRange(ev.date, ev.dateEnd)}</div>
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="text-[12px] font-medium text-gray-800 truncate">{ev.name}</div>
@@ -419,24 +454,29 @@ export default function BannerZone() {
             {active === 'sh' && CANTONS.map(kt => {
               const id = `mob-sh-${kt}`;
               const dealers = DEALERS_BY_CANTON[kt];
+              if (!dealers?.length) return null;
               return (
-                <div key={kt} className="relative">
+                <div key={kt} className="shrink-0">
                   <button
                     ref={el => { itemRefs.current[id] = el; }}
                     onClick={e => { e.stopPropagation(); setOpenItem(openItem === id ? null : id); }}
-                    className={`flex items-center gap-1 px-2.5 h-7 rounded-full border text-xs font-medium whitespace-nowrap ${
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-medium whitespace-nowrap ${
                       openItem === id ? 'bg-[#4d8230] text-white border-[#4d8230]' : 'bg-white text-gray-600 border-gray-200'
                     }`}
                   >
-                    {kt} <span className={`text-[9px] rounded-full px-1 ${openItem === id ? 'bg-white/25 text-white' : 'bg-gray-100 text-gray-500'}`}>{dealers.length}</span>
-                    <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transform: openItem === id ? 'rotate(180deg)' : undefined }}><path d="m6 9 6 6 6-6"/></svg>
+                    {kt}
+                    <span className={`text-[10px] rounded-full px-1.5 py-0.5 leading-none ${openItem === id ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500'}`}>
+                      {dealers.length}
+                    </span>
                   </button>
                   <PortalDropdown
                     anchorRef={{ current: itemRefs.current[id] } as React.RefObject<HTMLElement>}
                     isOpen={openItem === id}
                     onClose={() => setOpenItem(null)}
                   >
-                    <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">Kanton {kt}</div>
+                    <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
+                      Kanton {kt}
+                    </div>
                     {dealers.map((d, i) => (
                       <a key={i} href={d.href} target="_blank" rel="noopener noreferrer"
                         className="flex items-center justify-between px-3 py-2 hover:bg-[#f5faf2]">
@@ -444,7 +484,10 @@ export default function BannerZone() {
                           <div className="text-[12px] font-medium text-gray-800">{d.name}</div>
                           <div className="text-[10px] text-gray-400">{d.ort}</div>
                         </div>
-                        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-300 ml-3 shrink-0"><path d="m9 18 6-6-6-6"/></svg>
+                        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                          className="text-gray-300 ml-3 shrink-0">
+                          <path d="m9 18 6-6-6-6"/>
+                        </svg>
                       </a>
                     ))}
                   </PortalDropdown>
@@ -454,7 +497,7 @@ export default function BannerZone() {
 
             {active === 'pr' && PROMOS.map((item, i) => (
               <a key={i} href={item.href}
-                className="flex items-center gap-0 bg-white border border-gray-200 rounded-lg overflow-hidden whitespace-nowrap">
+                className="flex items-center gap-0 bg-white border border-gray-200 rounded-lg overflow-hidden whitespace-nowrap shrink-0">
                 <div className="bg-[#eef5e8] px-2 self-stretch flex items-center border-r border-gray-100">
                   <span className="text-[9px] font-semibold text-[#4d8230]">Aktion</span>
                 </div>

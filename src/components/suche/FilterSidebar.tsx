@@ -585,7 +585,7 @@ export default function FilterSidebar({
         <FilterDivider />
 
         {/* ── RECHTSSTATUS ── */}
-        <SectionLabel>{t("filter_legal_status")}</SectionLabel>
+        <SectionLabel>{t("filter_legal_status")} <em className="text-[9px] font-normal normal-case tracking-normal text-neutral-300">beta</em></SectionLabel>
         <div className="flex flex-wrap gap-1.5">
           <Pill
             label={t("filter_all")}

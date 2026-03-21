@@ -29,6 +29,8 @@ export interface ListingCardData {
   imageUrl?: string | null;
   imageUrls?: string[];
   createdAt?: string;
+  goodDealCount?: number;
+  priceChangePct?: number;
 }
 
 const waffenIconMap = {
@@ -217,6 +219,22 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
             <span className="text-xs text-neutral-400">VB</span>
           )}
         </div>
+
+        {/* Badges: good deal + price drop */}
+        {((listing.goodDealCount ?? 0) >= 3 || (listing.priceChangePct ?? 0) <= -5) && (
+          <div className="mb-2 flex flex-wrap gap-1">
+            {(listing.goodDealCount ?? 0) >= 3 && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-green-50 border border-green-200 px-2 py-0.5 text-[10px] font-semibold text-green-700">
+                👍 {listing.goodDealCount}
+              </span>
+            )}
+            {(listing.priceChangePct ?? 0) <= -5 && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
+                ↓ {Math.round(listing.priceChangePct!)}%
+              </span>
+            )}
+          </div>
+        )}
 
         {/* Footer: location left, date right */}
         <div className="mt-auto flex items-center justify-between text-xs text-gray-500">

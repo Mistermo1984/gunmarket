@@ -71,5 +71,7 @@ export function apiListingToCard(listing: Record<string, unknown>): ListingCardD
       .map((img) => String((img as Record<string, unknown>).url || ""))
       .filter(Boolean),
     createdAt: String(listing.created_at || ""),
+    goodDealCount: Number(listing.good_deal_count) || 0,
+    priceChangePct: Number(listing.price_change_pct) || 0,
   };
 }

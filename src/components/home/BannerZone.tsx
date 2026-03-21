@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 const ALL_EVENTS = [
   { name: 'Grauholzschiessen',              date: '2026-02-28', dateEnd: '2026-03-01', ort: 'Grauholz',      href: 'https://www.grauholzschiessen.ch' },
@@ -134,6 +135,8 @@ const PROMOS = [
 
 type TabKey = 'ev' | 'sh' | 'pr';
 
+type EventItem = typeof ALL_EVENTS[number];
+
 function formatDateRange(date: string, dateEnd: string): string {
   const d = new Date(date);
   const dEnd = new Date(dateEnd);
@@ -146,45 +149,221 @@ function formatDateRange(date: string, dateEnd: string): string {
   return `${dayStart}. ${month} – ${dayEnd}. ${monthEnd}`;
 }
 
+function getEventsByMonth(): { key: string; label: string; events: EventItem[] }[] {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const year = today.getFullYear();
+  const endOfYear = new Date(year, 11, 31, 23, 59, 59);
+
+  const upcoming = ALL_EVENTS
+    .filter(ev => new Date(ev.dateEnd) >= today && new Date(ev.date) <= endOfYear)
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+  const grouped = new Map<string, EventItem[]>();
+  for (const ev of upcoming) {
+    const d = new Date(ev.date);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+    if (!grouped.has(key)) grouped.set(key, []);
+    grouped.get(key)!.push(ev);
+  }
+
+  return Array.from(grouped.entries()).map(([key, events]) => {
+    const [y, m] = key.split('-');
+    const label = new Date(Number(y), Number(m) - 1, 1).toLocaleDateString('de-CH', { month: 'short' });
+    return { key, label, events };
+  });
+}
+
+/* ── Pill sub-components with portal dropdowns ── */
+
+function CantonPill({
+  kt,
+  isOpen,
+  onToggle,
+}: {
+  kt: string;
+  isOpen: boolean;
+  onToggle: (kt: string) => void;
+}) {
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
+
+  useEffect(() => {
+    if (isOpen && btnRef.current) {
+      const rect = btnRef.current.getBoundingClientRect();
+      setPos({ top: rect.bottom + 4, left: Math.max(8, rect.left) });
+    } else {
+      setPos(null);
+    }
+  }, [isOpen]);
+
+  const dealers = DEALERS_BY_CANTON[kt];
+
+  return (
+    <>
+      <button
+        ref={btnRef}
+        onClick={(e) => { e.stopPropagation(); onToggle(kt); }}
+        className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full border transition-colors whitespace-nowrap shrink-0 ${
+          isOpen
+            ? 'bg-[#4d8230] text-white border-[#4d8230]'
+            : 'bg-white text-gray-600 border-gray-200 hover:border-[#4d8230] hover:text-[#4d8230]'
+        }`}
+      >
+        {kt}
+        <span className={`text-[9px] rounded-full px-1 ${
+          isOpen ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-400'
+        }`}>
+          {dealers.length}
+        </span>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+          style={{ transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }}>
+          <path d="m6 9 6 6 6-6"/>
+        </svg>
+      </button>
+      {isOpen && pos && createPortal(
+        <div
+          className="fixed bg-white border border-gray-200 rounded-xl shadow-lg z-50 min-w-[220px] py-1 overflow-hidden"
+          style={{ top: pos.top, left: pos.left }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
+            Kanton {kt} — {dealers.length} Händler
+          </div>
+          {dealers.map((dealer, i) => (
+            <a
+              key={i}
+              href={dealer.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between px-3 py-2 hover:bg-[#f5faf2] transition-colors group"
+            >
+              <div>
+                <div className="text-[12px] font-medium text-gray-800 group-hover:text-[#4d8230] transition-colors">
+                  {dealer.name}
+                </div>
+                <div className="text-[10px] text-gray-400">{dealer.ort}</div>
+              </div>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-300 group-hover:text-[#4d8230] ml-2 shrink-0">
+                <path d="m9 18 6-6-6-6"/>
+              </svg>
+            </a>
+          ))}
+        </div>,
+        document.body,
+      )}
+    </>
+  );
+}
+
+function MonthPill({
+  month,
+  isOpen,
+  onToggle,
+}: {
+  month: { key: string; label: string; events: EventItem[] };
+  isOpen: boolean;
+  onToggle: (key: string) => void;
+}) {
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
+
+  useEffect(() => {
+    if (isOpen && btnRef.current) {
+      const rect = btnRef.current.getBoundingClientRect();
+      setPos({ top: rect.bottom + 4, left: Math.max(8, rect.left) });
+    } else {
+      setPos(null);
+    }
+  }, [isOpen]);
+
+  return (
+    <>
+      <button
+        ref={btnRef}
+        onClick={(e) => { e.stopPropagation(); onToggle(month.key); }}
+        className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full border transition-colors whitespace-nowrap shrink-0 ${
+          isOpen
+            ? 'bg-[#4d8230] text-white border-[#4d8230]'
+            : 'bg-white text-gray-600 border-gray-200 hover:border-[#4d8230] hover:text-[#4d8230]'
+        }`}
+      >
+        {month.label}
+        <span className={`text-[9px] rounded-full px-1 ${
+          isOpen ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-400'
+        }`}>
+          {month.events.length}
+        </span>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+          style={{ transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }}>
+          <path d="m6 9 6 6 6-6"/>
+        </svg>
+      </button>
+      {isOpen && pos && createPortal(
+        <div
+          className="fixed bg-white border border-gray-200 rounded-xl shadow-lg z-50 min-w-[260px] py-1 overflow-hidden"
+          style={{ top: pos.top, left: pos.left }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
+            {month.label} — {month.events.length} Events
+          </div>
+          {month.events.map((ev, i) => (
+            <a
+              key={i}
+              href={ev.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between px-3 py-2 hover:bg-[#f5faf2] transition-colors group"
+            >
+              <div>
+                <div className="text-[12px] font-medium text-gray-800 group-hover:text-[#4d8230] transition-colors">
+                  {ev.name}
+                </div>
+                <div className="text-[10px] text-gray-400">
+                  {formatDateRange(ev.date, ev.dateEnd)} · {ev.ort}
+                </div>
+              </div>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-300 group-hover:text-[#4d8230] ml-2 shrink-0">
+                <path d="m9 18 6-6-6-6"/>
+              </svg>
+            </a>
+          ))}
+        </div>,
+        document.body,
+      )}
+    </>
+  );
+}
+
+/* ── Main component ── */
+
 export default function BannerZone() {
   const [active, setActive] = useState<TabKey>('ev');
   const [openCanton, setOpenCanton] = useState<string | null>(null);
-  const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number } | null>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [openMonth, setOpenMonth] = useState<string | null>(null);
+
+  // Promos drag-scroll refs
   const scrollRef = useRef<HTMLDivElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
   const startX = useRef(0);
   const startScrollLeft = useRef(0);
 
-  // Close dropdown on scroll (reposition would be stale)
+  // Close all dropdowns on global click
   useEffect(() => {
-    if (!openCanton) return;
-    const close = () => { setOpenCanton(null); setDropdownPos(null); };
-    window.addEventListener('scroll', close, true);
-    return () => window.removeEventListener('scroll', close, true);
-  }, [openCanton]);
-
-  const upcomingEvents = useMemo(() => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const cutoff = new Date(today);
-    cutoff.setDate(cutoff.getDate() + 90);
-    return ALL_EVENTS
-      .filter(ev => new Date(ev.dateEnd) >= today && new Date(ev.date) <= cutoff)
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    const h = () => { setOpenCanton(null); setOpenMonth(null); };
+    document.addEventListener('click', h);
+    return () => document.removeEventListener('click', h);
   }, []);
 
-  const updateScrollState = () => {
-    const el = scrollRef.current;
-    if (!el) return;
-    setCanScrollLeft(el.scrollLeft > 0);
-    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
-  };
+  const eventsByMonth = useMemo(() => getEventsByMonth(), []);
 
-  useEffect(() => { updateScrollState(); }, [active]);
+  const totalUpcoming = useMemo(
+    () => eventsByMonth.reduce((sum, m) => sum + m.events.length, 0),
+    [eventsByMonth],
+  );
 
+  // Promos drag-scroll handlers
   const onMouseDown = (e: React.MouseEvent) => {
     isDragging.current = true;
     startX.current = e.pageX - (scrollRef.current?.offsetLeft || 0);
@@ -201,26 +380,23 @@ export default function BannerZone() {
     isDragging.current = false;
     if (scrollRef.current) scrollRef.current.style.cursor = 'grab';
   };
-  const scrollBy = (dir: 'left' | 'right') => {
-    scrollRef.current?.scrollBy({ left: dir === 'right' ? 320 : -320, behavior: 'smooth' });
-  };
 
   const tabs: { key: TabKey; label: string; count?: number }[] = [
-    { key: 'ev', label: 'Events', count: upcomingEvents.length },
+    { key: 'ev', label: 'Events', count: totalUpcoming },
     { key: 'sh', label: 'Waffenhändler', count: TOTAL_DEALERS },
     { key: 'pr', label: 'Aktionen' },
   ];
 
   return (
     <div className="w-full bg-gray-50 border-t border-b border-gray-200">
-      <div className="flex items-center h-11" style={{ minHeight: '44px', maxHeight: '44px' }}>
+      <div className="max-w-screen-xl mx-auto flex items-center h-11 px-8">
 
         {/* Tabs links */}
-        <div className="flex items-center shrink-0 px-4 border-r border-gray-200 h-11 gap-0">
+        <div className="flex items-center shrink-0 border-r border-gray-200 h-11 gap-0">
           {tabs.map(({ key, label, count }) => (
             <button
               key={key}
-              onClick={() => { setActive(key as TabKey); setOpenCanton(null); setTimeout(updateScrollState, 50); }}
+              onClick={() => { setActive(key as TabKey); setOpenCanton(null); setOpenMonth(null); }}
               className={`text-xs px-2.5 h-11 whitespace-nowrap font-medium transition-colors outline-none border-b-0 ${
                 active === key ? 'text-[#4d8230]' : 'text-gray-400 hover:text-gray-600'
               }`}
@@ -237,18 +413,40 @@ export default function BannerZone() {
           ))}
         </div>
 
-        {/* Pfeil links */}
-        {canScrollLeft && active !== 'sh' && (
-          <button onClick={() => scrollBy('left')} className="shrink-0 h-11 px-1.5 text-gray-400 hover:text-[#4d8230] transition-colors">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m15 18-6-6 6-6"/></svg>
-          </button>
+        {/* EVENTS: month pills */}
+        {active === 'ev' && (
+          <div className="flex items-center gap-1.5 flex-1 min-w-0 overflow-x-auto px-3 scrollbar-none">
+            {eventsByMonth.map(month => (
+              <MonthPill
+                key={month.key}
+                month={month}
+                isOpen={openMonth === month.key}
+                onToggle={(key) => { setOpenMonth(openMonth === key ? null : key); setOpenCanton(null); }}
+              />
+            ))}
+            <div className="shrink-0 w-4" />
+          </div>
         )}
 
-        {/* EVENTS & AKTIONEN: normaler Scroll-Container */}
-        {active !== 'sh' && (
+        {/* WAFFENHÄNDLER: canton pills */}
+        {active === 'sh' && (
+          <div className="flex items-center gap-1.5 flex-1 min-w-0 overflow-x-auto px-3 scrollbar-none">
+            {CANTONS.map(kt => (
+              <CantonPill
+                key={kt}
+                kt={kt}
+                isOpen={openCanton === kt}
+                onToggle={(k) => { setOpenCanton(openCanton === k ? null : k); setOpenMonth(null); }}
+              />
+            ))}
+            <div className="shrink-0 w-4" />
+          </div>
+        )}
+
+        {/* AKTIONEN: horizontal scroll cards */}
+        {active === 'pr' && (
           <div
             ref={scrollRef}
-            onScroll={updateScrollState}
             onMouseDown={onMouseDown}
             onMouseMove={onMouseMove}
             onMouseUp={onMouseUp}
@@ -256,29 +454,7 @@ export default function BannerZone() {
             className="flex items-center gap-2 flex-1 min-w-0 overflow-x-auto select-none px-3 scrollbar-none"
             style={{ cursor: 'grab', touchAction: 'pan-x', WebkitOverflowScrolling: 'touch' }}
           >
-            {active === 'ev' && upcomingEvents.map((ev, i) => (
-              <div key={i} className="flex items-center gap-2 shrink-0">
-                {i > 0 && <div className="w-px h-4 bg-gray-200 shrink-0" />}
-                <a
-                  href={ev.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onMouseDown={e => e.stopPropagation()}
-                  className="flex items-center gap-0 bg-white border border-gray-200 rounded-lg hover:border-[#4d8230] transition-colors group overflow-hidden whitespace-nowrap shrink-0"
-                >
-                  <div className="bg-[#eef5e8] px-2.5 self-stretch flex items-center border-r border-gray-100">
-                    <span className="text-[10px] font-semibold text-[#4d8230] leading-none">
-                      {formatDateRange(ev.date, ev.dateEnd)}
-                    </span>
-                  </div>
-                  <div className="px-2.5 py-1.5 leading-none">
-                    <div className="text-[11px] font-medium text-gray-800 group-hover:text-[#4d8230] transition-colors">{ev.name}</div>
-                    <div className="text-[10px] text-gray-400 mt-0.5">{ev.ort}</div>
-                  </div>
-                </a>
-              </div>
-            ))}
-            {active === 'pr' && PROMOS.map((item, i) => (
+            {PROMOS.map((item, i) => (
               <div key={i} className="flex items-center gap-2 shrink-0">
                 {i > 0 && <div className="w-px h-4 bg-gray-200 shrink-0" />}
                 <a
@@ -302,83 +478,7 @@ export default function BannerZone() {
           </div>
         )}
 
-        {/* WAFFENHÄNDLER: Kanton-Pills (dropdown rendered outside via fixed position) */}
-        {active === 'sh' && (
-          <div className="flex items-center gap-1.5 flex-1 min-w-0 overflow-x-auto px-3 scrollbar-none">
-            {CANTONS.map(kt => (
-              <button
-                key={kt}
-                onClick={(e) => {
-                  if (openCanton === kt) { setOpenCanton(null); setDropdownPos(null); return; }
-                  const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-                  setDropdownPos({ top: rect.bottom + 4, left: Math.max(8, rect.left) });
-                  setOpenCanton(kt);
-                }}
-                className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full border transition-colors whitespace-nowrap shrink-0 ${
-                  openCanton === kt
-                    ? 'bg-[#4d8230] text-white border-[#4d8230]'
-                    : 'bg-white text-gray-600 border-gray-200 hover:border-[#4d8230] hover:text-[#4d8230]'
-                }`}
-              >
-                {kt}
-                <span className={`text-[9px] rounded-full px-1 ${
-                  openCanton === kt ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-400'
-                }`}>
-                  {DEALERS_BY_CANTON[kt].length}
-                </span>
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
-                  style={{ transform: openCanton === kt ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }}>
-                  <path d="m6 9 6 6 6-6"/>
-                </svg>
-              </button>
-            ))}
-            <div className="shrink-0 w-4" />
-          </div>
-        )}
-
-        {/* Pfeil rechts */}
-        {canScrollRight && active !== 'sh' && (
-          <button onClick={() => scrollBy('right')} className="shrink-0 h-11 px-1.5 text-gray-400 hover:text-[#4d8230] transition-colors">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m9 18 6-6-6-6"/></svg>
-          </button>
-        )}
-
       </div>
-
-      {/* Dealer dropdown — rendered outside scroll container to avoid clipping */}
-      {openCanton && dropdownPos && DEALERS_BY_CANTON[openCanton] && (
-        <>
-          <div className="fixed inset-0 z-40" onClick={() => { setOpenCanton(null); setDropdownPos(null); }} />
-          <div
-            ref={dropdownRef}
-            className="fixed bg-white border border-gray-200 rounded-xl shadow-lg z-50 min-w-[220px] py-1 overflow-hidden"
-            style={{ top: dropdownPos.top, left: dropdownPos.left }}
-          >
-            <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
-              Kanton {openCanton} — {DEALERS_BY_CANTON[openCanton].length} Händler
-            </div>
-            {DEALERS_BY_CANTON[openCanton].map((dealer, i) => (
-              <a
-                key={i}
-                href={dealer.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between px-3 py-2 hover:bg-[#f5faf2] transition-colors group"
-              >
-                <div>
-                  <div className="text-[12px] font-medium text-gray-800 group-hover:text-[#4d8230] transition-colors">
-                    {dealer.name}
-                  </div>
-                  <div className="text-[10px] text-gray-400">{dealer.ort}</div>
-                </div>
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-300 group-hover:text-[#4d8230] ml-2 shrink-0">
-                  <path d="m9 18 6-6-6-6"/>
-                </svg>
-              </a>
-            ))}
-          </div>
-        </>
-      )}
     </div>
   );
 }

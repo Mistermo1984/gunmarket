@@ -295,6 +295,11 @@ export const translations = {
     detail_safety_more: "Mehr erfahren",
     detail_loading_map: "Karte wird geladen...",
 
+    // Good Deal
+    good_deal: "Gutes Angebot",
+    good_deal_voted: "Gutes Angebot ✓",
+    price_history: "Preisverlauf",
+
     // Login
     login_hide_password: "Passwort verbergen",
     login_show_password: "Passwort anzeigen",
@@ -575,6 +580,11 @@ export const translations = {
     detail_safety_text: "Rencontrez-vous dans un lieu public pour la remise. Ne faites pas de paiement anticipé.",
     detail_safety_more: "En savoir plus",
     detail_loading_map: "Chargement de la carte...",
+
+    // Good Deal
+    good_deal: "Bonne affaire",
+    good_deal_voted: "Bonne affaire ✓",
+    price_history: "Historique des prix",
 
     // Login
     login_hide_password: "Masquer le mot de passe",
@@ -857,6 +867,11 @@ export const translations = {
     detail_safety_more: "Scopri di più",
     detail_loading_map: "Caricamento mappa...",
 
+    // Good Deal
+    good_deal: "Buon affare",
+    good_deal_voted: "Buon affare ✓",
+    price_history: "Storico prezzi",
+
     // Login
     login_hide_password: "Nascondi password",
     login_show_password: "Mostra password",
@@ -1138,6 +1153,11 @@ export const translations = {
     detail_safety_more: "Learn more",
     detail_loading_map: "Loading map...",
 
+    // Good Deal
+    good_deal: "Good Deal",
+    good_deal_voted: "Good Deal ✓",
+    price_history: "Price History",
+
     // Login
     login_hide_password: "Hide password",
     login_show_password: "Show password",
@@ -1418,6 +1438,11 @@ export const translations = {
     detail_safety_text: "Entupai en in lieu public per la surdada. Na fatschei nagins pajaments anticipads.",
     detail_safety_more: "Emprender dapli",
     detail_loading_map: "Chargiar charta...",
+
+    // Good Deal
+    good_deal: "Buna purschida",
+    good_deal_voted: "Buna purschida ✓",
+    price_history: "Svilup dal pretsch",
 
     // Login
     login_hide_password: "Zuppar pled-clav",

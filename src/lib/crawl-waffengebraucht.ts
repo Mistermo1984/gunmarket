@@ -709,6 +709,14 @@ async function upsertItems(
           args: [uuidv4(), id, item.imageUrls[i], i, i === 0 ? 1 : 0],
         });
       }
+
+      // Record initial price in history
+      if (item.preis > 0) {
+        statements.push({
+          sql: "INSERT INTO listing_price_history (id, listing_id, preis, recorded_at) VALUES (?, ?, ?, ?)",
+          args: [uuidv4(), id, item.preis, now],
+        });
+      }
       created++;
     } else {
       // Existing listing — check for changes
@@ -723,6 +731,19 @@ async function upsertItems(
       if (item.preis > 0 && item.preis !== existing.preis) {
         changes.push("preis = ?", "price_updated_at = ?");
         args.push(item.preis, now);
+
+        // Record price history
+        statements.push({
+          sql: "INSERT INTO listing_price_history (id, listing_id, preis, recorded_at) VALUES (?, ?, ?, ?)",
+          args: [uuidv4(), existing.id, item.preis, now],
+        });
+
+        // Update price_change_pct
+        const pctChange = existing.preis > 0
+          ? ((item.preis - existing.preis) / existing.preis) * 100
+          : 0;
+        changes.push("price_change_pct = ?");
+        args.push(Math.round(pctChange * 10) / 10);
       }
 
       // More images?

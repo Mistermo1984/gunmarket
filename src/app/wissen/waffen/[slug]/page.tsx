@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { ChevronRight, ExternalLink } from 'lucide-react'
 import { wissenWaffen } from '@/lib/wissen-data'
 import KommentarSection from '@/components/wissen/KommentarSection'
+import WikiLanguageBanner from '@/components/wissen/WikiLanguageBanner'
 import type { Metadata } from 'next'
 
 interface Props {
@@ -124,6 +125,8 @@ export default async function WaffeArtikelPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      <WikiLanguageBanner />
 
       {/* Content + Sidebar */}
       <section className="bg-white py-10 md:py-14">

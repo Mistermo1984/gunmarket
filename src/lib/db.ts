@@ -242,6 +242,25 @@ export async function initializeSchema(): Promise<void> {
     CREATE INDEX IF NOT EXISTS idx_messages_sender ON messages(sender_id);
     CREATE INDEX IF NOT EXISTS idx_listings_source_id ON listings(source_id);
 
+    CREATE TABLE IF NOT EXISTS good_deal_votes (
+      id TEXT PRIMARY KEY,
+      listing_id TEXT NOT NULL,
+      user_id TEXT,
+      fingerprint TEXT NOT NULL,
+      ip_hash TEXT NOT NULL,
+      created_at TEXT DEFAULT (datetime('now')),
+      FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE,
+      UNIQUE(listing_id, fingerprint)
+    );
+
+    CREATE TABLE IF NOT EXISTS listing_price_history (
+      id TEXT PRIMARY KEY,
+      listing_id TEXT NOT NULL,
+      preis REAL NOT NULL,
+      recorded_at TEXT DEFAULT (datetime('now')),
+      FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE
+    );
+
     CREATE TABLE IF NOT EXISTS crawler_state (
       id INTEGER PRIMARY KEY CHECK (id = 1),
       status TEXT DEFAULT 'idle',
@@ -257,4 +276,8 @@ export async function initializeSchema(): Promise<void> {
     );
     INSERT OR IGNORE INTO crawler_state (id) VALUES (1);
   `);
+
+  // Add columns to listings (SQLite lacks IF NOT EXISTS for ALTER TABLE)
+  try { await dbRun("ALTER TABLE listings ADD COLUMN good_deal_count INTEGER DEFAULT 0"); } catch {}
+  try { await dbRun("ALTER TABLE listings ADD COLUMN price_change_pct REAL DEFAULT 0"); } catch {}
 }

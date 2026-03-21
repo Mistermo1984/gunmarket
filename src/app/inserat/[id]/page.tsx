@@ -33,6 +33,8 @@ import ListingCard from "@/components/ui/ListingCard";
 import ImageLightbox from "@/components/inserat/ImageLightbox";
 import KontaktModal from "@/components/inserat/KontaktModal";
 import MeldenModal from "@/components/inserat/MeldenModal";
+import GoodDealButton from "@/components/listing/GoodDealButton";
+import PriceHistory from "@/components/listing/PriceHistory";
 import { apiListingToCard } from "@/lib/listing-helpers";
 import { useLocale } from "@/lib/locale-context";
 
@@ -571,7 +573,13 @@ export default function InseratDetailPage() {
                 </p>
               </div>
 
-              {/* Safety */}
+              {/* Good Deal + Price History */}
+              <div className="rounded-xl bg-white p-5 shadow-sm space-y-4">
+                <GoodDealButton listingId={listing.id} />
+                <PriceHistory listingId={listing.id} currentPrice={listing.preis} />
+              </div>
+
+            {/* Safety */}
               <div className="rounded-xl bg-amber-50 p-4">
                 <div className="flex items-start gap-2">
                   <Shield size={18} className="mt-0.5 shrink-0 text-amber-600" />

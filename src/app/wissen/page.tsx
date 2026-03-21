@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { BookOpen, Target, ChevronRight } from 'lucide-react'
 import { wissenWaffen, wissenMunition } from '@/lib/wissen-data'
 import WissenSidebar from '@/components/wissen/WissenSidebar'
+import WikiLanguageBanner from '@/components/wissen/WikiLanguageBanner'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -53,6 +54,8 @@ export default function WissenPage() {
           </p>
         </div>
       </section>
+
+      <WikiLanguageBanner />
 
       {/* Two-column layout */}
       <div className="mx-auto flex max-w-7xl gap-6 px-4 py-8">

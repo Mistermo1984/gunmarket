@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { BarChart3, TrendingUp, Clock, ExternalLink, ChevronRight } from "lucide-react";
+import PriceDistributionChart from "@/components/markt/PriceDistributionChart";
+import BrandMedianTable from "@/components/markt/BrandMedianTable";
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -171,7 +173,7 @@ export default function MarktInsightsPage() {
   const overview = data.overview;
   const avgByCategory = data.avgByCategory || [];
   const byZustand = data.byZustand || [];
-  const priceRanges = data.priceRanges || [];
+
   const byRechtsstatus = data.byRechtsstatus || [];
   const topMarken = data.topMarken || [];
   const topKaliber = data.topKaliber || [];
@@ -180,7 +182,7 @@ export default function MarktInsightsPage() {
 
   const totalZustand = byZustand.reduce((s, z) => s + (z.count || 0), 0);
   const totalRecht = byRechtsstatus.reduce((s, r) => s + (r.count || 0), 0);
-  const maxPrice = priceRanges.length > 0 ? Math.max(...priceRanges.map((p) => p.count || 0), 1) : 1;
+
   const maxMarke = topMarken.length > 0 ? Math.max(...topMarken.map((m) => m.count || 0), 1) : 1;
   const maxKaliber = topKaliber.length > 0 ? Math.max(...topKaliber.map((k) => k.count || 0), 1) : 1;
   const maxKanton = byKanton.length > 0 ? Math.max(...byKanton.map((k) => k.count || 0), 1) : 1;
@@ -369,32 +371,8 @@ export default function MarktInsightsPage() {
 
         {/* ═══ SECTION 3: PRICE DISTRIBUTION + LEGAL STATUS ═══ */}
         <div className="mb-10 grid gap-6 lg:grid-cols-2">
-          {/* Left: Price distribution */}
-          <Card>
-            <SectionTitle>Preisverteilung (CHF)</SectionTitle>
-            <div className="flex items-end gap-2 pt-4" style={{ height: 200 }}>
-              {priceRanges.map((r) => {
-                const hPct = maxPrice > 0 ? Math.max((r.count / maxPrice) * 100, 5) : 5;
-                // Parse range label like "<500", "500-1500", "5000+" into URL params
-                const rangeMatch = r.range_label.match(/^<\s*(\d+)/);
-                const rangeBetween = r.range_label.match(/(\d+)\s*[-–]\s*(\d+)/);
-                const rangeAbove = r.range_label.match(/(\d+)\s*\+/);
-                let priceHref = "/?sort=preis-asc";
-                if (rangeMatch) priceHref = `/?maxPreis=${rangeMatch[1]}`;
-                else if (rangeBetween) priceHref = `/?minPreis=${rangeBetween[1]}&maxPreis=${rangeBetween[2]}`;
-                else if (rangeAbove) priceHref = `/?minPreis=${rangeAbove[1]}`;
-                return (
-                  <Link key={r.range_label} href={priceHref} className="flex flex-1 flex-col items-center gap-2 group cursor-pointer">
-                    <span className="font-mono text-xs font-bold text-white">{r.count}</span>
-                    <div className="w-full overflow-hidden rounded-t-md bg-white/5 group-hover:bg-white/10 transition-colors" style={{ height: `${hPct}%` }}>
-                      <div className="h-full w-full rounded-t-md bg-gradient-to-t from-[#166534] to-[#4ade80] group-hover:from-[#16a34a] group-hover:to-[#86efac] transition-colors" />
-                    </div>
-                    <span className="text-[10px] leading-tight text-[#9ca3af] group-hover:text-[#4ade80] transition-colors">{r.range_label}</span>
-                  </Link>
-                );
-              })}
-            </div>
-          </Card>
+          {/* Left: Interactive price distribution */}
+          <PriceDistributionChart />
 
           {/* Right: Legal status */}
           <Card>
@@ -445,6 +423,11 @@ export default function MarktInsightsPage() {
               ))}
             </div>
           </Card>
+        </div>
+
+        {/* ═══ SECTION 4b: BRAND MEDIAN PRICES ═══ */}
+        <div className="mb-10">
+          <BrandMedianTable />
         </div>
 
         {/* ═══ SECTION 5: TOP CALIBERS ═══ */}

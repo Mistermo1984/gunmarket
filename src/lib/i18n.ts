@@ -153,6 +153,7 @@ export const translations = {
     reg_deletable: "Jederzeit löschbar",
 
     // Footer
+    footer_faq: "FAQ",
     footer_contact: "Kontakt",
     footer_imprint: "Impressum",
     footer_agb: "AGB",
@@ -411,6 +412,7 @@ export const translations = {
     reg_no_spam: "Pas de spam",
     reg_deletable: "Supprimable à tout moment",
 
+    footer_faq: "FAQ",
     footer_contact: "Contact",
     footer_imprint: "Mentions légales",
     footer_agb: "CGU",
@@ -665,6 +667,7 @@ export const translations = {
     reg_no_spam: "Niente spam",
     reg_deletable: "Cancellabile in qualsiasi momento",
 
+    footer_faq: "FAQ",
     footer_contact: "Contatto",
     footer_imprint: "Note legali",
     footer_agb: "CGU",
@@ -919,6 +922,7 @@ export const translations = {
     reg_no_spam: "No spam",
     reg_deletable: "Deletable anytime",
 
+    footer_faq: "FAQ",
     footer_contact: "Contact",
     footer_imprint: "Legal Notice",
     footer_agb: "Terms",
@@ -1173,6 +1177,7 @@ export const translations = {
     reg_no_spam: "Nagin spam",
     reg_deletable: "Stizzabel da mintga mument",
 
+    footer_faq: "FAQ",
     footer_contact: "Contact",
     footer_imprint: "Impressum",
     footer_agb: "CGU",

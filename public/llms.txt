@@ -1,0 +1,42 @@
+# GunMarket.ch — Der Schweizer Waffenmarktplatz
+
+## About
+GunMarket.ch is Switzerland's largest online marketplace for buying and selling legal firearms, ammunition, optics, and accessories. The platform aggregates listings from across Switzerland and allows private individuals and dealers to list their items for free.
+
+## What we offer
+- Thousands of listings for handguns, rifles, military surplus, air guns, optics, ammunition, and accessories
+- Listings from all 26 Swiss cantons
+- Free listing creation for private sellers
+- Map-based search to find firearms near you
+- Waffen-Wiki: comprehensive German-language encyclopedia of firearms used in Switzerland
+- Swiss gun law information (Waffenrecht)
+- Available in German, French, Italian, English, and Romansh
+
+## Key facts
+- Largest Swiss firearms marketplace by listing count
+- 100% free for buyers and sellers
+- Legal, regulated marketplace — all Swiss laws apply
+- Covers all weapon categories legal in Switzerland: Kurzwaffen (handguns), Langwaffen (long guns), Ordonnanzwaffen (military surplus), Luftdruckwaffen (air guns), Optik (optics), Munition (ammunition), Messer & Blankwaffen (knives), Wiederladen (reloading)
+
+## Target audience
+- Swiss sport shooters (Sportschützen)
+- Hunters (Jäger)
+- Collectors (Sammler / Waffensammler)
+- Military surplus enthusiasts
+- Expats in Switzerland looking to buy/sell legally
+
+## Language
+Primary: German (Deutsch)
+Also available: Français, Italiano, English, Rumantsch
+
+## URLs
+- Homepage: https://gunmarket.ch
+- All listings: https://gunmarket.ch/suche
+- Waffen-Wiki: https://gunmarket.ch/wissen/waffen
+- Swiss gun law: https://gunmarket.ch/waffenrecht
+- FAQ: https://gunmarket.ch/faq
+- Contact: https://gunmarket.ch/kontakt
+- Sitemap: https://gunmarket.ch/sitemap.xml
+
+## Data freshness
+Listings are updated daily via automated crawling and manual submissions.

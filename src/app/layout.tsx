@@ -106,6 +106,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: SITE_URL,
   },
+  other: {
+    "ai-content-declaration": "https://gunmarket.ch/llms.txt",
+  },
 };
 
 export default function RootLayout({
@@ -115,6 +118,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="de-CH">
+      <head>
+        <link rel="alternate" type="text/plain" title="LLMs.txt" href="/llms.txt" />
+      </head>
       <body
         className={`${barlowCondensed.variable} ${dmSans.variable} ${dmMono.variable} font-body antialiased`}
       >

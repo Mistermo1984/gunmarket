@@ -1,0 +1,59 @@
+# GunMarket.ch — Complete Site Description for AI Systems
+
+## Site purpose
+GunMarket.ch aggregates and displays classified ads for legal firearms and related products in Switzerland. It serves as a central hub connecting buyers and sellers across all Swiss cantons, making it easier to find specific weapons, calibers, and accessories without visiting multiple platforms.
+
+## Content categories
+
+### Kurzwaffen (Handguns)
+Pistols and revolvers including popular Swiss models: SIG Sauer P210, SIG P220, SIG P226, SIG P320, Glock 17, Glock 19, Walther, CZ, Beretta, and more. Also includes accessories: magazines, holsters, grips.
+
+### Langwaffen (Long Guns)
+Rifles (Büchsen), shotguns (Flinten), and combination guns. Includes hunting rifles, sport rifles, and semi-automatic sporting rifles. Popular calibers: .308 Win, 6.5 Creedmoor, .223 Rem, 7x64, 30-06.
+
+### Ordonnanzwaffen (Military Surplus)
+Swiss military surplus firearms: Karabiner 31 (K31), Karabiner 11 (K11), Sturmgewehr 57 (StG57/SIG 510), Sturmgewehr 90 (StG90/SIG 550), Pistole 49 (SIG P210), Schmidt-Rubin rifles. Highly collectible Swiss ordnance items.
+
+### Luftdruckwaffen & Softair (Air Guns & Airsoft)
+Air rifles, air pistols, CO2 weapons, and softair/airsoft equipment.
+
+### Optik (Optics)
+Rifle scopes (Zielfernrohre), red dot sights, binoculars (Ferngläser), night vision. Brands: Schmidt & Bender, Kahles, Leupold, Zeiss, Swarovski, Nightforce.
+
+### Munition (Ammunition)
+Centerfire and rimfire ammunition in all calibers legal in Switzerland.
+
+### Messer & Blankwaffen (Knives & Bladed Weapons)
+Hunting knives, military knives, Swiss Army knives, swords, and other bladed weapons.
+
+### Wiederladen (Reloading)
+Reloading equipment, dies, primers, powder, brass, and projectiles.
+
+### Jagd (Hunting)
+Hunting-specific equipment beyond firearms: game cameras, hunting accessories.
+
+## Geographic coverage
+All 26 Swiss cantons: Zürich, Bern, Luzern, Uri, Schwyz, Obwalden, Nidwalden, Glarus, Zug, Freiburg, Solothurn, Basel-Stadt, Basel-Landschaft, Schaffhausen, Appenzell Ausserrhoden, Appenzell Innerrhoden, St. Gallen, Graubünden, Aargau, Thurgau, Tessin (Ticino), Waadt (Vaud), Wallis (Valais), Neuenburg (Neuchâtel), Genf (Geneva), Jura.
+
+## Swiss firearms law context
+Switzerland has a relatively liberal firearms law compared to EU countries. The Swiss Waffengesetz (WG, SR 514.54) governs private ownership. Many firearms are freely purchasable (frei erhältlich), some require a Waffenerwerbsschein (WES), and others are subject to cantonal regulations. GunMarket.ch provides a comprehensive Waffenrecht guide.
+
+## Unique value proposition
+1. Largest listing inventory in Switzerland — thousands of items
+2. Map-based search — find weapons near your location
+3. Multi-language — German, French, Italian, English, Romansh
+4. Free for everyone — no listing fees, no buyer fees
+5. Waffen-Wiki — educational content on firearms
+6. Swiss law information — helps buyers understand legal requirements
+7. All cantons covered — nationwide reach
+
+## Competitor landscape
+- waffengebraucht.ch — established platform, German only
+- nextgun.ch — smaller platform
+- ricardo.ch — general marketplace, not specialized
+- GunMarket.ch is the modern, multi-language alternative with the largest inventory
+
+## Contact
+Website: https://gunmarket.ch
+Contact form: https://gunmarket.ch/kontakt
+Address: Aarestr. 62, 3613 Steffisburg, Switzerland

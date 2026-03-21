@@ -28,6 +28,7 @@ const footerSections: { titleKey: TranslationKey; links: { labelKey: Translation
   {
     titleKey: "footer_imprint",
     links: [
+      { labelKey: "footer_faq" as TranslationKey, href: "/faq" },
       { labelKey: "footer_contact", href: "/kontakt" },
       { labelKey: "footer_agb", href: "/agb" },
       { labelKey: "footer_privacy", href: "/datenschutz" },

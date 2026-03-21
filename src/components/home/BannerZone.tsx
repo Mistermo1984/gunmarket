@@ -1,94 +1,86 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-interface BannerItem {
-  name: string;
-  meta: string;
-  url: string;
-}
-
-interface BannerTab {
-  key: string;
-  label: string;
-  items: BannerItem[];
-}
-
-const TABS: BannerTab[] = [
-  {
-    key: "ev",
-    label: "Events",
+const bzData = {
+  ev: {
+    label: 'Events & Börsen',
     items: [
-      { name: "Waffenbörse Bernexpo", meta: "Börse · 15.–16. März · Bern", url: "#" },
-      { name: "Ordonnanz-Schiessen BEJV", meta: "Schiessen · 22. März · Thun", url: "#" },
-      { name: "Kantonales Pistolenschiessen ZH", meta: "Meisterschaft · 5. April · Zürich", url: "#" },
+      { name: 'Waffenbörse Bernexpo', meta: '15.–16. März · Bern', href: '#' },
+      { name: 'Ordonnanz-Schiessen BEJV', meta: '22. März · Thun BE', href: '#' },
+      { name: 'Pistolenschiessen Zürich', meta: '5. April · Zürich', href: '#' },
     ],
   },
-  {
-    key: "sh",
-    label: "Händler",
+  sh: {
+    label: 'Partnerhändler',
     items: [
-      { name: "Ingold Waffen", meta: "Partnerhändler · Schaffhausen", url: "#" },
-      { name: "Aebi Waffen", meta: "Partnerhändler · Luzern", url: "#" },
-      { name: "Swiss Guns", meta: "Partnerhändler · Bern", url: "#" },
+      { name: 'Ingold Waffen', meta: 'Schaffhausen', href: '#' },
+      { name: 'Aebi Waffen', meta: 'Luzern', href: '#' },
+      { name: 'Swiss Guns', meta: 'Bern', href: '#' },
     ],
   },
-  {
-    key: "pr",
-    label: "Aktionen",
+  pr: {
+    label: 'Aktionen',
     items: [
-      { name: "Frühjahrsputz bei Ingold", meta: "10% auf Reinigungssets bis 31. März", url: "#" },
-      { name: "7.5×55 Swiss ab CHF 0.65", meta: "Munitions-Abverkauf · Solange Vorrat", url: "#" },
-      { name: "Inserat aufgeben — kostenlos", meta: "gunmarket.ch · Jetzt starten", url: "/dashboard/inserat-erstellen" },
+      { name: 'Frühjahrsputz bei Ingold', meta: '10% Rabatt bis 31. März', href: '#' },
+      { name: '7.5×55 Swiss ab CHF 0.65', meta: 'Solange Vorrat', href: '#' },
+      { name: 'Kostenlos inserieren', meta: 'In 2 Min. online', href: '/inserat/neu' },
     ],
   },
-];
+} as const;
+
+type TabKey = keyof typeof bzData;
 
 export default function BannerZone() {
-  const [activeKey, setActiveKey] = useState("ev");
-  const active = TABS.find((t) => t.key === activeKey) ?? TABS[0];
+  const [active, setActive] = useState<TabKey>('ev');
+  const current = bzData[active];
 
   return (
-    <div className="hidden md:flex items-center h-[42px] px-6 bg-white border-b border-neutral-200 overflow-hidden">
-      {/* Label */}
-      <span className="shrink-0 pr-4 mr-4 border-r border-neutral-200 text-[10px] font-semibold uppercase tracking-wider text-neutral-500">
-        {active.label}
-      </span>
+    <div className="hidden md:block w-full bg-gray-50 border-t border-b border-gray-200">
+      <div className="max-w-7xl mx-auto px-6 flex items-center h-12 gap-0">
 
-      {/* Chips */}
-      <div className="flex items-center gap-1.5 flex-1 overflow-hidden">
-        {active.items.map((item, i) => (
-          <div key={item.name} className="contents">
-            {i > 0 && <div className="w-px h-4 bg-neutral-200 shrink-0 mx-0.5" />}
-            <a
-              href={item.url}
-              className="flex items-center gap-2 px-3 py-1 border border-neutral-200 rounded-md shrink-0 bg-white hover:border-[#4d8230] transition-colors no-underline"
+        {/* Tab Switcher — links */}
+        <div className="flex items-center gap-0 shrink-0 pr-5 mr-5 border-r border-gray-200 h-12">
+          {(Object.keys(bzData) as TabKey[]).map((key) => (
+            <button
+              key={key}
+              onClick={() => setActive(key)}
+              className={`text-xs px-3 h-12 border-b-2 transition-all whitespace-nowrap font-medium ${
+                active === key
+                  ? 'text-[#4d8230] border-[#4d8230]'
+                  : 'text-gray-400 border-transparent hover:text-gray-600'
+              }`}
             >
-              <div className="w-1.5 h-1.5 rounded-full bg-[#4d8230] shrink-0" />
-              <div>
-                <div className="text-xs font-medium text-neutral-900">{item.name}</div>
-                <div className="text-[10px] text-neutral-500">{item.meta}</div>
-              </div>
-            </a>
-          </div>
-        ))}
-      </div>
+              {bzData[key].label}
+            </button>
+          ))}
+        </div>
 
-      {/* Tab switcher */}
-      <div className="flex items-center shrink-0 pl-4 ml-auto border-l border-neutral-200 h-[42px]">
-        {TABS.map((tab) => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveKey(tab.key)}
-            className={`text-xs px-2.5 h-[42px] bg-transparent border-0 border-b-2 cursor-pointer whitespace-nowrap transition-all ${
-              tab.key === activeKey
-                ? "text-[#4d8230] border-b-[#4d8230] font-medium"
-                : "text-neutral-500 border-b-transparent hover:text-neutral-900"
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
+        {/* Items — rechts, scrollbar */}
+        <div className="flex items-center gap-2 flex-1 overflow-hidden">
+          {current.items.map((item, i) => (
+            <div key={i} className="flex items-center gap-2 shrink-0">
+              {i > 0 && (
+                <div className="w-px h-4 bg-gray-200 shrink-0" />
+              )}
+              <a
+                href={item.href}
+                className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-lg hover:border-[#4d8230] transition-colors group"
+              >
+                <div className="w-1.5 h-1.5 rounded-full bg-[#4d8230] shrink-0" />
+                <div className="leading-none">
+                  <div className="text-[12px] font-medium text-gray-800 group-hover:text-[#4d8230] transition-colors">
+                    {item.name}
+                  </div>
+                  <div className="text-[10px] text-gray-400 mt-0.5">
+                    {item.meta}
+                  </div>
+                </div>
+              </a>
+            </div>
+          ))}
+        </div>
+
       </div>
     </div>
   );

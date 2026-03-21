@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { X, SlidersHorizontal } from "lucide-react";
-import ListingCard, { type ListingCardData } from "@/components/ui/ListingCard";
+import { X } from "lucide-react";
+import { type ListingCardData } from "@/components/ui/ListingCard";
 import FilterSidebar, {
   INITIAL_FILTERS,
   type FilterState,

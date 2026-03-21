@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import Link from "next/link";
 import { X, SlidersHorizontal } from "lucide-react";
 import ListingCard, { type ListingCardData } from "@/components/ui/ListingCard";
 import FilterSidebar, {
@@ -34,7 +33,6 @@ export default function HomeContent() {
     if (filters.preisMax) params.set("maxPreis", filters.preisMax);
     if (filters.marke) params.set("suche", filters.marke);
     params.set("sort", "neueste");
-    params.set("limit", "12");
 
     fetch(`/api/listings?${params}`)
       .then((res) => res.json())
@@ -89,7 +87,7 @@ export default function HomeContent() {
         <div className="mb-4 flex items-end justify-between">
           <div>
             <h2 className="font-display text-xl font-black uppercase tracking-tight text-brand-dark md:text-2xl">
-              {t("listings_title")}
+              {activeFilterCount > 0 ? t("listings_title_filtered") : t("listings_title")}
             </h2>
             <p className="mt-0.5 text-sm text-neutral-500">
               {totalResults} {t("home_found")}
@@ -109,12 +107,6 @@ export default function HomeContent() {
                 </span>
               )}
             </button>
-            <Link
-              href="/suche"
-              className="hidden text-sm font-medium text-brand-green hover:underline sm:inline-flex"
-            >
-              {t("listings_show_all")} &rarr;
-            </Link>
           </div>
         </div>
 
@@ -159,15 +151,6 @@ export default function HomeContent() {
           </div>
         )}
 
-        {/* Mobile "Alle anzeigen" */}
-        <div className="mt-4 text-center sm:hidden">
-          <Link
-            href="/suche"
-            className="text-sm font-medium text-brand-green hover:underline"
-          >
-            Alle anzeigen &rarr;
-          </Link>
-        </div>
       </div>
 
       {/* Mobile Filter — Bottom Sheet */}

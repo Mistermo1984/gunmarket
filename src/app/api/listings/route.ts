@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
     const suche = searchParams.get("suche");
     const sortierung = searchParams.get("sort") || "preis-asc";
     const seite = parseInt(searchParams.get("seite") || "1");
-    const limit = parseInt(searchParams.get("limit") || "20");
+    const limit = parseInt(searchParams.get("limit") || "200");
     const offset = (seite - 1) * limit;
 
     let where = userId ? "WHERE l.status != 'geloescht'" : "WHERE l.status = 'aktiv'";

@@ -36,6 +36,7 @@ export const translations = {
 
     // Listings
     listings_title: "Neueste Inserate",
+    listings_title_filtered: "Inserate",
     listings_show_all: "Alle anzeigen →",
     listings_no_results: "Keine Inserate gefunden",
     listings_no_results_hint: "Versuche es mit einem grösseren Zeitraum oder weniger Filtern.",
@@ -333,6 +334,7 @@ export const translations = {
     stats_cantons: "Cantons",
 
     listings_title: "Dernières annonces",
+    listings_title_filtered: "Annonces",
     listings_show_all: "Tout afficher →",
     listings_no_results: "Aucune annonce trouvée",
     listings_no_results_hint: "Essayez avec une période plus longue ou moins de filtres.",
@@ -613,6 +615,7 @@ export const translations = {
     stats_cantons: "Cantoni",
 
     listings_title: "Ultimi annunci",
+    listings_title_filtered: "Annunci",
     listings_show_all: "Mostra tutti →",
     listings_no_results: "Nessun annuncio trovato",
     listings_no_results_hint: "Prova con un periodo più lungo o meno filtri.",
@@ -893,6 +896,7 @@ export const translations = {
     stats_cantons: "Cantons",
 
     listings_title: "Latest Listings",
+    listings_title_filtered: "Listings",
     listings_show_all: "Show all →",
     listings_no_results: "No listings found",
     listings_no_results_hint: "Try a longer time period or fewer filters.",
@@ -1173,6 +1177,7 @@ export const translations = {
     stats_cantons: "Chantuns",
 
     listings_title: "Ils pli novs annunzis",
+    listings_title_filtered: "Annunzis",
     listings_show_all: "Mussar tuts →",
     listings_no_results: "Nagins annunzis chattads",
     listings_no_results_hint: "Emprova cun in temp pli lung u main filters.",

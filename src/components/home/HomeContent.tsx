@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useCallback, Suspense } from "react";
 import { X } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { type ListingCardData } from "@/components/ui/ListingCard";
@@ -17,6 +17,14 @@ import { useLocale } from "@/lib/locale-context";
 const LIMIT = 25;
 
 export default function HomeContent() {
+  return (
+    <Suspense fallback={null}>
+      <HomeContentInner />
+    </Suspense>
+  );
+}
+
+function HomeContentInner() {
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
   const [listings, setListings] = useState<ListingCardData[]>([]);
   const [totalResults, setTotalResults] = useState(0);

@@ -149,7 +149,22 @@ function PortalDropdown({ anchorRef, isOpen, onClose, children }: {
   useEffect(() => {
     if (!isOpen || !anchorRef.current) return;
     const r = anchorRef.current.getBoundingClientRect();
-    setPos({ top: r.bottom + window.scrollY + 4, left: r.left + window.scrollX, width: r.width });
+    setPos({ top: r.bottom + 4, left: r.left, width: r.width });
+  }, [isOpen, anchorRef]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const update = () => {
+      if (!anchorRef.current) return;
+      const r = anchorRef.current.getBoundingClientRect();
+      setPos({ top: r.bottom + 4, left: r.left, width: r.width });
+    };
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
   }, [isOpen, anchorRef]);
 
   useEffect(() => {

@@ -268,12 +268,21 @@ function parseCity(html: string): string {
 }
 
 function parseImages(html: string): string[] {
-  const thumbMatches = Array.from(
-    html.matchAll(
+  // ONLY extract images from div.main-effect.effect6 (the listing's own gallery)
+  // Related listings use <tr class="effect6">, NOT <div class="main-effect effect6">
+  const mainEffectMatch =
+    html.match(/class="main-effect effect6"[^>]*>([\s\S]*?)<\/div>/i) ||
+    html.match(/class="[^"]*main-effect[^"]*effect6[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
+
+  if (!mainEffectMatch) return [];
+
+  const galleryHtml = mainEffectMatch[0];
+  const matches =
+    galleryHtml.match(
       /d9c3dmdj8vwy7\.cloudfront\.net\/\d+_thumbnail\.(?:jpg|jpeg|png)/gi
-    )
-  ).map((m) => m[0]);
-  return Array.from(new Set(thumbMatches)).map(
+    ) || [];
+
+  return Array.from(new Set(matches)).map(
     (u) => "https://" + u.replace(/_thumbnail\./, ".")
   );
 }

@@ -331,17 +331,22 @@ async function scrapeGwListing(url: string): Promise<CrawledItem | null> {
     ortschaft = cityMatch[1].trim();
   }
 
-  // Images: ONLY from d9c3dmdj8vwy7.cloudfront.net (listing CDN)
-  // DO NOT use dkdbo8c81igf8.cloudfront.net (ads/sponsors)
-  // Thumbnail: d9c3dmdj8vwy7.cloudfront.net/375960_thumbnail.jpg → full: .../375960.jpg
-  const thumbMatches = Array.from(
-    html.matchAll(
-      /d9c3dmdj8vwy7\.cloudfront\.net\/\d+_thumbnail\.(?:jpg|jpeg|png)/gi
-    )
-  ).map((m) => m[0]);
-  const imageUrls = Array.from(new Set(thumbMatches)).map((u) =>
-    "https://" + u.replace(/_thumbnail\./, ".")
-  );
+  // Images: ONLY from div.main-effect.effect6 (the listing's own gallery)
+  // Related listings use <tr class="effect6">, NOT <div class="main-effect effect6">
+  const mainEffectMatch =
+    html.match(/class="main-effect effect6"[^>]*>([\s\S]*?)<\/div>/i) ||
+    html.match(/class="[^"]*main-effect[^"]*effect6[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
+  let imageUrls: string[] = [];
+  if (mainEffectMatch) {
+    const galleryHtml = mainEffectMatch[0];
+    const thumbMatches =
+      galleryHtml.match(
+        /d9c3dmdj8vwy7\.cloudfront\.net\/\d+_thumbnail\.(?:jpg|jpeg|png)/gi
+      ) || [];
+    imageUrls = Array.from(new Set(thumbMatches)).map((u) =>
+      "https://" + u.replace(/_thumbnail\./, ".")
+    );
+  }
 
   // Category: URL-based mapping for hauptkategorie, classifier for unterkategorie
   const hauptkategorie = mapCategoryFromUrl(url);

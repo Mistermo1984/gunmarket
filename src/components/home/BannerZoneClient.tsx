@@ -36,16 +36,16 @@ export default function BannerZoneClient({
   ];
 
   return (
-    <div className="w-full bg-gray-50 border-t border-b border-gray-200 overflow-visible">
-      <div className="max-w-7xl mx-auto px-6 flex items-center h-12 gap-0 overflow-visible">
+    <div className="w-full bg-gray-50 border-t border-b border-gray-200">
+      <div className="max-w-7xl mx-auto px-6 flex items-center py-1.5 gap-0">
 
         {/* Tabs links */}
-        <div className="flex items-center shrink-0 pr-5 mr-5 border-r border-gray-200 h-12">
+        <div className="flex items-center shrink-0 pr-5 mr-5 border-r border-gray-200 self-stretch">
           {tabs.map(({ key, label }) => (
             <button
               key={key}
               onClick={() => setActive(key)}
-              className={`text-xs px-3 h-12 border-b-2 transition-all whitespace-nowrap font-medium ${
+              className={`text-xs px-3 border-b-2 transition-all whitespace-nowrap font-medium ${
                 active === key
                   ? 'text-[#4d8230] border-[#4d8230]'
                   : 'text-gray-400 border-transparent hover:text-gray-600'
@@ -67,7 +67,7 @@ export default function BannerZoneClient({
         </div>
 
         {/* Items with fade gradient */}
-        <div className="relative flex-1 overflow-hidden">
+        <div className="relative flex-1 min-w-0">
           <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-gray-50 to-transparent pointer-events-none z-10" />
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pr-12">
             {items.length === 0 && active === 'ev' && (

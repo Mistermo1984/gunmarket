@@ -30,58 +30,101 @@ const ALL_EVENTS = [
   { name: 'Morgartenschiessen',            date: '2026-11-14', dateEnd: '2026-11-14', ort: 'Morgarten',     href: 'https://www.morgartenschiessen.ch' },
 ];
 
-const DEALERS = [
-  { name: 'Gun Factory',               meta: 'Rümlang ZH',              href: 'https://www.gunfactory.ch' },
-  { name: 'Munitionsdepot.ch',         meta: 'Zwingen BL',              href: 'https://www.munitionsdepot.ch' },
-  { name: 'W. Glaser Waffen',          meta: 'Zürich ZH',               href: 'https://www.wglaser.ch' },
-  { name: 'Natur Aktiv / Waffenbörse', meta: 'Dietikon ZH',             href: 'https://www.waffenboerse.ch' },
-  { name: 'Felder Jagdhof',            meta: 'Ebikon LU',               href: 'https://www.felder-jagdhof.ch' },
-  { name: 'B&T Shop',                  meta: 'Thun / Wallisellen',       href: 'https://www.bt-ag.ch' },
-  { name: 'Waffen Ingold',             meta: 'Oensingen SO',            href: 'https://www.waffen-ingold.ch' },
-  { name: 'Aebi Waffen',               meta: 'Hasle-Rüegsau BE',        href: 'https://www.aebiwaffen.ch' },
-  { name: 'Lagardère',                 meta: 'Morges VD',               href: 'https://www.lagardere.ch' },
-  { name: 'Wyss Waffen',               meta: 'Burgdorf BE',             href: 'https://www.wysswaffen.ch' },
-  { name: 'Schild Waffen',             meta: 'Wallisellen ZH',          href: 'https://www.schildwaffen.ch' },
-  { name: 'Gundam.ch / René Hild',     meta: 'Friltschen TG',           href: 'https://www.gundam.ch' },
-  { name: 'Geissbühler Schiesssport',  meta: 'Zuchwil SO',              href: 'https://www.geissbuehler.ch' },
-  { name: 'Grünig & Elmiger',          meta: 'Malters LU',              href: 'https://www.gruenel.ch' },
-  { name: 'Treehuggers Supply',        meta: 'Bülach ZH',               href: 'https://www.treehuggers.ch' },
-  { name: 'Waffen Dobler',             meta: 'Kaltbrunn SG',            href: 'https://www.waffendobler.ch' },
-  { name: 'Gunlex',                    meta: 'Lyss BE',                 href: 'https://www.gunlex.ch' },
-  { name: 'Brownells Schweiz',         meta: 'Online / Luzern',         href: 'https://www.brownells.ch' },
-  { name: 'Poyet AG',                  meta: 'Bern BE',                 href: 'https://www.poyet.ch' },
-  { name: 'Outdoor Enterprise',        meta: 'Le Mont-sur-Lausanne VD', href: 'https://www.outdoor-enterprise.ch' },
-  { name: 'Hebeisen Hunting',          meta: 'Zürich ZH',               href: 'https://www.hebeisen.ch' },
-  { name: 'Waffenshop Gerber',         meta: 'Trubschachen BE',         href: 'https://www.waffenshop-gerber.ch' },
-  { name: 'Birkenast',                 meta: 'Zuzwil SG',               href: 'https://www.birkenast.ch' },
-  { name: 'Forney Waffen',             meta: 'Zürich ZH',               href: 'https://www.forney-waffen.ch' },
-  { name: 'Schwyzer Waffen',           meta: 'Goldau SZ',               href: 'https://www.schwyzerwaffen.ch' },
-  { name: 'Tanner Waffen',             meta: 'Thayngen SH',             href: 'https://www.tanner-waffen.ch' },
-  { name: 'Fischlin Waffen',           meta: 'Goldau SZ',               href: 'https://www.fischlin-waffen.ch' },
-  { name: 'Bürchler Waffen',           meta: 'Zürich ZH',               href: 'https://www.waffen-buerchler.ch' },
-  { name: 'Hausammann',                meta: 'Uttwil TG',               href: 'https://www.hausammann.ch' },
-  { name: 'Waffen-Zentrum',            meta: 'Gampelen BE',             href: 'https://www.waffen-zentrum.ch' },
-  { name: 'Armurerie du Château',      meta: 'Puidoux VD',              href: 'https://www.armurerie-du-chateau.ch' },
-  { name: 'Armurerie de la Bourse',    meta: 'Genève GE',               href: 'https://www.armurerie-bourse.ch' },
-  { name: 'Petitpierre Armurerie',     meta: 'Auvernier NE',            href: 'https://www.armurerie-petitpierre.ch' },
-  { name: 'Ducret Armurerie',          meta: 'Orbe VD',                 href: 'https://www.armurerie-ducret.ch' },
-  { name: 'Tissot Armurerie',          meta: 'Fribourg FR',             href: 'https://www.tissot-armurerie.ch' },
-  { name: 'Armeria Bioggio',           meta: 'Bioggio TI',              href: 'https://www.armeriabioggio.ch' },
-  { name: 'Armeria del Ceresio',       meta: 'Melano TI',               href: 'https://www.armeriadelceresio.ch' },
-  { name: 'Waffen Schuler',            meta: 'Brunnen SZ',              href: 'https://www.waffenschuler.ch' },
-  { name: 'Kessler Waffen',            meta: 'Degersheim SG',           href: 'https://www.kesslerwaffen.ch' },
-  { name: 'Waffen-Pfister',            meta: 'Pfäffikon ZH',            href: 'https://www.waffen-pfister.ch' },
-  { name: 'Antikschuss',               meta: 'Aadorf TG',               href: 'https://www.antikschuss.ch' },
-  { name: 'Militaria-Shop',            meta: 'Online / Bern',           href: 'https://www.militaria-shop.ch' },
-  { name: 'Salvisberg Waffen',         meta: 'Bern BE',                 href: 'https://www.salvisberg-waffen.ch' },
-  { name: 'Richner Waffen',            meta: 'Lenzburg AG',             href: 'https://www.richner-waffen.ch' },
-  { name: 'Waffen-Friedlin',           meta: 'Zug ZG',                  href: 'https://www.waffenfriedlin.ch' },
-  { name: 'Brünig Indoor',             meta: 'Brünig OW',               href: 'https://www.bruenigindoor.ch' },
-  { name: 'Waffen Widmer',             meta: 'Horgen ZH',               href: 'https://www.waffen-widmer.ch' },
-  { name: 'Swiss P Defence / RUAG',    meta: 'Thun BE',                 href: 'https://www.swissp-defence.com' },
-  { name: 'Waffen Zimmermann',         meta: 'Luzern LU',               href: 'https://www.waffen-zimmermann.ch' },
-  { name: 'Armurerie Saint-Hubert',    meta: 'Martigny VS',             href: 'https://www.armureriesainthubert.ch' },
-];
+// Händler nach Kanton gruppiert
+const DEALERS_BY_CANTON: Record<string, { name: string; ort: string; href: string }[]> = {
+  ZH: [
+    { name: 'W. Glaser Waffen',         ort: 'Zürich',       href: 'https://www.wglaser.ch' },
+    { name: 'Natur Aktiv / Waffenbörse',ort: 'Dietikon',     href: 'https://www.waffenboerse.ch' },
+    { name: 'Schild Waffen',            ort: 'Wallisellen',  href: 'https://www.schildwaffen.ch' },
+    { name: 'Treehuggers Supply',       ort: 'Bülach',       href: 'https://www.treehuggers.ch' },
+    { name: 'Forney Waffen',            ort: 'Zürich',       href: 'https://www.forney-waffen.ch' },
+    { name: 'Bürchler Waffen',          ort: 'Zürich',       href: 'https://www.waffen-buerchler.ch' },
+    { name: 'Hebeisen Hunting',         ort: 'Zürich',       href: 'https://www.hebeisen.ch' },
+    { name: 'Waffen-Pfister',           ort: 'Pfäffikon',    href: 'https://www.waffen-pfister.ch' },
+    { name: 'Waffen Widmer',            ort: 'Horgen',       href: 'https://www.waffen-widmer.ch' },
+    { name: 'Gun Factory',              ort: 'Rümlang',      href: 'https://www.gunfactory.ch' },
+  ],
+  BE: [
+    { name: 'Aebi Waffen',              ort: 'Hasle-Rüegsau',href: 'https://www.aebiwaffen.ch' },
+    { name: 'Wyss Waffen',              ort: 'Burgdorf',     href: 'https://www.wysswaffen.ch' },
+    { name: 'Poyet AG',                 ort: 'Bern',         href: 'https://www.poyet.ch' },
+    { name: 'Salvisberg Waffen',        ort: 'Bern',         href: 'https://www.salvisberg-waffen.ch' },
+    { name: 'Waffen-Zentrum',           ort: 'Gampelen',     href: 'https://www.waffen-zentrum.ch' },
+    { name: 'Waffenshop Gerber',        ort: 'Trubschachen', href: 'https://www.waffenshop-gerber.ch' },
+    { name: 'B&T Shop',                 ort: 'Thun',         href: 'https://www.bt-ag.ch' },
+    { name: 'Swiss P Defence / RUAG',   ort: 'Thun',         href: 'https://www.swissp-defence.com' },
+    { name: 'Militaria-Shop',           ort: 'Bern (Online)',href: 'https://www.militaria-shop.ch' },
+  ],
+  LU: [
+    { name: 'Felder Jagdhof',           ort: 'Ebikon',       href: 'https://www.felder-jagdhof.ch' },
+    { name: 'Grünig & Elmiger',         ort: 'Malters',      href: 'https://www.gruenel.ch' },
+    { name: 'Waffen Zimmermann',        ort: 'Luzern',       href: 'https://www.waffen-zimmermann.ch' },
+    { name: 'Brownells Schweiz',        ort: 'Luzern (Online)',href: 'https://www.brownells.ch' },
+  ],
+  SO: [
+    { name: 'Waffen Ingold',            ort: 'Oensingen',    href: 'https://www.waffen-ingold.ch' },
+    { name: 'Geissbühler Schiesssport', ort: 'Zuchwil',      href: 'https://www.geissbuehler.ch' },
+  ],
+  BL: [
+    { name: 'Munitionsdepot.ch',        ort: 'Zwingen',      href: 'https://www.munitionsdepot.ch' },
+  ],
+  SG: [
+    { name: 'Waffen Dobler',            ort: 'Kaltbrunn',    href: 'https://www.waffendobler.ch' },
+    { name: 'Birkenast',                ort: 'Zuzwil',       href: 'https://www.birkenast.ch' },
+    { name: 'Kessler Waffen',           ort: 'Degersheim',   href: 'https://www.kesslerwaffen.ch' },
+  ],
+  AG: [
+    { name: 'Richner Waffen',           ort: 'Lenzburg',     href: 'https://www.richner-waffen.ch' },
+  ],
+  TG: [
+    { name: 'Gundam.ch / René Hild',    ort: 'Friltschen',   href: 'https://www.gundam.ch' },
+    { name: 'Antikschuss',              ort: 'Aadorf',       href: 'https://www.antikschuss.ch' },
+    { name: 'Hausammann',               ort: 'Uttwil',       href: 'https://www.hausammann.ch' },
+  ],
+  SZ: [
+    { name: 'Schwyzer Waffen',          ort: 'Goldau',       href: 'https://www.schwyzerwaffen.ch' },
+    { name: 'Fischlin Waffen',          ort: 'Goldau',       href: 'https://www.fischlin-waffen.ch' },
+    { name: 'Waffen Schuler',           ort: 'Brunnen',      href: 'https://www.waffenschuler.ch' },
+  ],
+  SH: [
+    { name: 'Tanner Waffen',            ort: 'Thayngen',     href: 'https://www.tanner-waffen.ch' },
+  ],
+  ZG: [
+    { name: 'Waffen-Friedlin',          ort: 'Zug',          href: 'https://www.waffenfriedlin.ch' },
+  ],
+  OW: [
+    { name: 'Brünig Indoor',            ort: 'Brünig',       href: 'https://www.bruenigindoor.ch' },
+  ],
+  VD: [
+    { name: 'Lagardère',               ort: 'Morges',       href: 'https://www.lagardere.ch' },
+    { name: 'Outdoor Enterprise',       ort: 'Le Mont-sur-Lausanne', href: 'https://www.outdoor-enterprise.ch' },
+    { name: 'Armurerie du Château',     ort: 'Puidoux',      href: 'https://www.armurerie-du-chateau.ch' },
+    { name: 'Ducret Armurerie',         ort: 'Orbe',         href: 'https://www.armurerie-ducret.ch' },
+  ],
+  GE: [
+    { name: 'Armurerie de la Bourse',   ort: 'Genève',       href: 'https://www.armurerie-bourse.ch' },
+  ],
+  NE: [
+    { name: 'Petitpierre Armurerie',    ort: 'Auvernier',    href: 'https://www.armurerie-petitpierre.ch' },
+  ],
+  FR: [
+    { name: 'Tissot Armurerie',         ort: 'Fribourg',     href: 'https://www.tissot-armurerie.ch' },
+  ],
+  TI: [
+    { name: 'Armeria Bioggio',          ort: 'Bioggio',      href: 'https://www.armeriabioggio.ch' },
+    { name: 'Armeria del Ceresio',      ort: 'Melano',       href: 'https://www.armeriadelceresio.ch' },
+  ],
+  VS: [
+    { name: 'Armurerie Saint-Hubert',   ort: 'Martigny',     href: 'https://www.armureriesainthubert.ch' },
+  ],
+};
+
+// Leere Kantone herausfiltern
+const CANTONS = Object.entries(DEALERS_BY_CANTON)
+  .filter(([, dealers]) => dealers.length > 0)
+  .map(([kt]) => kt);
+
+const TOTAL_DEALERS = Object.values(DEALERS_BY_CANTON).flat().length;
 
 const PROMOS = [
   { name: 'Frühjahrsputz bei Ingold',     meta: 'Aktion · 10% auf Reinigungssets bis 31. März', href: '#' },
@@ -90,7 +133,6 @@ const PROMOS = [
 ];
 
 type TabKey = 'ev' | 'sh' | 'pr';
-type Item = { name: string; meta: string; href: string };
 
 function formatDateRange(date: string, dateEnd: string): string {
   const d = new Date(date);
@@ -106,12 +148,25 @@ function formatDateRange(date: string, dateEnd: string): string {
 
 export default function BannerZone() {
   const [active, setActive] = useState<TabKey>('ev');
+  const [openCanton, setOpenCanton] = useState<string | null>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
   const startX = useRef(0);
   const startScrollLeft = useRef(0);
+
+  // Dropdown schliessen bei Klick ausserhalb
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpenCanton(null);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
 
   const upcomingEvents = useMemo(() => {
     const today = new Date();
@@ -123,18 +178,6 @@ export default function BannerZone() {
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   }, []);
 
-  const items: Item[] = useMemo(() => {
-    if (active === 'ev') {
-      return upcomingEvents.map(ev => ({
-        name: ev.name,
-        meta: `${formatDateRange(ev.date, ev.dateEnd)} · ${ev.ort}`,
-        href: ev.href,
-      }));
-    }
-    if (active === 'sh') return DEALERS;
-    return PROMOS;
-  }, [active, upcomingEvents]);
-
   const updateScrollState = () => {
     const el = scrollRef.current;
     if (!el) return;
@@ -142,39 +185,31 @@ export default function BannerZone() {
     setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
   };
 
-  useEffect(() => {
-    updateScrollState();
-  }, [items]);
+  useEffect(() => { updateScrollState(); }, [active]);
 
-  // Mouse-drag-to-scroll
   const onMouseDown = (e: React.MouseEvent) => {
     isDragging.current = true;
     startX.current = e.pageX - (scrollRef.current?.offsetLeft || 0);
     startScrollLeft.current = scrollRef.current?.scrollLeft || 0;
     if (scrollRef.current) scrollRef.current.style.cursor = 'grabbing';
   };
-
   const onMouseMove = (e: React.MouseEvent) => {
     if (!isDragging.current || !scrollRef.current) return;
     e.preventDefault();
     const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX.current) * 1.5;
-    scrollRef.current.scrollLeft = startScrollLeft.current - walk;
+    scrollRef.current.scrollLeft = startScrollLeft.current - (x - startX.current) * 1.5;
   };
-
   const onMouseUp = () => {
     isDragging.current = false;
     if (scrollRef.current) scrollRef.current.style.cursor = 'grab';
   };
-
   const scrollBy = (dir: 'left' | 'right') => {
-    if (!scrollRef.current) return;
-    scrollRef.current.scrollBy({ left: dir === 'right' ? 320 : -320, behavior: 'smooth' });
+    scrollRef.current?.scrollBy({ left: dir === 'right' ? 320 : -320, behavior: 'smooth' });
   };
 
   const tabs: { key: TabKey; label: string; count?: number }[] = [
     { key: 'ev', label: 'Events', count: upcomingEvents.length },
-    { key: 'sh', label: 'Waffenhändler', count: DEALERS.length },
+    { key: 'sh', label: 'Waffenhändler', count: TOTAL_DEALERS },
     { key: 'pr', label: 'Aktionen' },
   ];
 
@@ -182,13 +217,13 @@ export default function BannerZone() {
     <div className="w-full bg-gray-50 border-t border-b border-gray-200">
       <div className="flex items-center h-11" style={{ minHeight: '44px', maxHeight: '44px' }}>
 
-        {/* Tabs — feste Breite, kein Shrink */}
+        {/* Tabs links */}
         <div className="flex items-center shrink-0 px-4 border-r border-gray-200 h-11 gap-0">
           {tabs.map(({ key, label, count }) => (
             <button
               key={key}
-              onClick={() => { setActive(key as TabKey); setTimeout(updateScrollState, 50); }}
-              className={`text-xs px-2.5 h-11 whitespace-nowrap font-medium transition-colors border-b-0 outline-none ${
+              onClick={() => { setActive(key as TabKey); setOpenCanton(null); setTimeout(updateScrollState, 50); }}
+              className={`text-xs px-2.5 h-11 whitespace-nowrap font-medium transition-colors outline-none border-b-0 ${
                 active === key ? 'text-[#4d8230]' : 'text-gray-400 hover:text-gray-600'
               }`}
             >
@@ -205,68 +240,131 @@ export default function BannerZone() {
         </div>
 
         {/* Pfeil links */}
-        {canScrollLeft && (
-          <button
-            onClick={() => scrollBy('left')}
-            className="shrink-0 h-11 px-1.5 text-gray-400 hover:text-[#4d8230] transition-colors border-r border-gray-100"
-            style={{ lineHeight: 1 }}
-          >
+        {canScrollLeft && active !== 'sh' && (
+          <button onClick={() => scrollBy('left')} className="shrink-0 h-11 px-1.5 text-gray-400 hover:text-[#4d8230] transition-colors">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m15 18-6-6 6-6"/></svg>
           </button>
         )}
 
-        {/* Scroll-container — cursor grab, touch-action pan-x */}
-        <div
-          ref={scrollRef}
-          onScroll={updateScrollState}
-          onMouseDown={onMouseDown}
-          onMouseMove={onMouseMove}
-          onMouseUp={onMouseUp}
-          onMouseLeave={onMouseUp}
-          className="flex items-center gap-2 flex-1 min-w-0 overflow-x-auto select-none px-3 scrollbar-none"
-          style={{
-            WebkitOverflowScrolling: 'touch',
-            cursor: 'grab',
-            touchAction: 'pan-x',
-          }}
-        >
-          {items.map((item, i) => (
-            <div key={`${active}-${i}`} className="flex items-center gap-2 shrink-0">
-              {i > 0 && <div className="w-px h-4 bg-gray-200 shrink-0" />}
-              <a
-                href={item.href}
-                target={item.href.startsWith('http') ? '_blank' : undefined}
-                rel="noopener noreferrer"
-                onMouseDown={e => e.stopPropagation()}
-                className="flex items-center gap-0 bg-white border border-gray-200 rounded-lg hover:border-[#4d8230] transition-colors group overflow-hidden whitespace-nowrap shrink-0"
-              >
-                <div className="bg-[#eef5e8] px-2.5 self-stretch flex items-center border-r border-gray-100">
-                  <span className="text-[10px] font-semibold text-[#4d8230] leading-none">
-                    {item.meta.split('·')[0].trim()}
+        {/* EVENTS & AKTIONEN: normaler Scroll-Container */}
+        {active !== 'sh' && (
+          <div
+            ref={scrollRef}
+            onScroll={updateScrollState}
+            onMouseDown={onMouseDown}
+            onMouseMove={onMouseMove}
+            onMouseUp={onMouseUp}
+            onMouseLeave={onMouseUp}
+            className="flex items-center gap-2 flex-1 min-w-0 overflow-x-auto select-none px-3 scrollbar-none"
+            style={{ cursor: 'grab', touchAction: 'pan-x', WebkitOverflowScrolling: 'touch' }}
+          >
+            {active === 'ev' && upcomingEvents.map((ev, i) => (
+              <div key={i} className="flex items-center gap-2 shrink-0">
+                {i > 0 && <div className="w-px h-4 bg-gray-200 shrink-0" />}
+                <a
+                  href={ev.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onMouseDown={e => e.stopPropagation()}
+                  className="flex items-center gap-0 bg-white border border-gray-200 rounded-lg hover:border-[#4d8230] transition-colors group overflow-hidden whitespace-nowrap shrink-0"
+                >
+                  <div className="bg-[#eef5e8] px-2.5 self-stretch flex items-center border-r border-gray-100">
+                    <span className="text-[10px] font-semibold text-[#4d8230] leading-none">
+                      {formatDateRange(ev.date, ev.dateEnd)}
+                    </span>
+                  </div>
+                  <div className="px-2.5 py-1.5 leading-none">
+                    <div className="text-[11px] font-medium text-gray-800 group-hover:text-[#4d8230] transition-colors">{ev.name}</div>
+                    <div className="text-[10px] text-gray-400 mt-0.5">{ev.ort}</div>
+                  </div>
+                </a>
+              </div>
+            ))}
+            {active === 'pr' && PROMOS.map((item, i) => (
+              <div key={i} className="flex items-center gap-2 shrink-0">
+                {i > 0 && <div className="w-px h-4 bg-gray-200 shrink-0" />}
+                <a
+                  href={item.href}
+                  onMouseDown={e => e.stopPropagation()}
+                  className="flex items-center gap-0 bg-white border border-gray-200 rounded-lg hover:border-[#4d8230] transition-colors group overflow-hidden whitespace-nowrap shrink-0"
+                >
+                  <div className="bg-[#eef5e8] px-2.5 self-stretch flex items-center border-r border-gray-100">
+                    <span className="text-[10px] font-semibold text-[#4d8230] leading-none">
+                      {item.meta.split('·')[0].trim()}
+                    </span>
+                  </div>
+                  <div className="px-2.5 py-1.5 leading-none">
+                    <div className="text-[11px] font-medium text-gray-800 group-hover:text-[#4d8230] transition-colors">{item.name}</div>
+                    <div className="text-[10px] text-gray-400 mt-0.5">{item.meta.split('·').slice(1).join('·').trim()}</div>
+                  </div>
+                </a>
+              </div>
+            ))}
+            <div className="shrink-0 w-4" />
+          </div>
+        )}
+
+        {/* WAFFENHÄNDLER: Kanton-Pills mit Dropdown */}
+        {active === 'sh' && (
+          <div ref={dropdownRef} className="flex items-center gap-1.5 flex-1 min-w-0 overflow-x-auto px-3 relative scrollbar-none">
+            {CANTONS.map(kt => (
+              <div key={kt} className="relative shrink-0">
+                <button
+                  onClick={() => setOpenCanton(openCanton === kt ? null : kt)}
+                  className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full border transition-colors whitespace-nowrap ${
+                    openCanton === kt
+                      ? 'bg-[#4d8230] text-white border-[#4d8230]'
+                      : 'bg-white text-gray-600 border-gray-200 hover:border-[#4d8230] hover:text-[#4d8230]'
+                  }`}
+                >
+                  {kt}
+                  <span className={`text-[9px] rounded-full px-1 ${
+                    openCanton === kt ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-400'
+                  }`}>
+                    {DEALERS_BY_CANTON[kt].length}
                   </span>
-                </div>
-                <div className="px-2.5 py-1.5 leading-none">
-                  <div className="text-[11px] font-medium text-gray-800 group-hover:text-[#4d8230] transition-colors">
-                    {item.name}
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                    style={{ transform: openCanton === kt ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }}>
+                    <path d="m6 9 6 6 6-6"/>
+                  </svg>
+                </button>
+
+                {/* Dropdown */}
+                {openCanton === kt && (
+                  <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-50 min-w-[200px] py-1 overflow-hidden">
+                    <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
+                      Kanton {kt} — {DEALERS_BY_CANTON[kt].length} Händler
+                    </div>
+                    {DEALERS_BY_CANTON[kt].map((dealer, i) => (
+                      <a
+                        key={i}
+                        href={dealer.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-between px-3 py-2 hover:bg-[#f5faf2] transition-colors group"
+                      >
+                        <div>
+                          <div className="text-[12px] font-medium text-gray-800 group-hover:text-[#4d8230] transition-colors">
+                            {dealer.name}
+                          </div>
+                          <div className="text-[10px] text-gray-400">{dealer.ort}</div>
+                        </div>
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-300 group-hover:text-[#4d8230] ml-2 shrink-0">
+                          <path d="m9 18 6-6-6-6"/>
+                        </svg>
+                      </a>
+                    ))}
                   </div>
-                  <div className="text-[10px] text-gray-400 mt-0.5">
-                    {item.meta.split('·').slice(1).join('·').trim()}
-                  </div>
-                </div>
-              </a>
-            </div>
-          ))}
-          {/* Spacer damit letzter Chip nicht am Rand klebt */}
-          <div className="shrink-0 w-4" />
-        </div>
+                )}
+              </div>
+            ))}
+            <div className="shrink-0 w-4" />
+          </div>
+        )}
 
         {/* Pfeil rechts */}
-        {canScrollRight && (
-          <button
-            onClick={() => scrollBy('right')}
-            className="shrink-0 h-11 px-1.5 text-gray-400 hover:text-[#4d8230] transition-colors border-l border-gray-100"
-            style={{ lineHeight: 1 }}
-          >
+        {canScrollRight && active !== 'sh' && (
+          <button onClick={() => scrollBy('right')} className="shrink-0 h-11 px-1.5 text-gray-400 hover:text-[#4d8230] transition-colors">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m9 18 6-6-6-6"/></svg>
           </button>
         )}

@@ -186,6 +186,14 @@ export async function GET(req: NextRequest) {
       }
     }
 
+    // Log search queries (fire-and-forget)
+    if (suche && suche.length >= 2) {
+      dbRun(
+        "INSERT INTO search_logs (query, results_count, kategorie, kanton) VALUES (?, ?, ?, ?)",
+        [suche.toLowerCase().trim(), countRow?.total ?? 0, kategorie || null, kanton || null]
+      ).catch(() => {});
+    }
+
     return NextResponse.json({
       listings,
       total: countRow?.total ?? 0,

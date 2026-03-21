@@ -6,6 +6,8 @@ import { BarChart3, TrendingUp, Clock, ExternalLink } from "lucide-react";
 import PriceDistributionChart from "@/components/markt/PriceDistributionChart";
 import BrandMedianTable from "@/components/markt/BrandMedianTable";
 import PreisfinderWidget from "@/components/markt/PreisfinderWidget";
+import PreisTrendChart from "@/components/markt/PreisTrendChart";
+import TrendingSearches from "@/components/markt/TrendingSearches";
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -337,6 +339,23 @@ export default function MarktInsightsPage() {
         {/* ═══ 3. PREISFINDER ═══ */}
         <div className="mb-10">
           <PreisfinderWidget />
+        </div>
+
+        {/* Data collection banner */}
+        <div className="mb-6 flex items-center gap-3 rounded-xl border border-[#4d8230]/20 bg-[#1a2e12] px-4 py-3">
+          <span className="relative flex h-2 w-2 shrink-0">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4d8230] opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#4d8230]" />
+          </span>
+          <p className="text-[11px] text-gray-400">
+            GunMarket Insights sammelt täglich Marktdaten. Preistrends und Suchstatistiken werden mit wachsender Datenbasis präziser.
+          </p>
+        </div>
+
+        {/* ═══ 3b. TREND + MEISTGESUCHT ═══ */}
+        <div className="mb-10 grid grid-cols-1 gap-5 lg:grid-cols-2">
+          <PreisTrendChart />
+          <TrendingSearches />
         </div>
 
         <SectionDivider />

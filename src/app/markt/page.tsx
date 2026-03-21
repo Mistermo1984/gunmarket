@@ -118,7 +118,7 @@ function Card({ children, className = "" }: { children: React.ReactNode; classNa
 export default function MarktInsightsPage() {
   const [data, setData] = useState<MarketData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [neuHeute, setNeuHeute] = useState<{ id: string; titel: string; preis: number; kanton: string; image_url: string | null }[]>([]);
+  const [neuHeute, setNeuHeute] = useState<{ id: string; titel: string; preis: number; kanton: string; image_url: string | null; images?: { url: string }[] }[]>([]);
   const [topDeals, setTopDeals] = useState<{ id: string; titel: string; preis: number; kanton: string; image_url: string | null; good_deal_count: number; images?: { url: string }[] }[]>([]);
 
   useEffect(() => {
@@ -129,8 +129,9 @@ export default function MarktInsightsPage() {
     fetch("/api/listings?sort=neueste&limit=6")
       .then((r) => r.json())
       .then((d) => setNeuHeute((d.listings || []).map((l: Record<string, unknown>) => ({
-        id: l.id, titel: l.titel, preis: l.preis, kanton: l.kanton,
-        image_url: l.image_url || null,
+        id: l.id as string, titel: l.titel as string, preis: l.preis as number, kanton: l.kanton as string,
+        image_url: (l.image_url as string) || null,
+        images: l.images as { url: string }[] | undefined,
       }))))
       .catch(() => {});
     fetch("/api/listings?sort=good_deal&limit=6")
@@ -236,12 +237,14 @@ export default function MarktInsightsPage() {
               <Link href="/?sort=neueste" className="text-sm text-[#4ade80] hover:underline">Alle neuen →</Link>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-              {neuHeute.map((listing) => (
+              {neuHeute.map((listing) => {
+                const imgUrl = listing.images?.[0]?.url || listing.image_url;
+                return (
                 <Link key={listing.id} href={`/inserat/${listing.id}`}
                   className="overflow-hidden rounded-xl border border-[#2d4a2d] bg-[#1a2e1a] hover:border-[#4ade80]/50 hover:bg-[#1a2e1a]/80 transition-all group">
                   <div className="aspect-square bg-[#0f1a0f] relative overflow-hidden">
-                    {listing.image_url ? (
-                      <img src={listing.image_url} alt={listing.titel} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    {imgUrl ? (
+                      <img src={imgUrl} alt={listing.titel} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-[#2d4a2d]">
                         <BarChart3 size={24} />
@@ -254,7 +257,8 @@ export default function MarktInsightsPage() {
                     {listing.kanton && <div className="text-[10px] text-[#6b7280] mt-0.5">{listing.kanton}</div>}
                   </div>
                 </Link>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}

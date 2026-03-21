@@ -178,7 +178,11 @@ export async function GET(req: NextRequest) {
         imageMap.get(lid)!.push(img);
       }
       for (const l of listings) {
-        l.images = imageMap.get(l.id as string) || [];
+        const imgs = imageMap.get(l.id as string) || [];
+        l.images = imgs;
+        if (!l.image_url && imgs.length > 0) {
+          l.image_url = imgs[0].url;
+        }
       }
     }
 

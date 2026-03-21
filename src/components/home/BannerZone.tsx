@@ -180,9 +180,27 @@ export default function BannerZone() {
   const [active, setActive] = useState<TabKey>('ev');
   const [openItem, setOpenItem] = useState<string | null>(null);
   const [locale, setLocale] = useState('de');
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
   useEffect(() => { setLocale(getLocale()); }, []);
+
+  const updateScrollState = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 4);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
+  };
+
+  useEffect(() => {
+    updateScrollState();
+  }, [active]);
+
+  const scrollBy = (dir: 'left' | 'right') => {
+    scrollRef.current?.scrollBy({ left: dir === 'right' ? 280 : -280, behavior: 'smooth' });
+  };
 
   // Events nach Monat
   const eventsByMonth = useMemo(() => {
@@ -216,7 +234,7 @@ export default function BannerZone() {
       {/* ── DESKTOP ── */}
       <div className="hidden md:block w-full bg-white border-b border-gray-200">
         <div className="max-w-screen-xl mx-auto px-6">
-          <div className="relative flex items-center" style={{ height: 48 }}>
+          <div className="flex items-center" style={{ height: 48 }}>
 
             {/* Tab Navigation — grüner Underline-Stil */}
             <div className="flex items-center shrink-0 h-full border-r border-gray-200 pr-6 mr-6 gap-0">
@@ -244,9 +262,24 @@ export default function BannerZone() {
               ))}
             </div>
 
-            {/* Scrollbarer Content */}
+            {/* Pfeil links */}
+            {canScrollLeft && (
+              <button
+                onClick={() => scrollBy('left')}
+                className="shrink-0 flex items-center justify-center w-7 h-7 rounded-full border border-gray-200 bg-white text-gray-500 hover:border-[#4d8230] hover:text-[#4d8230] transition-all shadow-sm"
+                aria-label="Zurück"
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="m15 18-6-6 6-6"/>
+                </svg>
+              </button>
+            )}
+
+            {/* Scroll-Container */}
             <div
-              className="flex items-center gap-2 flex-1 min-w-0 overflow-x-auto pr-10"
+              ref={scrollRef}
+              onScroll={updateScrollState}
+              className="flex items-center gap-2 flex-1 min-w-0 overflow-x-auto"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
             >
               {/* EVENTS: Monats-Pills */}
@@ -371,11 +404,21 @@ export default function BannerZone() {
                 </div>
               ))}
 
-              <div className="shrink-0 w-4" />
+              <div className="shrink-0 w-2" />
             </div>
 
-            {/* Fade rechts */}
-            <div className="absolute right-6 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent pointer-events-none z-10" />
+            {/* Pfeil rechts */}
+            {canScrollRight && (
+              <button
+                onClick={() => scrollBy('right')}
+                className="shrink-0 flex items-center justify-center w-7 h-7 rounded-full border border-gray-200 bg-white text-gray-500 hover:border-[#4d8230] hover:text-[#4d8230] transition-all shadow-sm ml-1"
+                aria-label="Weiter"
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="m9 18 6-6-6-6"/>
+                </svg>
+              </button>
+            )}
           </div>
         </div>
       </div>

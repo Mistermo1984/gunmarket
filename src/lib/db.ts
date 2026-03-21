@@ -280,4 +280,5 @@ export async function initializeSchema(): Promise<void> {
   // Add columns to listings (SQLite lacks IF NOT EXISTS for ALTER TABLE)
   try { await dbRun("ALTER TABLE listings ADD COLUMN good_deal_count INTEGER DEFAULT 0"); } catch {}
   try { await dbRun("ALTER TABLE listings ADD COLUMN price_change_pct REAL DEFAULT 0"); } catch {}
+  try { await dbRun("ALTER TABLE listings ADD COLUMN kategorie_confidence TEXT DEFAULT 'url'"); } catch {}
 }

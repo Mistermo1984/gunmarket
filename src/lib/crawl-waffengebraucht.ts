@@ -34,6 +34,134 @@ const GW_CRAWLER_USER = {
   anbieter_typ: "Händler",
 };
 
+// ─── Two-stage classification ────────────────────────────────
+
+// STUFE 1: URL-Segment Mapping (most reliable source)
+const URL_CATEGORY_MAP: Record<string, { hauptkategorie: string; unterkategorie: string }> = {
+  // gebrauchtwaffen.com segments
+  kurzwaffen: { hauptkategorie: "kurzwaffen", unterkategorie: "pistolen" },
+  pistolen: { hauptkategorie: "kurzwaffen", unterkategorie: "pistolen" },
+  revolver: { hauptkategorie: "kurzwaffen", unterkategorie: "revolver" },
+  langwaffen: { hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
+  buechsen: { hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
+  buchsen: { hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
+  gewehre: { hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
+  flinten: { hauptkategorie: "langwaffen", unterkategorie: "flinten" },
+  jagdflinten: { hauptkategorie: "langwaffen", unterkategorie: "flinten" },
+  kombinierte: { hauptkategorie: "langwaffen", unterkategorie: "andere-langwaffen" },
+  ordonnanzwaffen: { hauptkategorie: "ordonnanzwaffen", unterkategorie: "langwaffen-ordonnanz" },
+  ordonnanz: { hauptkategorie: "ordonnanzwaffen", unterkategorie: "langwaffen-ordonnanz" },
+  sammlerordonanzwaffen: { hauptkategorie: "ordonnanzwaffen", unterkategorie: "langwaffen-ordonnanz" },
+  luftdruckwaffen: { hauptkategorie: "luftdruckwaffen", unterkategorie: "luftgewehre" },
+  luftdruckwaffensoftair: { hauptkategorie: "luftdruckwaffen", unterkategorie: "co2-waffen" },
+  luftgewehre: { hauptkategorie: "luftdruckwaffen", unterkategorie: "luftgewehre" },
+  luftpistolen: { hauptkategorie: "luftdruckwaffen", unterkategorie: "luftpistolen" },
+  munition: { hauptkategorie: "munition", unterkategorie: "" },
+  optik: { hauptkategorie: "optik", unterkategorie: "zielfernrohre" },
+  zielfernrohre: { hauptkategorie: "optik", unterkategorie: "zielfernrohre" },
+  messer: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
+  messerblankwaffen: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
+  wiederladen: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
+  selbstverteidigung: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
+  verschiedenes: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
+  magazine: { hauptkategorie: "zubehoer", unterkategorie: "magazine" },
+  griffschalen: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
+  holster: { hauptkategorie: "zubehoer", unterkategorie: "holster" },
+  schafte: { hauptkategorie: "zubehoer", unterkategorie: "lauefe-teile" },
+  laufe: { hauptkategorie: "zubehoer", unterkategorie: "lauefe-teile" },
+  montagen: { hauptkategorie: "optik", unterkategorie: "montagen" },
+  chokes: { hauptkategorie: "zubehoer", unterkategorie: "lauefe-teile" },
+  bogenschiesen: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
+  wildjagd: { hauptkategorie: "langwaffen", unterkategorie: "jagdwaffen" },
+  wildundjagd: { hauptkategorie: "langwaffen", unterkategorie: "jagdwaffen" },
+  // nextgun.ch segments
+  firearms: { hauptkategorie: "kurzwaffen", unterkategorie: "pistolen" },
+  handguns: { hauptkategorie: "kurzwaffen", unterkategorie: "pistolen" },
+  rifles: { hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
+  shotguns: { hauptkategorie: "langwaffen", unterkategorie: "flinten" },
+  accessories: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
+  ammunition: { hauptkategorie: "munition", unterkategorie: "" },
+  knives: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
+  airguns: { hauptkategorie: "luftdruckwaffen", unterkategorie: "luftpistolen" },
+};
+
+// STUFE 2: Title-Keyword Matching (fallback when URL is ambiguous)
+const TITLE_KEYWORDS: { pattern: RegExp; hauptkategorie: string; unterkategorie: string }[] = [
+  // Ordonnanz (check before Kurzwaffen due to P220/P226 overlap)
+  { pattern: /\b(k31|k11|k98|stgw\s?57|stgw\s?90|sig\s?510|sig\s?550|pe57|karabiner\s?31|ordonnanz)\b/i, hauptkategorie: "ordonnanzwaffen", unterkategorie: "langwaffen-ordonnanz" },
+  // Kurzwaffen
+  { pattern: /\b(pistole|pistol|glock|sig\s?p|walther|beretta|cz\s?\d|revolver|hk\s?p|browning\s?hp|p226|p220|p210|p38|luger)\b/i, hauptkategorie: "kurzwaffen", unterkategorie: "pistolen" },
+  { pattern: /\b(revolver|taurus|colt\s?(python|anaconda|cobra)|smith\s?&?\s?wesson|s&w\s+model)\b/i, hauptkategorie: "kurzwaffen", unterkategorie: "revolver" },
+  // Langwaffen
+  { pattern: /\b(büchse|buechse|karabiner|gewehr|rifle|mauser|sauer\s?200|blaser|merkel|browning\s+bar)\b/i, hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
+  { pattern: /\b(flinte|schrotflinte|shotgun|bockdoppel|drilling|bockbüchse)\b/i, hauptkategorie: "langwaffen", unterkategorie: "flinten" },
+  // Luftdruck
+  { pattern: /\b(luftpistole|luftgewehr|co2|pre-charged|pcp|airguns?)\b/i, hauptkategorie: "luftdruckwaffen", unterkategorie: "luftpistolen" },
+  // Munition
+  { pattern: /\b(munition|patrone|patronen|schrot|blei|projektil|\d+\s?mm\s+para|\d+x\d+|\.\d{2,3}\s?(win|rem|mag|spl|lr))\b/i, hauptkategorie: "munition", unterkategorie: "" },
+  // Zubehör
+  { pattern: /\b(magazin|magazine|mag\s+\d|clips?)\b/i, hauptkategorie: "zubehoer", unterkategorie: "magazine" },
+  { pattern: /\b(holster|halfter|schulterholster)\b/i, hauptkategorie: "zubehoer", unterkategorie: "holster" },
+  { pattern: /\b(zielfernrohr|zf|scope|visier|diopter|rotpunkt|red\s?dot|leuchtpunkt)\b/i, hauptkategorie: "optik", unterkategorie: "zielfernrohre" },
+  { pattern: /\b(reinigung|reinigungsset|lauf|putzzeug|öl|waffenöl)\b/i, hauptkategorie: "zubehoer", unterkategorie: "reinigung" },
+  { pattern: /\b(griff|griffschale|griffstück|schaft)\b/i, hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
+  { pattern: /\b(messer|klappmesser|taschenmesser|jagdmesser)\b/i, hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
+  { pattern: /\b(wiederladen|ladebank|matrize|zündhütchen|hülsen)\b/i, hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
+];
+
+export function classifyListing(
+  sourceUrl: string,
+  titel: string,
+  beschreibung: string
+): { hauptkategorie: string; unterkategorie: string; confidence: "url" | "title" | "fallback" } {
+  // STUFE 1: URL segments
+  try {
+    const url = new URL(sourceUrl);
+    const segments = url.pathname.split("/").filter(Boolean);
+    // Check accessory sub-segments first (magazine/holster under kurzwaffen URL)
+    for (const segment of segments) {
+      const normalized = segment.toLowerCase().replace(/[^a-z]/g, "");
+      if (URL_CATEGORY_MAP[normalized]) {
+        return { ...URL_CATEGORY_MAP[normalized], confidence: "url" };
+      }
+    }
+  } catch {}
+
+  // STUFE 2: Title + description keyword matching
+  const text = `${titel} ${(beschreibung || "").substring(0, 200)}`.toLowerCase();
+  for (const rule of TITLE_KEYWORDS) {
+    if (rule.pattern.test(text)) {
+      return { hauptkategorie: rule.hauptkategorie, unterkategorie: rule.unterkategorie, confidence: "title" };
+    }
+  }
+
+  // STUFE 3: Fallback — use existing scoring classifier
+  const classified = classifyCategory(titel, beschreibung);
+  if (classified.hauptkategorie !== "zubehoer" || classified.unterkategorie !== "andere-zubehoer") {
+    return { ...classified, confidence: "title" };
+  }
+
+  return { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer", confidence: "fallback" };
+}
+
+// Track unmapped URL segments for reporting
+const _unmappedSegments = new Set<string>();
+export function getUnmappedSegments(): string[] { return Array.from(_unmappedSegments); }
+export function clearUnmappedSegments(): void { _unmappedSegments.clear(); }
+
+function trackUrlSegments(sourceUrl: string): void {
+  try {
+    const url = new URL(sourceUrl);
+    const segments = url.pathname.split("/").filter(Boolean);
+    for (const segment of segments) {
+      const normalized = segment.toLowerCase().replace(/[^a-z]/g, "");
+      if (normalized && !URL_CATEGORY_MAP[normalized] && !/^\d+$/.test(normalized) && !normalized.includes("_i")) {
+        _unmappedSegments.add(segment.toLowerCase());
+      }
+    }
+  } catch {}
+}
+
 // All categories — exact slugs verified live on gebrauchtwaffen.com
 // NOTE: 'munition' does NOT exist as a standalone category
 const CATEGORIES = [
@@ -67,6 +195,7 @@ interface CrawledItem {
   sourceUrl: string;
   lat?: number | null;
   lng?: number | null;
+  confidence?: "url" | "title" | "fallback";
 }
 
 interface ListingRef {
@@ -348,10 +477,9 @@ async function scrapeGwListing(url: string): Promise<CrawledItem | null> {
     );
   }
 
-  // Category: URL-based mapping for hauptkategorie, classifier for unterkategorie
-  const hauptkategorie = mapCategoryFromUrl(url);
-  const classified = classifyCategory(titel, beschreibung);
-  const unterkategorie = classified.unterkategorie;
+  // Category: two-stage classification (URL → title keywords → scoring fallback)
+  trackUrlSegments(url);
+  const { hauptkategorie, unterkategorie, confidence } = classifyListing(url, titel, beschreibung);
 
   return {
     sourceId: `gw-${idMatch[1]}`,
@@ -366,6 +494,7 @@ async function scrapeGwListing(url: string): Promise<CrawledItem | null> {
     beschreibung,
     imageUrls,
     sourceUrl: url,
+    confidence,
   };
 }
 
@@ -508,7 +637,9 @@ async function crawlNextgun(): Promise<CrawledItem[]> {
         .replace(/\s+/g, "_")
         .replace(/[^a-zA-Z0-9_-]/g, "");
 
-      const ngClassified = classifyCategory(l.weaponName, "");
+      const ngSourceUrl = `https://marketplace.nextgun.ch/annonce/view/${slug}-id-${l.id}`;
+      trackUrlSegments(ngSourceUrl);
+      const ngClassified = classifyListing(ngSourceUrl, l.weaponName, "");
       allItems.push({
         sourceId: `ng-${l.id}`,
         titel: l.weaponName,
@@ -521,9 +652,10 @@ async function crawlNextgun(): Promise<CrawledItem[]> {
         unterkategorie: ngClassified.unterkategorie,
         beschreibung: "",
         imageUrls,
-        sourceUrl: `https://marketplace.nextgun.ch/annonce/view/${slug}-id-${l.id}`,
+        sourceUrl: ngSourceUrl,
         lat: l.latitude || null,
         lng: l.longitude || null,
+        confidence: ngClassified.confidence,
       });
     }
   } catch (err) {
@@ -663,19 +795,26 @@ async function upsertItems(
   items: CrawledItem[],
   source: string,
   existingMap: Map<string, { id: string; preis: number; imageCount: number }>
-): Promise<{ created: number; updated: number; unchanged: number }> {
+): Promise<{ created: number; updated: number; unchanged: number; confidenceBreakdown: { url: number; title: number; fallback: number }; categoryBreakdown: Record<string, number> }> {
   const userId =
     source === "nextgun" ? "crawler-nextgun" : GW_CRAWLER_USER.id;
   const statements: { sql: string; args: (string | number | null)[] }[] = [];
   let created = 0;
   let updated = 0;
   let unchanged = 0;
+  const confidenceBreakdown = { url: 0, title: 0, fallback: 0 };
+  const categoryBreakdown: Record<string, number> = {};
   const now = new Date().toISOString().replace("T", " ").slice(0, 19);
 
   for (const item of items) {
     const existing = existingMap.get(item.sourceId);
 
     if (!existing) {
+      // Track confidence + category stats
+      const conf = item.confidence || "fallback";
+      confidenceBreakdown[conf]++;
+      categoryBreakdown[item.hauptkategorie] = (categoryBreakdown[item.hauptkategorie] || 0) + 1;
+
       // New listing — insert
       const id = uuidv4();
       const coords =
@@ -692,14 +831,14 @@ async function upsertItems(
       });
 
       statements.push({
-        sql: `INSERT INTO listings (id, user_id, titel, beschreibung, hauptkategorie, unterkategorie, rechtsstatus, marke, modell, kaliber, zustand, preis, verhandelbar, tausch, kanton, ortschaft, plz, lat, lng, aufrufe, source, source_url, source_id, last_seen_at, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        sql: `INSERT INTO listings (id, user_id, titel, beschreibung, hauptkategorie, unterkategorie, rechtsstatus, marke, modell, kaliber, zustand, preis, verhandelbar, tausch, kanton, ortschaft, plz, lat, lng, aufrufe, source, source_url, source_id, last_seen_at, created_at, kategorie_confidence)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         args: [
           id, userId, item.titel, item.beschreibung, item.hauptkategorie,
           item.unterkategorie, rechtsstatus, "", "", "", "", item.preis,
           item.verhandelbar, item.kanton, item.ortschaft, item.plz,
           coords?.lat ?? null, coords?.lng ?? null, 0, source,
-          item.sourceUrl, item.sourceId, now, now,
+          item.sourceUrl, item.sourceId, now, now, conf,
         ],
       });
 
@@ -787,7 +926,7 @@ async function upsertItems(
     await dbBatch(statements.slice(i, i + CHUNK_SIZE));
   }
 
-  return { created, updated, unchanged };
+  return { created, updated, unchanged, confidenceBreakdown, categoryBreakdown };
 }
 
 // ─── Public API ──────────────────────────────────────────────
@@ -876,7 +1015,12 @@ export function getCrawlSteps(): { id: string; label: string }[] {
 
 export async function runCrawlStep(
   stepId: string
-): Promise<{ inserted: number; updated: number; unchanged: number; deleted: number; source: string }> {
+): Promise<{
+  inserted: number; updated: number; unchanged: number; deleted: number; source: string;
+  categories?: Record<string, number>;
+  confidence_breakdown?: { url: number; title: number; fallback: number };
+  unmapped_segments?: string[];
+}> {
   await initializeSchema();
   await ensureCrawlerUser(
     GW_CRAWLER_USER.id,
@@ -937,7 +1081,10 @@ export async function runCrawlStep(
     console.log(
       `[Crawl] NextGun: ${items.length} total, ${result.created} new, ${result.updated} updated, ${result.unchanged} unchanged`
     );
-    return { inserted: result.created, updated: result.updated, unchanged: result.unchanged, deleted: 0, source: "nextgun" };
+    return {
+      inserted: result.created, updated: result.updated, unchanged: result.unchanged, deleted: 0, source: "nextgun",
+      categories: result.categoryBreakdown, confidence_breakdown: result.confidenceBreakdown, unmapped_segments: getUnmappedSegments(),
+    };
   }
 
   if (stepId === "cleanup") {
@@ -1044,6 +1191,9 @@ export async function runCrawlStep(
     unchanged: result.unchanged,
     deleted: 0,
     source: `gw-${slug}`,
+    categories: result.categoryBreakdown,
+    confidence_breakdown: result.confidenceBreakdown,
+    unmapped_segments: getUnmappedSegments(),
   };
 }
 

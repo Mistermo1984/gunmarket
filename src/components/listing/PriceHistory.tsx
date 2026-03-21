@@ -9,7 +9,7 @@ interface PricePoint {
 
 interface PriceHistoryProps {
   listingId: string
-  currentPrice: number
+  currentPrice?: number
 }
 
 function formatCHF(value: number): string {
@@ -21,7 +21,7 @@ function formatDate(iso: string): string {
   return d.toLocaleDateString('de-CH', { day: '2-digit', month: '2-digit', year: 'numeric' })
 }
 
-export default function PriceHistory({ listingId, currentPrice }: PriceHistoryProps) {
+export default function PriceHistory({ listingId }: PriceHistoryProps) {
   const [history, setHistory] = useState<PricePoint[]>([])
   const [loaded, setLoaded] = useState(false)
 

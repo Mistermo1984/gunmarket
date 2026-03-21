@@ -4,6 +4,8 @@ import { ChevronRight, ExternalLink } from 'lucide-react'
 import { wissenWaffen } from '@/lib/wissen-data'
 import KommentarSection from '@/components/wissen/KommentarSection'
 import WikiLanguageBanner from '@/components/wissen/WikiLanguageBanner'
+import YouTubeEmbed from '@/components/wissen/YouTubeEmbed'
+import WissenInserate from '@/components/wissen/WissenInserate'
 import type { Metadata } from 'next'
 
 interface Props {
@@ -137,6 +139,22 @@ export default async function WaffeArtikelPage({ params }: Props) {
               <article>
                 {renderContent(waffe.inhalt)}
               </article>
+
+              {/* YouTube video embed */}
+              {waffe.youtubeVideoId && (
+                <YouTubeEmbed
+                  videoId={waffe.youtubeVideoId}
+                  titel={waffe.titel}
+                  quelle={waffe.youtubeQuelle}
+                />
+              )}
+
+              {/* Live listings from gunmarket.ch */}
+              <WissenInserate
+                suchbegriff={waffe.tags[1] || waffe.titel}
+                waffenTitel={waffe.titel}
+              />
+
               <KommentarSection type="waffen" slug={slug} titel={waffe.titel} />
             </div>
 
@@ -181,11 +199,11 @@ export default async function WaffeArtikelPage({ params }: Props) {
 
               {/* Inserate Link */}
               <Link
-                href={`/?kategorie=${waffe.slug}`}
+                href={`/?suche=${encodeURIComponent(waffe.tags[1] || waffe.titel)}`}
                 className="flex items-center justify-between rounded-xl border border-brand-green bg-brand-green-light p-5 transition-colors hover:bg-brand-green hover:text-white group"
               >
                 <span className="text-sm font-semibold text-brand-green group-hover:text-white">
-                  Inserate ansehen
+                  {waffe.titel} Inserate
                 </span>
                 <ExternalLink size={16} className="text-brand-green group-hover:text-white" />
               </Link>

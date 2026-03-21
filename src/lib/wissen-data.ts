@@ -17,6 +17,8 @@ export interface WissenWaffe {
   tags: string[]
   hersteller?: string
   baujahr?: string
+  youtubeVideoId?: string
+  youtubeQuelle?: string
 }
 
 export interface WissenMunition {
@@ -75,6 +77,8 @@ Ordonnanzwaffe — Käufer muss Schweizer Bürger oder Niederlassungsbewilligung
     rechtsstatus: 'ordonnanz',
     typischeKaliber: ['5,56×45mm NATO'],
     tags: ['Ordonnanz', 'Sturmgewehr', 'Schweiz', 'SIG', 'Armee', 'Stgw90', 'PE90'],
+    youtubeVideoId: 'wbundle2FuZE',
+    youtubeQuelle: 'Forgotten Weapons / Ian McCollum',
   },
 
   {
@@ -110,6 +114,8 @@ Ordonnanzwaffe — Käufer muss Schweizer Bürger oder Niederlassungsbewilligung
     rechtsstatus: 'ordonnanz',
     typischeKaliber: ['7,5×55mm Swiss (GP11)'],
     tags: ['Ordonnanz', 'K31', 'Karabiner', 'Schweiz', 'Geradezug', 'Sammler', 'GP11'],
+    youtubeVideoId: 'dkpmbbY0fFg',
+    youtubeQuelle: 'Forgotten Weapons / Ian McCollum',
   },
 
   {
@@ -146,6 +152,8 @@ Ordonnanzwaffe — Käufer muss Schweizer Bürger oder Niederlassungsbewilligung
     rechtsstatus: 'ordonnanz',
     typischeKaliber: ['7,5×55mm Swiss (GP11)'],
     tags: ['Ordonnanz', 'Stgw57', 'SIG', 'Schweiz', 'Sammler', 'GP11'],
+    youtubeVideoId: 'M_oSX-gdkVw',
+    youtubeQuelle: 'Forgotten Weapons / Ian McCollum',
   },
 
   {
@@ -183,6 +191,8 @@ Ordonnanzwaffe — Käufer muss Schweizer Bürger oder Niederlassungsbewilligung
     rechtsstatus: 'ordonnanz',
     typischeKaliber: ['9×19mm', '7,65mm Parabellum'],
     tags: ['Ordonnanz', 'SIG', 'P210', 'P49', 'Schweiz', 'Sammler', 'Präzision'],
+    youtubeVideoId: 'B4W9bpXOHjU',
+    youtubeQuelle: 'Forgotten Weapons / Ian McCollum',
   },
 
   {
@@ -219,6 +229,8 @@ Ordonnanzwaffe — Erwerb nur für Schweizer Bürger oder Personen mit Niederlas
     rechtsstatus: 'ordonnanz',
     typischeKaliber: ['7,65×21mm Parabellum', '9×19mm'],
     tags: ['Ordonnanz', 'P06', 'Luger', 'Parabellum', 'Schweiz', 'Sammler', 'Kniehebel'],
+    youtubeVideoId: 'qNJPkF-Wn_o',
+    youtubeQuelle: 'Forgotten Weapons / Ian McCollum',
   },
 
   {
@@ -255,6 +267,8 @@ Ordonnanzwaffe — Erwerb nur für Schweizer Bürger oder C-Bewilligung.`,
     rechtsstatus: 'ordonnanz',
     typischeKaliber: ['7,5×55mm Swiss'],
     tags: ['Ordonnanz', 'K11', 'Karabiner', 'Schmidt-Rubin', 'Schweiz', 'Sammler'],
+    youtubeVideoId: 'ZTxi3Kz1yN0',
+    youtubeQuelle: 'Forgotten Weapons / Ian McCollum',
   },
 
   {
@@ -292,6 +306,8 @@ Ordonnanzwaffe — Erwerb nur mit Schweizer Bürgerrecht oder C-Bewilligung.`,
     rechtsstatus: 'frei',
     typischeKaliber: ['10,4×38mm R'],
     tags: ['Historisch', 'Vetterli', 'Schweiz', 'Sammler', 'Vor1871'],
+    youtubeVideoId: '0Yvbi69LaQE',
+    youtubeQuelle: 'Forgotten Weapons / Ian McCollum',
   },
 
   // ─── PISTOLEN ────────────────────────────────────────────

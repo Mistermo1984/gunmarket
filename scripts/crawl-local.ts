@@ -12,7 +12,7 @@ import * as dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import { classifyRechtsstatus } from "../src/lib/rechtsstatus-classifier";
 import { classifyCategory } from "../src/lib/category-classifier";
-import { getPlzCoordinates, getCityCoordinates } from "../src/lib/plz-coordinates";
+import { getCityCoordinates } from "../src/lib/plz-coordinates";
 
 dotenv.config({ path: ".env.local" });
 
@@ -135,39 +135,129 @@ function extractListingUrls(html: string): string[] {
 
 // ─── Category mapping ───────────────────────────────────────
 
-function mapCategoryFromUrl(url: string): string {
-  if (url.includes("/pistolen") || url.includes("/revolver"))
-    return "kurzwaffen";
-  if (
-    url.includes("/magazine") ||
-    url.includes("/holster") ||
-    url.includes("/griffschalen") ||
-    url.includes("/schafte") ||
-    url.includes("/laufe") ||
-    url.includes("/montagen") ||
-    url.includes("/chokes")
-  )
-    return "zubehoer";
-  if (url.includes("/kurzwaffen")) return "kurzwaffen";
-  if (
-    url.includes("/flinten") ||
-    url.includes("/buchsen") ||
-    url.includes("/kombinierte")
-  )
-    return "langwaffen";
-  if (url.includes("/langwaffen")) return "langwaffen";
-  if (url.includes("/sammler") || url.includes("/ordonanz"))
-    return "ordonnanzwaffen";
-  if (url.includes("/luftdruck") || url.includes("/softair"))
-    return "luftdruckwaffen";
-  if (url.includes("/optik")) return "optik";
-  if (url.includes("/messer") || url.includes("/blankwaffen"))
-    return "zubehoer";
-  if (url.includes("/wiederladen")) return "zubehoer";
-  if (url.includes("/wild") || url.includes("/jagd")) return "langwaffen";
-  if (url.includes("/bogenschiesen")) return "zubehoer";
-  if (url.includes("/selbstverteidigung")) return "zubehoer";
-  return "zubehoer";
+function mapCategoryFromUrl(url: string): { hauptkategorie: string; unterkategorie: string } {
+  // Extract path parts from URL
+  // URL format: https://www.gebrauchtwaffen.com/[cat]/[subcat]/title_i12345
+  const path = new URL(url).pathname;
+  const parts = path.split('/').filter(p => p && !p.match(/_i\d+$/) && !p.match(/^[a-z]+-[rc]\d+/));
+  // parts[0] = main category slug, parts[1] = subcategory slug (if exists)
+
+  const mainSlug = parts[0] || '';
+  const subSlug = parts[1] || '';
+
+  // Subcategories that are ACCESSORIES (override main category to zubehoer)
+  const accessorySubcats = [
+    'magazine', 'magazine_1', 'holster', 'griffschalen', 'schafte',
+    'laufe', 'montagen-schienen-ringe', 'chokes', 'kombinierte-waffen',
+    'andere', 'andere_1', 'andere_2', 'andere_3', 'andere_4',
+    'lauefe-teile', 'teile', 'ersatzteile',
+  ];
+
+  // Map subcategory slug to clean label
+  const subcatMap: Record<string, string> = {
+    'pistolen': 'pistolen',
+    'revolver': 'revolver',
+    'magazine': 'magazine',
+    'magazine_1': 'magazine',
+    'holster': 'holster',
+    'griffschalen': 'griffschalen',
+    'schafte': 'schafte',
+    'laufe': 'laeufe',
+    'montagen-schienen-ringe': 'montagen',
+    'chokes': 'chokes',
+    'flinten': 'flinten',
+    'buchsen': 'buechsen',
+    'kombinierte-waffen': 'kombinierte-waffen',
+    'langwaffen_1': 'langwaffen',
+    'kurzwaffen_1': 'kurzwaffen',
+    'andere': 'andere',
+    'andere_1': 'andere',
+    'luftdruck-gewehre': 'luftdruck-gewehre',
+    'luftdruck-pistolen': 'luftdruck-pistolen',
+    'co2-gewehre-pistolen': 'co2',
+    'softair-gewehre': 'softair',
+  };
+
+  // Determine if subcategory is an accessory
+  const isAccessory = accessorySubcats.includes(subSlug);
+
+  // Map main category
+  let hauptkategorie = 'verschiedenes';
+  if (mainSlug === 'kurzwaffen') {
+    hauptkategorie = isAccessory ? 'zubehoer' : 'kurzwaffen';
+  } else if (mainSlug === 'langwaffen') {
+    hauptkategorie = isAccessory ? 'zubehoer' : 'langwaffen';
+  } else if (mainSlug === 'sammler-ordonanzwaffen') {
+    hauptkategorie = 'ordonnanzwaffen';
+  } else if (mainSlug === 'luftdruckwaffen-softair') {
+    hauptkategorie = 'luftdruck';
+  } else if (mainSlug === 'optik') {
+    hauptkategorie = 'optik';
+  } else if (mainSlug === 'messer-blankwaffen') {
+    hauptkategorie = 'messer';
+  } else if (mainSlug === 'wiederladen') {
+    hauptkategorie = 'wiederladen';
+  } else if (mainSlug === 'wild-und-jagd') {
+    hauptkategorie = 'jagd';
+  } else if (mainSlug === 'munition') {
+    hauptkategorie = 'munition';
+  }
+
+  const unterkategorie = subcatMap[subSlug] || subSlug || '';
+
+  return { hauptkategorie, unterkategorie };
+}
+
+// ─── Canton coordinates for map ─────────────────────────────
+
+const CANTON_COORDS: Record<string, { lat: number; lng: number }> = {
+  'Zürich': { lat: 47.3769, lng: 8.5417 },
+  'Bern': { lat: 46.9480, lng: 7.4474 },
+  'Luzern': { lat: 47.0502, lng: 8.3093 },
+  'Uri': { lat: 46.8800, lng: 8.6349 },
+  'Schwyz': { lat: 47.0207, lng: 8.6530 },
+  'Obwalden': { lat: 46.8783, lng: 8.2514 },
+  'Nidwalden': { lat: 46.9266, lng: 8.3852 },
+  'Glarus': { lat: 47.0399, lng: 9.0677 },
+  'Zug': { lat: 47.1661, lng: 8.5157 },
+  'Freiburg': { lat: 46.8065, lng: 7.1620 },
+  'Solothurn': { lat: 47.2088, lng: 7.5323 },
+  'Basel-Stadt': { lat: 47.5596, lng: 7.5886 },
+  'Basel-Landschaft': { lat: 47.4416, lng: 7.7573 },
+  'Schaffhausen': { lat: 47.6960, lng: 8.6344 },
+  'Appenzell Ausserrhoden': { lat: 47.3664, lng: 9.3054 },
+  'Appenzell Innerrhoden': { lat: 47.3159, lng: 9.4166 },
+  'St. Gallen': { lat: 47.4245, lng: 9.3767 },
+  'Graubünden': { lat: 46.6570, lng: 9.6280 },
+  'Aargau': { lat: 47.3887, lng: 8.0430 },
+  'Thurgau': { lat: 47.5560, lng: 9.1750 },
+  'Tessin': { lat: 46.3317, lng: 8.8009 },
+  'Waadt': { lat: 46.5763, lng: 6.5601 },
+  'Wallis': { lat: 46.2291, lng: 7.5586 },
+  'Neuenburg': { lat: 46.9899, lng: 6.9293 },
+  'Genf': { lat: 46.2044, lng: 6.1432 },
+  'Jura': { lat: 47.3557, lng: 7.1432 },
+  'Vaud': { lat: 46.5763, lng: 6.5601 },
+  'Valais': { lat: 46.2291, lng: 7.5586 },
+  'Neuchâtel': { lat: 46.9899, lng: 6.9293 },
+  'Genève': { lat: 46.2044, lng: 6.1432 },
+  'Fribourg': { lat: 46.8065, lng: 7.1620 },
+  'Ticino': { lat: 46.3317, lng: 8.8009 },
+  'Appenzell': { lat: 47.3664, lng: 9.3054 },
+};
+
+function getCantonCoords(canton: string): { lat: number; lng: number } | null {
+  if (!canton) return null;
+  if (CANTON_COORDS[canton]) return CANTON_COORDS[canton];
+  const key = Object.keys(CANTON_COORDS).find(k =>
+    canton.toLowerCase().includes(k.toLowerCase()) ||
+    k.toLowerCase().includes(canton.toLowerCase())
+  );
+  return key ? CANTON_COORDS[key] : null;
+}
+
+function addJitter(coord: number, amount: number = 0.05): number {
+  return coord + (Math.random() - 0.5) * amount;
 }
 
 // ─── Detail page scraping ───────────────────────────────────
@@ -330,9 +420,7 @@ async function scrapeListing(url: string): Promise<ScrapedListing | null> {
   const ortschaft = parseCity(html);
   const imageUrls = parseImages(html);
 
-  const hauptkategorie = mapCategoryFromUrl(url);
-  const classified = classifyCategory(titel, beschreibung);
-  const unterkategorie = classified.unterkategorie;
+  const { hauptkategorie, unterkategorie } = mapCategoryFromUrl(url);
 
   const rechtsstatus = classifyRechtsstatus({
     titel,
@@ -341,8 +429,11 @@ async function scrapeListing(url: string): Promise<ScrapedListing | null> {
     unterkategorie,
   });
 
-  const coords =
-    getCityCoordinates(ortschaft) ?? getPlzCoordinates("") ?? null;
+  // Try city coordinates first, then fall back to canton center with jitter
+  const cityCoords = getCityCoordinates(ortschaft);
+  const cantonCoords = getCantonCoords(kanton);
+  const lat = cityCoords?.lat ?? (cantonCoords ? addJitter(cantonCoords.lat, 0.3) : null);
+  const lng = cityCoords?.lng ?? (cantonCoords ? addJitter(cantonCoords.lng, 0.3) : null);
 
   return {
     sourceId: `gw-${idMatch[1]}`,
@@ -356,8 +447,8 @@ async function scrapeListing(url: string): Promise<ScrapedListing | null> {
     rechtsstatus,
     imageUrls,
     sourceUrl: url,
-    lat: coords?.lat ?? null,
-    lng: coords?.lng ?? null,
+    lat,
+    lng,
   };
 }
 

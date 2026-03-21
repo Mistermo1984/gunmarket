@@ -36,8 +36,8 @@ export default function BannerZoneClient({
   ];
 
   return (
-    <div className="w-full bg-gray-50 border-t border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-6 flex items-center h-12 gap-0">
+    <div className="w-full bg-gray-50 border-t border-b border-gray-200 overflow-visible">
+      <div className="max-w-7xl mx-auto px-6 flex items-center h-12 gap-0 overflow-visible">
 
         {/* Tabs links */}
         <div className="flex items-center shrink-0 pr-5 mr-5 border-r border-gray-200 h-12">
@@ -66,36 +66,39 @@ export default function BannerZoneClient({
           ))}
         </div>
 
-        {/* Items */}
-        <div className="flex items-center gap-2 flex-1 overflow-x-auto scrollbar-none pr-4">
-          {items.length === 0 && active === 'ev' && (
-            <span className="text-xs text-gray-400">Keine Events in den nächsten 90 Tagen</span>
-          )}
-          {items.map((item, i) => (
-            <div key={i} className="flex items-center gap-2 shrink-0">
-              {i > 0 && <div className="w-px h-4 bg-gray-200 shrink-0" />}
-              <a
-                href={item.href}
-                target={item.href.startsWith('http') ? '_blank' : undefined}
-                rel="noopener noreferrer"
-                className="flex items-center gap-0 bg-white border border-gray-200 rounded-lg hover:border-[#4d8230] transition-colors group overflow-hidden whitespace-nowrap shrink-0"
-              >
-                <div className="bg-[#eef5e8] px-2.5 py-2 self-stretch flex items-center border-r border-gray-100">
-                  <span className="text-[10px] font-semibold text-[#4d8230] leading-none">
-                    {item.meta.split('·')[0].trim()}
-                  </span>
-                </div>
-                <div className="px-2.5 py-1.5 leading-none">
-                  <div className="text-[11px] font-medium text-gray-800 group-hover:text-[#4d8230] transition-colors">
-                    {item.name}
+        {/* Items with fade gradient */}
+        <div className="relative flex-1 overflow-hidden">
+          <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-gray-50 to-transparent pointer-events-none z-10" />
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pr-12">
+            {items.length === 0 && active === 'ev' && (
+              <span className="text-xs text-gray-400">Keine Events in den nächsten 90 Tagen</span>
+            )}
+            {items.map((item, i) => (
+              <div key={i} className="flex items-center gap-2 shrink-0">
+                {i > 0 && <div className="w-px h-4 bg-gray-200 shrink-0" />}
+                <a
+                  href={item.href}
+                  target={item.href.startsWith('http') ? '_blank' : undefined}
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-0 bg-white border border-gray-200 rounded-lg hover:border-[#4d8230] transition-colors group overflow-hidden whitespace-nowrap shrink-0"
+                >
+                  <div className="bg-[#eef5e8] px-2.5 py-2 self-stretch flex items-center border-r border-gray-100">
+                    <span className="text-[10px] font-semibold text-[#4d8230] leading-none">
+                      {item.meta.split('·')[0].trim()}
+                    </span>
                   </div>
-                  <div className="text-[10px] text-gray-400 mt-0.5">
-                    {item.meta.split('·').slice(1).join('·').trim()}
+                  <div className="px-2.5 py-1.5 leading-none">
+                    <div className="text-[11px] font-medium text-gray-800 group-hover:text-[#4d8230] transition-colors">
+                      {item.name}
+                    </div>
+                    <div className="text-[10px] text-gray-400 mt-0.5">
+                      {item.meta.split('·').slice(1).join('·').trim()}
+                    </div>
                   </div>
-                </div>
-              </a>
-            </div>
-          ))}
+                </a>
+              </div>
+            ))}
+          </div>
         </div>
 
       </div>

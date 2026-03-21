@@ -22,16 +22,10 @@ interface MarketData {
     topKanton: string;
     topKantonCount: number;
   };
-  avgByCategory: { hauptkategorie: string; avg_preis: number; count: number }[];
   medianByCategory: { hauptkategorie: string; median: number; count: number }[];
-  byZustand: { zustand: string; count: number }[];
   byRechtsstatus: { rechtsstatus: string; count: number }[];
   topMarken: { marke: string; count: number }[];
-  topKaliber: { kaliber: string; count: number }[];
   byKanton: { kanton: string; count: number }[];
-  cheapestPerCategory: {
-    id: string; titel: string; preis: number; hauptkategorie: string; image_url: string | null;
-  }[];
   ordonnanzData: { name: string; count: number; median: number }[];
 }
 
@@ -49,16 +43,6 @@ const KATEGORIE_LABELS: Record<string, string> = {
   flinten: "Langwaffen",
   jagdwaffen: "Langwaffen",
   "freie-waffen": "Luftdruck",
-};
-
-const KATEGORIE_ICONS: Record<string, string> = {
-  kurzwaffen: "🔫",
-  langwaffen: "🎯",
-  ordonnanzwaffen: "🏅",
-  luftdruckwaffen: "💨",
-  optik: "🔭",
-  munition: "🔴",
-  zubehoer: "🔧",
 };
 
 const RECHTS_LABELS: Record<string, { label: string; color: string }> = {
@@ -80,46 +64,86 @@ const KANTON_ABBREV: Record<string, string> = {
 
 // ─── Reusable Components ────────────────────────────────────────
 
-function HBar({ value, max, color = "#4ade80" }: { value: number; max: number; color?: string }) {
+function HBar({ value, max }: { value: number; max: number }) {
   const pct = max > 0 ? Math.max((value / max) * 100, 2) : 0;
   return (
     <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-white/5">
-      <div className="h-full rounded-full transition-all duration-700 ease-out" style={{ width: `${pct}%`, backgroundColor: color }} />
+      <div
+        className="h-full rounded-full transition-all duration-700 ease-out"
+        style={{ width: `${pct}%`, background: "linear-gradient(90deg, #2d5a1b 0%, #4d8230 50%, #6ab240 100%)", boxShadow: "0 0 8px rgba(77,130,48,0.3)" }}
+      />
     </div>
   );
 }
 
-function StatCard({ label, value, sub, icon }: { label: string; value: string; sub?: string; icon: string }) {
+function StatCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
-    <div className="relative overflow-hidden rounded-xl border border-[#2d4a2d] bg-[#1a2e1a] p-4 md:p-5">
-      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#4ade80]/60 to-transparent" />
-      <div className="absolute -left-2 -top-2 text-3xl opacity-10">{icon}</div>
-      <div className="mb-1 text-lg">{icon}</div>
-      <p className="mb-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#9ca3af]">{label}</p>
-      <p className="font-display text-xl font-black text-white md:text-2xl">{value}</p>
-      {sub && <p className="mt-0.5 text-[11px] text-[#86efac]">{sub}</p>}
+    <div
+      className="relative overflow-hidden rounded-2xl p-5 md:p-6"
+      style={{
+        background: "linear-gradient(135deg, rgba(77,130,48,0.12) 0%, rgba(15,26,10,0.95) 60%)",
+        border: "1px solid rgba(77,130,48,0.2)",
+        boxShadow: "0 0 40px rgba(77,130,48,0.06) inset",
+      }}
+    >
+      <div className="absolute left-0 top-0 h-full w-0.5 rounded-l-2xl bg-[#4d8230] opacity-60" />
+      <div className="absolute -left-4 -top-4 h-20 w-20 rounded-full opacity-20" style={{ background: "#4d8230", filter: "blur(20px)" }} />
+      <div className="relative">
+        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-gray-500">{label}</p>
+        <p className="text-2xl font-black leading-none text-white md:text-3xl">{value}</p>
+        {sub && <p className="mt-2 text-xs text-gray-500">{sub}</p>}
+      </div>
     </div>
   );
 }
 
-function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+function GradientCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={`rounded-2xl border border-[#2d4a2d] bg-[#111f0d] p-5 md:p-6 ${className}`}>
+    <div
+      className={`rounded-2xl p-5 md:p-6 ${className}`}
+      style={{
+        background: "linear-gradient(160deg, #162810 0%, #0d1a0a 100%)",
+        border: "1px solid rgba(77,130,48,0.15)",
+        boxShadow: "0 4px 24px rgba(0,0,0,0.3), 0 0 0 1px rgba(77,130,48,0.05)",
+      }}
+    >
       {children}
     </div>
   );
 }
 
-function SectionHeader({ icon, title, subtitle }: { icon: string; title: string; subtitle: string }) {
+function SectionHeader({ title, subtitle }: { title: string; subtitle: string }) {
   return (
     <div className="mb-5 flex items-center gap-3">
-      <div className="h-6 w-1 rounded-full bg-[#4d8230]" />
-      <span className="text-xl">{icon}</span>
+      <div className="flex flex-col gap-1">
+        <div className="h-0.5 w-8 rounded-full bg-[#4d8230]" />
+        <div className="h-0.5 w-5 rounded-full bg-[#4d8230] opacity-50" />
+      </div>
       <div>
         <h2 className="text-base font-bold text-white">{title}</h2>
         <p className="text-xs text-gray-500">{subtitle}</p>
       </div>
     </div>
+  );
+}
+
+function SectionDivider() {
+  return <div className="my-8 h-px w-full" style={{ background: "linear-gradient(90deg, transparent, rgba(77,130,48,0.2), transparent)" }} />;
+}
+
+function GradientPrice({ value }: { value: string }) {
+  return (
+    <span
+      className="text-2xl font-black"
+      style={{
+        background: "linear-gradient(135deg, #7dc855 0%, #4d8230 100%)",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        backgroundClip: "text",
+      }}
+    >
+      {value}
+    </span>
   );
 }
 
@@ -136,14 +160,21 @@ export default function MarktInsightsPage() {
       .then((r) => r.json())
       .then((d) => { setData(d); setLoading(false); })
       .catch(() => setLoading(false));
-    fetch("/api/listings?sort=neueste&limit=6")
+
+    // Fetch 12 newest, filter to only those with images, take 6
+    fetch("/api/listings?sort=neueste&limit=12")
       .then((r) => r.json())
-      .then((d) => setNeuHeute((d.listings || []).map((l: Record<string, unknown>) => ({
-        id: l.id as string, titel: l.titel as string, preis: l.preis as number, kanton: l.kanton as string,
-        image_url: (l.image_url as string) || null,
-        images: l.images as { url: string }[] | undefined,
-      }))))
+      .then((d) => {
+        const all = (d.listings || []).map((l: Record<string, unknown>) => ({
+          id: l.id as string, titel: l.titel as string, preis: l.preis as number, kanton: l.kanton as string,
+          image_url: (l.image_url as string) || null,
+          images: l.images as { url: string }[] | undefined,
+        }));
+        const withImages = all.filter((l: { images?: { url: string }[]; image_url: string | null }) => l.images?.[0]?.url || l.image_url);
+        setNeuHeute(withImages.slice(0, 6));
+      })
       .catch(() => {});
+
     fetch("/api/listings?sort=good_deal&limit=6")
       .then((r) => r.json())
       .then((d) => setTopDeals((d.listings || []).map((l: Record<string, unknown>) => ({
@@ -191,7 +222,6 @@ export default function MarktInsightsPage() {
 
   const today = new Date().toLocaleDateString("de-CH", { day: "2-digit", month: "long", year: "numeric" });
 
-  // Rechtsstatus stacked bar data
   const rechtsItems = byRechtsstatus
     .map((r) => {
       const info = RECHTS_LABELS[r.rechtsstatus] || { label: r.rechtsstatus, color: "#9ca3af" };
@@ -219,32 +249,48 @@ export default function MarktInsightsPage() {
               Preisanalysen, Trends und Marktdaten — was ist meine Waffe wert?
             </p>
           </div>
-          <div className="flex items-center gap-2 rounded-lg border border-[#2d4a2d] bg-[#1a2e1a] px-4 py-2.5">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-[#4ade80]" />
-            <span className="text-xs text-[#9ca3af]">Aktualisiert: {today}</span>
+          <div className="flex items-center gap-2 text-xs text-gray-500">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4d8230] opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#4d8230]" />
+            </span>
+            Aktualisiert: {today}
           </div>
         </div>
 
         {/* ═══ 1b. STAT CARDS ═══ */}
         <div className="mb-10 grid grid-cols-2 gap-3 md:grid-cols-5 md:gap-4">
-          <StatCard icon="📋" label="Aktive Inserate" value={o.total.toLocaleString("de-CH")} />
-          <StatCard icon="💰" label="Ø Preis" value={`CHF ${o.avgPreis.toLocaleString("de-CH")}`} sub={`Median: CHF ${o.medianPreis.toLocaleString("de-CH")}`} />
-          <StatCard icon="🔫" label="Top Kategorie" value={KATEGORIE_LABELS[o.topKategorie] || o.topKategorie} sub={o.topKategoriePct > 0 ? `${o.topKategoriePct}% aller Inserate` : undefined} />
-          <StatCard icon="📍" label="Top Kanton" value={o.topKanton || "—"} sub={o.topKantonCount > 0 ? `${o.topKantonCount} Inserate` : undefined} />
-          <div className="relative overflow-hidden rounded-xl border border-[#2d4a2d] bg-[#1a2e1a] p-4 md:p-5">
-            <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#4ade80]/60 to-transparent" />
-            <div className="mb-1 flex items-center gap-1.5 text-lg">
-              ✨ <span className="h-2 w-2 animate-pulse rounded-full bg-[#4ade80]" />
+          <StatCard label="Aktive Inserate" value={o.total.toLocaleString("de-CH")} />
+          <StatCard label="Durchschnittspreis" value={`CHF ${o.avgPreis.toLocaleString("de-CH")}`} sub={`Median: CHF ${o.medianPreis.toLocaleString("de-CH")}`} />
+          <StatCard label="Top Kategorie" value={KATEGORIE_LABELS[o.topKategorie] || o.topKategorie} sub={o.topKategoriePct > 0 ? `${o.topKategoriePct}% aller Inserate` : undefined} />
+          <StatCard label="Top Kanton" value={o.topKanton || "—"} sub={o.topKantonCount > 0 ? `${o.topKantonCount} Inserate` : undefined} />
+          <div
+            className="relative overflow-hidden rounded-2xl p-5 md:p-6"
+            style={{
+              background: "linear-gradient(135deg, rgba(77,130,48,0.12) 0%, rgba(15,26,10,0.95) 60%)",
+              border: "1px solid rgba(77,130,48,0.2)",
+              boxShadow: "0 0 40px rgba(77,130,48,0.06) inset",
+            }}
+          >
+            <div className="absolute left-0 top-0 h-full w-0.5 rounded-l-2xl bg-[#4d8230] opacity-60" />
+            <div className="absolute -left-4 -top-4 h-20 w-20 rounded-full opacity-20" style={{ background: "#4d8230", filter: "blur(20px)" }} />
+            <div className="relative">
+              <div className="mb-3 flex items-center gap-1.5">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4ade80] opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[#4ade80]" />
+                </span>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-gray-500">
+                  {o.todayNew > 0 ? "Heute neu" : "Diese Woche"}
+                </p>
+              </div>
+              <p className="text-2xl font-black leading-none text-white md:text-3xl">
+                {o.todayNew > 0 ? o.todayNew : o.weekNew || 0}
+              </p>
+              <p className="mt-2 text-xs text-gray-500">
+                {o.todayNew > 0 ? "in den letzten 24h" : "letzte 7 Tage"}
+              </p>
             </div>
-            <p className="mb-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#9ca3af]">
-              {o.todayNew > 0 ? "Heute neu" : "Diese Woche"}
-            </p>
-            <p className="font-display text-xl font-black text-white md:text-2xl">
-              {o.todayNew > 0 ? o.todayNew : o.weekNew || 0}
-            </p>
-            <p className="mt-0.5 text-[11px] text-[#86efac]">
-              {o.todayNew > 0 ? "in den letzten 24h" : "letzte 7 Tage"}
-            </p>
           </div>
         </div>
 
@@ -253,7 +299,10 @@ export default function MarktInsightsPage() {
           <div className="mb-10">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="flex items-center gap-2 text-lg font-bold text-white">
-                <span className="h-2 w-2 animate-pulse rounded-full bg-[#7dc855]" />
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#7dc855] opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[#7dc855]" />
+                </span>
                 Heute neu eingetroffen
                 <span className="ml-1 text-sm font-normal text-[#9ca3af]">{neuHeute.length} Inserate</span>
               </h2>
@@ -264,12 +313,11 @@ export default function MarktInsightsPage() {
                 const imgUrl = listing.images?.[0]?.url || listing.image_url;
                 return (
                   <Link key={listing.id} href={`/inserat/${listing.id}`}
-                    className="group overflow-hidden rounded-xl border border-[#2d4a2d] bg-[#1a2e1a] transition-all hover:border-[#4ade80]/50">
+                    className="group overflow-hidden rounded-xl transition-all"
+                    style={{ background: "linear-gradient(135deg, #1e3314 0%, #162810 100%)", border: "1px solid rgba(77,130,48,0.12)" }}>
                     <div className="relative aspect-square overflow-hidden bg-[#0f1a0f]">
-                      {imgUrl ? (
+                      {imgUrl && (
                         <img src={imgUrl} alt={listing.titel} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center text-[#2d4a2d]"><BarChart3 size={24} /></div>
                       )}
                     </div>
                     <div className="p-2">
@@ -284,75 +332,86 @@ export default function MarktInsightsPage() {
           </div>
         )}
 
-        {/* ═══ 3. PREISFINDER (prominent, full width) ═══ */}
+        <SectionDivider />
+
+        {/* ═══ 3. PREISFINDER ═══ */}
         <div className="mb-10">
           <PreisfinderWidget />
         </div>
 
+        <SectionDivider />
+
         {/* ═══ 4. SCHWEIZER ORDONNANZ-SPOTLIGHT ═══ */}
         {ordonnanzData.some((m) => m.count > 0) && (
-          <div className="mb-10">
-            <Card>
-              <SectionHeader icon="🇨🇭" title="Schweizer Ordonnanz-Markt" subtitle="Preise für klassische Schweizer Militärwaffen" />
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
-                {ordonnanzData.map((m) => (
-                  <Link
-                    key={m.name}
-                    href={`/?suche=${encodeURIComponent(m.name)}`}
-                    className="group rounded-xl bg-[#1a2e12] p-3 text-center transition-colors hover:bg-[#2d4a20]"
-                  >
-                    <p className="mb-1 text-sm font-bold text-white transition-colors group-hover:text-[#7dc855]">{m.name}</p>
-                    {m.count > 0 ? (
-                      <>
-                        <p className="text-lg font-black text-[#7dc855]">CHF {m.median.toLocaleString("de-CH")}</p>
-                        <p className="text-[10px] text-gray-600">{m.count} Inserate</p>
-                      </>
-                    ) : (
-                      <p className="text-xs text-gray-600">Keine Inserate</p>
-                    )}
-                  </Link>
-                ))}
-              </div>
-            </Card>
-          </div>
+          <>
+            <div className="mb-10">
+              <GradientCard>
+                <SectionHeader title="Schweizer Ordonnanz-Markt" subtitle="Preise klassischer Schweizer Militärwaffen" />
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+                  {ordonnanzData.map((m) => (
+                    <Link
+                      key={m.name}
+                      href={`/?suche=${encodeURIComponent(m.name)}`}
+                      className="group rounded-xl p-4 text-center transition-colors"
+                      style={{ background: "linear-gradient(135deg, #1e3314 0%, #162810 100%)", border: "1px solid rgba(77,130,48,0.12)" }}
+                    >
+                      <p className="mb-2 text-sm font-semibold text-gray-300 transition-colors group-hover:text-white">{m.name}</p>
+                      {m.count > 0 ? (
+                        <>
+                          <GradientPrice value={`CHF ${m.median.toLocaleString("de-CH")}`} />
+                          <p className="mt-1 text-[10px] text-gray-600">Median · {m.count} Inserate</p>
+                        </>
+                      ) : (
+                        <p className="text-xs text-gray-600">Keine Inserate</p>
+                      )}
+                    </Link>
+                  ))}
+                </div>
+                <p className="mt-4 text-center text-[10px] text-gray-600">
+                  * Medianpreise basierend auf aktiven Inseraten auf gunmarket.ch
+                </p>
+              </GradientCard>
+            </div>
+            <SectionDivider />
+          </>
         )}
 
         {/* ═══ 5. MEDIANPREIS NACH KATEGORIE ═══ */}
         {medianByCategory.length > 0 && (
-          <div className="mb-10">
-            <Card>
-              <SectionHeader icon="📊" title="Medianpreis nach Kategorie" subtitle="Typischer Preis pro Waffenkategorie" />
-              <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-                {medianByCategory.map((cat) => (
-                  <Link
-                    key={cat.hauptkategorie}
-                    href={`/?kategorie=${encodeURIComponent(cat.hauptkategorie)}`}
-                    className="group rounded-xl border border-[#4d8230]/20 bg-[#1a2e12] p-4 transition-all hover:border-[#4d8230]"
-                  >
-                    <div className="mb-3 flex items-center gap-2">
-                      <span className="text-xl">{KATEGORIE_ICONS[cat.hauptkategorie] || "📦"}</span>
-                      <span className="text-xs font-semibold text-gray-400 transition-colors group-hover:text-white">
+          <>
+            <div className="mb-10">
+              <GradientCard>
+                <SectionHeader title="Medianpreis nach Kategorie" subtitle="Typischer Preis pro Waffenkategorie" />
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+                  {medianByCategory.map((cat) => (
+                    <Link
+                      key={cat.hauptkategorie}
+                      href={`/?kategorie=${encodeURIComponent(cat.hauptkategorie)}`}
+                      className="group rounded-xl p-4 transition-all hover:brightness-110"
+                      style={{ background: "linear-gradient(135deg, #1e3314 0%, #162810 100%)", border: "1px solid rgba(77,130,48,0.12)" }}
+                    >
+                      <p className="mb-3 text-xs font-semibold text-gray-400 transition-colors group-hover:text-white">
                         {KATEGORIE_LABELS[cat.hauptkategorie] || cat.hauptkategorie}
-                      </span>
-                    </div>
-                    <p className="mb-0.5 text-xl font-black text-white">
-                      CHF {cat.median.toLocaleString("de-CH")}
-                    </p>
-                    <p className="text-[10px] text-gray-600">Median · {cat.count} Inserate</p>
-                  </Link>
-                ))}
-              </div>
-            </Card>
-          </div>
+                      </p>
+                      <p className="mb-0.5 text-xl font-black text-white">
+                        CHF {cat.median.toLocaleString("de-CH")}
+                      </p>
+                      <p className="text-[10px] text-gray-600">Median · {cat.count} Inserate</p>
+                    </Link>
+                  ))}
+                </div>
+              </GradientCard>
+            </div>
+            <SectionDivider />
+          </>
         )}
 
         {/* ═══ 6. PREISVERTEILUNG + KANTON ═══ */}
         <div className="mb-10 grid gap-6 lg:grid-cols-2">
           <PriceDistributionChart />
 
-          {/* Kanton Chart */}
-          <Card>
-            <SectionHeader icon="📍" title="Inserate nach Kanton" subtitle={`Top ${Math.min(byKanton.length, 10)} Kantone`} />
+          <GradientCard>
+            <SectionHeader title="Inserate nach Kanton" subtitle={`Top ${Math.min(byKanton.length, 10)} Kantone`} />
             <div className="space-y-2.5">
               {byKanton.slice(0, 10).map((k, i) => {
                 const abbrev = KANTON_ABBREV[k.kanton] || k.kanton.slice(0, 2).toUpperCase();
@@ -363,14 +422,21 @@ export default function MarktInsightsPage() {
                     className="group flex items-center gap-3"
                   >
                     <span className="w-4 shrink-0 text-[11px] text-gray-600">{i + 1}</span>
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[#4d8230]/20 bg-[#1a2e12] transition-colors group-hover:border-[#4d8230]">
+                    <div
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors group-hover:brightness-125"
+                      style={{ background: "linear-gradient(135deg, #1e3314 0%, #162810 100%)", border: "1px solid rgba(77,130,48,0.2)" }}
+                    >
                       <span className="text-[10px] font-bold text-[#7dc855]">{abbrev}</span>
                     </div>
                     <span className="w-20 shrink-0 text-sm text-gray-300 transition-colors group-hover:text-white">{k.kanton}</span>
                     <div className="h-5 flex-1 overflow-hidden rounded-full bg-[#0f1a0a]">
                       <div
                         className="h-full rounded-full transition-all duration-700"
-                        style={{ width: `${(k.count / maxKanton) * 100}%`, background: "linear-gradient(90deg, #2d5a1b, #7dc855)" }}
+                        style={{
+                          width: `${(k.count / maxKanton) * 100}%`,
+                          background: "linear-gradient(90deg, #2d5a1b 0%, #4d8230 50%, #6ab240 100%)",
+                          boxShadow: "0 0 8px rgba(77,130,48,0.3)",
+                        }}
                       />
                     </div>
                     <span className="w-10 shrink-0 text-right text-sm font-semibold text-[#7dc855]">{k.count}</span>
@@ -378,14 +444,15 @@ export default function MarktInsightsPage() {
                 );
               })}
             </div>
-          </Card>
+          </GradientCard>
         </div>
+
+        <SectionDivider />
 
         {/* ═══ 7. TOP MARKEN + RECHTSSTATUS ═══ */}
         <div className="mb-10 grid gap-6 lg:grid-cols-2">
-          {/* Top Marken */}
-          <Card>
-            <SectionHeader icon="🏷️" title="Top 10 Marken" subtitle="Nach Anzahl Inserate" />
+          <GradientCard>
+            <SectionHeader title="Top 10 Marken" subtitle="Nach Anzahl Inserate" />
             <div className="space-y-3">
               {topMarken.map((m, i) => (
                 <Link
@@ -401,13 +468,10 @@ export default function MarktInsightsPage() {
                 </Link>
               ))}
             </div>
-          </Card>
+          </GradientCard>
 
-          {/* Rechtsstatus — stacked bar */}
-          <Card>
-            <SectionHeader icon="⚖️" title="Rechtsstatus" subtitle="Verteilung nach Erwerbsart" />
-
-            {/* Stacked 100% bar */}
+          <GradientCard>
+            <SectionHeader title="Rechtsstatus" subtitle="Verteilung nach Erwerbsart" />
             <div className="mb-5 flex h-10 gap-0.5 overflow-hidden rounded-xl">
               {rechtsItems.map((r) => (
                 <div
@@ -423,8 +487,6 @@ export default function MarktInsightsPage() {
                 </div>
               ))}
             </div>
-
-            {/* Legend grid */}
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {rechtsItems.map((r) => (
                 <div key={r.key} className="text-center">
@@ -434,25 +496,26 @@ export default function MarktInsightsPage() {
                 </div>
               ))}
             </div>
-          </Card>
+          </GradientCard>
         </div>
+
+        <SectionDivider />
 
         {/* ═══ 8. BRAND MEDIAN TABLE ═══ */}
         <div className="mb-10">
           <BrandMedianTable />
         </div>
 
+        <SectionDivider />
+
         {/* ═══ 9. COMMUNITY TOP-DEALS or CTA ═══ */}
         <div className="mb-10">
           {topDeals.filter((l) => l.good_deal_count > 0).length > 0 ? (
             <>
               <div className="mb-4 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="text-xl">👍</span>
-                  <div>
-                    <h2 className="text-lg font-bold text-white">Community Top-Deals</h2>
-                    <p className="text-xs text-[#9ca3af]">Von der Community als gutes Angebot bewertet</p>
-                  </div>
+                <div>
+                  <h2 className="text-lg font-bold text-white">Community Top-Deals</h2>
+                  <p className="text-xs text-[#9ca3af]">Von der Community als gutes Angebot bewertet</p>
                 </div>
                 <Link href="/?sort=good_deal" className="text-sm text-[#7dc855] hover:underline">Alle ansehen →</Link>
               </div>
@@ -461,15 +524,16 @@ export default function MarktInsightsPage() {
                   const imgUrl = listing.images?.[0]?.url || listing.image_url;
                   return (
                     <Link key={listing.id} href={`/inserat/${listing.id}`}
-                      className="group overflow-hidden rounded-2xl border border-[#4d8230]/20 bg-[#1a2e12] transition-all hover:border-[#4d8230]">
+                      className="group overflow-hidden rounded-2xl transition-all"
+                      style={{ background: "linear-gradient(135deg, #1e3314 0%, #162810 100%)", border: "1px solid rgba(77,130,48,0.12)" }}>
                       <div className="relative aspect-square overflow-hidden bg-[#0f1f0a]">
                         {imgUrl ? (
                           <img src={imgUrl} alt={listing.titel} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
                         ) : (
                           <div className="flex h-full w-full items-center justify-center text-[#4d8230] opacity-30"><BarChart3 size={32} /></div>
                         )}
-                        <div className="absolute left-2 top-2 flex items-center gap-1 rounded-full bg-[#4d8230] px-2 py-1 text-[10px] font-bold text-white">
-                          👍 {listing.good_deal_count}
+                        <div className="absolute left-2 top-2 rounded-full bg-[#4d8230] px-2 py-1 text-[10px] font-bold text-white">
+                          {listing.good_deal_count}
                         </div>
                       </div>
                       <div className="p-2.5">
@@ -483,9 +547,8 @@ export default function MarktInsightsPage() {
               </div>
             </>
           ) : (
-            <Card className="text-center">
+            <GradientCard className="text-center">
               <div className="flex flex-col items-center gap-3 py-6">
-                <div className="text-4xl">👍</div>
                 <h3 className="text-lg font-bold text-white">Bewerte Inserate als &quot;Gutes Angebot&quot;</h3>
                 <p className="max-w-md text-sm text-[#9ca3af]">
                   Hilf der Community — besuche Inserate und markiere faire Preise.
@@ -495,14 +558,14 @@ export default function MarktInsightsPage() {
                   Inserate durchsuchen →
                 </Link>
               </div>
-            </Card>
+            </GradientCard>
           )}
         </div>
 
         {/* ═══ 10. COMING SOON ═══ */}
-        <Card className="text-center">
+        <GradientCard className="text-center">
           <div className="flex flex-col items-center gap-3 py-6">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#2d4a2d] bg-[#0f1a0f]">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full" style={{ background: "linear-gradient(135deg, #1e3314 0%, #162810 100%)", border: "1px solid rgba(77,130,48,0.2)" }}>
               <TrendingUp className="h-6 w-6 text-[#4ade80]" />
             </div>
             <h3 className="font-display text-lg font-bold uppercase text-white">Preisverlauf — Demnächst</h3>
@@ -514,7 +577,7 @@ export default function MarktInsightsPage() {
               <span className="text-xs font-medium text-[#4ade80]">In Entwicklung</span>
             </div>
           </div>
-        </Card>
+        </GradientCard>
 
       </div>
     </div>

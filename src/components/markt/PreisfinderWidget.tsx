@@ -57,7 +57,10 @@ export default function PreisfinderWidget() {
   return (
     <div className="rounded-2xl border border-[#4d8230]/30 bg-[#111f0d] p-5 md:p-6">
       <div className="mb-2 flex items-center gap-3">
-        <span className="text-2xl">🔍</span>
+        <div className="flex gap-0.5">
+          <div className="h-6 w-1 rounded-full bg-[#4d8230]" />
+          <div className="h-6 w-0.5 rounded-full bg-[#4d8230]/40" />
+        </div>
         <div>
           <h2 className="text-lg font-bold text-white">Preisfinder</h2>
           <p className="text-xs text-gray-500">Marktpreis für deine Waffe ermitteln</p>

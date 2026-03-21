@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
     const suche = searchParams.get("suche");
     const sortierung = searchParams.get("sort") || "preis-asc";
     const seite = parseInt(searchParams.get("seite") || "1");
-    const limit = parseInt(searchParams.get("limit") || "200");
+    const limit = parseInt(searchParams.get("limit") || "25");
     const offset = (seite - 1) * limit;
 
     let where = userId ? "WHERE l.status != 'geloescht'" : "WHERE l.status = 'aktiv'";
@@ -108,6 +108,16 @@ export async function GET(req: NextRequest) {
       where += " AND (l.titel LIKE ? OR l.beschreibung LIKE ? OR l.marke LIKE ?)";
       const term = `%${suche}%`;
       params.push(term, term, term);
+    }
+    const neuSeitTagen = searchParams.get("neu_seit_tagen");
+    if (neuSeitTagen) {
+      const days = parseInt(neuSeitTagen);
+      if (days > 0) {
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() - days);
+        where += " AND l.created_at >= ?";
+        params.push(cutoff.toISOString().replace("T", " ").slice(0, 19));
+      }
     }
 
     // Sort: default to price ascending. CAST ensures numeric sort even if column type changes.

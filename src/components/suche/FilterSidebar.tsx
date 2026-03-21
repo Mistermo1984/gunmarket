@@ -35,6 +35,7 @@ export interface FilterState {
   mitFotos: boolean;
   neuEingestellt: boolean;
   preisreduziert: boolean;
+  neuSeitTagen: number | null;
 }
 
 export const INITIAL_FILTERS: FilterState = {
@@ -51,6 +52,7 @@ export const INITIAL_FILTERS: FilterState = {
   mitFotos: false,
   neuEingestellt: false,
   preisreduziert: false,
+  neuSeitTagen: null,
 };
 
 export interface FilterCounts {
@@ -446,6 +448,28 @@ export default function FilterSidebar({
             }}
             count={gebrauchtCount}
           />
+        </div>
+
+        <FilterDivider />
+
+        {/* ── NEUIGKEIT ── */}
+        <SectionLabel>Neuigkeit</SectionLabel>
+        <div className="flex flex-wrap gap-1.5">
+          {[
+            { label: "Heute", days: 1 },
+            { label: "2 Tage", days: 2 },
+            { label: "3 Tage", days: 3 },
+            { label: "5 Tage", days: 5 },
+          ].map(({ label, days }) => (
+            <Pill
+              key={days}
+              label={label}
+              active={filters.neuSeitTagen === days}
+              onClick={() =>
+                update({ neuSeitTagen: filters.neuSeitTagen === days ? null : days })
+              }
+            />
+          ))}
         </div>
 
         <FilterDivider />

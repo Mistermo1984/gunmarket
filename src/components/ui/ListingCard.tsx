@@ -28,6 +28,7 @@ export interface ListingCardData {
   sourceUrl?: string | null;
   imageUrl?: string | null;
   imageUrls?: string[];
+  createdAt?: string;
 }
 
 const waffenIconMap = {
@@ -176,11 +177,16 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
           </div>
         )}
 
-        {/* Availability badge */}
-        <div className="absolute top-2 left-2 z-20 flex items-center gap-1 bg-white/90 backdrop-blur-sm rounded-full px-2 py-0.5 text-xs font-medium text-green-700 shadow-sm">
-          <div className="w-1.5 h-1.5 bg-green-500 rounded-full" />
-          Verfügbar
-        </div>
+        {/* New listing badge — only if created < 24h ago */}
+        {listing.createdAt && (() => {
+          const diffHours = (Date.now() - new Date(listing.createdAt).getTime()) / (1000 * 60 * 60);
+          return diffHours < 24;
+        })() && (
+          <div className="absolute top-2 left-2 z-20 flex items-center gap-1 bg-[#eef5e8] border border-[#4d8230] rounded-full px-2 py-0.5 text-[10px] font-semibold text-[#3a6224] shadow-sm">
+            <div className="w-1.5 h-1.5 bg-[#4d8230] rounded-full" />
+            New listing
+          </div>
+        )}
 
         {/* Top-right: star button */}
         <button

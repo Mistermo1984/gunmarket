@@ -10,15 +10,91 @@ import FilterSidebar, {
 import { apiListingToCard } from "@/lib/listing-helpers";
 import { useLocale } from "@/lib/locale-context";
 
+const LIMIT = 25;
+
+function Pagination({
+  currentPage,
+  totalPages,
+  onPageChange,
+}: {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}) {
+  if (totalPages <= 1) return null;
+
+  const getPageNumbers = () => {
+    const pages: (number | "...")[] = [];
+    const delta = 2;
+    pages.push(1);
+    if (currentPage - delta > 2) pages.push("...");
+    for (
+      let i = Math.max(2, currentPage - delta);
+      i <= Math.min(totalPages - 1, currentPage + delta);
+      i++
+    ) {
+      pages.push(i);
+    }
+    if (currentPage + delta < totalPages - 1) pages.push("...");
+    if (totalPages > 1) pages.push(totalPages);
+    return pages;
+  };
+
+  return (
+    <div className="flex items-center justify-center gap-1 mt-8 mb-4">
+      <button
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        className="px-3 py-2 text-sm border border-gray-200 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed hover:border-[#4d8230] hover:text-[#4d8230] transition-colors"
+      >
+        &larr; Zurück
+      </button>
+      {getPageNumbers().map((page, i) =>
+        page === "..." ? (
+          <span key={`dots-${i}`} className="px-2 py-2 text-sm text-gray-400">
+            &hellip;
+          </span>
+        ) : (
+          <button
+            key={page}
+            onClick={() => onPageChange(page as number)}
+            className={`w-9 h-9 text-sm rounded-lg transition-colors border ${
+              currentPage === page
+                ? "bg-[#4d8230] text-white border-[#4d8230] font-medium"
+                : "border-gray-200 text-gray-600 hover:border-[#4d8230] hover:text-[#4d8230]"
+            }`}
+          >
+            {page}
+          </button>
+        )
+      )}
+      <button
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className="px-3 py-2 text-sm border border-gray-200 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed hover:border-[#4d8230] hover:text-[#4d8230] transition-colors"
+      >
+        Weiter &rarr;
+      </button>
+    </div>
+  );
+}
+
 export default function HomeContent() {
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
   const [listings, setListings] = useState<ListingCardData[]>([]);
   const [totalResults, setTotalResults] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const { t } = useLocale();
 
-  // Fetch listings based on filters
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters]);
+
+  // Fetch listings based on filters + page
   useEffect(() => {
     setLoading(true);
 
@@ -32,7 +108,10 @@ export default function HomeContent() {
     if (filters.preisMin) params.set("minPreis", filters.preisMin);
     if (filters.preisMax) params.set("maxPreis", filters.preisMax);
     if (filters.marke) params.set("suche", filters.marke);
+    if (filters.neuSeitTagen) params.set("neu_seit_tagen", String(filters.neuSeitTagen));
     params.set("sort", "neueste");
+    params.set("limit", String(LIMIT));
+    params.set("seite", String(currentPage));
 
     fetch(`/api/listings?${params}`)
       .then((res) => res.json())
@@ -42,10 +121,11 @@ export default function HomeContent() {
         );
         setListings(mapped);
         setTotalResults(data.total || 0);
+        setTotalPages(data.totalSeiten || 1);
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, [filters]);
+  }, [filters, currentPage]);
 
   const activeFilterCount = useMemo(() => {
     let c = 0;
@@ -61,12 +141,18 @@ export default function HomeContent() {
     if (filters.mitFotos) c++;
     if (filters.neuEingestellt) c++;
     if (filters.preisreduziert) c++;
+    if (filters.neuSeitTagen) c++;
     return c;
   }, [filters]);
 
   const handleFilterChange = useCallback((f: FilterState) => {
     setFilters(f);
   }, []);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div className="mx-auto flex max-w-7xl gap-6 px-4 py-8">
@@ -131,11 +217,18 @@ export default function HomeContent() {
             ))}
           </div>
         ) : listings.length > 0 ? (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {listings.map((listing) => (
-              <ListingCard key={listing.id} listing={listing} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              {listings.map((listing) => (
+                <ListingCard key={listing.id} listing={listing} />
+              ))}
+            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </>
         ) : (
           <div className="py-12 text-center">
             <p className="text-base font-semibold text-brand-dark">{t("listings_no_results")}</p>

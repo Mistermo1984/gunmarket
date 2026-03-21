@@ -70,5 +70,6 @@ export function apiListingToCard(listing: Record<string, unknown>): ListingCardD
     imageUrls: images
       .map((img) => String((img as Record<string, unknown>).url || ""))
       .filter(Boolean),
+    createdAt: String(listing.created_at || ""),
   };
 }

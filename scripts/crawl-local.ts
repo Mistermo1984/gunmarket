@@ -9,6 +9,7 @@
 import { createClient } from "@libsql/client";
 import { v4 as uuidv4 } from "uuid";
 import * as dotenv from "dotenv";
+import bcrypt from "bcryptjs";
 import { classifyRechtsstatus } from "../src/lib/rechtsstatus-classifier";
 import { classifyCategory } from "../src/lib/category-classifier";
 import { getPlzCoordinates, getCityCoordinates } from "../src/lib/plz-coordinates";
@@ -645,6 +646,29 @@ async function crawlNextgun(): Promise<number> {
   return inserted;
 }
 
+// ─── Ensure crawler users exist in users table ──────────────
+// The API uses JOIN users, so listings without a matching user are invisible.
+
+async function ensureCrawlerUser(
+  userId: string,
+  email: string,
+  vorname: string,
+  nachname: string
+) {
+  const existing = await db.execute({
+    sql: "SELECT id FROM users WHERE id = ?",
+    args: [userId],
+  });
+  if (existing.rows.length === 0) {
+    const hash = bcrypt.hashSync("CrawlerNoLogin!", 10);
+    await db.execute({
+      sql: "INSERT INTO users (id, email, password_hash, vorname, nachname, anbieter_typ, email_verified, is_admin) VALUES (?, ?, ?, ?, ?, ?, 1, 0)",
+      args: [userId, email, hash, vorname, nachname, "Händler"],
+    });
+    console.log(`  Created crawler user: ${userId}`);
+  }
+}
+
 // ─── Main ───────────────────────────────────────────────────
 
 async function main() {
@@ -655,6 +679,10 @@ async function main() {
     console.error("Missing TURSO_DATABASE_URL or TURSO_AUTH_TOKEN in .env.local");
     process.exit(1);
   }
+
+  // Ensure crawler users exist so listings are visible via API (JOIN users)
+  await ensureCrawlerUser("crawler-gebrauchtwaffen", "crawler@gebrauchtwaffen.com", "Gebrauchtwaffen", ".com");
+  await ensureCrawlerUser("crawler-nextgun", "crawler@nextgun.ch", "NextGun", ".ch");
 
   // 1. Crawl gebrauchtwaffen.com
   console.log("Source 1: gebrauchtwaffen.com");

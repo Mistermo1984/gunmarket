@@ -2,6 +2,33 @@
 const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "d9c3dmdj8vwy7.cloudfront.net",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "*.nextgun.ch",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "nextgun.ch",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "*.public.blob.vercel-storage.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "*.cloudfront.net",
+        pathname: "/**",
+      },
+    ],
   },
   compress: true,
   poweredByHeader: false,

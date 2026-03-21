@@ -13,16 +13,26 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ suggestions: [] });
     }
 
-    const term = `%${q}%`;
-    const rows = await dbAll(
-      `SELECT DISTINCT titel FROM listings
-       WHERE status = 'aktiv' AND titel LIKE ?
-       ORDER BY titel
-       LIMIT 8`,
-      [term]
-    ) as { titel: string }[];
+    const startsWith = `${q}%`;
+    const contains = `%${q}%`;
 
-    const suggestions = rows.map((r) => r.titel);
+    // Prioritize titles starting with query, then containing it.
+    // Also search marke for brand autocomplete.
+    const rows = await dbAll<{ val: string; prio: number }>(
+      `SELECT val, MIN(prio) as prio FROM (
+        SELECT titel as val, 1 as prio FROM listings
+        WHERE status = 'aktiv' AND titel LIKE ?
+        UNION ALL
+        SELECT titel as val, 2 as prio FROM listings
+        WHERE status = 'aktiv' AND titel LIKE ? AND titel NOT LIKE ?
+        UNION ALL
+        SELECT marke as val, 1 as prio FROM listings
+        WHERE status = 'aktiv' AND marke LIKE ? AND marke IS NOT NULL AND marke != ''
+      ) GROUP BY val ORDER BY prio, val LIMIT 8`,
+      [startsWith, contains, startsWith, startsWith]
+    );
+
+    const suggestions = rows.map((r) => r.val);
 
     return NextResponse.json({ suggestions });
   } catch (err) {

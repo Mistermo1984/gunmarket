@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import HeroSection from "@/components/home/HeroSection";
 import HomeContent from "@/components/home/HomeContent";
+import BannerZone from "@/components/home/BannerZone";
 import HomeMapSection from "@/components/home/HomeMapSection";
 import SoFunktionierts from "@/components/home/SoFunktionierts";
 import RechtlicherHinweis from "@/components/home/RechtlicherHinweis";
@@ -119,7 +120,10 @@ export default function Home() {
         <HeroSection />
       </ErrorBoundary>
 
-      {/* 2. Main content: FilterSidebar + Neueste Inserate */}
+      {/* 2. Banner zone: Events / Händler / Aktionen */}
+      <BannerZone />
+
+      {/* 3. Main content: FilterSidebar + Neueste Inserate */}
       <ErrorBoundary>
         <HomeContent />
       </ErrorBoundary>

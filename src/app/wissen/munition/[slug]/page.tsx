@@ -110,8 +110,36 @@ export default async function MunitionArtikelPage({ params }: Props) {
 
   const typColor = TYP_COLORS[muni.typ] || 'bg-neutral-50 text-neutral-700 border-neutral-200'
 
+  const jsonLdArticle = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: muni.bezeichnung,
+    description: muni.kurzbeschreibung,
+    url: `https://gunmarket.ch/wissen/munition/${slug}`,
+    publisher: {
+      '@type': 'Organization',
+      name: 'GunMarket.ch',
+      url: 'https://gunmarket.ch',
+      logo: { '@type': 'ImageObject', url: 'https://gunmarket.ch/og-image.png' },
+    },
+  }
+
+  const jsonLdBreadcrumb = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://gunmarket.ch' },
+      { '@type': 'ListItem', position: 2, name: 'Waffen-Wiki', item: 'https://gunmarket.ch/wissen' },
+      { '@type': 'ListItem', position: 3, name: 'Munition', item: 'https://gunmarket.ch/wissen/munition' },
+      { '@type': 'ListItem', position: 4, name: muni.bezeichnung, item: `https://gunmarket.ch/wissen/munition/${slug}` },
+    ],
+  }
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdArticle) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumb) }} />
+
       {/* Header */}
       <section className="bg-brand-dark py-10 md:py-14">
         <div className="mx-auto max-w-7xl px-4">

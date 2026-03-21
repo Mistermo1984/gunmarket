@@ -105,8 +105,49 @@ export default async function WaffeArtikelPage({ params }: Props) {
 
   const related = wissenWaffen.filter((w) => w.slug !== slug).slice(0, 3)
 
+  const jsonLdArticle = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: waffe.titel,
+    description: waffe.kurzbeschreibung,
+    url: `https://gunmarket.ch/wissen/waffen/${slug}`,
+    publisher: {
+      '@type': 'Organization',
+      name: 'GunMarket.ch',
+      url: 'https://gunmarket.ch',
+      logo: { '@type': 'ImageObject', url: 'https://gunmarket.ch/og-image.png' },
+    },
+    mainEntity: {
+      '@type': 'Product',
+      name: waffe.titel,
+      description: waffe.kurzbeschreibung,
+      category: waffe.kategorie,
+      brand: waffe.hersteller ? { '@type': 'Brand', name: waffe.hersteller } : undefined,
+      offers: {
+        '@type': 'AggregateOffer',
+        priceCurrency: 'CHF',
+        availability: 'https://schema.org/InStock',
+        url: `https://gunmarket.ch/?suche=${encodeURIComponent(waffe.tags[1] || waffe.titel)}`,
+      },
+    },
+  }
+
+  const jsonLdBreadcrumb = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://gunmarket.ch' },
+      { '@type': 'ListItem', position: 2, name: 'Waffen-Wiki', item: 'https://gunmarket.ch/wissen' },
+      { '@type': 'ListItem', position: 3, name: 'Waffen', item: 'https://gunmarket.ch/wissen/waffen' },
+      { '@type': 'ListItem', position: 4, name: waffe.titel, item: `https://gunmarket.ch/wissen/waffen/${slug}` },
+    ],
+  }
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdArticle) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumb) }} />
+
       {/* Header */}
       <section className="bg-brand-dark py-10 md:py-14">
         <div className="mx-auto max-w-7xl px-4">

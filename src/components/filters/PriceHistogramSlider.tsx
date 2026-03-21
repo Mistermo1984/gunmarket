@@ -145,7 +145,7 @@ export default function PriceHistogramSlider({ minPrice, maxPrice, onChange, fil
       <div
         ref={trackRef}
         className="relative flex items-end gap-px cursor-pointer mb-0"
-        style={{ height: 56 }}
+        style={{ height: 40 }}
         onClick={handleTrackClick}
       >
         {histogram.buckets.map((count, i) => {
@@ -169,12 +169,12 @@ export default function PriceHistogramSlider({ minPrice, maxPrice, onChange, fil
       </div>
 
       {/* Slider Track */}
-      <div className="relative h-5 mt-0.5">
+      <div className="relative h-3.5 mt-0.5">
         {/* Track background */}
-        <div className="absolute top-1/2 left-0 right-0 h-1 -translate-y-1/2 bg-gray-200 rounded-full" />
+        <div className="absolute top-1/2 left-0 right-0 h-[3px] -translate-y-1/2 bg-gray-200 rounded-full" />
         {/* Active range */}
         <div
-          className="absolute top-1/2 h-1 -translate-y-1/2 bg-[#4d8230] rounded-full"
+          className="absolute top-1/2 h-[3px] -translate-y-1/2 bg-[#4d8230] rounded-full"
           style={{
             left: `${toPercent(localMin)}%`,
             right: `${100 - toPercent(localMax)}%`,
@@ -182,14 +182,14 @@ export default function PriceHistogramSlider({ minPrice, maxPrice, onChange, fil
         />
         {/* Min handle */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 bg-white border-2 border-[#4d8230] rounded-full cursor-grab shadow-sm hover:scale-110 transition-transform active:cursor-grabbing touch-target"
+          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 bg-white border-[1.5px] border-[#4d8230] rounded-full cursor-grab shadow-sm hover:scale-110 transition-transform active:cursor-grabbing"
           style={{ left: `${toPercent(localMin)}%`, zIndex: dragging === "min" ? 3 : 2 }}
           onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); setDragging("min"); }}
           onTouchStart={(e) => { e.stopPropagation(); setDragging("min"); }}
         />
         {/* Max handle */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 bg-white border-2 border-[#4d8230] rounded-full cursor-grab shadow-sm hover:scale-110 transition-transform active:cursor-grabbing touch-target"
+          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 bg-white border-[1.5px] border-[#4d8230] rounded-full cursor-grab shadow-sm hover:scale-110 transition-transform active:cursor-grabbing"
           style={{ left: `${toPercent(localMax)}%`, zIndex: dragging === "max" ? 3 : 2 }}
           onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); setDragging("max"); }}
           onTouchStart={(e) => { e.stopPropagation(); setDragging("max"); }}

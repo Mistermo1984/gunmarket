@@ -94,7 +94,7 @@ export default function HeroSection() {
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
     const params = new URLSearchParams();
-    if (query.trim()) params.set("q", query.trim());
+    if (query.trim()) params.set("suche", query.trim());
     if (searchKanton) params.set("kanton", searchKanton);
     if (params.toString()) router.push(`/?${params.toString()}`);
     else router.push("/");

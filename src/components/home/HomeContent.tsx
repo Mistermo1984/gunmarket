@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { X } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { type ListingCardData } from "@/components/ui/ListingCard";
 import FilterSidebar, {
   INITIAL_FILTERS,
@@ -27,6 +28,20 @@ export default function HomeContent() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [filterCounts, setFilterCounts] = useState<FilterCounts | null>(null);
   const { t } = useLocale();
+  const searchParams = useSearchParams();
+
+  // Sync URL params (suche, kanton) into filter state
+  useEffect(() => {
+    const suche = searchParams.get("suche") || "";
+    const kanton = searchParams.get("kanton");
+    if (suche || kanton) {
+      setFilters((prev) => ({
+        ...prev,
+        marke: suche || prev.marke,
+        kantone: kanton ? kanton.split(",") : prev.kantone,
+      }));
+    }
+  }, [searchParams]);
 
   // Fetch filter counts once on mount
   useEffect(() => {

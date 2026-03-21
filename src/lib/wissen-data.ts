@@ -156,6 +156,7 @@ Ordonnanzwaffe — Käufer muss Schweizer Bürger oder Niederlassungsbewilligung
     tags: ['Ordonnanz', 'Stgw57', 'SIG', 'Schweiz', 'Sammler', 'GP11'],
     youtubeVideoId: 'mjMlEfDYTTI',
     youtubeQuelle: 'Andreas Schneider',
+    youtubeStart: 336,
   },
 
   {

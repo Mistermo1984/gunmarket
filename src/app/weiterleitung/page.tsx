@@ -95,7 +95,7 @@ function Content() {
             Jetzt weiterleiten
           </a>
           <Link
-            href="/suche"
+            href="/"
             className="inline-flex items-center gap-2 rounded-lg border border-brand-border px-6 py-3 text-sm font-medium text-neutral-600 transition-colors hover:bg-gray-50"
           >
             Zurück zur Suche

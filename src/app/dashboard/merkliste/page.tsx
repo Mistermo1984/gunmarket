@@ -100,7 +100,7 @@ export default function MerklistePage() {
           Speichern Sie interessante Inserate, um sie später einfach wiederzufinden.
         </p>
         <Link
-          href="/suche"
+          href="/"
           className="inline-flex items-center gap-2 rounded-lg bg-brand-green px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-green-dark"
         >
           <Search size={16} />

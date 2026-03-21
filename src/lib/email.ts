@@ -260,7 +260,7 @@ export async function sendWelcomeEmail(
       t.welcome.heading[locale],
       t.welcome.body[locale](name),
       t.welcome.cta[locale],
-      `${BASE_URL}/suche`
+      `${BASE_URL}/`
     ),
   });
 }

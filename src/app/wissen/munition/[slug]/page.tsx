@@ -202,7 +202,7 @@ export default async function MunitionArtikelPage({ params }: Props) {
 
               {/* Inserate Link */}
               <Link
-                href={`/suche?kaliber=${muni.slug}`}
+                href={`/?kaliber=${muni.slug}`}
                 className="flex items-center justify-between rounded-xl border border-[#2d5a8e] bg-blue-50 p-5 transition-colors hover:bg-[#2d5a8e] hover:text-white group"
               >
                 <span className="text-sm font-semibold text-[#2d5a8e] group-hover:text-white">

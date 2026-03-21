@@ -38,7 +38,7 @@ export function MerklisteEmpty() {
       title="Noch nichts gespeichert"
       description="Speichern Sie interessante Inserate, um sie später wiederzufinden."
       ctaLabel="Jetzt stöbern"
-      ctaHref="/suche"
+      ctaHref="/"
     />
   );
 }
@@ -50,7 +50,7 @@ export function NachrichtenEmpty() {
       title="Keine Nachrichten"
       description="Hier erscheinen Ihre Nachrichten mit anderen Nutzern."
       ctaLabel="Inserate anschauen"
-      ctaHref="/suche"
+      ctaHref="/"
     />
   );
 }
@@ -74,7 +74,7 @@ export function SucheEmpty() {
       title="Nichts gefunden"
       description="Versuchen Sie es mit anderen Suchbegriffen oder passen Sie Ihre Filter an."
       ctaLabel="Filter zurücksetzen"
-      ctaHref="/suche"
+      ctaHref="/"
     />
   );
 }

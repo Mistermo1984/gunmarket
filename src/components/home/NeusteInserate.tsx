@@ -65,7 +65,7 @@ export default function NeusteInserate() {
           {t("listings_title")}
         </h2>
         <Link
-          href="/suche"
+          href="/"
           className="hidden text-sm font-medium text-brand-green hover:underline sm:inline-flex"
         >
           {t("listings_show_all")}
@@ -168,7 +168,7 @@ export default function NeusteInserate() {
       {/* Mobile "Alle anzeigen" */}
       <div className="mt-4 text-center sm:hidden">
         <Link
-          href="/suche"
+          href="/"
           className="text-sm font-medium text-brand-green hover:underline"
         >
           {t("listings_show_all")}

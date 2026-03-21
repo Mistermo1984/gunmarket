@@ -38,7 +38,7 @@ export default function HomeSidebar({ inserateCounts }: HomeSidebarProps) {
               return (
                 <Link
                   key={hk.id}
-                  href={`/suche?kategorie=${hk.id}`}
+                  href={`/?kategorie=${hk.id}`}
                   className="group flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-brand-grey"
                 >
                   <div

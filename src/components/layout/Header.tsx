@@ -33,7 +33,7 @@ export default function Header() {
   function handleMobileSearch(e: React.FormEvent) {
     e.preventDefault();
     if (searchQuery.trim()) {
-      router.push(`/suche?q=${encodeURIComponent(searchQuery)}`);
+      router.push(`/?suche=${encodeURIComponent(searchQuery)}`);
       setMobileMenuOpen(false);
     }
   }
@@ -65,7 +65,7 @@ export default function Header() {
         {/* Center: Navigation links (Desktop) */}
         <nav className="hidden items-center gap-1 lg:flex">
           <Link
-            href="/suche"
+            href="/"
             className="rounded-lg px-3 py-2 text-sm font-medium text-neutral-600 transition-colors hover:bg-brand-grey hover:text-brand-dark"
           >
             {t("nav_listings")}
@@ -175,7 +175,7 @@ export default function Header() {
           {/* Mobile links */}
           <div className="flex flex-col gap-1 border-t border-brand-border px-4 py-3">
             <Link
-              href="/suche"
+              href="/"
               className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-neutral-600 hover:bg-brand-grey touch-target"
               onClick={() => setMobileMenuOpen(false)}
             >

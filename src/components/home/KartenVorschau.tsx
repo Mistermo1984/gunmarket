@@ -37,7 +37,7 @@ export default function KartenVorschau() {
             </select>
           </div>
           <Link
-            href="/suche?map=true"
+            href="/?map=true"
             className="inline-flex items-center rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-green-dark"
           >
             Auf Karte suchen

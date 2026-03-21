@@ -307,7 +307,7 @@ export default function MarktInsightsPage() {
               {topMarken.map((m, i) => (
                 <Link
                   key={m.marke}
-                  href={`/suche?suche=${encodeURIComponent(m.marke)}`}
+                  href={`/?suche=${encodeURIComponent(m.marke)}`}
                   className="group flex items-center gap-3 rounded-lg px-2 py-1.5 transition-colors hover:bg-white/5"
                 >
                   <span className="w-5 shrink-0 font-mono text-xs text-[#4ade80]">{i + 1}</span>
@@ -348,7 +348,7 @@ export default function MarktInsightsPage() {
                 return (
                   <Link
                     key={k.kanton}
-                    href={`/suche?kanton=${encodeURIComponent(abbrev)}`}
+                    href={`/?kanton=${encodeURIComponent(abbrev)}`}
                     className="group flex items-center gap-3 rounded-lg px-2 py-1 transition-colors hover:bg-white/5"
                   >
                     <span className="w-8 shrink-0 font-mono text-xs font-bold text-[#4ade80]">{abbrev}</span>

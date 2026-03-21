@@ -7,8 +7,8 @@ export default function MobileBottomNav() {
   const pathname = usePathname();
 
   const tabs = [
-    { href: '/inserate', icon: Search, label: 'Suchen' },
-    { href: '/inserate?kategorie=alle', icon: LayoutGrid, label: 'Kategorien' },
+    { href: '/', icon: Search, label: 'Suchen' },
+    { href: '/?kategorie=alle', icon: LayoutGrid, label: 'Kategorien' },
     { href: '/inserat/neu', icon: Plus, label: 'Inserat', highlight: true },
     { href: '/profil', icon: User, label: 'Konto' },
   ];

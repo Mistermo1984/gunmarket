@@ -235,7 +235,7 @@ export default function InseratDetailPage() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4">
         <p className="text-lg font-semibold text-brand-dark">{t("detail_not_found")}</p>
-        <Link href="/suche" className="text-brand-green hover:underline">
+        <Link href="/" className="text-brand-green hover:underline">
           {t("detail_back_search")}
         </Link>
       </div>
@@ -270,7 +270,7 @@ export default function InseratDetailPage() {
       <div className="mx-auto max-w-7xl px-4 py-4">
         <div className="flex items-center gap-2 text-sm">
           <Link
-            href="/suche"
+            href="/"
             className="flex items-center gap-1 font-medium text-green-700 hover:underline"
           >
             <ArrowLeft size={14} />
@@ -283,7 +283,7 @@ export default function InseratDetailPage() {
             </Link>
             <ChevronRight size={14} className="text-neutral-300" />
             <Link
-              href={`/suche?kategorie=${listing.hauptkategorie}`}
+              href={`/?kategorie=${listing.hauptkategorie}`}
               className="hover:text-brand-green transition-colors"
             >
               {listing.hauptkategorie}

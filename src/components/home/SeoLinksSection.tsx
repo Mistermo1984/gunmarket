@@ -45,7 +45,7 @@ export default function SeoLinksSection() {
           {KANTONE_LINKS.map((k) => (
             <Link
               key={k.kanton}
-              href={`/suche?kanton=${k.kanton}`}
+              href={`/?kanton=${k.kanton}`}
               className="rounded-full border border-brand-border px-3 py-1.5 text-xs font-medium text-neutral-600 transition-colors hover:border-brand-green hover:bg-brand-green-light hover:text-brand-green"
             >
               {t("seo_buy_in")} {k.label}

@@ -11,7 +11,7 @@ const footerSections: { titleKey: TranslationKey; links: { labelKey: Translation
   {
     titleKey: "nav_listings",
     links: [
-      { labelKey: "nav_all_listings", href: "/suche" },
+      { labelKey: "nav_all_listings", href: "/" },
       { labelKey: "nav_create_long", href: "/inserat/neu" },
       { labelKey: "map_title", href: "/karte" },
       { labelKey: "nav_clubs", href: "/vereine" },

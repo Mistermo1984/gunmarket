@@ -36,7 +36,7 @@ const websiteJsonLd = {
   inLanguage: "de-CH",
   potentialAction: {
     "@type": "SearchAction",
-    target: "https://gunmarket.ch/suche?q={search_term_string}",
+    target: "https://gunmarket.ch/?suche={search_term_string}",
     "query-input": "required name=search_term_string",
   },
 };

@@ -212,7 +212,7 @@ export default async function KantonPage({
 
         <div className="mb-10 flex flex-wrap gap-3">
           <Link
-            href={`/suche?kanton=${data.abbr.toLowerCase()}`}
+            href={`/?kanton=${data.abbr.toLowerCase()}`}
             className="inline-flex items-center rounded-lg bg-brand-green px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-brand-green-dark"
           >
             Alle Inserate in {data.name} anzeigen

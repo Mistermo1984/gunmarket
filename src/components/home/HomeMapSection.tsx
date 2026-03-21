@@ -177,7 +177,7 @@ export default function HomeMapSection() {
     const label = abbrArr.length === 1
       ? KANTONE.find((k) => k.abbr === abbrArr[0])?.label || abbrArr[0]
       : `${abbrArr.length} ${t("map_cantons_selected_plural")}`;
-    const link = `/suche?kanton=${abbrArr.join(",")}`;
+    const link = `/?kanton=${abbrArr.join(",")}`;
     const fetchUrl = `/api/listings?kanton=${abbrArr.join(",")}&limit=50`;
 
     mapHandleRef.current?.openPanel(label, fetchUrl, link);
@@ -195,7 +195,7 @@ export default function HomeMapSection() {
     .sort((a, b) => (kantonCounts[b.abbr] || 0) - (kantonCounts[a.abbr] || 0));
 
   const selCount = selectedKantone.size;
-  const searchLink = selCount > 0 ? `/suche?kanton=${Array.from(selectedKantone).join(",")}` : "/suche";
+  const searchLink = selCount > 0 ? `/?kanton=${Array.from(selectedKantone).join(",")}` : "/";
 
   let locationLabel = t("map_schweizweit");
   if (selCount === 1) {

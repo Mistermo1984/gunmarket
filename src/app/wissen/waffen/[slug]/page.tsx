@@ -178,7 +178,7 @@ export default async function WaffeArtikelPage({ params }: Props) {
 
               {/* Inserate Link */}
               <Link
-                href={`/suche?kategorie=${waffe.slug}`}
+                href={`/?kategorie=${waffe.slug}`}
                 className="flex items-center justify-between rounded-xl border border-brand-green bg-brand-green-light p-5 transition-colors hover:bg-brand-green hover:text-white group"
               >
                 <span className="text-sm font-semibold text-brand-green group-hover:text-white">

@@ -30,12 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "daily",
       priority: 1.0,
     },
-    {
-      url: `${SITE_URL}/suche`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.9,
-    },
+    // /suche redirects to / — no separate entry needed
     {
       url: `${SITE_URL}/wissen`,
       lastModified: new Date(),

@@ -6,78 +6,14 @@ import ListingCard, { type ListingCardData } from "@/components/ui/ListingCard";
 import FilterSidebar, {
   INITIAL_FILTERS,
   type FilterState,
+  type FilterCounts,
 } from "@/components/suche/FilterSidebar";
+import ErgebnisHeader from "@/components/suche/ErgebnisHeader";
+import ListingGrid from "@/components/suche/ListingGrid";
 import { apiListingToCard } from "@/lib/listing-helpers";
 import { useLocale } from "@/lib/locale-context";
 
 const LIMIT = 25;
-
-function Pagination({
-  currentPage,
-  totalPages,
-  onPageChange,
-}: {
-  currentPage: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
-}) {
-  if (totalPages <= 1) return null;
-
-  const getPageNumbers = () => {
-    const pages: (number | "...")[] = [];
-    const delta = 2;
-    pages.push(1);
-    if (currentPage - delta > 2) pages.push("...");
-    for (
-      let i = Math.max(2, currentPage - delta);
-      i <= Math.min(totalPages - 1, currentPage + delta);
-      i++
-    ) {
-      pages.push(i);
-    }
-    if (currentPage + delta < totalPages - 1) pages.push("...");
-    if (totalPages > 1) pages.push(totalPages);
-    return pages;
-  };
-
-  return (
-    <div className="flex items-center justify-center gap-1 mt-8 mb-4">
-      <button
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        className="px-3 py-2 text-sm border border-gray-200 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed hover:border-[#4d8230] hover:text-[#4d8230] transition-colors"
-      >
-        &larr; Zurück
-      </button>
-      {getPageNumbers().map((page, i) =>
-        page === "..." ? (
-          <span key={`dots-${i}`} className="px-2 py-2 text-sm text-gray-400">
-            &hellip;
-          </span>
-        ) : (
-          <button
-            key={page}
-            onClick={() => onPageChange(page as number)}
-            className={`w-9 h-9 text-sm rounded-lg transition-colors border ${
-              currentPage === page
-                ? "bg-[#4d8230] text-white border-[#4d8230] font-medium"
-                : "border-gray-200 text-gray-600 hover:border-[#4d8230] hover:text-[#4d8230]"
-            }`}
-          >
-            {page}
-          </button>
-        )
-      )}
-      <button
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        className="px-3 py-2 text-sm border border-gray-200 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed hover:border-[#4d8230] hover:text-[#4d8230] transition-colors"
-      >
-        Weiter &rarr;
-      </button>
-    </div>
-  );
-}
 
 export default function HomeContent() {
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
@@ -87,14 +23,25 @@ export default function HomeContent() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [sortOrder, setSortOrder] = useState("neueste");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [filterCounts, setFilterCounts] = useState<FilterCounts | null>(null);
   const { t } = useLocale();
 
-  // Reset to page 1 when filters change
+  // Fetch filter counts once on mount
+  useEffect(() => {
+    fetch("/api/listings/counts")
+      .then((res) => res.json())
+      .then((data) => setFilterCounts(data))
+      .catch(() => {});
+  }, []);
+
+  // Reset to page 1 when filters or sort change
   useEffect(() => {
     setCurrentPage(1);
-  }, [filters]);
+  }, [filters, sortOrder]);
 
-  // Fetch listings based on filters + page
+  // Fetch listings based on filters + sort + page
   useEffect(() => {
     setLoading(true);
 
@@ -109,7 +56,7 @@ export default function HomeContent() {
     if (filters.preisMax) params.set("maxPreis", filters.preisMax);
     if (filters.marke) params.set("suche", filters.marke);
     if (filters.neuSeitTagen) params.set("neu_seit_tagen", String(filters.neuSeitTagen));
-    params.set("sort", "neueste");
+    params.set("sort", sortOrder);
     params.set("limit", String(LIMIT));
     params.set("seite", String(currentPage));
 
@@ -125,7 +72,7 @@ export default function HomeContent() {
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, [filters, currentPage]);
+  }, [filters, sortOrder, currentPage]);
 
   const activeFilterCount = useMemo(() => {
     let c = 0;
@@ -156,47 +103,32 @@ export default function HomeContent() {
 
   return (
     <div className="mx-auto flex max-w-7xl gap-6 px-4 py-8">
-      {/* Desktop Sidebar — same FilterSidebar as /suche */}
+      {/* Desktop Sidebar */}
       <aside className="hidden w-[280px] shrink-0 lg:block">
         <div className="sticky top-[80px] max-h-[calc(100vh-100px)] overflow-y-auto rounded-xl border border-brand-border bg-white">
           <FilterSidebar
             filters={filters}
             onChange={handleFilterChange}
             resultCount={totalResults}
+            counts={filterCounts}
           />
         </div>
       </aside>
 
       {/* Main content */}
       <div className="min-w-0 flex-1">
-        {/* Header */}
-        <div className="mb-4 flex items-end justify-between">
-          <div>
-            <h2 className="font-display text-xl font-black uppercase tracking-tight text-brand-dark md:text-2xl">
-              {activeFilterCount > 0 ? t("listings_title_filtered") : t("listings_title")}
-            </h2>
-            <p className="mt-0.5 text-sm text-neutral-500">
-              {totalResults} {t("home_found")}
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            {/* Mobile filter button */}
-            <button
-              onClick={() => setMobileFilterOpen(true)}
-              className="flex items-center gap-1.5 rounded-lg border border-brand-border bg-white px-3 py-2 text-xs font-medium text-neutral-600 lg:hidden"
-            >
-              <SlidersHorizontal size={14} />
-              {t("filter_title")}
-              {activeFilterCount > 0 && (
-                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-brand-green text-[9px] font-bold text-white">
-                  {activeFilterCount}
-                </span>
-              )}
-            </button>
-          </div>
-        </div>
+        {/* Toolbar: result count + sort + view toggle + mobile filter */}
+        <ErgebnisHeader
+          resultCount={totalResults}
+          sort={sortOrder}
+          onSortChange={setSortOrder}
+          view={viewMode}
+          onViewChange={setViewMode}
+          activeFilterCount={activeFilterCount}
+          onOpenMobileFilter={() => setMobileFilterOpen(true)}
+        />
 
-        {/* Active filter chips (mobile + desktop) */}
+        {/* Active filter chips */}
         {activeFilterCount > 0 && (
           <div className="mb-4 flex flex-wrap items-center gap-2">
             <button
@@ -209,41 +141,15 @@ export default function HomeContent() {
           </div>
         )}
 
-        {/* Grid */}
-        {loading ? (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-64 animate-pulse rounded-xl bg-gray-100" />
-            ))}
-          </div>
-        ) : listings.length > 0 ? (
-          <>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-              {listings.map((listing) => (
-                <ListingCard key={listing.id} listing={listing} />
-              ))}
-            </div>
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-          </>
-        ) : (
-          <div className="py-12 text-center">
-            <p className="text-base font-semibold text-brand-dark">{t("listings_no_results")}</p>
-            <p className="mt-1 text-sm text-neutral-500">
-              {t("home_no_results_hint")}
-            </p>
-            <button
-              onClick={() => setFilters(INITIAL_FILTERS)}
-              className="mt-3 text-sm font-medium text-brand-green hover:underline"
-            >
-              {t("listings_reset_filters")}
-            </button>
-          </div>
-        )}
-
+        {/* Listing Grid with pagination */}
+        <ListingGrid
+          listings={listings}
+          view={viewMode}
+          page={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          isLoading={loading}
+        />
       </div>
 
       {/* Mobile Filter — Bottom Sheet */}
@@ -261,6 +167,7 @@ export default function HomeContent() {
               onClose={() => setMobileFilterOpen(false)}
               resultCount={totalResults}
               isMobile
+              counts={filterCounts}
             />
           </div>
         </>

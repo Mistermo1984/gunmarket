@@ -96,13 +96,13 @@ export default function HeroSection() {
     const params = new URLSearchParams();
     if (query.trim()) params.set("q", query.trim());
     if (searchKanton) params.set("kanton", searchKanton);
-    if (params.toString()) router.push(`/suche?${params.toString()}`);
-    else router.push("/suche");
+    if (params.toString()) router.push(`/?${params.toString()}`);
+    else router.push("/");
   }
 
   function handleChipClick(q: string) {
     setQuery(q);
-    router.push(`/suche?q=${encodeURIComponent(q)}`);
+    router.push(`/?suche=${encodeURIComponent(q)}`);
   }
 
   return (

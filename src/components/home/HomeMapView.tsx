@@ -43,7 +43,7 @@ interface PanelState {
   searchLink: string;
 }
 
-const PANEL_INIT: PanelState = { open: false, listings: [], title: "", loading: false, searchLink: "/suche" };
+const PANEL_INIT: PanelState = { open: false, listings: [], title: "", loading: false, searchLink: "/" };
 
 const SWITZERLAND_CENTER: [number, number] = [46.8, 8.2];
 const SWITZERLAND_ZOOM = 8;
@@ -410,7 +410,7 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
           fetchPanel(
             `${count} Inserate`,
             `/api/listings/nearby?lat=${center.lat}&lng=${center.lng}&radius=15&limit=40`,
-            "/suche"
+            "/"
           );
         } catch (err) {
           console.error("[MapPanel] clusterclick error:", err);

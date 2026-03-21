@@ -84,9 +84,11 @@ function HBar({ value, max, color = "#4ade80" }: { value: number; max: number; c
   );
 }
 
-function StatCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
+function StatCard({ label, value, sub, icon }: { label: string; value: string; sub?: string; icon?: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-[#2d4a2d] bg-[#1a2e1a] p-5">
+    <div className="relative overflow-hidden rounded-xl border border-[#2d4a2d] bg-[#1a2e1a] p-5">
+      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[#4ade80]/60 to-transparent" />
+      {icon && <div className="mb-2 text-[#4ade80]">{icon}</div>}
       <p className="mb-1 text-xs font-medium uppercase tracking-wider text-[#9ca3af]">{label}</p>
       <p className="font-display text-2xl font-black text-white md:text-3xl">{value}</p>
       {sub && <p className="mt-1 text-xs text-[#86efac]">{sub}</p>}
@@ -117,7 +119,7 @@ export default function MarktInsightsPage() {
   const [data, setData] = useState<MarketData | null>(null);
   const [loading, setLoading] = useState(true);
   const [neuHeute, setNeuHeute] = useState<{ id: string; titel: string; preis: number; kanton: string; image_url: string | null }[]>([]);
-  const [guenstig, setGuenstig] = useState<{ id: string; titel: string; preis: number; kanton: string; image_url: string | null }[]>([]);
+  const [topDeals, setTopDeals] = useState<{ id: string; titel: string; preis: number; kanton: string; image_url: string | null; good_deal_count: number; images?: { url: string }[] }[]>([]);
 
   useEffect(() => {
     fetch("/api/stats/market")
@@ -131,11 +133,13 @@ export default function MarktInsightsPage() {
         image_url: l.image_url || null,
       }))))
       .catch(() => {});
-    fetch("/api/listings?maxPreis=200&sort=neueste&limit=6")
+    fetch("/api/listings?sort=good_deal&limit=6")
       .then((r) => r.json())
-      .then((d) => setGuenstig((d.listings || []).map((l: Record<string, unknown>) => ({
-        id: l.id, titel: l.titel, preis: l.preis, kanton: l.kanton,
-        image_url: l.image_url || null,
+      .then((d) => setTopDeals((d.listings || []).map((l: Record<string, unknown>) => ({
+        id: l.id as string, titel: l.titel as string, preis: l.preis as number, kanton: l.kanton as string,
+        image_url: (l.image_url as string) || null,
+        good_deal_count: (l.good_deal_count as number) || 0,
+        images: l.images as { url: string }[] | undefined,
       }))))
       .catch(() => {});
   }, []);
@@ -255,39 +259,60 @@ export default function MarktInsightsPage() {
           </div>
         )}
 
-        {/* ═══ GÜNSTIGE DEALS ═══ */}
-        {guenstig.length > 0 && (
-          <div className="mb-10">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                🏷️ Günstige Deals
-                <span className="text-sm font-normal text-[#9ca3af]">unter CHF 200</span>
-              </h2>
-              <Link href="/?maxPreis=200&sort=neueste" className="text-sm text-[#4ade80] hover:underline">Alle ansehen →</Link>
+        {/* ═══ COMMUNITY TOP-DEALS ═══ */}
+        <div className="mb-10">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <span className="text-xl">👍</span>
+              <div>
+                <h2 className="text-lg font-bold text-white">Community Top-Deals</h2>
+                <p className="text-xs text-[#9ca3af]">Von der Community als gutes Angebot bewertet</p>
+              </div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-              {guenstig.map((listing) => (
-                <Link key={listing.id} href={`/inserat/${listing.id}`}
-                  className="overflow-hidden rounded-xl border border-[#2d4a2d] bg-[#1a2e1a] hover:border-[#4ade80]/50 hover:bg-[#1a2e1a]/80 transition-all group">
-                  <div className="aspect-square bg-[#0f1a0f] relative overflow-hidden">
-                    {listing.image_url ? (
-                      <img src={listing.image_url} alt={listing.titel} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-[#2d4a2d]">
-                        <BarChart3 size={24} />
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-2">
-                    <div className="text-xs text-[#9ca3af] truncate leading-tight">{listing.titel?.substring(0, 30)}</div>
-                    <div className="text-sm font-bold text-[#4ade80] mt-0.5">CHF {listing.preis?.toLocaleString("de-CH")}</div>
-                    {listing.kanton && <div className="text-[10px] text-[#6b7280] mt-0.5">{listing.kanton}</div>}
-                  </div>
-                </Link>
-              ))}
-            </div>
+            <Link href="/?sort=good_deal" className="text-sm text-[#7dc855] hover:underline">Alle ansehen →</Link>
           </div>
-        )}
+
+          {topDeals.filter(l => l.good_deal_count > 0).length === 0 ? (
+            <div className="rounded-2xl border border-[#4d8230]/30 bg-[#1a2e12] p-8 text-center">
+              <div className="mb-3 text-4xl">👍</div>
+              <p className="font-medium text-white mb-1">Noch keine Community-Bewertungen</p>
+              <p className="text-sm text-[#9ca3af]">
+                Besuche Inserate und klicke auf &quot;Gutes Angebot&quot; um die ersten Bewertungen abzugeben.
+              </p>
+              <Link href="/" className="mt-4 inline-block text-sm text-[#7dc855] hover:underline">
+                Inserate durchsuchen →
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+              {topDeals.filter(l => l.good_deal_count > 0).map((listing) => {
+                const imgUrl = listing.images?.[0]?.url || listing.image_url;
+                return (
+                  <Link key={listing.id} href={`/inserat/${listing.id}`}
+                    className="overflow-hidden rounded-2xl border border-[#4d8230]/20 bg-[#1a2e12] hover:border-[#4d8230] transition-all group">
+                    <div className="aspect-square bg-[#0f1f0a] relative overflow-hidden">
+                      {imgUrl ? (
+                        <img src={imgUrl} alt={listing.titel} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-[#4d8230] opacity-30">
+                          <BarChart3 size={32} />
+                        </div>
+                      )}
+                      <div className="absolute top-2 left-2 flex items-center gap-1 bg-[#4d8230] text-white text-[10px] font-bold px-2 py-1 rounded-full">
+                        👍 {listing.good_deal_count}
+                      </div>
+                    </div>
+                    <div className="p-2.5">
+                      <p className="text-xs font-medium text-white truncate leading-tight mb-1">{listing.titel}</p>
+                      <p className="text-sm font-bold text-[#7dc855]">CHF {listing.preis?.toLocaleString("de-CH")}</p>
+                      {listing.kanton && <p className="text-[10px] text-[#6b7280] mt-0.5">{listing.kanton}</p>}
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+        </div>
 
         {/* ═══ SECTION 2: AVG PRICE + ZUSTAND ═══ */}
         <div className="mb-10 grid gap-6 lg:grid-cols-2">

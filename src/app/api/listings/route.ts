@@ -138,6 +138,9 @@ export async function GET(req: NextRequest) {
       case "aufrufe":
         orderBy = "ORDER BY l.aufrufe DESC";
         break;
+      case "good_deal":
+        orderBy = "ORDER BY l.good_deal_count DESC, l.created_at DESC";
+        break;
       case "preis-asc":
       default:
         orderBy = "ORDER BY CAST(l.preis AS REAL) ASC";

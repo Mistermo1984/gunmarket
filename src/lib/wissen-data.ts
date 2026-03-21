@@ -152,8 +152,8 @@ Ordonnanzwaffe — Käufer muss Schweizer Bürger oder Niederlassungsbewilligung
     rechtsstatus: 'ordonnanz',
     typischeKaliber: ['7,5×55mm Swiss (GP11)'],
     tags: ['Ordonnanz', 'Stgw57', 'SIG', 'Schweiz', 'Sammler', 'GP11'],
-    youtubeVideoId: 'M_oSX-gdkVw',
-    youtubeQuelle: 'Forgotten Weapons / Ian McCollum',
+    youtubeVideoId: 'HAUvN55qmOU',
+    youtubeQuelle: "Ben's Channel",
   },
 
   {
@@ -191,8 +191,8 @@ Ordonnanzwaffe — Käufer muss Schweizer Bürger oder Niederlassungsbewilligung
     rechtsstatus: 'ordonnanz',
     typischeKaliber: ['9×19mm', '7,65mm Parabellum'],
     tags: ['Ordonnanz', 'SIG', 'P210', 'P49', 'Schweiz', 'Sammler', 'Präzision'],
-    youtubeVideoId: 'B4W9bpXOHjU',
-    youtubeQuelle: 'Forgotten Weapons / Ian McCollum',
+    youtubeVideoId: 'MFySDAvQG8M',
+    youtubeQuelle: 'hickok45',
   },
 
   {
@@ -229,8 +229,8 @@ Ordonnanzwaffe — Erwerb nur für Schweizer Bürger oder Personen mit Niederlas
     rechtsstatus: 'ordonnanz',
     typischeKaliber: ['7,65×21mm Parabellum', '9×19mm'],
     tags: ['Ordonnanz', 'P06', 'Luger', 'Parabellum', 'Schweiz', 'Sammler', 'Kniehebel'],
-    youtubeVideoId: 'qNJPkF-Wn_o',
-    youtubeQuelle: 'Forgotten Weapons / Ian McCollum',
+    youtubeVideoId: 'FDtcMtXiEb0',
+    youtubeQuelle: 'Elmsfeuer',
   },
 
   {

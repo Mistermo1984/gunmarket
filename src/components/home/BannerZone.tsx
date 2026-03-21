@@ -184,7 +184,7 @@ export default function BannerZone() {
         </div>
 
         {/* Items — horizontal scrollbar, kein sichtbarer Scrollbalken */}
-        <div className="flex items-center gap-2 flex-1 overflow-x-auto scrollbar-none">
+        <div className="flex items-center gap-2 flex-1 overflow-x-auto scrollbar-none pr-4">
           {items.length === 0 && active === 'ev' && (
             <span className="text-xs text-gray-400">Keine Events in den nächsten 90 Tagen</span>
           )}
@@ -195,15 +195,21 @@ export default function BannerZone() {
                 href={item.href}
                 target={item.href.startsWith('http') ? '_blank' : undefined}
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-lg hover:border-[#4d8230] transition-colors group whitespace-nowrap"
+                className="flex items-center gap-0 bg-white border border-gray-200 rounded-lg hover:border-[#4d8230] transition-colors group overflow-hidden whitespace-nowrap shrink-0"
               >
-                <div className="w-1.5 h-1.5 rounded-full bg-[#4d8230] shrink-0" />
-                <div className="leading-none">
+                {/* Datum-Pill links */}
+                <div className="bg-[#eef5e8] px-2.5 py-2 self-stretch flex items-center border-r border-gray-100">
+                  <span className="text-[10px] font-semibold text-[#4d8230] leading-none">
+                    {item.meta.split('·')[0].trim()}
+                  </span>
+                </div>
+                {/* Name + Ort rechts */}
+                <div className="px-2.5 py-1.5 leading-none">
                   <div className="text-[11px] font-medium text-gray-800 group-hover:text-[#4d8230] transition-colors">
                     {item.name}
                   </div>
                   <div className="text-[10px] text-gray-400 mt-0.5">
-                    {item.meta}
+                    {item.meta.split('·').slice(1).join('·').trim()}
                   </div>
                 </div>
               </a>

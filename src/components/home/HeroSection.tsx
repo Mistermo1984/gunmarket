@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Search, Plus } from "lucide-react";
@@ -77,6 +77,11 @@ export default function HeroSection() {
   const [query, setQuery] = useState("");
   const [searchKanton, setSearchKanton] = useState("");
   const [stats, setStats] = useState({ inserate: 0, verkaeufer: 0, kantone: 0 });
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [activeIdx, setActiveIdx] = useState(-1);
+  const suggestTimer = useRef<ReturnType<typeof setTimeout>>();
+  const searchContainerRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     fetch("/api/stats")
@@ -91,13 +96,68 @@ export default function HeroSection() {
       .catch(() => {});
   }, []);
 
-  function handleSearch(e: React.FormEvent) {
-    e.preventDefault();
+  // Autocomplete suggestions
+  useEffect(() => {
+    if (query.length < 2) { setSuggestions([]); return; }
+    clearTimeout(suggestTimer.current);
+    suggestTimer.current = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/search/suggestions?q=${encodeURIComponent(query)}`);
+        if (res.ok) {
+          const data = await res.json();
+          setSuggestions((data.suggestions || []).slice(0, 6));
+          setShowSuggestions(true);
+          setActiveIdx(-1);
+        }
+      } catch { /* ignore */ }
+    }, 200);
+    return () => clearTimeout(suggestTimer.current);
+  }, [query]);
+
+  // Close suggestions on outside click
+  useEffect(() => {
+    function onClick(e: MouseEvent) {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
+        setShowSuggestions(false);
+      }
+    }
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, []);
+
+  const doSearch = useCallback((term: string) => {
     const params = new URLSearchParams();
-    if (query.trim()) params.set("suche", query.trim());
+    if (term.trim()) params.set("suche", term.trim());
     if (searchKanton) params.set("kanton", searchKanton);
     if (params.toString()) router.push(`/?${params.toString()}`);
     else router.push("/");
+    setShowSuggestions(false);
+  }, [router, searchKanton]);
+
+  function handleSearch(e: React.FormEvent) {
+    e.preventDefault();
+    doSearch(query);
+  }
+
+  function handleSuggestionSelect(s: string) {
+    setQuery(s);
+    doSearch(s);
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (!showSuggestions || suggestions.length === 0) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveIdx((i) => Math.min(i + 1, suggestions.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveIdx((i) => Math.max(i - 1, -1));
+    } else if (e.key === "Enter" && activeIdx >= 0) {
+      e.preventDefault();
+      handleSuggestionSelect(suggestions[activeIdx]);
+    } else if (e.key === "Escape") {
+      setShowSuggestions(false);
+    }
   }
 
   function handleChipClick(q: string) {
@@ -147,7 +207,7 @@ export default function HeroSection() {
           </h1>
 
           {/* 3. Search Bar */}
-          <form action="/" method="get" onSubmit={handleSearch} className="mx-auto max-w-[580px] animate-fade-in" style={{ animationDelay: "0.1s" }}>
+          <form ref={searchContainerRef} action="/" method="get" onSubmit={handleSearch} className="relative mx-auto max-w-[580px] animate-fade-in" style={{ animationDelay: "0.1s" }}>
             <div className="flex items-center overflow-hidden rounded-xl bg-white shadow-[0_8px_30px_rgba(0,0,0,0.25)] transition-all focus-within:ring-2 focus-within:ring-[#4ade80]/40">
               <div className="flex flex-1 items-center gap-2 px-4">
                 <Search size={18} className="shrink-0 text-neutral-400" />
@@ -156,8 +216,11 @@ export default function HeroSection() {
                   name="suche"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
                   placeholder={t("hero_placeholder")}
                   className="min-w-0 flex-1 py-3.5 text-sm text-[#1a1a1f] placeholder:text-neutral-400 focus:outline-none"
+                  autoComplete="off"
                 />
               </div>
               <div className="hidden h-8 w-px bg-neutral-200 sm:block" />
@@ -184,6 +247,24 @@ export default function HeroSection() {
                 </button>
               </div>
             </div>
+
+            {/* Autocomplete suggestions dropdown */}
+            {showSuggestions && suggestions.length > 0 && (
+              <ul className="absolute left-0 right-0 top-full z-50 mt-1 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-lg">
+                {suggestions.map((s, i) => (
+                  <li key={s}>
+                    <button
+                      type="button"
+                      onMouseDown={() => handleSuggestionSelect(s)}
+                      className={`flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-neutral-700 transition-colors hover:bg-neutral-50 ${i === activeIdx ? "bg-neutral-100" : ""}`}
+                    >
+                      <Search size={14} className="shrink-0 text-neutral-400" />
+                      {s}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </form>
 
           {/* 4. Quick Search Tags */}

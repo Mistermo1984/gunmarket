@@ -147,12 +147,13 @@ export default function HeroSection() {
           </h1>
 
           {/* 3. Search Bar */}
-          <form onSubmit={handleSearch} className="mx-auto max-w-[580px] animate-fade-in" style={{ animationDelay: "0.1s" }}>
+          <form action="/" method="get" onSubmit={handleSearch} className="mx-auto max-w-[580px] animate-fade-in" style={{ animationDelay: "0.1s" }}>
             <div className="flex items-center overflow-hidden rounded-xl bg-white shadow-[0_8px_30px_rgba(0,0,0,0.25)] transition-all focus-within:ring-2 focus-within:ring-[#4ade80]/40">
               <div className="flex flex-1 items-center gap-2 px-4">
                 <Search size={18} className="shrink-0 text-neutral-400" />
                 <input
                   type="text"
+                  name="suche"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder={t("hero_placeholder")}
@@ -161,6 +162,7 @@ export default function HeroSection() {
               </div>
               <div className="hidden h-8 w-px bg-neutral-200 sm:block" />
               <select
+                name="kanton"
                 value={searchKanton}
                 onChange={(e) => setSearchKanton(e.target.value)}
                 className="hidden w-[130px] shrink-0 border-none bg-transparent px-3 py-3.5 text-sm text-neutral-600 focus:outline-none sm:block"

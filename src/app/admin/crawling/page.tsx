@@ -49,6 +49,9 @@ interface StepResult {
   deleted: number;
   status: "pending" | "running" | "done" | "error";
   error?: string;
+  categories?: Record<string, number>;
+  confidence_breakdown?: { url: number; title: number; fallback: number };
+  unmapped_segments?: string[];
 }
 
 type BadgeStatus = "idle" | "running" | "stopping" | "stopped";
@@ -164,6 +167,9 @@ export default function CrawlingPage() {
           results[i].updated = data.updated || 0;
           results[i].unchanged = data.unchanged || 0;
           results[i].deleted = data.deleted || 0;
+          results[i].categories = data.categories;
+          results[i].confidence_breakdown = data.confidence_breakdown;
+          results[i].unmapped_segments = data.unmapped_segments;
         } else {
           results[i].status = "error";
           results[i].error = data.error || "Unbekannter Fehler";
@@ -370,27 +376,94 @@ export default function CrawlingPage() {
 
             {/* Summary */}
             {allDone && stepResults.length > 0 && (
-              <div
-                className={`mt-4 flex items-start gap-3 rounded-lg border p-4 ${
-                  errorSteps === 0
-                    ? "border-green-200 bg-green-50"
-                    : "border-amber-200 bg-amber-50"
-                }`}
-              >
-                {errorSteps === 0 ? (
-                  <CheckCircle size={18} className="mt-0.5 shrink-0 text-green-600" />
-                ) : (
-                  <AlertTriangle size={18} className="mt-0.5 shrink-0 text-amber-600" />
-                )}
-                <div className="text-sm">
-                  <p className={`font-semibold ${errorSteps === 0 ? "text-green-800" : "text-amber-800"}`}>
-                    Crawling abgeschlossen{errorSteps > 0 ? ` (${errorSteps} Fehler)` : ""}
-                  </p>
-                  <p className={`mt-1 ${errorSteps === 0 ? "text-green-700" : "text-amber-700"}`}>
-                    {totalInserted} neu, {totalUpdated} aktualisiert, {totalUnchanged} unverändert, {totalDeleted} entfernt.
-                  </p>
+              <>
+                <div
+                  className={`mt-4 flex items-start gap-3 rounded-lg border p-4 ${
+                    errorSteps === 0
+                      ? "border-green-200 bg-green-50"
+                      : "border-amber-200 bg-amber-50"
+                  }`}
+                >
+                  {errorSteps === 0 ? (
+                    <CheckCircle size={18} className="mt-0.5 shrink-0 text-green-600" />
+                  ) : (
+                    <AlertTriangle size={18} className="mt-0.5 shrink-0 text-amber-600" />
+                  )}
+                  <div className="text-sm">
+                    <p className={`font-semibold ${errorSteps === 0 ? "text-green-800" : "text-amber-800"}`}>
+                      Crawling abgeschlossen{errorSteps > 0 ? ` (${errorSteps} Fehler)` : ""}
+                    </p>
+                    <p className={`mt-1 ${errorSteps === 0 ? "text-green-700" : "text-amber-700"}`}>
+                      {totalInserted} neu, {totalUpdated} aktualisiert, {totalUnchanged} unverändert, {totalDeleted} entfernt.
+                    </p>
+                  </div>
                 </div>
-              </div>
+
+                {/* Confidence Breakdown */}
+                {(() => {
+                  const totalConf = { url: 0, title: 0, fallback: 0 };
+                  const totalCats: Record<string, number> = {};
+                  const allUnmapped = new Set<string>();
+                  for (const r of stepResults) {
+                    if (r.confidence_breakdown) {
+                      totalConf.url += r.confidence_breakdown.url;
+                      totalConf.title += r.confidence_breakdown.title;
+                      totalConf.fallback += r.confidence_breakdown.fallback;
+                    }
+                    if (r.categories) {
+                      for (const [k, v] of Object.entries(r.categories)) {
+                        totalCats[k] = (totalCats[k] || 0) + v;
+                      }
+                    }
+                    if (r.unmapped_segments) {
+                      for (const s of r.unmapped_segments) allUnmapped.add(s);
+                    }
+                  }
+                  const hasData = totalConf.url + totalConf.title + totalConf.fallback > 0;
+                  if (!hasData) return null;
+                  return (
+                    <div className="mt-3 rounded-lg border border-gray-200 bg-white p-4">
+                      <h4 className="text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wider">Klassifizierung (neue Listings)</h4>
+                      <div className="flex gap-4 mb-3">
+                        <div className="flex items-center gap-1.5 text-xs">
+                          <span className="w-2 h-2 rounded-full bg-green-500" />
+                          <span className="text-gray-600">URL sicher: <span className="font-semibold text-green-700">{totalConf.url}</span></span>
+                        </div>
+                        <div className="flex items-center gap-1.5 text-xs">
+                          <span className="w-2 h-2 rounded-full bg-amber-400" />
+                          <span className="text-gray-600">Titel-Match: <span className="font-semibold text-amber-700">{totalConf.title}</span></span>
+                        </div>
+                        {totalConf.fallback > 0 && (
+                          <div className="flex items-center gap-1.5 text-xs">
+                            <span className="w-2 h-2 rounded-full bg-red-400" />
+                            <span className="text-gray-600">Unsicher: <span className="font-semibold text-red-700">{totalConf.fallback}</span></span>
+                          </div>
+                        )}
+                      </div>
+                      {Object.keys(totalCats).length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mb-2">
+                          {Object.entries(totalCats).sort((a, b) => b[1] - a[1]).map(([cat, count]) => (
+                            <span key={cat} className="text-[10px] bg-gray-100 text-gray-600 rounded-full px-2 py-0.5 font-medium">
+                              {cat}: {count}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      {totalConf.fallback > 0 && (
+                        <a href="/admin/crawling/verifikation" className="text-xs text-amber-600 hover:text-amber-800 hover:underline">
+                          {totalConf.fallback} unsichere Listings prüfen →
+                        </a>
+                      )}
+                      {allUnmapped.size > 0 && (
+                        <div className="mt-2 text-[10px] text-gray-400">
+                          Unmapped URL-Segmente: {Array.from(allUnmapped).slice(0, 10).join(", ")}
+                          {allUnmapped.size > 10 ? ` (+${allUnmapped.size - 10})` : ""}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
+              </>
             )}
           </div>
         </div>

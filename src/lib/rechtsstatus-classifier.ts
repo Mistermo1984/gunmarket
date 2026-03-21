@@ -13,7 +13,7 @@
  *              Nachtsicht-Zielgeräte, Laser-Zielgeräte
  *
  * PRIORITY ORDER (critical — checked top to bottom):
- *   1. Non-weapon categories (optik, zubehoer, munition, freie-waffen) → frei
+ *   1. Non-weapon categories (optik, zubehoer, munition, luftdruckwaffen) → frei
  *   2. ABK patterns (full-auto, suppressor) → abk-klein
  *   3. Explicit non-weapon items (softair, CO2, deko) → frei
  *   4. Kurzwaffen category → ALWAYS WES
@@ -236,7 +236,7 @@ export function classifyRechtsstatus(input: ClassificationInput): string {
     if (/hülse\b|geschoss|wiederlad/i.test(text)) return "frei";
     return "wes";
   }
-  if (hauptkategorie === "freie-waffen" || hauptkategorie === "luftdruckwaffen") {
+  if (hauptkategorie === "luftdruckwaffen") {
     return "frei";
   }
 

@@ -8,6 +8,14 @@ import { classifyListing } from "../lib/crawl-waffengebraucht";
 async function reclassify() {
   await initializeSchema();
 
+  // Fix invalid category values first
+  const fixedInvalid = await dbRun(
+    "UPDATE listings SET hauptkategorie = 'luftdruckwaffen', unterkategorie = 'luftgewehre' WHERE hauptkategorie = 'freie-waffen'"
+  );
+  if (fixedInvalid.changes > 0) {
+    console.log(`Fixed ${fixedInvalid.changes} listings with invalid hauptkategorie 'freie-waffen' -> 'luftdruckwaffen'\n`);
+  }
+
   const listings = await dbAll<{
     id: string;
     source_url: string;

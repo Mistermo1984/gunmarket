@@ -114,13 +114,14 @@ export function classifyListing(
   titel: string,
   beschreibung: string
 ): { hauptkategorie: string; unterkategorie: string; confidence: "url" | "title" | "fallback" } {
-  // STUFE 1: URL segments
+  // STUFE 1: URL segments — check from most specific (deepest) to broadest
+  // e.g. /kurzwaffen/magazine/item → match "magazine" (zubehoer) not "kurzwaffen"
   try {
     const url = new URL(sourceUrl);
     const segments = url.pathname.split("/").filter(Boolean);
-    // Check accessory sub-segments first (magazine/holster under kurzwaffen URL)
-    for (const segment of segments) {
-      const normalized = segment.toLowerCase().replace(/[^a-z]/g, "");
+    // Reverse: deepest path segment first (most specific)
+    for (let i = segments.length - 1; i >= 0; i--) {
+      const normalized = segments[i].toLowerCase().replace(/[^a-z]/g, "");
       if (URL_CATEGORY_MAP[normalized]) {
         return { ...URL_CATEGORY_MAP[normalized], confidence: "url" };
       }
@@ -317,48 +318,6 @@ function extractListingUrls(html: string): string[] {
   return Array.from(new Set(onclickMatches.map((m) => m[1])));
 }
 
-/**
- * URL-based category mapping — accessories override weapon parent categories.
- * Returns hauptkategorie slug for DB storage.
- */
-function mapCategoryFromUrl(url: string): string {
-  // Accessories first — these appear under weapon categories but are Zubehör
-  if (
-    url.includes("/pistolen") ||
-    url.includes("/revolver")
-  )
-    return "kurzwaffen";
-  if (
-    url.includes("/magazine") ||
-    url.includes("/holster") ||
-    url.includes("/griffschalen") ||
-    url.includes("/schafte") ||
-    url.includes("/laufe") ||
-    url.includes("/montagen") ||
-    url.includes("/chokes")
-  )
-    return "zubehoer";
-  if (url.includes("/kurzwaffen")) return "kurzwaffen";
-  if (
-    url.includes("/flinten") ||
-    url.includes("/buchsen") ||
-    url.includes("/kombinierte")
-  )
-    return "langwaffen";
-  if (url.includes("/langwaffen")) return "langwaffen";
-  if (url.includes("/sammler") || url.includes("/ordonanz"))
-    return "ordonnanzwaffen";
-  if (url.includes("/luftdruck") || url.includes("/softair"))
-    return "luftdruckwaffen";
-  if (url.includes("/optik")) return "optik";
-  if (url.includes("/messer") || url.includes("/blankwaffen"))
-    return "zubehoer";
-  if (url.includes("/wiederladen")) return "zubehoer";
-  if (url.includes("/wild") || url.includes("/jagd")) return "langwaffen";
-  if (url.includes("/bogenschiesen")) return "zubehoer";
-  if (url.includes("/selbstverteidigung")) return "zubehoer";
-  return "zubehoer";
-}
 
 /**
  * Scrape individual gebrauchtwaffen.com listing page.
@@ -1105,10 +1064,11 @@ export async function runCrawlStep(
     if (toDeactivate.length > 0) {
       // Soft-delete: set status to 'inaktiv' instead of hard-deleting.
       // This preserves user favorites that reference these listings.
+      // Also set sold_at for tracking when it disappeared.
       const deactivateStatements: { sql: string; args: (string | number | null)[] }[] = [];
       for (const row of toDeactivate) {
         deactivateStatements.push({
-          sql: "UPDATE listings SET status = 'inaktiv', updated_at = datetime('now') WHERE source_id = ?",
+          sql: "UPDATE listings SET status = 'inaktiv', sold_at = datetime('now'), updated_at = datetime('now') WHERE source_id = ? AND status = 'aktiv'",
           args: [row.source_id],
         });
       }
@@ -1123,7 +1083,7 @@ export async function runCrawlStep(
       const reactivateStatements: { sql: string; args: (string | number | null)[] }[] = [];
       for (const row of toReactivate) {
         reactivateStatements.push({
-          sql: "UPDATE listings SET status = 'aktiv' WHERE source_id = ? AND status = 'inaktiv'",
+          sql: "UPDATE listings SET status = 'aktiv', sold_at = NULL WHERE source_id = ? AND status = 'inaktiv'",
           args: [row.source_id],
         });
       }

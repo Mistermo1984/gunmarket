@@ -281,4 +281,11 @@ export async function initializeSchema(): Promise<void> {
   try { await dbRun("ALTER TABLE listings ADD COLUMN good_deal_count INTEGER DEFAULT 0"); } catch {}
   try { await dbRun("ALTER TABLE listings ADD COLUMN price_change_pct REAL DEFAULT 0"); } catch {}
   try { await dbRun("ALTER TABLE listings ADD COLUMN kategorie_confidence TEXT DEFAULT 'url'"); } catch {}
+  try { await dbRun("ALTER TABLE listings ADD COLUMN sold_at TEXT"); } catch {}
+
+  // Indexes for crawler performance
+  try { await dbRun("CREATE INDEX IF NOT EXISTS idx_listings_last_seen ON listings(last_seen_at)"); } catch {}
+
+  // Initialize last_seen_at for existing listings that don't have it
+  try { await dbRun("UPDATE listings SET last_seen_at = updated_at WHERE last_seen_at IS NULL"); } catch {}
 }

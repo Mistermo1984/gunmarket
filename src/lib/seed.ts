@@ -356,8 +356,8 @@ const LISTINGS = [
   {
     titel: "Walther LGV Challenger",
     beschreibung: "Walther LGV Challenger Luftgewehr in 4.5mm. Frei erhältlich, kein WES nötig. Ideal für Einsteiger und Hobbyschützen.",
-    hauptkategorie: "freie-waffen",
-    unterkategorie: "luftdruck",
+    hauptkategorie: "luftdruckwaffen",
+    unterkategorie: "luftgewehre",
     rechtsstatus: "frei",
     marke: "Walther",
     modell: "LGV Challenger",

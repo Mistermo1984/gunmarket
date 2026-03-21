@@ -41,7 +41,7 @@ const KATEGORIE_LINKS = [
   { labelKey: "cat_kurzwaffen" as TranslationKey, href: "/kategorien/kurzwaffen" },
   { labelKey: "cat_langwaffen" as TranslationKey, href: "/kategorien/buechsen" },
   { labelKey: "cat_ordonnanz" as TranslationKey, href: "/kategorien/ordonnanzwaffen" },
-  { labelKey: "cat_luftdruck" as TranslationKey, href: "/kategorien/freie-waffen" },
+  { labelKey: "cat_luftdruck" as TranslationKey, href: "/kategorien/luftdruckwaffen" },
   { labelKey: "cat_zubehoer" as TranslationKey, href: "/kategorien/zubehoer" },
 ];
 

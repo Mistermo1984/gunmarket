@@ -176,6 +176,12 @@ function getEventsByMonth(): { key: string; label: string; events: EventItem[] }
 
 /* ── Pill sub-components with portal dropdowns ── */
 
+function clampLeft(left: number, dropdownWidth: number): number {
+  const vw = typeof window !== 'undefined' ? window.innerWidth : 1200;
+  const maxLeft = vw - dropdownWidth - 8;
+  return Math.max(8, Math.min(left, maxLeft));
+}
+
 function CantonPill({
   kt,
   isOpen,
@@ -191,7 +197,7 @@ function CantonPill({
   useEffect(() => {
     if (isOpen && btnRef.current) {
       const rect = btnRef.current.getBoundingClientRect();
-      setPos({ top: rect.bottom + 4, left: Math.max(8, rect.left) });
+      setPos({ top: rect.bottom + 4, left: clampLeft(rect.left, 220) });
     } else {
       setPos(null);
     }
@@ -224,10 +230,10 @@ function CantonPill({
       {isOpen && pos && createPortal(
         <div
           data-banner-dropdown
-          className="fixed bg-white border border-gray-200 rounded-xl shadow-lg z-50 min-w-[220px] py-1 overflow-hidden"
+          className="fixed bg-white border border-gray-200 rounded-xl shadow-lg z-50 min-w-[220px] max-h-[70vh] overflow-y-auto py-1"
           style={{ top: pos.top, left: pos.left }}
         >
-          <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
+          <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100 sticky top-0 bg-white">
             Kanton {kt} — {dealers.length} Händler
           </div>
           {dealers.map((dealer, i) => (
@@ -271,7 +277,7 @@ function MonthPill({
   useEffect(() => {
     if (isOpen && btnRef.current) {
       const rect = btnRef.current.getBoundingClientRect();
-      setPos({ top: rect.bottom + 4, left: Math.max(8, rect.left) });
+      setPos({ top: rect.bottom + 4, left: clampLeft(rect.left, 260) });
     } else {
       setPos(null);
     }
@@ -302,10 +308,10 @@ function MonthPill({
       {isOpen && pos && createPortal(
         <div
           data-banner-dropdown
-          className="fixed bg-white border border-gray-200 rounded-xl shadow-lg z-50 min-w-[260px] py-1 overflow-hidden"
+          className="fixed bg-white border border-gray-200 rounded-xl shadow-lg z-50 min-w-[260px] max-h-[70vh] overflow-y-auto py-1"
           style={{ top: pos.top, left: pos.left }}
         >
-          <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
+          <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100 sticky top-0 bg-white">
             {month.label} — {month.events.length} Events
           </div>
           {month.events.map((ev, i) => (

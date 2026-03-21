@@ -249,16 +249,77 @@ export async function GET() {
     const todayNew = todayRow?.c ?? 0;
     const weekNew = weekRow?.c ?? 0;
 
+    // Top canton
+    const topKantonRow = byKanton.length > 0 ? byKanton[0] : null;
+
+    // Top category percentage
+    const totalCount = totalRow?.c ?? 0;
+    const topCatCount = topCatRow ? await dbGet<{ c: number }>(
+      `SELECT COUNT(*) as c FROM listings ${base} AND hauptkategorie = ?`, [topCatRow.hauptkategorie]
+    ) : null;
+    const topCatPct = totalCount > 0 && topCatCount ? Math.round((topCatCount.c / totalCount) * 100) : 0;
+
+    // Median price (overall)
+    const allPricesForMedian = await dbAll<{ preis: number }>(
+      `SELECT preis FROM listings ${base} ${priceFilter} ORDER BY preis`
+    );
+    const medianPreis = allPricesForMedian.length > 0
+      ? allPricesForMedian[Math.floor(allPricesForMedian.length / 2)].preis
+      : 0;
+
+    // Median by category
+    const catPrices = await dbAll<{ hauptkategorie: string; preis: number }>(
+      `SELECT hauptkategorie, preis FROM listings ${base} ${priceFilter} AND hauptkategorie IS NOT NULL ORDER BY hauptkategorie, preis`
+    );
+    const catPriceMap = new Map<string, number[]>();
+    for (const row of catPrices) {
+      if (!catPriceMap.has(row.hauptkategorie)) catPriceMap.set(row.hauptkategorie, []);
+      catPriceMap.get(row.hauptkategorie)!.push(row.preis);
+    }
+    const medianByCategory = Array.from(catPriceMap.entries()).map(([kat, prices]) => ({
+      hauptkategorie: kat,
+      median: prices[Math.floor(prices.length / 2)],
+      count: prices.length,
+    })).sort((a, b) => b.count - a.count);
+
+    // Ordonnanz spotlight
+    const ordonnanzModels = [
+      { name: "K31", patterns: ["%K31%", "%Karabiner 31%"] },
+      { name: "SIG P210", patterns: ["%P210%", "%SIG P210%"] },
+      { name: "Stgw 57", patterns: ["%Stgw 57%", "%SIG 510%"] },
+      { name: "P06/29", patterns: ["%P06%", "%Parabellum%", "%Luger 06%"] },
+      { name: "Stgw 90", patterns: ["%Stgw 90%", "%SIG 550%", "%SIG 551%"] },
+    ];
+    const ordonnanzData = [];
+    for (const model of ordonnanzModels) {
+      const whereClauses = model.patterns.map(() => "l.titel LIKE ?").join(" OR ");
+      const rows = await dbAll<{ preis: number }>(
+        `SELECT l.preis FROM listings l WHERE l.status = 'aktiv' AND l.preis > 0 AND l.preis < 50000 AND (${whereClauses}) ORDER BY l.preis`,
+        model.patterns
+      );
+      const prices = rows.map((r) => r.preis);
+      ordonnanzData.push({
+        name: model.name,
+        count: prices.length,
+        median: prices.length > 0 ? prices[Math.floor(prices.length / 2)] : 0,
+      });
+    }
+
     return NextResponse.json({
       overview: {
         total: totalRow?.c ?? 0,
         avgPreis: Math.round(avgRow?.a ?? 0),
+        medianPreis: Math.round(medianPreis),
         todayNew,
         weekNew,
         topKategorie: topCatRow?.hauptkategorie ?? "",
+        topKategoriePct: topCatPct,
         topKaliber: topKaliberName,
+        topKanton: topKantonRow?.kanton ?? "",
+        topKantonCount: topKantonRow?.count ?? 0,
       },
       avgByCategory,
+      medianByCategory,
       byZustand,
       priceRanges,
       byRechtsstatus,
@@ -266,6 +327,7 @@ export async function GET() {
       topKaliber,
       byKanton,
       cheapestPerCategory,
+      ordonnanzData,
     });
   } catch (error) {
     console.error("GET /api/stats/market error:", error);

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { BarChart3, TrendingUp, Clock, ExternalLink, ChevronRight } from "lucide-react";
+import { BarChart3, TrendingUp, Clock, ExternalLink } from "lucide-react";
 import PriceDistributionChart from "@/components/markt/PriceDistributionChart";
 import BrandMedianTable from "@/components/markt/BrandMedianTable";
 import PreisfinderWidget from "@/components/markt/PreisfinderWidget";
@@ -181,7 +181,6 @@ export default function MarktInsightsPage() {
   const o = data.overview;
   const byRechtsstatus = data.byRechtsstatus || [];
   const topMarken = data.topMarken || [];
-  const topKaliber = data.topKaliber || [];
   const byKanton = data.byKanton || [];
   const medianByCategory = data.medianByCategory || [];
   const ordonnanzData = data.ordonnanzData || [];

@@ -216,7 +216,7 @@ export default function BannerZone() {
       {/* ── DESKTOP ── */}
       <div className="hidden md:block w-full bg-white border-b border-gray-200">
         <div className="max-w-screen-xl mx-auto px-6">
-          <div className="flex items-center" style={{ height: 48 }}>
+          <div className="relative flex items-center" style={{ height: 48 }}>
 
             {/* Tab Navigation — grüner Underline-Stil */}
             <div className="flex items-center shrink-0 h-full border-r border-gray-200 pr-6 mr-6 gap-0">
@@ -246,7 +246,7 @@ export default function BannerZone() {
 
             {/* Scrollbarer Content */}
             <div
-              className="flex items-center gap-2 flex-1 min-w-0 overflow-x-auto"
+              className="flex items-center gap-2 flex-1 min-w-0 overflow-x-auto pr-10"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
             >
               {/* EVENTS: Monats-Pills */}
@@ -375,7 +375,7 @@ export default function BannerZone() {
             </div>
 
             {/* Fade rechts */}
-            <div className="shrink-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none h-full" />
+            <div className="absolute right-6 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent pointer-events-none z-10" />
           </div>
         </div>
       </div>

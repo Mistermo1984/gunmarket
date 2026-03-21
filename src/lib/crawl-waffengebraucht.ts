@@ -929,26 +929,38 @@ export async function runCrawlStep(
       return { inserted: 0, updated: 0, unchanged: 0, deleted: 0, source: "cleanup" };
     }
     const liveSourceIds = new Set(JSON.parse(liveIdsRow.value) as string[]);
-    const toRemove = existingRows.filter((r) => !liveSourceIds.has(r.source_id));
+    const toDeactivate = existingRows.filter((r) => !liveSourceIds.has(r.source_id));
     let deleted = 0;
-    if (toRemove.length > 0) {
-      const deleteStatements: { sql: string; args: (string | number | null)[] }[] = [];
-      for (const row of toRemove) {
-        deleteStatements.push({
-          sql: "DELETE FROM listing_images WHERE listing_id IN (SELECT id FROM listings WHERE source_id = ?)",
-          args: [row.source_id],
-        });
-        deleteStatements.push({
-          sql: "DELETE FROM listings WHERE source_id = ?",
+    if (toDeactivate.length > 0) {
+      // Soft-delete: set status to 'inaktiv' instead of hard-deleting.
+      // This preserves user favorites that reference these listings.
+      const deactivateStatements: { sql: string; args: (string | number | null)[] }[] = [];
+      for (const row of toDeactivate) {
+        deactivateStatements.push({
+          sql: "UPDATE listings SET status = 'inaktiv', updated_at = datetime('now') WHERE source_id = ?",
           args: [row.source_id],
         });
       }
-      await dbBatch(deleteStatements);
-      deleted = toRemove.length;
+      await dbBatch(deactivateStatements);
+      deleted = toDeactivate.length;
+    }
+    // Re-activate listings that reappear after being deactivated
+    const toReactivate = existingRows.filter(
+      (r) => liveSourceIds.has(r.source_id)
+    );
+    if (toReactivate.length > 0) {
+      const reactivateStatements: { sql: string; args: (string | number | null)[] }[] = [];
+      for (const row of toReactivate) {
+        reactivateStatements.push({
+          sql: "UPDATE listings SET status = 'aktiv' WHERE source_id = ? AND status = 'inaktiv'",
+          args: [row.source_id],
+        });
+      }
+      await dbBatch(reactivateStatements);
     }
     await dbRun("DELETE FROM crawl_meta WHERE key = 'live_source_ids'");
     await saveCrawlTimestamp();
-    console.log(`[Crawl] Cleanup: ${deleted} removed`);
+    console.log(`[Crawl] Cleanup: ${deleted} deactivated`);
     return { inserted: 0, updated: 0, unchanged: 0, deleted, source: "cleanup" };
   }
 

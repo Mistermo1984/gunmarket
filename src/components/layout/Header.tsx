@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, Plus, User, BookOpen, Search, LogOut, Shield, BarChart3 } from "lucide-react";
+import { Menu, X, Plus, User, BookOpen, Search, LogOut, Shield, BarChart3, Heart } from "lucide-react";
 import Logo from "@/components/ui/Logo";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useRouter } from "next/navigation";
@@ -16,8 +16,18 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [favCount, setFavCount] = useState(0);
 
   const user = session?.user;
+
+  // Fetch favorites count for logged-in user
+  useEffect(() => {
+    if (!user?.id) { setFavCount(0); return; }
+    fetch(`/api/favorites/count?user_id=${user.id}`)
+      .then((r) => r.json())
+      .then((d) => setFavCount(d.count || 0))
+      .catch(() => {});
+  }, [user?.id]);
   const initials = user
     ? `${user.vorname?.[0] || ""}${user.nachname?.[0] || ""}`.toUpperCase()
     : null;
@@ -102,6 +112,22 @@ export default function Header() {
           >
             <Search size={20} />
           </button>
+          {/* Shortlist / Merkliste */}
+          {user && (
+            <Link
+              href="/dashboard/merkliste"
+              className="relative rounded-lg p-2 text-neutral-500 transition-colors hover:bg-brand-grey hover:text-brand-dark"
+              aria-label="Merkliste"
+            >
+              <Heart size={18} className={favCount > 0 ? "fill-red-400 text-red-400" : ""} />
+              {favCount > 0 && (
+                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-red-500 px-1 text-[9px] font-bold text-white">
+                  {favCount > 99 ? "99+" : favCount}
+                </span>
+              )}
+            </Link>
+          )}
+
           {user ? (
             <>
               {user.isAdmin && (

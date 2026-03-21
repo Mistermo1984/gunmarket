@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
       `SELECT f.id, f.created_at, l.*
        FROM favorites f
        JOIN listings l ON f.listing_id = l.id
-       WHERE f.user_id = ? AND l.status = 'aktiv'
+       WHERE f.user_id = ? AND l.status IN ('aktiv', 'inaktiv')
        ORDER BY f.created_at DESC`,
       [userId]
     );

@@ -34,8 +34,8 @@ export default function GoodDealButton({ listingId }: GoodDealButtonProps) {
       const res = await fetch(`/api/listings/${listingId}/good-deal`, {
         method: 'POST',
       })
-      const data: { voted: boolean; count: number } = await res.json()
-      setHasVoted(data.voted)
+      const data: { hasVoted: boolean; count: number } = await res.json()
+      setHasVoted(data.hasVoted)
       setCount(data.count)
     } catch {
       // silently ignore

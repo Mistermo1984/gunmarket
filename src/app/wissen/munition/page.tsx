@@ -2,10 +2,10 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
-import { ChevronRight, Target, AlertTriangle } from 'lucide-react'
+import { ChevronRight, Target } from 'lucide-react'
 import { wissenMunition } from '@/lib/wissen-data'
 import WissenSidebar from '@/components/wissen/WissenSidebar'
-import { useLocale } from '@/lib/locale-context'
+import WikiLanguageBanner from '@/components/wissen/WikiLanguageBanner'
 
 const TYP_COLORS: Record<string, string> = {
   Pistole: 'bg-amber-50 text-amber-700',
@@ -16,7 +16,6 @@ const TYP_COLORS: Record<string, string> = {
 }
 
 export default function MunitionsGuidePage() {
-  const { locale, t } = useLocale()
   const [activeMunTyp, setActiveMunTyp] = useState('')
 
   const munitionCounts = useMemo(() => {
@@ -57,14 +56,10 @@ export default function MunitionsGuidePage() {
           <p className="mt-3 max-w-2xl text-neutral-400">
             Alle wichtigen Kaliber erklärt — mit technischen Daten, Geschichte und Einsatzgebieten in der Schweiz.
           </p>
-          {locale !== "de" && (
-            <div className="mt-4 flex items-center gap-2 rounded-lg bg-yellow-900/30 px-4 py-3 text-sm text-yellow-200">
-              <AlertTriangle size={16} className="shrink-0" />
-              {t(`wiki_german_only_${locale}` as keyof typeof import('@/lib/i18n').translations.de)}
-            </div>
-          )}
         </div>
       </section>
+
+      <WikiLanguageBanner />
 
       {/* Two-column layout */}
       <div className="mx-auto flex max-w-7xl gap-6 px-4 py-8">

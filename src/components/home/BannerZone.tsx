@@ -203,7 +203,7 @@ function CantonPill({
     <>
       <button
         ref={btnRef}
-        onClick={(e) => { e.stopPropagation(); onToggle(kt); }}
+        onClick={() => onToggle(kt)}
         className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full border transition-colors whitespace-nowrap shrink-0 ${
           isOpen
             ? 'bg-[#4d8230] text-white border-[#4d8230]'
@@ -223,9 +223,9 @@ function CantonPill({
       </button>
       {isOpen && pos && createPortal(
         <div
+          data-banner-dropdown
           className="fixed bg-white border border-gray-200 rounded-xl shadow-lg z-50 min-w-[220px] py-1 overflow-hidden"
           style={{ top: pos.top, left: pos.left }}
-          onClick={(e) => e.stopPropagation()}
         >
           <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
             Kanton {kt} — {dealers.length} Händler
@@ -281,7 +281,7 @@ function MonthPill({
     <>
       <button
         ref={btnRef}
-        onClick={(e) => { e.stopPropagation(); onToggle(month.key); }}
+        onClick={() => onToggle(month.key)}
         className={`flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full border transition-colors whitespace-nowrap shrink-0 ${
           isOpen
             ? 'bg-[#4d8230] text-white border-[#4d8230]'
@@ -301,9 +301,9 @@ function MonthPill({
       </button>
       {isOpen && pos && createPortal(
         <div
+          data-banner-dropdown
           className="fixed bg-white border border-gray-200 rounded-xl shadow-lg z-50 min-w-[260px] py-1 overflow-hidden"
           style={{ top: pos.top, left: pos.left }}
-          onClick={(e) => e.stopPropagation()}
         >
           <div className="px-3 py-1.5 text-[9px] font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-100">
             {month.label} — {month.events.length} Events
@@ -349,11 +349,20 @@ export default function BannerZone() {
   const startX = useRef(0);
   const startScrollLeft = useRef(0);
 
-  // Close all dropdowns on global click
+  // Close all dropdowns on click outside
+  const bannerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const h = () => { setOpenCanton(null); setOpenMonth(null); };
-    document.addEventListener('click', h);
-    return () => document.removeEventListener('click', h);
+    const h = (e: MouseEvent) => {
+      // Don't close if clicking inside a portal dropdown (which is on document.body)
+      const target = e.target as HTMLElement;
+      if (target.closest('[data-banner-dropdown]')) return;
+      // Don't close if clicking inside the banner zone itself (pills handle their own toggle)
+      if (bannerRef.current?.contains(target)) return;
+      setOpenCanton(null);
+      setOpenMonth(null);
+    };
+    document.addEventListener('mousedown', h);
+    return () => document.removeEventListener('mousedown', h);
   }, []);
 
   const eventsByMonth = useMemo(() => getEventsByMonth(), []);
@@ -388,7 +397,7 @@ export default function BannerZone() {
   ];
 
   return (
-    <div className="w-full bg-gray-50 border-t border-b border-gray-200">
+    <div ref={bannerRef} className="w-full bg-gray-50 border-t border-b border-gray-200">
       <div className="max-w-screen-xl mx-auto flex items-center h-11 px-8">
 
         {/* Tabs links */}

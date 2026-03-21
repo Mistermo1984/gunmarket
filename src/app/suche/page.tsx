@@ -11,7 +11,6 @@ import FilterSidebar, {
 } from "@/components/suche/FilterSidebar";
 import ErgebnisHeader from "@/components/suche/ErgebnisHeader";
 import ListingGrid from "@/components/suche/ListingGrid";
-import DynamicMap from "@/components/map/DynamicMap";
 import { HAUPTKATEGORIEN, KANTONE } from "@/lib/constants";
 import { apiListingToCard } from "@/lib/listing-helpers";
 import { useLocale } from "@/lib/locale-context";
@@ -44,11 +43,7 @@ function SucheContent() {
   const [view, setView] = useState<"grid" | "list">("grid");
   const [page, setPage] = useState(1);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
-  const [showMap, setShowMap] = useState(() => searchParams.get("map") === "true");
-  const [hoveredListingId] = useState<string | null>(null);
-
   const [listings, setListings] = useState<ListingCardData[]>([]);
-  const [mapListings, setMapListings] = useState<{ id: string; titel: string; preis: number; lat: number; lng: number }[]>([]);
   const [totalResults, setTotalResults] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
@@ -114,17 +109,6 @@ function SucheContent() {
       })
       .catch(() => setIsLoading(false));
   }, [filters, sort, page, buildFilterParams]);
-
-  // Fetch map markers (lightweight) when map is visible
-  useEffect(() => {
-    if (!showMap) return;
-    const params = buildFilterParams();
-
-    fetch(`/api/listings/map?${params}`)
-      .then((res) => res.json())
-      .then((data) => setMapListings(data.markers || []))
-      .catch(() => setMapListings([]));
-  }, [filters, showMap, buildFilterParams]);
 
   // Count active filters
   const activeFilterCount = useMemo(() => {
@@ -202,50 +186,16 @@ function SucheContent() {
             onViewChange={setView}
             activeFilterCount={activeFilterCount}
             onOpenMobileFilter={() => setMobileFilterOpen(true)}
-            showMap={showMap}
-            onToggleMap={() => setShowMap(!showMap)}
           />
 
-          {/* Map — full width on mobile */}
-          {showMap && (
-            <div className="mb-4 lg:hidden">
-              <div className="h-[350px] rounded-xl overflow-hidden border border-brand-border shadow-sm">
-                <DynamicMap
-                  listings={mapListings}
-                  hoveredId={hoveredListingId}
-                  onMarkerClick={(id) => {
-                    window.location.href = `/inserat/${id}`;
-                  }}
-                />
-              </div>
-            </div>
-          )}
-
-          <div className={showMap ? "lg:flex lg:gap-4" : ""}>
-            <div className={showMap ? "lg:w-1/2 lg:overflow-y-auto" : "w-full"}>
-              <ListingGrid
-                listings={listings}
-                view={showMap ? "list" : view}
-                page={page}
-                totalPages={totalPages}
-                onPageChange={setPage}
-                isLoading={isLoading}
-              />
-            </div>
-            {showMap && (
-              <div className="hidden w-1/2 lg:block">
-                <div className="sticky top-[140px] h-[calc(100vh-180px)] rounded-xl overflow-hidden border border-brand-border shadow-sm">
-                  <DynamicMap
-                    listings={mapListings}
-                    hoveredId={hoveredListingId}
-                    onMarkerClick={(id) => {
-                      window.location.href = `/inserat/${id}`;
-                    }}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
+          <ListingGrid
+            listings={listings}
+            view={view}
+            page={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            isLoading={isLoading}
+          />
         </div>
       </div>
 

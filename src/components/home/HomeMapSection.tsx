@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import { MapPin, ChevronRight } from "lucide-react";
+import { useLocale } from "@/lib/locale-context";
 import type { MapHandle, MapMarker } from "./HomeMapView";
 
 // Lazy-load map only on client
@@ -84,6 +85,7 @@ interface Listing {
 // ─── Component ──────────────────────────────────────────────────
 
 export default function HomeMapSection() {
+  const { t } = useLocale();
   const [allListings, setAllListings] = useState<Listing[]>([]);
   const [selectedKantone, setSelectedKantone] = useState<Set<string>>(new Set());
   const [kantonCounts, setKantonCounts] = useState<Record<string, number>>({});
@@ -174,7 +176,7 @@ export default function HomeMapSection() {
     const abbrArr = Array.from(next);
     const label = abbrArr.length === 1
       ? KANTONE.find((k) => k.abbr === abbrArr[0])?.label || abbrArr[0]
-      : `${abbrArr.length} Kantone`;
+      : `${abbrArr.length} ${t("map_cantons_selected_plural")}`;
     const link = `/suche?kanton=${abbrArr.join(",")}`;
     const fetchUrl = `/api/listings?kanton=${abbrArr.join(",")}&limit=50`;
 
@@ -195,11 +197,11 @@ export default function HomeMapSection() {
   const selCount = selectedKantone.size;
   const searchLink = selCount > 0 ? `/suche?kanton=${Array.from(selectedKantone).join(",")}` : "/suche";
 
-  let locationLabel = "Schweizweit";
+  let locationLabel = t("map_schweizweit");
   if (selCount === 1) {
     locationLabel = KANTONE.find((k) => k.abbr === Array.from(selectedKantone)[0])?.label || "";
   } else if (selCount > 1) {
-    locationLabel = `${selCount} Kantone`;
+    locationLabel = `${selCount} ${t("map_cantons_selected_plural")}`;
   }
 
   return (
@@ -211,16 +213,16 @@ export default function HomeMapSection() {
             <div className="mb-2 flex items-center gap-2">
               <MapPin className="h-5 w-5 text-[#16a34a]" />
               <span className="text-xs font-semibold uppercase tracking-widest text-[#16a34a]">
-                Inserate auf der Karte
+                {t("map_listings_on_map")}
               </span>
             </div>
             <h2 className="font-display text-2xl font-black uppercase tracking-tight text-[#1a2e1a] md:text-3xl">
-              Waffen <span className="text-[#16a34a]">in deiner Nähe</span>
+              {t("filter_weapons")} <span className="text-[#16a34a]">{t("map_nearby")}</span>
             </h2>
           </div>
           <p className="text-sm text-neutral-500">
             <span className="font-bold text-[#16a34a]">{filtered.length.toLocaleString("de-CH")}</span>{" "}
-            Inserate — {locationLabel}
+            {t("map_listings_count")} — {locationLabel}
           </p>
         </div>
 
@@ -229,16 +231,16 @@ export default function HomeMapSection() {
           {/* Left: Canton filter */}
           <div className="shrink-0 lg:w-[240px]">
             <div className="rounded-xl border bg-white p-4" style={{ borderColor: "#e5e7eb" }}>
-              <h3 className="mb-3 text-sm font-semibold text-[#1a2e1a]">Nach Kanton filtern</h3>
+              <h3 className="mb-3 text-sm font-semibold text-[#1a2e1a]">{t("map_filter_canton")}</h3>
               <button
                 onClick={handleReset}
                 className="mb-3 w-full rounded-lg bg-[#16a34a] px-3 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-[#15803d]"
               >
-                Alle Kantone
+                {t("map_all_cantons")}
               </button>
               {selCount > 0 && (
                 <p className="mb-2 text-[11px] font-medium text-neutral-500">
-                  {selCount} {selCount === 1 ? "Kanton" : "Kantone"} ausgewählt
+                  {selCount} {selCount === 1 ? t("map_cantons_selected") : t("map_cantons_selected_plural")}
                 </p>
               )}
               <div
@@ -276,7 +278,7 @@ export default function HomeMapSection() {
                   href={searchLink}
                   className="mt-3 flex items-center justify-center gap-1 rounded-lg bg-[#f0fdf4] px-3 py-2 text-xs font-semibold text-[#16a34a] hover:bg-[#dcfce7]"
                 >
-                  Alle Inserate anzeigen
+                  {t("map_show_all_listings")}
                   <ChevronRight size={14} />
                 </Link>
               )}

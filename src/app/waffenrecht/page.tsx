@@ -1,4 +1,5 @@
 import LegalLayout, { Section, InfoBox, WarnBox } from "@/components/legal/LegalLayout";
+import WaffenrechtHeader from "@/components/legal/WaffenrechtHeader";
 
 const toc = [
   { id: "ueberblick", label: "Überblick Schweizer Waffenrecht" },
@@ -30,6 +31,7 @@ export const metadata = {
 export default function WaffenrechtPage() {
   return (
     <LegalLayout title="Waffenrecht Schweiz" updated="1. März 2026" toc={toc}>
+      <WaffenrechtHeader />
       <WarnBox>
         Diese Seite dient ausschliesslich der allgemeinen Information und ersetzt keine
         Rechtsberatung. Bei konkreten Fragen wenden Sie sich an Ihr kantonales Waffenbüro oder

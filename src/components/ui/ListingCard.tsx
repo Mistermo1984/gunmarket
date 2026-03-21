@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Star, MapPin, Camera, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
+import { Star, MapPin, Camera, ChevronLeft, ChevronRight } from "lucide-react";
 import { PistolenIcon, RepetierIcon, BockflinteIcon, OptikIcon } from "@/components/ui/WeaponIcons";
 import { useLocale } from "@/lib/locale-context";
 
@@ -119,9 +119,6 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
       ? [listing.imageUrl]
       : [];
   const imageCount = listing.bildAnzahl ?? images.length;
-  const isExternal = !!listing.source && listing.source !== "gunmarket";
-  const sourceName = listing.source === "gebrauchtwaffen" ? "gebrauchtwaffen.com" : listing.source === "nextgun" ? "nextgun.ch" : listing.source;
-
   const href = `/inserat/${listing.id}`;
 
   // ── LIST VARIANT ──
@@ -135,15 +132,11 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
           ) : (
             <WaffenIcon size={36} className="text-gray-300" />
           )}
-          {isExternal ? (
-            <span className="absolute left-1.5 top-1.5 z-20 flex items-center gap-1 rounded bg-blue-600 px-1.5 py-0.5 text-[10px] font-medium text-white">
-              <ExternalLink size={9} />extern
-            </span>
-          ) : imageCount > 0 ? (
+          {imageCount > 0 && (
             <span className="absolute left-1.5 top-1.5 z-20 flex items-center gap-1 rounded bg-white/80 px-1.5 py-0.5 text-[10px] text-neutral-500">
               <Camera size={10} />{imageCount}
             </span>
-          ) : null}
+          )}
         </div>
 
         {/* Content */}
@@ -208,13 +201,6 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
         <h3 className="mb-1 truncate text-sm font-medium text-brand-dark">
           {listing.titel}
         </h3>
-
-        {/* Source badge */}
-        {isExternal && (
-          <span className="mb-1 inline-flex items-center gap-1 text-[10px] font-medium text-blue-600">
-            <ExternalLink size={9} />{sourceName}
-          </span>
-        )}
 
         {/* Price */}
         <div className="mb-2 flex items-baseline gap-1.5">

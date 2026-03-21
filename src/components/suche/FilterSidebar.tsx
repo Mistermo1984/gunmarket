@@ -8,6 +8,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { useLocale } from "@/lib/locale-context";
+import SearchInput from "@/components/suche/SearchInput";
 import {
   HAUPTKATEGORIEN,
   WAFFEN_IDS,
@@ -357,6 +358,14 @@ export default function FilterSidebar({
 
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto px-4 pb-4">
+        {/* ── SEARCH ── */}
+        <div className="mb-3">
+          <SearchInput
+            value={filters.marke}
+            onChange={(v) => update({ marke: v })}
+          />
+        </div>
+
         {/* ── KATEGORIE ── */}
         <SectionLabel>{t("filter_category")}</SectionLabel>
         <span className="mb-1 block text-[9px] font-semibold uppercase tracking-wider text-neutral-300">{t("filter_weapons")}</span>
@@ -369,11 +378,14 @@ export default function FilterSidebar({
               counts={counts}
               onToggleCategory={() => {
                 const active = filters.kategorien.includes(hk.id);
-                toggleArray("kategorien", hk.id);
-                if (active) {
-                  const subIds = hk.unterkategorien.map((uk) => uk.id);
-                  update({ unterkategorien: filters.unterkategorien.filter((u) => !subIds.includes(u)) });
-                }
+                const nextKat = active
+                  ? filters.kategorien.filter((k) => k !== hk.id)
+                  : [...filters.kategorien, hk.id];
+                const subIds = hk.unterkategorien.map((uk) => uk.id);
+                const nextSub = active
+                  ? filters.unterkategorien.filter((u) => !subIds.includes(u))
+                  : filters.unterkategorien;
+                update({ kategorien: nextKat, unterkategorien: nextSub });
               }}
               onToggleSub={(subId) => toggleArray("unterkategorien", subId)}
             />
@@ -389,11 +401,14 @@ export default function FilterSidebar({
               counts={counts}
               onToggleCategory={() => {
                 const active = filters.kategorien.includes(hk.id);
-                toggleArray("kategorien", hk.id);
-                if (active) {
-                  const subIds = hk.unterkategorien.map((uk) => uk.id);
-                  update({ unterkategorien: filters.unterkategorien.filter((u) => !subIds.includes(u)) });
-                }
+                const nextKat = active
+                  ? filters.kategorien.filter((k) => k !== hk.id)
+                  : [...filters.kategorien, hk.id];
+                const subIds = hk.unterkategorien.map((uk) => uk.id);
+                const nextSub = active
+                  ? filters.unterkategorien.filter((u) => !subIds.includes(u))
+                  : filters.unterkategorien;
+                update({ kategorien: nextKat, unterkategorien: nextSub });
               }}
               onToggleSub={(subId) => toggleArray("unterkategorien", subId)}
             />

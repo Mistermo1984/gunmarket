@@ -5,7 +5,7 @@ import HomeMapSection from "@/components/home/HomeMapSection";
 import SoFunktionierts from "@/components/home/SoFunktionierts";
 import RechtlicherHinweis from "@/components/home/RechtlicherHinweis";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
-import Link from "next/link";
+import SeoLinksSection from "@/components/home/SeoLinksSection";
 import { initializeSchema } from "@/lib/db";
 
 export const metadata: Metadata = {
@@ -24,35 +24,6 @@ function ensureSchema() {
     // ignore
   }
 }
-
-const KANTONE_LINKS = [
-  { label: "Zürich", kanton: "ZH" },
-  { label: "Bern", kanton: "BE" },
-  { label: "Luzern", kanton: "LU" },
-  { label: "Uri", kanton: "UR" },
-  { label: "Schwyz", kanton: "SZ" },
-  { label: "Obwalden", kanton: "OW" },
-  { label: "Nidwalden", kanton: "NW" },
-  { label: "Glarus", kanton: "GL" },
-  { label: "Zug", kanton: "ZG" },
-  { label: "Freiburg", kanton: "FR" },
-  { label: "Solothurn", kanton: "SO" },
-  { label: "Basel-Stadt", kanton: "BS" },
-  { label: "Basel-Land", kanton: "BL" },
-  { label: "Schaffhausen", kanton: "SH" },
-  { label: "Appenzell AR", kanton: "AR" },
-  { label: "Appenzell AI", kanton: "AI" },
-  { label: "St. Gallen", kanton: "SG" },
-  { label: "Graubünden", kanton: "GR" },
-  { label: "Aargau", kanton: "AG" },
-  { label: "Thurgau", kanton: "TG" },
-  { label: "Tessin", kanton: "TI" },
-  { label: "Waadt", kanton: "VD" },
-  { label: "Wallis", kanton: "VS" },
-  { label: "Neuenburg", kanton: "NE" },
-  { label: "Genf", kanton: "GE" },
-  { label: "Jura", kanton: "JU" },
-];
 
 // JSON-LD structured data — WebSite + SearchAction
 const websiteJsonLd = {
@@ -175,24 +146,7 @@ export default function Home() {
       <RechtlicherHinweis />
 
       {/* Waffen kaufen in allen Kantonen — SEO */}
-      <section className="bg-white py-12">
-        <div className="mx-auto max-w-7xl px-4">
-          <h2 className="mb-6 font-display text-xl font-black uppercase tracking-tight text-brand-dark">
-            Waffen kaufen in der Schweiz
-          </h2>
-          <div className="flex flex-wrap gap-2">
-            {KANTONE_LINKS.map((k) => (
-              <Link
-                key={k.kanton}
-                href={`/suche?kanton=${k.kanton}`}
-                className="rounded-full border border-brand-border px-3 py-1.5 text-xs font-medium text-neutral-600 transition-colors hover:border-brand-green hover:bg-brand-green-light hover:text-brand-green"
-              >
-                Waffen kaufen in {k.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+      <SeoLinksSection />
     </>
   );
 }

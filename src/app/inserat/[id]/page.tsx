@@ -274,7 +274,7 @@ export default function InseratDetailPage() {
             className="flex items-center gap-1 font-medium text-green-700 hover:underline"
           >
             <ArrowLeft size={14} />
-            {t("listing_back")}
+            {t("listing_back").replace(/^←\s*/, "")}
           </Link>
           <span className="text-gray-400">/</span>
           <nav className="flex items-center gap-1.5 text-neutral-500">
@@ -567,11 +567,8 @@ export default function InseratDetailPage() {
                   {t("listing_location")}
                 </h3>
                 <p className="mb-3 text-sm text-neutral-600">
-                  {listing.ortschaft}, {t("filter_canton")} {listing.kanton}
+                  {listing.ortschaft ? `${listing.ortschaft}, ${listing.kanton}` : listing.kanton}
                 </p>
-                <div className="h-40 rounded-lg bg-gray-100 flex items-center justify-center text-sm text-neutral-400">
-                  {t("detail_loading_map")}
-                </div>
               </div>
 
               {/* Safety */}

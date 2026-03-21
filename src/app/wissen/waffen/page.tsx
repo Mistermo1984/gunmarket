@@ -2,9 +2,11 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
-import { ChevronRight, BookOpen } from 'lucide-react'
+import { ChevronRight, BookOpen, AlertTriangle } from 'lucide-react'
 import { wissenWaffen } from '@/lib/wissen-data'
 import WissenSidebar from '@/components/wissen/WissenSidebar'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
+import { useLocale } from '@/lib/locale-context'
 
 const KATEGORIE_TOOLTIPS: Record<string, string> = {
   'Ordonnanzwaffe': 'Militärwaffen der Schweizer Armee — historisch und aktuell.',
@@ -19,6 +21,7 @@ const KATEGORIE_TOOLTIPS: Record<string, string> = {
 }
 
 export default function WaffenWikiPage() {
+  const { t, locale } = useLocale()
   const [activeKategorie, setActiveKategorie] = useState('')
 
   const waffenCounts = useMemo(() => {
@@ -38,10 +41,13 @@ export default function WaffenWikiPage() {
       {/* Header */}
       <section className="bg-brand-dark py-12 md:py-16">
         <div className="mx-auto max-w-7xl px-4">
-          <div className="flex items-center gap-2 text-sm text-neutral-400">
-            <Link href="/wissen" className="hover:text-white">Waffen-Wiki</Link>
-            <ChevronRight size={14} />
-            <span className="text-white">Waffen-Wiki</span>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-sm text-neutral-400">
+              <Link href="/wissen" className="hover:text-white">{t("wiki_title")}</Link>
+              <ChevronRight size={14} />
+              <span className="text-white">{t("wiki_title")}</span>
+            </div>
+            <LanguageSwitcher />
           </div>
           <div className="mt-4 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-green">
@@ -49,16 +55,22 @@ export default function WaffenWikiPage() {
             </div>
             <div>
               <h1 className="font-display text-2xl font-black uppercase tracking-tight text-white md:text-4xl">
-                Waffen-Wiki
+                {t("wiki_title")}
               </h1>
               <p className="text-sm text-neutral-400">
-                {wissenWaffen.length} Artikel
+                {wissenWaffen.length} {t("wiki_articles")}
               </p>
             </div>
           </div>
           <p className="mt-3 max-w-2xl text-neutral-400">
-            Alle Waffenarten erklärt — Funktionsweise, Rechtsstatus in der Schweiz und bekannte Modelle.
+            {t("wiki_all_explained")}
           </p>
+          {locale !== "de" && (
+            <div className="mt-4 flex items-center gap-2 rounded-lg bg-yellow-900/30 px-4 py-3 text-sm text-yellow-200">
+              <AlertTriangle size={16} className="shrink-0" />
+              {t(`wiki_german_only_${locale}`)}
+            </div>
+          )}
         </div>
       </section>
 
@@ -75,7 +87,7 @@ export default function WaffenWikiPage() {
           {activeKategorie && (
             <div className="mb-4 flex items-center gap-2">
               <span className="text-sm text-neutral-500">
-                {filtered.length} Artikel in
+                {filtered.length} {t("wiki_articles_in")}
               </span>
               <span className="rounded-full bg-brand-green-light px-3 py-1 text-sm font-semibold text-brand-green">
                 {activeKategorie}
@@ -99,7 +111,7 @@ export default function WaffenWikiPage() {
                   : 'bg-brand-grey text-neutral-600 hover:bg-brand-green-light hover:text-brand-green'
               }`}
             >
-              Alle
+              {t("filter_all")}
             </button>
             {Object.entries(waffenCounts).map(([kat, count]) => (
               <button
@@ -141,7 +153,7 @@ export default function WaffenWikiPage() {
                     {waffe.kurzbeschreibung}
                   </p>
                   <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-brand-green">
-                    Mehr lesen
+                    {t("wiki_read_more")}
                     <ChevronRight size={14} className="transition-transform group-hover:translate-x-1" />
                   </span>
                 </Link>

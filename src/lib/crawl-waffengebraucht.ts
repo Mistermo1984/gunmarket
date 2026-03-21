@@ -659,81 +659,187 @@ async function ensureCrawlerUser(
 
 // ─── Insert items — store image URLs directly (no download) ──
 
-async function insertItems(items: CrawledItem[], source: string) {
+async function upsertItems(
+  items: CrawledItem[],
+  source: string,
+  existingMap: Map<string, { id: string; preis: number; imageCount: number }>
+): Promise<{ created: number; updated: number; unchanged: number }> {
   const userId =
     source === "nextgun" ? "crawler-nextgun" : GW_CRAWLER_USER.id;
   const statements: { sql: string; args: (string | number | null)[] }[] = [];
+  let created = 0;
+  let updated = 0;
+  let unchanged = 0;
+  const now = new Date().toISOString().replace("T", " ").slice(0, 19);
 
   for (const item of items) {
-    const id = uuidv4();
-    const createdAt = new Date()
-      .toISOString()
-      .replace("T", " ")
-      .slice(0, 19);
+    const existing = existingMap.get(item.sourceId);
 
-    const coords =
-      item.lat && item.lng
-        ? { lat: item.lat, lng: item.lng }
-        : ((item.plz ? getPlzCoordinates(item.plz) : null) ??
-          getCityCoordinates(item.ortschaft));
+    if (!existing) {
+      // New listing — insert
+      const id = uuidv4();
+      const coords =
+        item.lat && item.lng
+          ? { lat: item.lat, lng: item.lng }
+          : ((item.plz ? getPlzCoordinates(item.plz) : null) ??
+            getCityCoordinates(item.ortschaft));
 
-    const rechtsstatus = classifyRechtsstatus({
-      titel: item.titel,
-      beschreibung: item.beschreibung,
-      hauptkategorie: item.hauptkategorie,
-      unterkategorie: item.unterkategorie,
-    });
-
-    statements.push({
-      sql: `INSERT INTO listings (id, user_id, titel, beschreibung, hauptkategorie, unterkategorie, rechtsstatus, marke, modell, kaliber, zustand, preis, verhandelbar, tausch, kanton, ortschaft, plz, lat, lng, aufrufe, source, source_url, source_id, created_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      args: [
-        id,
-        userId,
-        item.titel,
-        item.beschreibung,
-        item.hauptkategorie,
-        item.unterkategorie,
-        rechtsstatus,
-        "",
-        "",
-        "",
-        "",
-        item.preis,
-        item.verhandelbar,
-        item.kanton,
-        item.ortschaft,
-        item.plz,
-        coords?.lat ?? null,
-        coords?.lng ?? null,
-        0,
-        source,
-        item.sourceUrl,
-        item.sourceId,
-        createdAt,
-      ],
-    });
-
-    // Store image URLs directly in listing_images (no download)
-    for (let i = 0; i < item.imageUrls.length; i++) {
-      statements.push({
-        sql: "INSERT INTO listing_images (id, listing_id, url, position, is_main) VALUES (?, ?, ?, ?, ?)",
-        args: [uuidv4(), id, item.imageUrls[i], i, i === 0 ? 1 : 0],
+      const rechtsstatus = classifyRechtsstatus({
+        titel: item.titel,
+        beschreibung: item.beschreibung,
+        hauptkategorie: item.hauptkategorie,
+        unterkategorie: item.unterkategorie,
       });
+
+      statements.push({
+        sql: `INSERT INTO listings (id, user_id, titel, beschreibung, hauptkategorie, unterkategorie, rechtsstatus, marke, modell, kaliber, zustand, preis, verhandelbar, tausch, kanton, ortschaft, plz, lat, lng, aufrufe, source, source_url, source_id, last_seen_at, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        args: [
+          id, userId, item.titel, item.beschreibung, item.hauptkategorie,
+          item.unterkategorie, rechtsstatus, "", "", "", "", item.preis,
+          item.verhandelbar, item.kanton, item.ortschaft, item.plz,
+          coords?.lat ?? null, coords?.lng ?? null, 0, source,
+          item.sourceUrl, item.sourceId, now, now,
+        ],
+      });
+
+      for (let i = 0; i < item.imageUrls.length; i++) {
+        statements.push({
+          sql: "INSERT INTO listing_images (id, listing_id, url, position, is_main) VALUES (?, ?, ?, ?, ?)",
+          args: [uuidv4(), id, item.imageUrls[i], i, i === 0 ? 1 : 0],
+        });
+      }
+      created++;
+    } else {
+      // Existing listing — check for changes
+      const changes: string[] = [];
+      const args: (string | number | null)[] = [];
+
+      // Always update last_seen_at
+      changes.push("last_seen_at = ?");
+      args.push(now);
+
+      // Price changed?
+      if (item.preis > 0 && item.preis !== existing.preis) {
+        changes.push("preis = ?", "price_updated_at = ?");
+        args.push(item.preis, now);
+      }
+
+      // More images?
+      if (item.imageUrls.length > existing.imageCount) {
+        changes.push("images_updated_at = ?");
+        args.push(now);
+        // Replace images
+        statements.push({
+          sql: "DELETE FROM listing_images WHERE listing_id = ?",
+          args: [existing.id],
+        });
+        for (let i = 0; i < item.imageUrls.length; i++) {
+          statements.push({
+            sql: "INSERT INTO listing_images (id, listing_id, url, position, is_main) VALUES (?, ?, ?, ?, ?)",
+            args: [uuidv4(), existing.id, item.imageUrls[i], i, i === 0 ? 1 : 0],
+          });
+        }
+      }
+
+      if (changes.length > 1) {
+        // Real changes beyond just last_seen_at
+        args.push(existing.id);
+        statements.push({
+          sql: `UPDATE listings SET ${changes.join(", ")} WHERE id = ?`,
+          args,
+        });
+        updated++;
+      } else {
+        // Only last_seen_at
+        statements.push({
+          sql: "UPDATE listings SET last_seen_at = ? WHERE id = ?",
+          args: [now, existing.id],
+        });
+        unchanged++;
+      }
     }
   }
 
-  // Batch in chunks to avoid oversized transactions
   const CHUNK_SIZE = 200;
   for (let i = 0; i < statements.length; i += CHUNK_SIZE) {
     await dbBatch(statements.slice(i, i + CHUNK_SIZE));
   }
+
+  return { created, updated, unchanged };
 }
 
 // ─── Public API ──────────────────────────────────────────────
 
 export function seedCrawledListings() {
   console.log("[Seed] Use admin panel to crawl.");
+}
+
+// ─── Crawler state management ───────────────────────────────
+
+async function ensureCrawlerStateTable() {
+  await dbExec(`
+    CREATE TABLE IF NOT EXISTS crawler_state (
+      id INTEGER PRIMARY KEY CHECK (id = 1),
+      status TEXT DEFAULT 'idle',
+      started_at TEXT,
+      stopped_at TEXT,
+      stop_requested INTEGER DEFAULT 0,
+      current_source TEXT,
+      current_category TEXT,
+      processed_count INTEGER DEFAULT 0,
+      created_count INTEGER DEFAULT 0,
+      updated_count INTEGER DEFAULT 0,
+      unchanged_count INTEGER DEFAULT 0
+    );
+    INSERT OR IGNORE INTO crawler_state (id) VALUES (1);
+  `);
+}
+
+async function setCrawlerState(data: Record<string, string | number | null>) {
+  await ensureCrawlerStateTable();
+  const sets = Object.keys(data).map((k) => `${k} = ?`).join(", ");
+  await dbRun(`UPDATE crawler_state SET ${sets} WHERE id = 1`, Object.values(data));
+}
+
+async function isCrawlerStopRequested(): Promise<boolean> {
+  await ensureCrawlerStateTable();
+  const row = await dbGet<{ stop_requested: number }>(
+    "SELECT stop_requested FROM crawler_state WHERE id = 1"
+  );
+  return row?.stop_requested === 1;
+}
+
+export async function requestCrawlerStop() {
+  await setCrawlerState({ stop_requested: 1 });
+}
+
+export async function getCrawlerState(): Promise<{
+  status: string;
+  started_at: string | null;
+  stopped_at: string | null;
+  current_source: string | null;
+  current_category: string | null;
+  processed_count: number;
+  created_count: number;
+  updated_count: number;
+  unchanged_count: number;
+}> {
+  await ensureCrawlerStateTable();
+  const row = await dbGet<Record<string, unknown>>(
+    "SELECT * FROM crawler_state WHERE id = 1"
+  );
+  return {
+    status: (row?.status as string) || "idle",
+    started_at: (row?.started_at as string) || null,
+    stopped_at: (row?.stopped_at as string) || null,
+    current_source: (row?.current_source as string) || null,
+    current_category: (row?.current_category as string) || null,
+    processed_count: (row?.processed_count as number) || 0,
+    created_count: (row?.created_count as number) || 0,
+    updated_count: (row?.updated_count as number) || 0,
+    unchanged_count: (row?.unchanged_count as number) || 0,
+  };
 }
 
 export function getCrawlSteps(): { id: string; label: string }[] {
@@ -749,7 +855,7 @@ export function getCrawlSteps(): { id: string; label: string }[] {
 
 export async function runCrawlStep(
   stepId: string
-): Promise<{ inserted: number; deleted: number; source: string }> {
+): Promise<{ inserted: number; updated: number; unchanged: number; deleted: number; source: string }> {
   await initializeSchema();
   await ensureCrawlerUser(
     GW_CRAWLER_USER.id,
@@ -764,42 +870,53 @@ export async function runCrawlStep(
     ".ch"
   );
 
-  // Get existing source_ids to skip duplicates
-  const existingRows = await dbAll<{ source_id: string; source: string }>(
-    "SELECT source_id, source FROM listings WHERE source IN ('gebrauchtwaffen', 'nextgun') AND source_id IS NOT NULL"
+  // Check stop signal
+  if (await isCrawlerStopRequested()) {
+    await setCrawlerState({ status: "stopped", stopped_at: new Date().toISOString() });
+    console.log("[Crawl] Stop requested, aborting step:", stepId);
+    return { inserted: 0, updated: 0, unchanged: 0, deleted: 0, source: stepId };
+  }
+
+  // Build map of existing listings for upsert
+  const existingRows = await dbAll<{ source_id: string; source: string; id: string; preis: number }>(
+    "SELECT source_id, source, id, preis FROM listings WHERE source IN ('gebrauchtwaffen', 'nextgun') AND source_id IS NOT NULL"
   );
   const existingSourceIds = new Set(existingRows.map((r) => r.source_id));
 
+  // Build existing map with image counts for upsert
+  const imageCountRows = await dbAll<{ listing_id: string; cnt: number }>(
+    "SELECT listing_id, COUNT(*) as cnt FROM listing_images WHERE listing_id IN (SELECT id FROM listings WHERE source IN ('gebrauchtwaffen', 'nextgun')) GROUP BY listing_id"
+  );
+  const imageCountMap = new Map(imageCountRows.map((r) => [r.listing_id, r.cnt]));
+  const existingMap = new Map(
+    existingRows.map((r) => [r.source_id, { id: r.id, preis: r.preis, imageCount: imageCountMap.get(r.id) || 0 }])
+  );
+
+  await setCrawlerState({ current_source: stepId, current_category: stepId });
+
   if (stepId === "nextgun") {
     const items = await crawlNextgun();
-    const newItems = items.filter(
-      (item) => !existingSourceIds.has(item.sourceId)
-    );
+    const newItems = items.filter((item) => !existingSourceIds.has(item.sourceId));
 
-    // Enrich new items with gallery images from detail pages
     await enrichNextgunImages(newItems);
-    await insertItems(newItems, "nextgun");
+    const result = await upsertItems(items, "nextgun", existingMap);
 
     await ensureCrawlMetaTable();
     const existingLiveRow = await dbGet<{ value: string }>(
       "SELECT value FROM crawl_meta WHERE key = 'live_source_ids'"
     );
     const existingLive: string[] = existingLiveRow?.value
-      ? JSON.parse(existingLiveRow.value)
-      : [];
-    const updatedLive = [
-      ...existingLive,
-      ...items.map((i) => i.sourceId),
-    ];
+      ? JSON.parse(existingLiveRow.value) : [];
+    const updatedLive = [...existingLive, ...items.map((i) => i.sourceId)];
     await dbRun(
       "INSERT OR REPLACE INTO crawl_meta (key, value) VALUES ('live_source_ids', ?)",
       [JSON.stringify(updatedLive)]
     );
 
     console.log(
-      `[Crawl] NextGun: ${items.length} total, ${newItems.length} new`
+      `[Crawl] NextGun: ${items.length} total, ${result.created} new, ${result.updated} updated, ${result.unchanged} unchanged`
     );
-    return { inserted: newItems.length, deleted: 0, source: "nextgun" };
+    return { inserted: result.created, updated: result.updated, unchanged: result.unchanged, deleted: 0, source: "nextgun" };
   }
 
   if (stepId === "cleanup") {
@@ -809,20 +926,13 @@ export async function runCrawlStep(
     );
     if (!liveIdsRow?.value) {
       await saveCrawlTimestamp();
-      return { inserted: 0, deleted: 0, source: "cleanup" };
+      return { inserted: 0, updated: 0, unchanged: 0, deleted: 0, source: "cleanup" };
     }
-    const liveSourceIds = new Set(
-      JSON.parse(liveIdsRow.value) as string[]
-    );
-    const toRemove = existingRows.filter(
-      (r) => !liveSourceIds.has(r.source_id)
-    );
+    const liveSourceIds = new Set(JSON.parse(liveIdsRow.value) as string[]);
+    const toRemove = existingRows.filter((r) => !liveSourceIds.has(r.source_id));
     let deleted = 0;
     if (toRemove.length > 0) {
-      const deleteStatements: {
-        sql: string;
-        args: (string | number | null)[];
-      }[] = [];
+      const deleteStatements: { sql: string; args: (string | number | null)[] }[] = [];
       for (const row of toRemove) {
         deleteStatements.push({
           sql: "DELETE FROM listing_images WHERE listing_id IN (SELECT id FROM listings WHERE source_id = ?)",
@@ -839,7 +949,7 @@ export async function runCrawlStep(
     await dbRun("DELETE FROM crawl_meta WHERE key = 'live_source_ids'");
     await saveCrawlTimestamp();
     console.log(`[Crawl] Cleanup: ${deleted} removed`);
-    return { inserted: 0, deleted, source: "cleanup" };
+    return { inserted: 0, updated: 0, unchanged: 0, deleted, source: "cleanup" };
   }
 
   // gw-{slug} — crawl single gebrauchtwaffen.com category
@@ -849,43 +959,56 @@ export async function runCrawlStep(
 
   // Phase 1: Collect all listing URLs from category pages (fast)
   const refs = await collectGwListingUrls(cat.slug);
-  const newRefs = refs.filter((r) => !existingSourceIds.has(r.sourceId));
-  console.log(
-    `[Crawl] ${cat.slug}: ${refs.length} total, ${newRefs.length} new to scrape`
-  );
+  console.log(`[Crawl] ${cat.slug}: ${refs.length} total listings found`);
 
-  // Phase 2: Scrape detail pages for new listings only (slow)
-  const newItems: CrawledItem[] = [];
+  // Phase 2: Scrape detail pages for NEW listings only (slow)
+  const newRefs = refs.filter((r) => !existingSourceIds.has(r.sourceId));
+  const allItems: CrawledItem[] = [];
   for (const ref of newRefs) {
+    if (await isCrawlerStopRequested()) {
+      console.log("[Crawl] Stop requested during scraping");
+      break;
+    }
     await delay(1200 + Math.random() * 1300);
     const item = await scrapeGwListing(ref.url);
-    if (item) newItems.push(item);
+    if (item) allItems.push(item);
   }
 
-  await insertItems(newItems, "gebrauchtwaffen");
+  // Also create minimal items for existing refs so upsert can update last_seen_at
+  for (const ref of refs) {
+    if (existingSourceIds.has(ref.sourceId) && !allItems.find((i) => i.sourceId === ref.sourceId)) {
+      // Existing listing — push a stub so upsert updates last_seen_at
+      allItems.push({
+        sourceId: ref.sourceId,
+        titel: "", beschreibung: "", hauptkategorie: "", unterkategorie: "",
+        preis: 0, verhandelbar: 0, ortschaft: "", plz: "", kanton: "",
+        imageUrls: [], sourceUrl: ref.url,
+      });
+    }
+  }
 
-  // Track ALL source IDs (both new and existing) for cleanup
+  const result = await upsertItems(allItems, "gebrauchtwaffen", existingMap);
+
+  // Track ALL source IDs for cleanup
   await ensureCrawlMetaTable();
   const existingLiveRow = await dbGet<{ value: string }>(
     "SELECT value FROM crawl_meta WHERE key = 'live_source_ids'"
   );
   const existingLive: string[] = existingLiveRow?.value
-    ? JSON.parse(existingLiveRow.value)
-    : [];
-  const updatedLive = [
-    ...existingLive,
-    ...refs.map((r) => r.sourceId),
-  ];
+    ? JSON.parse(existingLiveRow.value) : [];
+  const updatedLive = [...existingLive, ...refs.map((r) => r.sourceId)];
   await dbRun(
     "INSERT OR REPLACE INTO crawl_meta (key, value) VALUES ('live_source_ids', ?)",
     [JSON.stringify(updatedLive)]
   );
 
   console.log(
-    `[Crawl] ${cat.slug}: ${refs.length} total, ${newItems.length} new inserted`
+    `[Crawl] ${cat.slug}: ${result.created} new, ${result.updated} updated, ${result.unchanged} unchanged`
   );
   return {
-    inserted: newItems.length,
+    inserted: result.created,
+    updated: result.updated,
+    unchanged: result.unchanged,
     deleted: 0,
     source: `gw-${slug}`,
   };
@@ -893,29 +1016,72 @@ export async function runCrawlStep(
 
 export async function runCrawl(): Promise<{
   inserted: number;
+  updated: number;
+  unchanged: number;
   deleted: number;
   duration: number;
+  stopped: boolean;
 }> {
   const start = Date.now();
   const steps = getCrawlSteps();
   let totalInserted = 0;
+  let totalUpdated = 0;
+  let totalUnchanged = 0;
   let totalDeleted = 0;
+  let stopped = false;
 
   await initializeSchema();
   await ensureCrawlMetaTable();
   await dbRun("DELETE FROM crawl_meta WHERE key = 'live_source_ids'");
 
+  // Reset crawler state
+  await setCrawlerState({
+    status: "running",
+    started_at: new Date().toISOString(),
+    stopped_at: null,
+    stop_requested: 0,
+    current_source: null,
+    current_category: null,
+    processed_count: 0,
+    created_count: 0,
+    updated_count: 0,
+    unchanged_count: 0,
+  });
+
   for (const step of steps) {
+    if (await isCrawlerStopRequested()) {
+      console.log("[Crawl] Stop requested — aborting remaining steps");
+      stopped = true;
+      break;
+    }
+
+    await setCrawlerState({ current_source: step.id, current_category: step.id });
     const result = await runCrawlStep(step.id);
     totalInserted += result.inserted;
+    totalUpdated += result.updated;
+    totalUnchanged += result.unchanged;
     totalDeleted += result.deleted;
+
+    await setCrawlerState({
+      processed_count: totalInserted + totalUpdated + totalUnchanged + totalDeleted,
+      created_count: totalInserted,
+      updated_count: totalUpdated,
+      unchanged_count: totalUnchanged,
+    });
   }
 
   const duration = Date.now() - start;
+  await setCrawlerState({
+    status: stopped ? "stopped" : "idle",
+    stopped_at: new Date().toISOString(),
+    current_source: null,
+    current_category: null,
+  });
+
   console.log(
-    `[Crawl] Full crawl done: ${totalInserted} new, ${totalDeleted} removed in ${duration}ms`
+    `[Crawl] Full crawl done: ${totalInserted} new, ${totalUpdated} updated, ${totalUnchanged} unchanged, ${totalDeleted} removed in ${duration}ms${stopped ? " (stopped)" : ""}`
   );
-  return { inserted: totalInserted, deleted: totalDeleted, duration };
+  return { inserted: totalInserted, updated: totalUpdated, unchanged: totalUnchanged, deleted: totalDeleted, duration, stopped };
 }
 
 export async function getCrawlStatus(): Promise<{
@@ -923,6 +1089,7 @@ export async function getCrawlStatus(): Promise<{
   count: number;
   autoCrawlEnabled: boolean;
   autoCrawlTime: string;
+  crawlerState: Awaited<ReturnType<typeof getCrawlerState>>;
 }> {
   await initializeSchema();
   const count =
@@ -937,11 +1104,14 @@ export async function getCrawlStatus(): Promise<{
     "SELECT value FROM crawl_meta WHERE key = 'last_crawl'"
   );
 
+  const crawlerState = await getCrawlerState();
+
   return {
     lastCrawl: row?.value || null,
     count,
     autoCrawlEnabled: true,
-    autoCrawlTime: "17:00",
+    autoCrawlTime: "00:00–02:00",
+    crawlerState,
   };
 }
 

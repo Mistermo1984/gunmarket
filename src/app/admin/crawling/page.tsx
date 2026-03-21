@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   RefreshCw,
   Clock,
@@ -11,6 +11,7 @@ import {
   Globe,
   Timer,
   ExternalLink,
+  StopCircle,
 } from "lucide-react";
 
 interface CrawlStep {
@@ -18,11 +19,24 @@ interface CrawlStep {
   label: string;
 }
 
+interface CrawlerState {
+  status: string;
+  started_at: string | null;
+  stopped_at: string | null;
+  current_source: string | null;
+  current_category: string | null;
+  processed_count: number;
+  created_count: number;
+  updated_count: number;
+  unchanged_count: number;
+}
+
 interface CrawlStatus {
   lastCrawl: string | null;
   count: number;
   autoCrawlEnabled: boolean;
   autoCrawlTime: string;
+  crawlerState?: CrawlerState;
   steps: CrawlStep[];
 }
 
@@ -30,58 +44,111 @@ interface StepResult {
   id: string;
   label: string;
   inserted: number;
+  updated: number;
+  unchanged: number;
   deleted: number;
   status: "pending" | "running" | "done" | "error";
   error?: string;
+}
+
+type BadgeStatus = "idle" | "running" | "stopping" | "stopped";
+
+function StatusBadge({ status }: { status: BadgeStatus }) {
+  const config: Record<BadgeStatus, { label: string; dot: string; bg: string; text: string }> = {
+    idle:     { label: "Idle",     dot: "bg-gray-400",   bg: "bg-gray-100",   text: "text-gray-600" },
+    running:  { label: "Running",  dot: "bg-green-500 animate-pulse", bg: "bg-green-50", text: "text-green-700" },
+    stopping: { label: "Stopping", dot: "bg-orange-500 animate-pulse", bg: "bg-orange-50", text: "text-orange-700" },
+    stopped:  { label: "Stopped",  dot: "bg-red-500",   bg: "bg-red-50",     text: "text-red-700" },
+  };
+  const c = config[status];
+  return (
+    <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${c.bg} ${c.text}`}>
+      <span className={`h-2 w-2 rounded-full ${c.dot}`} />
+      {c.label}
+    </span>
+  );
 }
 
 export default function CrawlingPage() {
   const [status, setStatus] = useState<CrawlStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [crawling, setCrawling] = useState(false);
+  const [stopping, setStopping] = useState(false);
   const [stepResults, setStepResults] = useState<StepResult[]>([]);
   const [, setCurrentStepIdx] = useState(-1);
+  const stopRef = useRef(false);
 
-  const fetchStatus = useCallback(() => {
-    fetch("/api/admin/crawl")
-      .then((r) => r.json())
-      .then((data) => {
-        setStatus(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+  const fetchStatus = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/crawl");
+      const data = await res.json();
+      setStatus(data);
+      setLoading(false);
+    } catch {
+      setLoading(false);
+    }
   }, []);
 
+  // Initial load
   useEffect(() => {
     fetchStatus();
   }, [fetchStatus]);
 
+  // Auto-refresh: 5s when running, 30s when idle
+  useEffect(() => {
+    const cs = status?.crawlerState;
+    const interval = cs?.status === "running" || crawling ? 5000 : 30000;
+    const id = setInterval(fetchStatus, interval);
+    return () => clearInterval(id);
+  }, [status?.crawlerState?.status, crawling, fetchStatus]);
+
+  async function handleStop() {
+    setStopping(true);
+    stopRef.current = true;
+    try {
+      await fetch("/api/admin/crawl", { method: "DELETE" });
+    } catch {
+      // ignore
+    }
+  }
+
   async function handleCrawl() {
     if (!status?.steps) return;
     setCrawling(true);
+    setStopping(false);
+    stopRef.current = false;
     setCurrentStepIdx(0);
 
-    // Initialize step results
     const results: StepResult[] = status.steps.map((s) => ({
       id: s.id,
       label: s.label,
       inserted: 0,
+      updated: 0,
+      unchanged: 0,
       deleted: 0,
       status: "pending",
     }));
     setStepResults(results);
 
     for (let i = 0; i < status.steps.length; i++) {
+      if (stopRef.current) {
+        for (let j = i; j < results.length; j++) {
+          results[j].status = "error";
+          results[j].error = "Abgebrochen";
+        }
+        setStepResults([...results]);
+        break;
+      }
+
       const step = status.steps[i];
       setCurrentStepIdx(i);
 
-      // Mark current as running
       results[i].status = "running";
       setStepResults([...results]);
 
       try {
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 290000); // 290s — just under server maxDuration
+        const timeout = setTimeout(() => controller.abort(), 290000);
         const res = await fetch("/api/admin/crawl", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -94,6 +161,8 @@ export default function CrawlingPage() {
         if (res.ok && data.success) {
           results[i].status = "done";
           results[i].inserted = data.inserted || 0;
+          results[i].updated = data.updated || 0;
+          results[i].unchanged = data.unchanged || 0;
           results[i].deleted = data.deleted || 0;
         } else {
           results[i].status = "error";
@@ -109,14 +178,26 @@ export default function CrawlingPage() {
 
     setCurrentStepIdx(-1);
     setCrawling(false);
+    setStopping(false);
+    stopRef.current = false;
     fetchStatus();
   }
 
   const totalInserted = stepResults.reduce((s, r) => s + r.inserted, 0);
+  const totalUpdated = stepResults.reduce((s, r) => s + r.updated, 0);
+  const totalUnchanged = stepResults.reduce((s, r) => s + r.unchanged, 0);
   const totalDeleted = stepResults.reduce((s, r) => s + r.deleted, 0);
   const doneSteps = stepResults.filter((r) => r.status === "done").length;
   const errorSteps = stepResults.filter((r) => r.status === "error").length;
   const allDone = stepResults.length > 0 && !crawling;
+
+  // Determine badge status
+  const cs = status?.crawlerState;
+  const badgeStatus: BadgeStatus =
+    stopping || cs?.status === "stopping" ? "stopping"
+    : crawling || cs?.status === "running" ? "running"
+    : cs?.status === "stopped" ? "stopped"
+    : "idle";
 
   function formatDate(iso: string) {
     const d = new Date(iso);
@@ -150,11 +231,12 @@ export default function CrawlingPage() {
     <div className="p-4 md:p-8 animate-fade-in">
       {/* Header */}
       <div className="mb-8">
-        <div className="flex items-center gap-2 mb-1">
+        <div className="flex items-center gap-3 mb-1">
           <RefreshCw size={20} className="text-red-600" />
           <h1 className="font-display text-2xl font-black uppercase tracking-tight text-brand-dark md:text-3xl">
             Crawling
           </h1>
+          <StatusBadge status={badgeStatus} />
         </div>
         <p className="text-sm text-neutral-500">
           Inserate von gebrauchtwaffen.com und nextgun.ch importieren
@@ -170,19 +252,26 @@ export default function CrawlingPage() {
           <div className="p-5">
             <p className="mb-4 text-sm text-neutral-600">
               Crawlt alle Kategorien von gebrauchtwaffen.com und nextgun.ch Schritt für Schritt.
-              Bereits vorhandene Inserate werden übersprungen, verkaufte werden entfernt.
+              Smart Upsert: Preisänderungen und neue Bilder werden erkannt und aktualisiert.
             </p>
 
+            {/* Buttons */}
             <button
               onClick={handleCrawl}
-              disabled={crawling}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-red-600 py-3 text-sm font-semibold text-white transition-colors hover:bg-red-700 disabled:opacity-60"
+              disabled={crawling || badgeStatus === "running"}
+              className={`flex w-full items-center justify-center gap-2 rounded-lg py-3 text-sm font-semibold transition-colors ${
+                crawling || badgeStatus === "running"
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  : "bg-red-600 text-white hover:bg-red-700"
+              }`}
             >
               {crawling ? (
                 <>
                   <Loader2 size={18} className="animate-spin" />
                   Crawling läuft... ({doneSteps}/{stepResults.length})
                 </>
+              ) : badgeStatus === "running" ? (
+                "Crawling läuft..."
               ) : (
                 <>
                   <RefreshCw size={18} />
@@ -191,7 +280,45 @@ export default function CrawlingPage() {
               )}
             </button>
 
-            {/* Step-by-step progress */}
+            {(crawling || badgeStatus === "running") && (
+              <button
+                onClick={handleStop}
+                disabled={stopping}
+                className="flex w-full items-center justify-center gap-2 mt-2 rounded-lg border border-red-300 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 disabled:opacity-60"
+              >
+                <StopCircle size={16} />
+                {stopping ? "Wird gestoppt..." : "Crawling stoppen"}
+              </button>
+            )}
+
+            {/* Live progress from crawler_state (when cron or another tab started the crawl) */}
+            {badgeStatus === "running" && cs && !crawling && (
+              <div className="mt-4 p-4 bg-gray-50 rounded-lg text-sm">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                  <span className="font-medium text-green-700">Crawling aktiv</span>
+                </div>
+                <div className="text-gray-600">
+                  {cs.current_source}{cs.current_category && cs.current_category !== cs.current_source ? ` → ${cs.current_category}` : ""}
+                </div>
+                <div className="mt-2 grid grid-cols-3 gap-2 text-center">
+                  <div>
+                    <div className="font-semibold text-green-600">{cs.created_count}</div>
+                    <div className="text-xs text-gray-400">Neu</div>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-blue-600">{cs.updated_count}</div>
+                    <div className="text-xs text-gray-400">Aktualisiert</div>
+                  </div>
+                  <div>
+                    <div className="font-semibold text-gray-600">{cs.unchanged_count}</div>
+                    <div className="text-xs text-gray-400">Unverändert</div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Step-by-step progress (local manual crawl) */}
             {stepResults.length > 0 && (
               <div className="mt-4 space-y-1.5">
                 {stepResults.map((r) => (
@@ -216,7 +343,9 @@ export default function CrawlingPage() {
                     </div>
                     <div>
                       {r.status === "done" && (
-                        <span>+{r.inserted} / -{r.deleted}</span>
+                        <span>
+                          +{r.inserted} · ~{r.updated} · ={r.unchanged}{r.deleted > 0 ? ` · -${r.deleted}` : ""}
+                        </span>
                       )}
                       {r.status === "error" && (
                         <span className="text-red-600">{r.error}</span>
@@ -246,7 +375,7 @@ export default function CrawlingPage() {
                     Crawling abgeschlossen{errorSteps > 0 ? ` (${errorSteps} Fehler)` : ""}
                   </p>
                   <p className={`mt-1 ${errorSteps === 0 ? "text-green-700" : "text-amber-700"}`}>
-                    {totalInserted} neue Inserate importiert, {totalDeleted} verkaufte entfernt.
+                    {totalInserted} neu, {totalUpdated} aktualisiert, {totalUnchanged} unverändert, {totalDeleted} entfernt.
                   </p>
                 </div>
               </div>
@@ -260,6 +389,38 @@ export default function CrawlingPage() {
             <h2 className="font-display text-lg font-bold text-brand-dark">Status</h2>
           </div>
           <div className="p-5 space-y-4">
+            {/* Live crawler state */}
+            {cs && cs.status !== "idle" && (
+              <div className={`flex items-center gap-3 rounded-lg p-4 ${
+                cs.status === "running" ? "bg-green-50" : cs.status === "stopped" ? "bg-red-50" : "bg-gray-50"
+              }`}>
+                <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${
+                  cs.status === "running" ? "bg-green-100" : "bg-red-100"
+                }`}>
+                  {cs.status === "running" ? (
+                    <Loader2 size={20} className="animate-spin text-green-600" />
+                  ) : (
+                    <StopCircle size={20} className="text-red-500" />
+                  )}
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-semibold text-brand-dark">
+                      {cs.current_source || (cs.status === "running" ? "Startet..." : "Beendet")}
+                    </p>
+                    {cs.processed_count > 0 && (
+                      <span className="text-xs text-neutral-400">— {cs.processed_count} verarbeitet</span>
+                    )}
+                  </div>
+                  <div className="mt-1 flex items-center gap-3 text-xs">
+                    <span className="text-green-600 font-medium">{cs.created_count} neu</span>
+                    <span className="text-blue-600 font-medium">{cs.updated_count} aktualisiert</span>
+                    <span className="text-neutral-500">{cs.unchanged_count} unverändert</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Crawled count */}
             <div className="flex items-center gap-3 rounded-lg bg-gray-50 p-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50">
@@ -295,10 +456,10 @@ export default function CrawlingPage() {
               </div>
               <div>
                 <p className="text-sm font-semibold text-brand-dark">
-                  Auto-Crawling: {status?.autoCrawlTime || "17:00"} Uhr
+                  Auto-Crawling: täglich 01:00–03:00 Uhr CET
                 </p>
                 <p className="text-xs text-neutral-500">
-                  Täglich automatisch via Vercel Cron
+                  Vercel Cron um Mitternacht UTC + zufällige Verzögerung 0–120 Min
                 </p>
               </div>
             </div>

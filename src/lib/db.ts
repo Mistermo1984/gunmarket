@@ -172,6 +172,9 @@ export async function initializeSchema(): Promise<void> {
       source TEXT DEFAULT 'gunmarket',
       source_url TEXT,
       source_id TEXT,
+      price_updated_at TEXT,
+      images_updated_at TEXT,
+      last_seen_at TEXT,
       created_at TEXT DEFAULT (datetime('now')),
       updated_at TEXT DEFAULT (datetime('now')),
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
@@ -237,5 +240,21 @@ export async function initializeSchema(): Promise<void> {
     CREATE INDEX IF NOT EXISTS idx_favorites_user ON favorites(user_id);
     CREATE INDEX IF NOT EXISTS idx_messages_receiver ON messages(receiver_id);
     CREATE INDEX IF NOT EXISTS idx_messages_sender ON messages(sender_id);
+    CREATE INDEX IF NOT EXISTS idx_listings_source_id ON listings(source_id);
+
+    CREATE TABLE IF NOT EXISTS crawler_state (
+      id INTEGER PRIMARY KEY CHECK (id = 1),
+      status TEXT DEFAULT 'idle',
+      started_at TEXT,
+      stopped_at TEXT,
+      stop_requested INTEGER DEFAULT 0,
+      current_source TEXT,
+      current_category TEXT,
+      processed_count INTEGER DEFAULT 0,
+      created_count INTEGER DEFAULT 0,
+      updated_count INTEGER DEFAULT 0,
+      unchanged_count INTEGER DEFAULT 0
+    );
+    INSERT OR IGNORE INTO crawler_state (id) VALUES (1);
   `);
 }

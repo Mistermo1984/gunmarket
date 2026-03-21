@@ -1,13 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getCrawlSteps, runCrawlStep } from "@/lib/crawl-waffengebraucht";
-import { dbRun } from "@/lib/db";
+import { runCrawl } from "@/lib/crawl-waffengebraucht";
+import { initializeSchema } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 300; // 5 min for Pro, ignored on Hobby
+export const maxDuration = 300;
 
-// Vercel Cron calls this endpoint daily at 17:00 CET (15:00 UTC)
+function randomDelay(maxMinutes: number): Promise<void> {
+  const ms = Math.floor(Math.random() * maxMinutes * 60 * 1000);
+  console.log(`[Cron] Random delay: ${Math.round(ms / 60000)} minutes`);
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Vercel Cron calls this endpoint daily at 00:00 UTC
+// Random delay 0–120 min so we don't always hit sources at the same time
 export async function GET(req: NextRequest) {
-  // Verify cron secret
   const authHeader = req.headers.get("authorization");
   const cronSecret = process.env.CRON_SECRET;
 
@@ -16,27 +22,15 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const steps = getCrawlSteps();
-    let totalInserted = 0;
-    let totalDeleted = 0;
+    await initializeSchema();
+    await randomDelay(120);
 
-    // Reset live_source_ids before starting
-    await dbRun("DELETE FROM crawl_meta WHERE key = 'live_source_ids'").catch(() => {});
+    const result = await runCrawl();
 
-    for (const step of steps) {
-      console.log(`[Cron] Running step: ${step.id}`);
-      const result = await runCrawlStep(step.id);
-      totalInserted += result.inserted;
-      totalDeleted += result.deleted;
-      console.log(`[Cron] Step ${step.id}: +${result.inserted} -${result.deleted}`);
-    }
-
-    console.log(`[Cron] Done: ${totalInserted} new, ${totalDeleted} removed`);
-    return NextResponse.json({
-      success: true,
-      inserted: totalInserted,
-      deleted: totalDeleted,
-    });
+    console.log(
+      `[Cron] Done: ${result.inserted} new, ${result.updated} updated, ${result.unchanged} unchanged, ${result.deleted} removed in ${result.duration}ms`
+    );
+    return NextResponse.json({ success: true, ...result });
   } catch (err) {
     console.error("[Cron] Crawl error:", err);
     return NextResponse.json({ error: String(err) }, { status: 500 });

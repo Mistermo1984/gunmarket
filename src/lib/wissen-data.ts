@@ -19,6 +19,7 @@ export interface WissenWaffe {
   baujahr?: string
   youtubeVideoId?: string
   youtubeQuelle?: string
+  youtubeStart?: number
 }
 
 export interface WissenMunition {
@@ -114,8 +115,9 @@ Ordonnanzwaffe — Käufer muss Schweizer Bürger oder Niederlassungsbewilligung
     rechtsstatus: 'ordonnanz',
     typischeKaliber: ['7,5×55mm Swiss (GP11)'],
     tags: ['Ordonnanz', 'K31', 'Karabiner', 'Schweiz', 'Geradezug', 'Sammler', 'GP11'],
-    youtubeVideoId: 'dkpmbbY0fFg',
-    youtubeQuelle: 'Forgotten Weapons / Ian McCollum',
+    youtubeVideoId: 'z4_mh4V_mus',
+    youtubeQuelle: 'Simon Koeniger',
+    youtubeStart: 629,
   },
 
   {
@@ -152,8 +154,8 @@ Ordonnanzwaffe — Käufer muss Schweizer Bürger oder Niederlassungsbewilligung
     rechtsstatus: 'ordonnanz',
     typischeKaliber: ['7,5×55mm Swiss (GP11)'],
     tags: ['Ordonnanz', 'Stgw57', 'SIG', 'Schweiz', 'Sammler', 'GP11'],
-    youtubeVideoId: 'HAUvN55qmOU',
-    youtubeQuelle: "Ben's Channel",
+    youtubeVideoId: 'mjMlEfDYTTI',
+    youtubeQuelle: 'Andreas Schneider',
   },
 
   {
@@ -229,8 +231,9 @@ Ordonnanzwaffe — Erwerb nur für Schweizer Bürger oder Personen mit Niederlas
     rechtsstatus: 'ordonnanz',
     typischeKaliber: ['7,65×21mm Parabellum', '9×19mm'],
     tags: ['Ordonnanz', 'P06', 'Luger', 'Parabellum', 'Schweiz', 'Sammler', 'Kniehebel'],
-    youtubeVideoId: 'FDtcMtXiEb0',
-    youtubeQuelle: 'Elmsfeuer',
+    youtubeVideoId: 'xUNqg7i1Z3Y',
+    youtubeQuelle: 'Verein Schweizer Armeemuseum',
+    youtubeStart: 4245,
   },
 
   {
@@ -415,6 +418,8 @@ Waffenerwerbsschein (WES) erforderlich.`,
     rechtsstatus: 'wes',
     typischeKaliber: ['9×19mm'],
     tags: ['Pistole', 'Glock', 'G17', 'Polymer', 'Polizei', 'Safe-Action'],
+    youtubeVideoId: '0XT67GPIFes',
+    youtubeQuelle: 'Simon Koeniger',
   },
 
   {
@@ -1969,6 +1974,8 @@ Waffenerwerbsschein (WES) erforderlich.`,
     rechtsstatus: 'frei',
     typischeKaliber: ['7,92×57mm (8×57mm IS)'],
     tags: ['Historisch', 'Mauser', 'K98', 'WW2', 'Sammler'],
+    youtubeVideoId: 'x3ZibgX_o1U',
+    youtubeQuelle: 'Waidwissen',
   },
 
   {

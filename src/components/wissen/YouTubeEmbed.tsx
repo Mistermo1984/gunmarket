@@ -6,9 +6,10 @@ interface YouTubeEmbedProps {
   videoId: string;
   titel: string;
   quelle?: string;
+  start?: number;
 }
 
-export default function YouTubeEmbed({ videoId, titel, quelle }: YouTubeEmbedProps) {
+export default function YouTubeEmbed({ videoId, titel, quelle, start }: YouTubeEmbedProps) {
   const [accepted, setAccepted] = useState(false);
   const [embedError, setEmbedError] = useState(false);
 
@@ -124,7 +125,7 @@ export default function YouTubeEmbed({ videoId, titel, quelle }: YouTubeEmbedPro
       <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
         <iframe
           className="absolute inset-0 h-full w-full"
-          src={`https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&enablejsapi=1`}
+          src={`https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&enablejsapi=1${start ? `&start=${start}` : ""}`}
           title={`${titel} — Video`}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen

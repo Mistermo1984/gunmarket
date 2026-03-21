@@ -146,6 +146,7 @@ export default async function WaffeArtikelPage({ params }: Props) {
                   videoId={waffe.youtubeVideoId}
                   titel={waffe.titel}
                   quelle={waffe.youtubeQuelle}
+                  start={waffe.youtubeStart}
                 />
               )}
 

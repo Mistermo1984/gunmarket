@@ -37,15 +37,15 @@ export default function BannerZoneClient({
 
   return (
     <div className="w-full bg-gray-50 border-t border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-6 flex items-center py-1.5 gap-0">
+      <div className="flex items-center h-12 px-6">
 
         {/* Tabs links */}
-        <div className="flex items-center shrink-0 pr-5 mr-5 border-r border-gray-200 self-stretch">
+        <div className="flex items-center shrink-0 pr-5 mr-5 border-r border-gray-200 h-12 gap-0">
           {tabs.map(({ key, label }) => (
             <button
               key={key}
               onClick={() => setActive(key)}
-              className={`text-xs px-3 border-b-2 transition-all whitespace-nowrap font-medium ${
+              className={`text-xs px-3 h-12 border-b-2 transition-all whitespace-nowrap font-medium ${
                 active === key
                   ? 'text-[#4d8230] border-[#4d8230]'
                   : 'text-gray-400 border-transparent hover:text-gray-600'
@@ -66,12 +66,22 @@ export default function BannerZoneClient({
           ))}
         </div>
 
-        {/* Items with fade gradient */}
-        <div className="relative flex-1 min-w-0">
-          <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-gray-50 to-transparent pointer-events-none z-10" />
-          <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pr-12">
+        {/* Scroll-Wrapper: overflow NUR hier, nicht am Parent */}
+        <div className="relative min-w-0 flex-1">
+          {/* Fade rechts — zeigt dass mehr Inhalt vorhanden */}
+          <div
+            className="absolute right-0 top-0 bottom-0 w-16 pointer-events-none z-10"
+            style={{ background: 'linear-gradient(to left, #f9fafb 30%, transparent)' }}
+          />
+          {/* Scroll-Container mit explizitem padding-right damit letzter Chip nicht klebt */}
+          <div
+            className="flex items-center gap-2 overflow-x-auto pr-16"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' as React.CSSProperties['msOverflowStyle'] }}
+          >
             {items.length === 0 && active === 'ev' && (
-              <span className="text-xs text-gray-400">Keine Events in den nächsten 90 Tagen</span>
+              <span className="text-xs text-gray-400 whitespace-nowrap">
+                Keine Events in den nächsten 90 Tagen
+              </span>
             )}
             {items.map((item, i) => (
               <div key={i} className="flex items-center gap-2 shrink-0">

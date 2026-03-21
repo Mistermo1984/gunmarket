@@ -179,6 +179,40 @@ export default function HeroSection() {
         }}
       />
 
+      {/* Market stats badge — desktop only */}
+      <div
+        className="absolute top-6 right-6 z-20 rotate-[8deg] cursor-pointer hidden md:block"
+        onClick={() => router.push("/markt")}
+      >
+        <div className="absolute inset-0 rounded-2xl bg-[#4d8230]/20 blur-md scale-110" />
+        <div className="relative bg-white border border-[#4d8230]/30 rounded-2xl px-4 py-3 shadow-xl min-w-[130px]">
+          <div className="absolute top-0 left-4 right-4 h-0.5 rounded-full bg-[#4d8230]" />
+          <div className="flex items-center gap-1.5 mb-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#4d8230] animate-pulse" />
+            <span className="text-[9px] font-bold uppercase tracking-widest text-[#4d8230]">Markt live</span>
+          </div>
+          <div className="text-2xl font-black text-gray-900 leading-none tabular-nums">
+            {stats.inserate > 0 ? stats.inserate.toLocaleString("de-CH") : "2\u2019200"}+
+          </div>
+          <div className="text-[10px] text-gray-500 font-medium mt-0.5">Inserate schweizweit</div>
+          <div className="my-2 h-px bg-gray-100" />
+          <div className="flex justify-between gap-3">
+            <div className="text-center">
+              <div className="text-xs font-bold text-gray-800">{stats.haendler || 49}</div>
+              <div className="text-[9px] text-gray-400">Händler</div>
+            </div>
+            <div className="w-px bg-gray-100" />
+            <div className="text-center">
+              <div className="text-xs font-bold text-gray-800">{stats.kantone || 26}</div>
+              <div className="text-[9px] text-gray-400">Kantone</div>
+            </div>
+          </div>
+          <div className="mt-2 flex items-center justify-center gap-1 text-[#4d8230]">
+            <span className="text-[9px] font-semibold">Marktanalyse →</span>
+          </div>
+        </div>
+      </div>
+
       <div className="relative mx-auto max-w-7xl px-4 pb-0 pt-10 md:pt-14">
         <div className="mx-auto max-w-2xl text-center">
 

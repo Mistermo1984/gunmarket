@@ -178,6 +178,7 @@ interface ScrapedListing {
   beschreibung: string;
   kanton: string;
   ortschaft: string;
+  plz?: string;
   hauptkategorie: string;
   unterkategorie: string;
   rechtsstatus: string;
@@ -385,16 +386,279 @@ async function insertListing(item: ScrapedListing): Promise<boolean> {
   }
 }
 
+// ─── kantonFromPlz (for NextGun) ────────────────────────────
+
+function kantonFromPlz(plz: string): string {
+  const p = parseInt(plz, 10);
+  if (isNaN(p)) return "";
+  if (p >= 1000 && p <= 1299) return "Waadt";
+  if (p >= 1300 && p <= 1399) return "Waadt";
+  if (p >= 1400 && p <= 1499) return "Freiburg";
+  if (p >= 1500 && p <= 1599) return "Freiburg";
+  if (p >= 1600 && p <= 1699) return "Freiburg";
+  if (p >= 1700 && p <= 1799) return "Freiburg";
+  if (p >= 1800 && p <= 1899) return "Waadt";
+  if (p >= 1900 && p <= 1999) return "Wallis";
+  if (p >= 2000 && p <= 2099) return "Neuenburg";
+  if (p >= 2100 && p <= 2199) return "Neuenburg";
+  if (p >= 2200 && p <= 2299) return "Neuenburg";
+  if (p >= 2300 && p <= 2399) return "Bern";
+  if (p >= 2400 && p <= 2499) return "Bern";
+  if (p >= 2500 && p <= 2599) return "Bern";
+  if (p >= 2600 && p <= 2699) return "Bern";
+  if (p >= 2700 && p <= 2799) return "Bern";
+  if (p >= 2800 && p <= 2899) return "Jura";
+  if (p >= 2900 && p <= 2999) return "Jura";
+  if (p >= 3000 && p <= 3999) return "Bern";
+  if (p >= 4000 && p <= 4099) return "Basel-Stadt";
+  if (p >= 4100 && p <= 4199) return "Basel-Landschaft";
+  if (p >= 4200 && p <= 4299) return "Basel-Landschaft";
+  if (p >= 4300 && p <= 4499) return "Solothurn";
+  if (p >= 4500 && p <= 4599) return "Solothurn";
+  if (p >= 4600 && p <= 4699) return "Aargau";
+  if (p >= 4700 && p <= 4799) return "Solothurn";
+  if (p >= 4800 && p <= 4899) return "Aargau";
+  if (p >= 4900 && p <= 4999) return "Aargau";
+  if (p >= 5000 && p <= 5999) return "Aargau";
+  if (p >= 6000 && p <= 6099) return "Luzern";
+  if (p >= 6100 && p <= 6199) return "Luzern";
+  if (p >= 6200 && p <= 6299) return "Luzern";
+  if (p >= 6300 && p <= 6399) return "Zug";
+  if (p >= 6400 && p <= 6499) return "Schwyz";
+  if (p >= 6500 && p <= 6999) return "Tessin";
+  if (p >= 7000 && p <= 7799) return "Graubünden";
+  if (p >= 8000 && p <= 8499) return "Zürich";
+  if (p >= 8500 && p <= 8599) return "Thurgau";
+  if (p >= 8600 && p <= 8799) return "Zürich";
+  if (p >= 8800 && p <= 8899) return "Schwyz";
+  if (p >= 8900 && p <= 8999) return "Aargau";
+  if (p >= 9000 && p <= 9099) return "St. Gallen";
+  if (p >= 9100 && p <= 9199) return "Appenzell A.";
+  if (p >= 9200 && p <= 9499) return "St. Gallen";
+  if (p >= 9500 && p <= 9599) return "Thurgau";
+  if (p >= 9600 && p <= 9899) return "St. Gallen";
+  return "";
+}
+
+// ─── NextGun crawler ────────────────────────────────────────
+
+const NEXTGUN_CRAWLER_USER_ID = "crawler-nextgun";
+
+async function getExistingNextgunIds(): Promise<Set<string>> {
+  const rows = await db.execute(
+    "SELECT source_id FROM listings WHERE source = 'nextgun' AND source_id IS NOT NULL"
+  );
+  return new Set(rows.rows.map((r) => String(r.source_id)));
+}
+
+async function insertNextgunListing(item: ScrapedListing): Promise<boolean> {
+  const id = uuidv4();
+  const createdAt = new Date().toISOString().replace("T", " ").slice(0, 19);
+
+  try {
+    await db.execute({
+      sql: `INSERT INTO listings (id, user_id, titel, beschreibung, hauptkategorie, unterkategorie, rechtsstatus, marke, modell, kaliber, zustand, preis, verhandelbar, tausch, kanton, ortschaft, plz, lat, lng, aufrufe, source, source_url, source_id, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, '', '', '', '', ?, 0, 0, ?, ?, ?, ?, ?, 0, 'nextgun', ?, ?, ?)`,
+      args: [
+        id,
+        NEXTGUN_CRAWLER_USER_ID,
+        item.titel,
+        item.beschreibung,
+        item.hauptkategorie,
+        item.unterkategorie,
+        item.rechtsstatus,
+        item.preis,
+        item.kanton,
+        item.ortschaft,
+        item.plz || "",
+        item.lat,
+        item.lng,
+        item.sourceUrl,
+        item.sourceId,
+        createdAt,
+      ],
+    });
+
+    for (let i = 0; i < item.imageUrls.length; i++) {
+      await db.execute({
+        sql: "INSERT INTO listing_images (id, listing_id, url, position, is_main) VALUES (?, ?, ?, ?, ?)",
+        args: [uuidv4(), id, item.imageUrls[i], i, i === 0 ? 1 : 0],
+      });
+    }
+
+    return true;
+  } catch (e) {
+    console.log(`  [x] DB error: ${e}`);
+    return false;
+  }
+}
+
+async function crawlNextgun(): Promise<number> {
+  console.log("  Fetching marketplace.nextgun.ch...");
+  const html = await fetchHtml("https://marketplace.nextgun.ch/marketplace");
+  if (!html) {
+    console.log("  [x] No response from NextGun");
+    return 0;
+  }
+
+  // Extract embedded SvelteKit JSON data
+  const startIdx = html.indexOf("annonces:[");
+  if (startIdx === -1) {
+    console.log("  [x] Could not find annonces data in HTML");
+    return 0;
+  }
+
+  let bracketCount = 0;
+  const arrayStart = startIdx + "annonces:".length;
+  let arrayEnd = arrayStart;
+  for (let i = arrayStart; i < html.length; i++) {
+    if (html[i] === "[") bracketCount++;
+    if (html[i] === "]") bracketCount--;
+    if (bracketCount === 0) {
+      arrayEnd = i + 1;
+      break;
+    }
+  }
+
+  const arrayStr = html.substring(arrayStart, arrayEnd);
+  const step1 = arrayStr.replace(/new Date\((\d+)\)/g, "$1");
+  const step2 = step1.replace(/([{,])\s*(\w+)\s*:/g, '$1"$2":');
+
+  let listings: Array<{
+    id: string;
+    weaponName: string;
+    location: string | null;
+    latitude: number | null;
+    longitude: number | null;
+    price: number;
+    hasImage: number;
+    createdAt: number;
+    username: string;
+  }>;
+
+  try {
+    listings = JSON.parse(step2);
+  } catch {
+    console.log("  [x] Failed to parse NextGun JSON");
+    return 0;
+  }
+
+  console.log(`  Found ${listings.length} listings`);
+
+  const existingIds = await getExistingNextgunIds();
+  console.log(`  Already in DB: ${existingIds.size}`);
+
+  let inserted = 0;
+
+  for (let i = 0; i < listings.length; i++) {
+    const l = listings[i];
+    const sourceId = `ng-${l.id}`;
+
+    if (existingIds.has(sourceId)) continue;
+
+    let ortschaft = "";
+    let plz = "";
+    let kanton = "";
+    if (l.location) {
+      const locParts = l.location.split(",").map((s) => s.trim());
+      const plzMatch = l.location.match(/(\d{4})/);
+      if (plzMatch) {
+        plz = plzMatch[1];
+        kanton = kantonFromPlz(plz);
+      }
+      ortschaft =
+        locParts.find(
+          (p) =>
+            p.length > 2 &&
+            !/^\d+$/.test(p) &&
+            !p.includes("District") &&
+            !p.includes("Suisse")
+        ) ||
+        locParts[0] ||
+        "";
+    }
+
+    const imageUrls = l.hasImage
+      ? [`https://marketplace.nextgun.ch/api/image/annonce/${l.id}`]
+      : [];
+    const slug = l.weaponName
+      .replace(/\s+/g, "_")
+      .replace(/[^a-zA-Z0-9_-]/g, "");
+
+    const classified = classifyCategory(l.weaponName, "");
+    const rechtsstatus = classifyRechtsstatus({
+      titel: l.weaponName,
+      beschreibung: "",
+      hauptkategorie: classified.hauptkategorie,
+      unterkategorie: classified.unterkategorie,
+    });
+
+    const item: ScrapedListing = {
+      sourceId,
+      titel: l.weaponName,
+      preis: l.price || 0,
+      beschreibung: "",
+      kanton,
+      ortschaft,
+      plz,
+      hauptkategorie: classified.hauptkategorie,
+      unterkategorie: classified.unterkategorie,
+      rechtsstatus,
+      imageUrls,
+      sourceUrl: `https://marketplace.nextgun.ch/annonce/view/${slug}-id-${l.id}`,
+      lat: l.latitude || null,
+      lng: l.longitude || null,
+    };
+
+    // Enrich with gallery images from detail page
+    if (item.imageUrls.length > 0) {
+      try {
+        const detailHtml = await fetchHtml(item.sourceUrl);
+        if (detailHtml) {
+          const matches = detailHtml.match(
+            /api\/image\/annonce-image\/[a-z0-9]+/g
+          );
+          if (matches) {
+            const additionalUrls = Array.from(new Set(matches)).map(
+              (path) => `https://marketplace.nextgun.ch/${path}`
+            );
+            item.imageUrls = [...item.imageUrls, ...additionalUrls];
+          }
+        }
+        await delay(300);
+      } catch {
+        // Keep main image as fallback
+      }
+    }
+
+    const ok = await insertNextgunListing(item);
+    if (ok) inserted++;
+
+    process.stdout.write(
+      `  Processing: ${i + 1}/${listings.length} (${inserted} new)\r`
+    );
+  }
+
+  console.log(
+    `  Done: +${inserted} new NextGun listings                    `
+  );
+  return inserted;
+}
+
 // ─── Main ───────────────────────────────────────────────────
 
 async function main() {
-  console.log("GunMarket Crawler — gebrauchtwaffen.com");
-  console.log("========================================\n");
+  console.log("GunMarket Local Crawler");
+  console.log("=======================\n");
 
   if (!process.env.TURSO_DATABASE_URL || !process.env.TURSO_AUTH_TOKEN) {
     console.error("Missing TURSO_DATABASE_URL or TURSO_AUTH_TOKEN in .env.local");
     process.exit(1);
   }
+
+  // 1. Crawl gebrauchtwaffen.com
+  console.log("Source 1: gebrauchtwaffen.com");
+  console.log("----------------------------");
 
   const existingIds = await getExistingSourceIds();
   console.log(`Existing GW listings in DB: ${existingIds.size}\n`);
@@ -485,7 +749,17 @@ async function main() {
 
   console.log("\n========================================");
   console.log(
-    `Crawl complete! ${totalNew} new, ${totalSkipped} skipped (already in DB).`
+    `gebrauchtwaffen.com: ${totalNew} new, ${totalSkipped} skipped`
+  );
+
+  // 2. Crawl nextgun.ch
+  console.log("\nSource 2: nextgun.ch");
+  console.log("--------------------");
+  const ngNew = await crawlNextgun();
+
+  console.log("\n========================================");
+  console.log(
+    `All done! GW: ${totalNew} new | NextGun: ${ngNew} new`
   );
   process.exit(0);
 }

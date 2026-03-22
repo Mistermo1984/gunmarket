@@ -1289,7 +1289,7 @@ export async function getCrawlStatus(): Promise<{
   };
 }
 
-async function ensureCrawlMetaTable() {
+export async function ensureCrawlMetaTable() {
   await dbExec(`
     CREATE TABLE IF NOT EXISTS crawl_meta (
       key TEXT PRIMARY KEY,

@@ -43,6 +43,30 @@ const RECHTS_LABELS: Record<string, { label: string; color: string; bg: string }
   ordonnanz: { label: 'Ordonnanz (WES)', color: 'text-blue-700', bg: 'bg-blue-50 border-blue-200' },
 }
 
+const SECTION_PATTERNS: Array<{ keywords: string[]; label: string }> = [
+  { keywords: ['geschichte', 'entwicklung', 'entstehung', 'hintergrund', 'ursprung', 'begann', 'wurde entwickelt', 'entstand'], label: 'Geschichte & Entwicklung' },
+  { keywords: ['technisch', 'technik', 'mechanismus', 'funktion', 'system', 'konstruktion', 'gasdrucksystem', 'verschluss', 'kaliber', 'lauflänge', 'gesamtlänge'], label: 'Technik & Funktion' },
+  { keywords: ['schweiz', 'schweizer', 'armee', 'ordonnanz', 'militär', 'dienstwaffe', 'obligatorisch', 'feldschiessen'], label: 'Schweizer Kontext' },
+  { keywords: ['preis', 'wert', 'markt', 'kaufen', 'händler', 'chf', 'gehandelt', 'erzielen', 'preisguide'], label: 'Markt & Preise' },
+  { keywords: ['kauf', 'worauf', 'prüfen', 'tipp', 'empfehlung', 'achten', 'sollte man', 'beim kauf'], label: 'Kaufberatung' },
+  { keywords: ['rechtlich', 'recht', 'gesetz', 'bewilligung', 'wes', 'legal', 'erwerb', 'waffenerwerbsschein', 'klassifiziert'], label: 'Rechtliches' },
+]
+
+function detectSectionLabel(text: string): string | null {
+  const lower = text.toLowerCase()
+  const firstSentence = lower.split('.')[0]
+  for (const section of SECTION_PATTERNS) {
+    if (section.keywords.some(kw => firstSentence.includes(kw))) {
+      return section.label
+    }
+  }
+  return null
+}
+
+function formatInlineMarkdown(text: string): string {
+  return text.replace(/\*\*(.+?)\*\*/g, '<strong class="text-brand-dark font-semibold">$1</strong>')
+}
+
 function renderContent(content: string) {
   // Detect if content uses HTML tags
   const isHtml = content.includes('<h2>') || content.includes('<p>') || content.includes('<h3>')
@@ -55,59 +79,33 @@ function renderContent(content: string) {
     )
   }
 
-  // Markdown-style rendering
+  // Markdown-style rendering with auto-section detection
   const lines = content.split('\n')
-  const elements: React.ReactNode[] = []
+  const blocks: Array<{ type: 'heading' | 'paragraph' | 'list'; text: string; items?: string[] }> = []
   let currentParagraph: string[] = []
   let listItems: string[] = []
-  let key = 0
 
   function flushParagraph() {
     if (currentParagraph.length > 0) {
-      const text = currentParagraph.join(' ')
-      if (text.trim()) {
-        elements.push(
-          <p key={key++} className="mb-4 text-neutral-600 leading-relaxed"
-            dangerouslySetInnerHTML={{
-              __html: text
-                .replace(/\*\*(.+?)\*\*/g, '<strong class="text-brand-dark font-semibold">$1</strong>')
-            }}
-          />
-        )
-      }
+      const text = currentParagraph.join(' ').trim()
+      if (text) blocks.push({ type: 'paragraph', text })
       currentParagraph = []
     }
   }
 
   function flushList() {
     if (listItems.length > 0) {
-      elements.push(
-        <ul key={key++} className="mb-4 space-y-1.5 pl-5">
-          {listItems.map((item, i) => (
-            <li key={i} className="list-disc text-neutral-600 leading-relaxed"
-              dangerouslySetInnerHTML={{
-                __html: item
-                  .replace(/\*\*(.+?)\*\*/g, '<strong class="text-brand-dark font-semibold">$1</strong>')
-              }}
-            />
-          ))}
-        </ul>
-      )
+      blocks.push({ type: 'list', text: '', items: [...listItems] })
       listItems = []
     }
   }
 
   for (const line of lines) {
     const trimmed = line.trim()
-
     if (trimmed.startsWith('## ')) {
       flushList()
       flushParagraph()
-      elements.push(
-        <h2 key={key++} className="mb-3 mt-8 font-display text-xl font-bold uppercase tracking-tight text-brand-dark first:mt-0">
-          {trimmed.slice(3)}
-        </h2>
-      )
+      blocks.push({ type: 'heading', text: trimmed.slice(3) })
     } else if (trimmed.startsWith('- ')) {
       flushParagraph()
       listItems.push(trimmed.slice(2))
@@ -119,11 +117,73 @@ function renderContent(content: string) {
       currentParagraph.push(trimmed)
     }
   }
-
   flushList()
   flushParagraph()
 
-  return elements
+  // Track used section labels to avoid duplicates
+  const usedLabels = new Set<string>()
+  let paraIndex = 0
+
+  return blocks.map((block, i) => {
+    if (block.type === 'heading') {
+      return (
+        <h2 key={i} className="mb-3 mt-10 font-display text-xl font-bold uppercase tracking-tight text-brand-dark first:mt-0">
+          {block.text}
+        </h2>
+      )
+    }
+
+    if (block.type === 'list') {
+      return (
+        <ul key={i} className="mb-4 space-y-1.5 pl-5">
+          {block.items!.map((item, j) => (
+            <li key={j} className="list-disc text-neutral-600 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(item) }}
+            />
+          ))}
+        </ul>
+      )
+    }
+
+    // Paragraph
+    const idx = paraIndex++
+    const isLead = idx === 0
+
+    // Auto-detect section labels for non-lead paragraphs (only if no explicit ## headings exist)
+    let sectionLabel: string | null = null
+    if (!isLead && idx > 0) {
+      const detected = detectSectionLabel(block.text)
+      if (detected && !usedLabels.has(detected)) {
+        sectionLabel = detected
+        usedLabels.add(detected)
+      }
+    }
+
+    if (isLead) {
+      return (
+        <p key={i}
+          className="mb-6 text-base font-medium text-gray-800 leading-relaxed border-l-4 border-[#4d8230] pl-4 py-1 bg-green-50/30 rounded-r-lg"
+          dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(block.text) }}
+        />
+      )
+    }
+
+    return (
+      <div key={i}>
+        {sectionLabel && (
+          <div className="flex items-center gap-2 mt-8 mb-3">
+            <span className="text-xs font-bold text-[#4d8230] uppercase tracking-widest">
+              {sectionLabel}
+            </span>
+            <div className="flex-1 h-px bg-gray-200"/>
+          </div>
+        )}
+        <p className="mb-4 text-[15px] text-neutral-600 leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(block.text) }}
+        />
+      </div>
+    )
+  })
 }
 
 function TechnischeDaten({ waffe }: { waffe: typeof wissenWaffen[0] }) {
@@ -260,6 +320,9 @@ export default async function WaffeArtikelPage({ params }: Props) {
     ],
   }
 
+  const wordCount = waffe.inhalt?.split(/\s+/).length || 0
+  const readingMinutes = Math.max(1, Math.round(wordCount / 200))
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdArticle) }} />
@@ -289,6 +352,9 @@ export default async function WaffeArtikelPage({ params }: Props) {
                   {waffe.hersteller}
                 </span>
               )}
+              <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-neutral-300">
+                {readingMinutes} Min. Lesezeit
+              </span>
             </div>
             <ShareButton
               url={`https://gunmarket.ch/wissen/waffen/${slug}`}

@@ -41,59 +41,57 @@ const TYP_COLORS: Record<string, string> = {
   Flinte: 'bg-red-50 text-red-700 border-red-200',
 }
 
+const MUNITION_SECTION_PATTERNS: Array<{ keywords: string[]; label: string }> = [
+  { keywords: ['geschichte', 'entwicklung', 'entstehung', 'wurde entwickelt', 'entstand', 'eingeführt'], label: 'Geschichte & Entwicklung' },
+  { keywords: ['technisch', 'ballistik', 'geschoss', 'hülse', 'laborierung', 'gasdruck', 'mündungsenergie', 'geschwindigkeit'], label: 'Ballistik & Technik' },
+  { keywords: ['schweiz', 'schweizer', 'armee', 'ordonnanz', 'obligatorisch', 'feldschiessen', 'gp90', 'gp11'], label: 'Schweizer Kontext' },
+  { keywords: ['preis', 'kosten', 'chf', 'packung', 'bezugsquelle', 'händler', 'munitionshandel'], label: 'Preise & Bezug' },
+  { keywords: ['verwendung', 'einsatz', 'jagd', 'sport', 'selbstverteidigung', 'militär', 'polizei'], label: 'Verwendung' },
+  { keywords: ['rechtlich', 'recht', 'gesetz', 'bewilligung', 'erwerb', 'legal'], label: 'Rechtliches' },
+]
+
+function detectMunitionSection(text: string): string | null {
+  const lower = text.toLowerCase()
+  const firstSentence = lower.split('.')[0]
+  for (const section of MUNITION_SECTION_PATTERNS) {
+    if (section.keywords.some(kw => firstSentence.includes(kw))) {
+      return section.label
+    }
+  }
+  return null
+}
+
+function formatInlineMarkdown(text: string): string {
+  return text.replace(/\*\*(.+?)\*\*/g, '<strong class="text-brand-dark font-semibold">$1</strong>')
+}
+
 function renderContent(content: string) {
   const lines = content.split('\n')
-  const elements: React.ReactNode[] = []
+  const blocks: Array<{ type: 'heading' | 'paragraph' | 'list'; text: string; items?: string[] }> = []
   let currentParagraph: string[] = []
   let listItems: string[] = []
-  let key = 0
 
   function flushParagraph() {
     if (currentParagraph.length > 0) {
-      const text = currentParagraph.join(' ')
-      if (text.trim()) {
-        elements.push(
-          <p key={key++} className="mb-4 text-neutral-600 leading-relaxed"
-            dangerouslySetInnerHTML={{
-              __html: text
-                .replace(/\*\*(.+?)\*\*/g, '<strong class="text-brand-dark font-semibold">$1</strong>')
-            }}
-          />
-        )
-      }
+      const text = currentParagraph.join(' ').trim()
+      if (text) blocks.push({ type: 'paragraph', text })
       currentParagraph = []
     }
   }
 
   function flushList() {
     if (listItems.length > 0) {
-      elements.push(
-        <ul key={key++} className="mb-4 space-y-1.5 pl-5">
-          {listItems.map((item, i) => (
-            <li key={i} className="list-disc text-neutral-600 leading-relaxed"
-              dangerouslySetInnerHTML={{
-                __html: item
-                  .replace(/\*\*(.+?)\*\*/g, '<strong class="text-brand-dark font-semibold">$1</strong>')
-              }}
-            />
-          ))}
-        </ul>
-      )
+      blocks.push({ type: 'list', text: '', items: [...listItems] })
       listItems = []
     }
   }
 
   for (const line of lines) {
     const trimmed = line.trim()
-
     if (trimmed.startsWith('## ')) {
       flushList()
       flushParagraph()
-      elements.push(
-        <h2 key={key++} className="mb-3 mt-8 font-display text-xl font-bold uppercase tracking-tight text-brand-dark first:mt-0">
-          {trimmed.slice(3)}
-        </h2>
-      )
+      blocks.push({ type: 'heading', text: trimmed.slice(3) })
     } else if (trimmed.startsWith('- ')) {
       flushParagraph()
       listItems.push(trimmed.slice(2))
@@ -105,11 +103,70 @@ function renderContent(content: string) {
       currentParagraph.push(trimmed)
     }
   }
-
   flushList()
   flushParagraph()
 
-  return elements
+  const usedLabels = new Set<string>()
+  let paraIndex = 0
+
+  return blocks.map((block, i) => {
+    if (block.type === 'heading') {
+      return (
+        <h2 key={i} className="mb-3 mt-10 font-display text-xl font-bold uppercase tracking-tight text-brand-dark first:mt-0">
+          {block.text}
+        </h2>
+      )
+    }
+
+    if (block.type === 'list') {
+      return (
+        <ul key={i} className="mb-4 space-y-1.5 pl-5">
+          {block.items!.map((item, j) => (
+            <li key={j} className="list-disc text-neutral-600 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(item) }}
+            />
+          ))}
+        </ul>
+      )
+    }
+
+    const idx = paraIndex++
+    const isLead = idx === 0
+
+    let sectionLabel: string | null = null
+    if (!isLead) {
+      const detected = detectMunitionSection(block.text)
+      if (detected && !usedLabels.has(detected)) {
+        sectionLabel = detected
+        usedLabels.add(detected)
+      }
+    }
+
+    if (isLead) {
+      return (
+        <p key={i}
+          className="mb-6 text-base font-medium text-gray-800 leading-relaxed border-l-4 border-[#4d8230] pl-4 py-1 bg-green-50/30 rounded-r-lg"
+          dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(block.text) }}
+        />
+      )
+    }
+
+    return (
+      <div key={i}>
+        {sectionLabel && (
+          <div className="flex items-center gap-2 mt-8 mb-3">
+            <span className="text-xs font-bold text-[#4d8230] uppercase tracking-widest">
+              {sectionLabel}
+            </span>
+            <div className="flex-1 h-px bg-gray-200"/>
+          </div>
+        )}
+        <p className="mb-4 text-[15px] text-neutral-600 leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(block.text) }}
+        />
+      </div>
+    )
+  })
 }
 
 export default async function MunitionArtikelPage({ params }: Props) {
@@ -118,6 +175,8 @@ export default async function MunitionArtikelPage({ params }: Props) {
   if (!muni) notFound()
 
   const typColor = TYP_COLORS[muni.typ] || 'bg-neutral-50 text-neutral-700 border-neutral-200'
+  const wordCount = muni.beschreibung?.split(/\s+/).length || 0
+  const readingMinutes = Math.max(1, Math.round(wordCount / 200))
 
   const jsonLdArticle = {
     '@context': 'https://schema.org',
@@ -172,6 +231,9 @@ export default async function MunitionArtikelPage({ params }: Props) {
                   {a}
                 </span>
               ))}
+              <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-neutral-300">
+                {readingMinutes} Min. Lesezeit
+              </span>
             </div>
             <ShareButton
               url={`https://gunmarket.ch/wissen/munition/${slug}`}

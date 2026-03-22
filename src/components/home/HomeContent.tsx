@@ -16,6 +16,34 @@ import { useLocale } from "@/lib/locale-context";
 
 const LIMIT = 25;
 
+/** Read initial filter state from URL params (runs once on mount) */
+function filtersFromUrl(): FilterState {
+  if (typeof window === "undefined") return INITIAL_FILTERS;
+  const p = new URLSearchParams(window.location.search);
+  return {
+    ...INITIAL_FILTERS,
+    marke: p.get("suche") || "",
+    kantone: p.get("kanton")?.split(",").filter(Boolean) || [],
+    kategorien: p.get("kategorie")?.split(",").filter(Boolean) || [],
+    preisMin: p.get("preisMin") || "",
+    preisMax: p.get("preisMax") || "",
+    zustand: p.get("zustand")?.split(",").filter(Boolean) || [],
+    rechtsstatus: p.get("rechtsstatus")?.split(",").filter(Boolean) || [],
+    kaliber: p.get("kaliber")?.split(",").filter(Boolean) || [],
+    unterkategorien: p.get("unterkategorie")?.split(",").filter(Boolean) || [],
+  };
+}
+
+function sortFromUrl(): string {
+  if (typeof window === "undefined") return "neueste";
+  return new URLSearchParams(window.location.search).get("sort") || "neueste";
+}
+
+function pageFromUrl(): number {
+  if (typeof window === "undefined") return 1;
+  return Number(new URLSearchParams(window.location.search).get("seite")) || 1;
+}
+
 export default function HomeContent() {
   return (
     <Suspense fallback={null}>
@@ -25,19 +53,20 @@ export default function HomeContent() {
 }
 
 function HomeContentInner() {
-  const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
+  // Initialize state directly from URL — single source of truth
+  const [filters, setFilters] = useState<FilterState>(filtersFromUrl);
   const [listings, setListings] = useState<ListingCardData[]>([]);
   const [totalResults, setTotalResults] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(pageFromUrl);
   const [loading, setLoading] = useState(true);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
-  const [sortOrder, setSortOrder] = useState("neueste");
+  const [sortOrder, setSortOrder] = useState(sortFromUrl);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [filterCounts, setFilterCounts] = useState<FilterCounts | null>(null);
   const { t } = useLocale();
   const searchParams = useSearchParams();
-  const isInitialMount = useRef(true);
+  const isFirstRender = useRef(true);
   const pendingScrollRef = useRef<number | null>(null);
 
   // On mount: restore scroll position if returning from listing
@@ -51,43 +80,10 @@ function HomeContentInner() {
     } catch { /* ignore */ }
   }, []);
 
-  // Sync URL params into filter state on mount
+  // Mark first render as done after mount
   useEffect(() => {
-    const suche = searchParams.get("suche") || "";
-    const kanton = searchParams.get("kanton");
-    const kategorie = searchParams.get("kategorie");
-    const preisMin = searchParams.get("preisMin") || "";
-    const preisMax = searchParams.get("preisMax") || "";
-    const zustand = searchParams.get("zustand");
-    const rechtsstatus = searchParams.get("rechtsstatus");
-    const kaliber = searchParams.get("kaliber");
-    const unterkategorie = searchParams.get("unterkategorie");
-    const sort = searchParams.get("sort");
-    const seite = searchParams.get("seite");
-
-    const hasParams = suche || kanton || kategorie || preisMin || preisMax ||
-      zustand || rechtsstatus || kaliber || unterkategorie;
-
-    if (hasParams) {
-      setFilters((prev) => ({
-        ...prev,
-        marke: suche || prev.marke,
-        kantone: kanton ? kanton.split(",") : prev.kantone,
-        kategorien: kategorie ? kategorie.split(",") : prev.kategorien,
-        preisMin: preisMin || prev.preisMin,
-        preisMax: preisMax || prev.preisMax,
-        zustand: zustand ? zustand.split(",") : prev.zustand,
-        rechtsstatus: rechtsstatus ? rechtsstatus.split(",") : prev.rechtsstatus,
-        kaliber: kaliber ? kaliber.split(",") : prev.kaliber,
-        unterkategorien: unterkategorie ? unterkategorie.split(",") : prev.unterkategorien,
-      }));
-    }
-    if (sort) setSortOrder(sort);
-    if (seite) setCurrentPage(Number(seite));
-
-    // Mark initial mount as done after first sync
-    isInitialMount.current = false;
-  }, [searchParams]);
+    isFirstRender.current = false;
+  }, []);
 
   // Fetch filter counts once on mount
   useEffect(() => {
@@ -97,15 +93,34 @@ function HomeContentInner() {
       .catch(() => {});
   }, []);
 
-  // Reset to page 1 when filters or sort change (skip on initial mount)
+  // React to external URL changes (e.g. user clicks category link in breadcrumb)
+  // Skip on first render — state was already initialized from URL
   useEffect(() => {
-    if (isInitialMount.current) return;
+    if (isFirstRender.current) return;
+
+    const suche = searchParams.get("suche") || "";
+    const kanton = searchParams.get("kanton");
+    const kategorie = searchParams.get("kategorie");
+
+    if (suche || kanton || kategorie) {
+      setFilters((prev) => ({
+        ...prev,
+        marke: suche || prev.marke,
+        kantone: kanton ? kanton.split(",") : prev.kantone,
+        kategorien: kategorie ? kategorie.split(",") : prev.kategorien,
+      }));
+    }
+  }, [searchParams]);
+
+  // Reset to page 1 when filters or sort change (skip first render)
+  useEffect(() => {
+    if (isFirstRender.current) return;
     setCurrentPage(1);
   }, [filters, sortOrder]);
 
-  // Sync filter state → URL via replaceState (so window.location.href captures everything)
+  // Sync filter state → URL via replaceState (skip first render)
   useEffect(() => {
-    if (isInitialMount.current) return;
+    if (isFirstRender.current) return;
 
     const params = new URLSearchParams();
     if (filters.kategorien.length > 0) params.set("kategorie", filters.kategorien.join(","));

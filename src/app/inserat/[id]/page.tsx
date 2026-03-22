@@ -131,7 +131,7 @@ export default function InseratDetailPage() {
         setLoading(false);
 
         // Track view
-        fetch(`/api/listings/${id}/view`);
+        fetch(`/api/listings/${id}/view`, { method: "POST" });
 
         // Fetch similar
         fetch(`/api/listings?kategorie=${data.hauptkategorie}&limit=4`)

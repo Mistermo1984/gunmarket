@@ -29,6 +29,9 @@ function MobileBottomNavInner() {
   const searchParams = useSearchParams();
   const [showKatSheet, setShowKatSheet] = useState(false);
 
+  // Hide on /berater (full-screen chat)
+  if (pathname === '/berater') return null;
+
   const selectedKategorie = searchParams.get('kategorie') || '';
 
   const tabs = [

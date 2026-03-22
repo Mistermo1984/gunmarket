@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -109,6 +109,14 @@ export default function InseratDetailPage() {
   const [isMerkliste, setIsMerkliste] = useState(false);
   const [beschreibungExpanded, setBeschreibungExpanded] = useState(false);
   const [imageTransition, setImageTransition] = useState(false);
+
+  // Read saved search URL for back navigation
+  const backUrlRef = useRef("/");
+  useEffect(() => {
+    try {
+      backUrlRef.current = sessionStorage.getItem("gm_last_search_url") || "/";
+    } catch { /* ignore */ }
+  }, []);
 
   // Fetch listing
   useEffect(() => {
@@ -299,7 +307,7 @@ export default function InseratDetailPage() {
       <div className="mx-auto max-w-7xl px-4 py-4">
         <div className="flex items-center gap-2 text-sm">
           <Link
-            href="/"
+            href={backUrlRef.current}
             className="flex items-center gap-1 font-medium text-green-700 hover:underline"
           >
             <ArrowLeft size={14} />
@@ -307,7 +315,7 @@ export default function InseratDetailPage() {
           </Link>
           <span className="text-gray-400">/</span>
           <nav className="flex items-center gap-1.5 text-neutral-500">
-            <Link href="/" className="hover:text-brand-green transition-colors">
+            <Link href={backUrlRef.current} className="hover:text-brand-green transition-colors">
               {t("breadcrumb_home")}
             </Link>
             <ChevronRight size={14} className="text-neutral-300" />

@@ -134,10 +134,16 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
   const imageCount = listing.bildAnzahl ?? images.length;
   const href = `/inserat/${listing.id}`;
 
+  function saveScrollPosition() {
+    try {
+      sessionStorage.setItem("gm_search_scroll", String(window.scrollY));
+    } catch { /* ignore */ }
+  }
+
   // ── LIST VARIANT ──
   if (variant === "list") {
     return (
-      <Link href={href} className="group flex overflow-hidden rounded-lg bg-white transition-all duration-200 hover:shadow-md hover:scale-[1.01]">
+      <Link href={href} onClick={saveScrollPosition} className="group flex overflow-hidden rounded-lg bg-white transition-all duration-200 hover:shadow-md hover:scale-[1.01]">
         {/* Photo */}
         <div className="relative flex shrink-0 items-center justify-center overflow-hidden" style={{ width: 120, height: 90, background: "#f8faf8" }}>
           {images.length > 0 ? (
@@ -178,7 +184,7 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
 
   // ── GRID VARIANT ──
   return (
-    <Link href={href} className="group flex flex-col overflow-hidden rounded-lg bg-white transition-all duration-200 hover:shadow-md hover:scale-[1.01]">
+    <Link href={href} onClick={saveScrollPosition} className="group flex flex-col overflow-hidden rounded-lg bg-white transition-all duration-200 hover:shadow-md hover:scale-[1.01]">
       {/* Photo */}
       <div className="relative w-full overflow-hidden" style={{ aspectRatio: "4/3", background: "#f8faf8" }}>
         {images.length > 0 ? (

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useCallback, Suspense } from "react";
+import React, { useState, useEffect, useMemo, useCallback, useRef, Suspense } from "react";
 import { X } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { type ListingCardData } from "@/components/ui/ListingCard";
@@ -15,6 +15,11 @@ import { apiListingToCard } from "@/lib/listing-helpers";
 import { useLocale } from "@/lib/locale-context";
 
 const LIMIT = 25;
+const SS_FILTERS = "gm_search_filters";
+const SS_SORT = "gm_search_sort";
+const SS_PAGE = "gm_search_page";
+const SS_SCROLL = "gm_search_scroll";
+const SS_SEARCH_URL = "gm_last_search_url";
 
 export default function HomeContent() {
   return (
@@ -37,6 +42,32 @@ function HomeContentInner() {
   const [filterCounts, setFilterCounts] = useState<FilterCounts | null>(null);
   const { t } = useLocale();
   const searchParams = useSearchParams();
+  const restoredRef = useRef(false);
+  const pendingScrollRef = useRef<number | null>(null);
+
+  // On mount: restore saved state if returning from a listing
+  useEffect(() => {
+    if (restoredRef.current) return;
+    restoredRef.current = true;
+
+    // Only restore if no URL params are driving the state
+    const hasUrlParams = searchParams.get("suche") || searchParams.get("kanton") || searchParams.get("kategorie");
+    if (hasUrlParams) return;
+
+    try {
+      const savedFilters = sessionStorage.getItem(SS_FILTERS);
+      const savedSort = sessionStorage.getItem(SS_SORT);
+      const savedPage = sessionStorage.getItem(SS_PAGE);
+      const savedScroll = sessionStorage.getItem(SS_SCROLL);
+
+      if (savedFilters) {
+        setFilters(JSON.parse(savedFilters));
+        if (savedSort) setSortOrder(savedSort);
+        if (savedPage) setCurrentPage(Number(savedPage));
+        if (savedScroll) pendingScrollRef.current = Number(savedScroll);
+      }
+    } catch { /* ignore */ }
+  }, [searchParams]);
 
   // Sync URL params (suche, kanton, kategorie) into filter state
   useEffect(() => {
@@ -65,6 +96,29 @@ function HomeContentInner() {
   useEffect(() => {
     setCurrentPage(1);
   }, [filters, sortOrder]);
+
+  // Persist filter state to sessionStorage
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(SS_FILTERS, JSON.stringify(filters));
+      sessionStorage.setItem(SS_SORT, sortOrder);
+      sessionStorage.setItem(SS_PAGE, String(currentPage));
+    } catch { /* ignore */ }
+  }, [filters, sortOrder, currentPage]);
+
+  // Save current search URL for back navigation from listing detail
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams();
+      if (filters.kategorien.length > 0) params.set("kategorie", filters.kategorien.join(","));
+      if (filters.kantone.length > 0) params.set("kanton", filters.kantone.join(","));
+      if (filters.marke) params.set("suche", filters.marke);
+      if (filters.preisMin) params.set("preisMin", filters.preisMin);
+      if (filters.preisMax) params.set("preisMax", filters.preisMax);
+      const qs = params.toString();
+      sessionStorage.setItem(SS_SEARCH_URL, qs ? `/?${qs}` : "/");
+    } catch { /* ignore */ }
+  }, [filters]);
 
   // Fetch listings based on filters + sort + page
   useEffect(() => {
@@ -95,6 +149,15 @@ function HomeContentInner() {
         setTotalResults(data.total || 0);
         setTotalPages(data.totalSeiten || 1);
         setLoading(false);
+
+        // Restore scroll position after listings render
+        if (pendingScrollRef.current !== null) {
+          const scrollY = pendingScrollRef.current;
+          pendingScrollRef.current = null;
+          requestAnimationFrame(() => {
+            window.scrollTo(0, scrollY);
+          });
+        }
       })
       .catch(() => setLoading(false));
   }, [filters, sortOrder, currentPage]);

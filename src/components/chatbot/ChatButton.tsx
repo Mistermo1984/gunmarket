@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { MessageCircle } from "lucide-react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { MessageCircle, Crosshair } from "lucide-react";
 
 interface ChatButtonProps {
   onClick: () => void;
@@ -11,6 +13,7 @@ interface ChatButtonProps {
 export default function ChatButton({ onClick, isOpen }: ChatButtonProps) {
   const [showTooltip, setShowTooltip] = useState(false);
   const [showNeu, setShowNeu] = useState(true);
+  const pathname = usePathname();
 
   // Hide NEU badge after 30 days (check localStorage)
   useEffect(() => {
@@ -37,11 +40,11 @@ export default function ChatButton({ onClick, isOpen }: ChatButtonProps) {
     return () => clearTimeout(timer);
   }, [isOpen, onClick]);
 
-  if (isOpen) return null;
+  if (isOpen || pathname === "/berater") return null;
 
   return (
     <div
-      className="fixed bottom-6 right-6 z-40"
+      className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-2"
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
     >
@@ -51,6 +54,17 @@ export default function ChatButton({ onClick, isOpen }: ChatButtonProps) {
           Fragen? Ich helfe dir!
           <div className="absolute -bottom-1 right-6 h-2 w-2 rotate-45 bg-brand-dark" />
         </div>
+      )}
+
+      {/* Waffenberater link */}
+      {showTooltip && (
+        <Link
+          href="/berater"
+          className="flex items-center gap-1.5 rounded-full bg-white px-3 py-2 text-xs font-medium text-[#4d8230] shadow-md border border-gray-100 transition-all hover:shadow-lg hover:bg-green-50 animate-fade-in"
+        >
+          <Crosshair size={14} />
+          Waffenberater
+        </Link>
       )}
 
       <button

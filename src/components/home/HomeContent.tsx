@@ -38,15 +38,17 @@ function HomeContentInner() {
   const { t } = useLocale();
   const searchParams = useSearchParams();
 
-  // Sync URL params (suche, kanton) into filter state
+  // Sync URL params (suche, kanton, kategorie) into filter state
   useEffect(() => {
     const suche = searchParams.get("suche") || "";
     const kanton = searchParams.get("kanton");
-    if (suche || kanton) {
+    const kategorie = searchParams.get("kategorie");
+    if (suche || kanton || kategorie) {
       setFilters((prev) => ({
         ...prev,
         marke: suche || prev.marke,
         kantone: kanton ? kanton.split(",") : prev.kantone,
+        kategorien: kategorie ? kategorie.split(",") : prev.kategorien,
       }));
     }
   }, [searchParams]);

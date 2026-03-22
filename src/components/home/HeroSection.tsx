@@ -228,7 +228,7 @@ export default function HeroSection() {
                 name="kanton"
                 value={searchKanton}
                 onChange={(e) => setSearchKanton(e.target.value)}
-                className="hidden w-[130px] shrink-0 border-none bg-transparent px-3 py-3.5 text-sm text-neutral-600 focus:outline-none sm:block"
+                className="hidden min-w-[130px] max-w-[180px] shrink-0 border-none bg-transparent px-3 py-3.5 text-sm text-neutral-600 focus:outline-none sm:block"
               >
                 {KANTONE_OPTIONS.map((k) => (
                   <option key={k.id} value={k.id}>

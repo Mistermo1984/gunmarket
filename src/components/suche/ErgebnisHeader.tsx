@@ -52,9 +52,9 @@ export default function ErgebnisHeader({
           )}
         </button>
 
-        <h1 className="font-display text-xl font-black uppercase tracking-tight text-brand-dark md:text-2xl">
+        <h2 className="font-display text-xl font-black uppercase tracking-tight text-brand-dark md:text-2xl">
           {resultCount} {t("nav_listings")}
-        </h1>
+        </h2>
       </div>
 
       <div className="flex items-center gap-2">

@@ -1,10 +1,11 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Search, LayoutGrid, Plus, User } from 'lucide-react';
 
 const KATEGORIEN = [
+  { key: '', label: 'Alle Inserate', icon: '📋' },
   { key: 'kurzwaffen', label: 'Kurzwaffen', icon: '🔫' },
   { key: 'langwaffen', label: 'Langwaffen', icon: '🎯' },
   { key: 'ordonnanzwaffen', label: 'Ordonnanzwaffen', icon: '🏅' },
@@ -16,7 +17,11 @@ const KATEGORIEN = [
 
 export default function MobileBottomNav() {
   const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [showKatSheet, setShowKatSheet] = useState(false);
+
+  const selectedKategorie = searchParams.get('kategorie') || '';
 
   const tabs = [
     { href: '/', icon: Search, label: 'Suchen' },
@@ -79,22 +84,62 @@ export default function MobileBottomNav() {
       {showKatSheet && (
         <>
           <div className="fixed inset-0 bg-black/40 z-40 md:hidden" onClick={() => setShowKatSheet(false)} />
-          <div className="fixed bottom-16 left-0 right-0 bg-white rounded-t-2xl z-50 p-4 pb-6 shadow-2xl md:hidden pb-[env(safe-area-inset-bottom)]">
-            <div className="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-4" />
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-1">Kategorien</h3>
-            <div className="grid grid-cols-2 gap-2">
+          <div className="fixed bottom-16 left-0 right-0 bg-white rounded-t-2xl z-50 shadow-2xl md:hidden max-h-[70vh] overflow-y-auto" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+            {/* Handle */}
+            <div className="flex justify-center pt-3 pb-2">
+              <div className="w-10 h-1 rounded-full bg-gray-300" />
+            </div>
+
+            {/* Header */}
+            <div className="px-4 pb-3 border-b border-gray-100">
+              <h2 className="text-base font-bold text-gray-900">Kategorie wählen</h2>
+            </div>
+
+            {/* Categories */}
+            <div className="p-4 grid grid-cols-2 gap-2">
               {KATEGORIEN.map(cat => (
-                <Link
+                <button
                   key={cat.key}
-                  href={`/?suche=&kategorie=${cat.key}`}
-                  onClick={() => setShowKatSheet(false)}
-                  className="flex items-center gap-2.5 px-3 py-3 rounded-xl bg-gray-50 hover:bg-[#eef5e8] active:bg-[#eef5e8] transition-colors"
+                  onClick={() => {
+                    const params = new URLSearchParams(searchParams.toString());
+                    if (cat.key) {
+                      params.set('kategorie', cat.key);
+                    } else {
+                      params.delete('kategorie');
+                    }
+                    router.push(`/?${params.toString()}`);
+                    setShowKatSheet(false);
+                  }}
+                  className={`flex items-center gap-2.5 rounded-xl px-3 py-3 text-left transition-colors ${
+                    selectedKategorie === cat.key
+                      ? 'bg-[#4d8230] text-white'
+                      : 'bg-gray-50 text-gray-700 hover:bg-[#eef5e8] active:bg-[#eef5e8]'
+                  }`}
                 >
                   <span className="text-lg">{cat.icon}</span>
-                  <span className="text-sm font-medium text-gray-800 leading-tight">{cat.label}</span>
-                </Link>
+                  <span className={`text-sm font-medium leading-tight ${
+                    selectedKategorie === cat.key ? 'text-white' : 'text-gray-800'
+                  }`}>{cat.label}</span>
+                </button>
               ))}
             </div>
+
+            {/* Clear filter */}
+            {selectedKategorie && (
+              <div className="px-4 pb-4">
+                <button
+                  onClick={() => {
+                    const params = new URLSearchParams(searchParams.toString());
+                    params.delete('kategorie');
+                    router.push(`/?${params.toString()}`);
+                    setShowKatSheet(false);
+                  }}
+                  className="w-full rounded-xl bg-red-50 text-red-600 py-2.5 text-sm font-medium"
+                >
+                  Filter löschen — alle Inserate zeigen
+                </button>
+              </div>
+            )}
           </div>
         </>
       )}

@@ -10,6 +10,7 @@ const toc = [
   { id: "speicherung", label: "Speicherung und Löschung" },
   { id: "rechte", label: "Ihre Rechte" },
   { id: "sicherheit", label: "Datensicherheit" },
+  { id: "drittinhalte", label: "Inhalte von Drittplattformen" },
   { id: "aenderungen", label: "Änderungen dieser Erklärung" },
 ];
 
@@ -33,13 +34,14 @@ export default function DatenschutzPage() {
       <Section id="verantwortlich" title="1. Verantwortliche Stelle">
         <p>Verantwortlich für die Datenbearbeitung ist:</p>
         <p className="mt-2">
-          <strong>gunmarket.ch</strong><br />
+          <strong>Maurice Gerber</strong><br />
           Aarestr. 62<br />
           3613 Steffisburg<br />
           Schweiz
         </p>
         <p className="mt-2">
-          Kontakt: <a href="/kontakt" className="text-[#4d8230] hover:underline">Kontaktformular</a>
+          E-Mail: <a href="mailto:kontakt@gunmarket.ch" className="text-[#4d8230] hover:underline">kontakt@gunmarket.ch</a><br />
+          Kontaktformular: <a href="/kontakt" className="text-[#4d8230] hover:underline">gunmarket.ch/kontakt</a>
         </p>
       </Section>
 
@@ -93,28 +95,34 @@ export default function DatenschutzPage() {
           folgenden Fällen:
         </p>
         <ul className="list-disc space-y-1 pl-5">
-          <li>Hosting-Provider für den Betrieb der Plattform (Auftragsverarbeitung in der Schweiz)</li>
+          <li><strong>Vercel Inc.</strong> (San Francisco, USA) — Hosting und Bereitstellung der Plattform. Vercel verarbeitet Zugriffsdaten (IP-Adressen, Seitenaufrufe) auf global verteilten Servern. Datenschutzrichtlinie: vercel.com/legal/privacy-policy</li>
+          <li><strong>Vercel Analytics</strong> — Anonymisierte Nutzungsstatistiken (Seitenaufrufe, Ladezeiten). Keine persönlichen Daten, keine Cookies, DSGVO-konform.</li>
           <li>Strafverfolgungsbehörden bei richterlicher Anordnung oder gesetzlicher Pflicht</li>
           <li>Kantonale Waffenbüros bei begründetem Verdacht auf Gesetzesverstösse</li>
         </ul>
         <InfoBox>
-          Es findet keine Datenübermittlung ins Ausland statt. Alle Daten werden auf Servern in
-          der Schweiz gespeichert und verarbeitet.
+          Da Vercel als Hosting-Provider Server in den USA und Europa betreibt, können Daten
+          (insbesondere IP-Adressen und Zugriffslogs) ausserhalb der Schweiz verarbeitet werden.
+          Vercel unterliegt dem EU-U.S. Data Privacy Framework.
         </InfoBox>
       </Section>
 
       <Section id="cookies" title="6. Cookies und Tracking">
         <p>
           GunMarket.ch verwendet ausschliesslich technisch notwendige Cookies für den Betrieb der
-          Plattform. Wir setzen keine Tracking-, Werbe- oder Analyse-Cookies ein.
+          Plattform. Wir setzen keine Werbe-Cookies ein.
         </p>
         <p className="mt-2 font-semibold">Verwendete Cookies:</p>
         <ul className="list-disc space-y-1 pl-5">
           <li><strong>Session-Cookie:</strong> Für die Anmeldesitzung (wird beim Schliessen des Browsers gelöscht)</li>
           <li><strong>Angemeldet-bleiben-Cookie:</strong> Optionaler Cookie für die Dauersitzung (max. 30 Tage)</li>
+          <li><strong>Cookie-Consent-Cookie:</strong> Speichert Ihre Cookie-Einstellungen</li>
         </ul>
+        <p className="mt-2 font-semibold">Webanalyse:</p>
         <p>
-          Es werden keine Daten an Drittanbieter wie Google Analytics oder Social-Media-Plattformen
+          Wir verwenden Vercel Analytics zur anonymisierten Erfassung von Seitenaufrufen und
+          Ladezeiten. Vercel Analytics setzt keine Cookies und erfasst keine personenbezogenen
+          Daten. Es werden keine Daten an Google Analytics oder Social-Media-Plattformen
           übermittelt.
         </p>
       </Section>
@@ -149,7 +157,9 @@ export default function DatenschutzPage() {
           <li><strong>Widerspruchsrecht:</strong> Sie können der Verarbeitung Ihrer Daten widersprechen</li>
         </ul>
         <InfoBox>
-          Zur Ausübung Ihrer Rechte nutzen Sie bitte unser <a href="/kontakt" className="text-[#4d8230] hover:underline">Kontaktformular</a>. Wir
+          Zur Ausübung Ihrer Rechte kontaktieren Sie uns per E-Mail an{" "}
+          <a href="mailto:kontakt@gunmarket.ch" className="text-[#4d8230] hover:underline">kontakt@gunmarket.ch</a>{" "}
+          oder über unser <a href="/kontakt" className="text-[#4d8230] hover:underline">Kontaktformular</a>. Wir
           beantworten Ihre Anfrage innerhalb von 30 Tagen.
         </InfoBox>
         <p>
@@ -168,11 +178,32 @@ export default function DatenschutzPage() {
           <li>Verschlüsselte Speicherung von Passwörtern (bcrypt)</li>
           <li>Regelmässige Sicherheitsupdates</li>
           <li>Zugriffsbeschränkungen und Protokollierung</li>
-          <li>Hosting ausschliesslich in der Schweiz</li>
+          <li>Hosting über Vercel mit verschlüsselter Datenübertragung</li>
         </ul>
       </Section>
 
-      <Section id="aenderungen" title="10. Änderungen dieser Erklärung">
+      <Section id="drittinhalte" title="10. Inhalte von Drittplattformen">
+        <p>
+          GunMarket.ch zeigt Inserate an, die von Drittplattformen (gebrauchtwaffen.ch, nextgun.ch)
+          stammen. Dabei werden Bilder und Inhalte direkt von den Servern der jeweiligen
+          Quellplattformen geladen (Hotlinking). GunMarket.ch speichert oder hostet diese Inhalte
+          nicht.
+        </p>
+        <p>
+          Beim Laden dieser Drittinhalte kann Ihr Browser eine direkte Verbindung zu den Servern
+          der Quellplattform herstellen, wobei Ihre IP-Adresse an den jeweiligen Anbieter
+          übermittelt wird. Auf die Datenverarbeitung durch diese Drittanbieter hat GunMarket.ch
+          keinen Einfluss.
+        </p>
+        <p>
+          Zur Entfernung von Drittinhalten oder bei Fragen:{" "}
+          <a href="mailto:kontakt@gunmarket.ch" className="text-[#4d8230] hover:underline">
+            kontakt@gunmarket.ch
+          </a>
+        </p>
+      </Section>
+
+      <Section id="aenderungen" title="11. Änderungen dieser Erklärung">
         <p>
           Wir behalten uns vor, diese Datenschutzerklärung jederzeit anzupassen. Die aktuelle
           Version ist stets auf dieser Seite abrufbar. Bei wesentlichen Änderungen informieren wir

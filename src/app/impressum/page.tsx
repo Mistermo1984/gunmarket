@@ -22,23 +22,26 @@ export default function ImpressumPage() {
     <LegalLayout title="Impressum" updated="1. März 2026" toc={toc}>
       <Section id="betreiber" title="Betreiber">
         <p>
-          <strong>gunmarket.ch</strong><br />
+          <strong>Maurice Gerber</strong><br />
           Aarestr. 62<br />
           3613 Steffisburg<br />
           Schweiz
         </p>
         <p className="mt-2 text-sm text-neutral-500">
-          Privat betriebene Plattform — kein Gewerbe, kein Waffenhandel.
+          Privat betriebene Plattform — kein Gewerbe, kein Waffenhandel.<br />
+          Keine UID-Nummer (Privatperson, nicht im Handelsregister eingetragen).
         </p>
       </Section>
 
       <Section id="kontakt" title="Kontakt">
         <p>
-          Kontakt: <a href="/kontakt" className="text-[#4d8230] hover:underline">Kontaktformular</a><br />
-          Web: www.gunmarket.ch
+          E-Mail: <a href="mailto:kontakt@gunmarket.ch" className="text-[#4d8230] hover:underline">kontakt@gunmarket.ch</a><br />
+          Web: <a href="https://www.gunmarket.ch" className="text-[#4d8230] hover:underline">www.gunmarket.ch</a><br />
+          Kontaktformular: <a href="/kontakt" className="text-[#4d8230] hover:underline">gunmarket.ch/kontakt</a>
         </p>
         <InfoBox>
-          Für rechtliche Anfragen nutzen Sie bitte unser <a href="/kontakt" className="text-[#4d8230] hover:underline">Kontaktformular</a>.
+          Für rechtliche Anfragen kontaktieren Sie uns per E-Mail an{" "}
+          <a href="mailto:kontakt@gunmarket.ch" className="text-[#4d8230] hover:underline">kontakt@gunmarket.ch</a>.
         </InfoBox>
       </Section>
 
@@ -47,9 +50,10 @@ export default function ImpressumPage() {
           Verantwortlich für den redaktionellen Inhalt gemäss Schweizer Recht:
         </p>
         <p className="mt-2">
-          <strong>gunmarket.ch</strong><br />
+          <strong>Maurice Gerber</strong><br />
           Aarestr. 62<br />
-          3613 Steffisburg
+          3613 Steffisburg<br />
+          Schweiz
         </p>
       </Section>
 

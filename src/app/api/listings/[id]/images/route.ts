@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { initializeSchema, dbRun } from "@/lib/db";
+import { initializeSchema, dbRun, dbGet } from "@/lib/db";
 import { v4 as uuidv4 } from "uuid";
 
 export async function POST(
@@ -32,6 +32,45 @@ export async function POST(
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("POST /api/listings/[id]/images error:", error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+}
+
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    await initializeSchema();
+    const { imageId, newUrl } = await req.json();
+
+    if (!imageId || !newUrl) {
+      return NextResponse.json({ error: "imageId and newUrl required" }, { status: 400 });
+    }
+
+    const listingId = params.id;
+
+    // Update the image URL
+    await dbRun(
+      "UPDATE listing_images SET url = ? WHERE id = ? AND listing_id = ?",
+      [newUrl, imageId, listingId]
+    );
+
+    // If this was the first image (position 0), also update the listing's main image_url
+    const img = await dbGet<{ position: number }>(
+      "SELECT position FROM listing_images WHERE id = ? AND listing_id = ?",
+      [imageId, listingId]
+    );
+    if (img && img.position === 0) {
+      await dbRun(
+        "UPDATE listings SET image_url = ? WHERE id = ?",
+        [newUrl, listingId]
+      );
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("PATCH /api/listings/[id]/images error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

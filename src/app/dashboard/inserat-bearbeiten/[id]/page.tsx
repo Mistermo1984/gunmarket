@@ -615,13 +615,24 @@ export default function InseratBearbeitenPage() {
               ? existingPhotos[editingPhoto.index].url
               : newPhotos[editingPhoto.index]
           }
-          onSave={(editedUrl) => {
+          onSave={async (editedUrl) => {
             if (editingPhoto.type === "existing") {
+              const photo = existingPhotos[editingPhoto.index];
               setExistingPhotos((prev) =>
                 prev.map((p, i) =>
                   i === editingPhoto.index ? { ...p, url: editedUrl } : p
                 )
               );
+              // Persist edited image URL to DB immediately
+              try {
+                await fetch(`/api/listings/${id}/images`, {
+                  method: "PATCH",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ imageId: photo.id, newUrl: editedUrl }),
+                });
+              } catch (e) {
+                console.error("Failed to persist edited image:", e);
+              }
             } else {
               setNewPhotos((prev) =>
                 prev.map((url, i) =>

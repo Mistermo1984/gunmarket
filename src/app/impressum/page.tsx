@@ -3,10 +3,10 @@ import LegalLayout, { Section, InfoBox } from "@/components/legal/LegalLayout";
 const toc = [
   { id: "betreiber", label: "Betreiber" },
   { id: "kontakt", label: "Kontakt" },
-  { id: "verantwortlich", label: "Verantwortlich für Inhalte" },
   { id: "haftung", label: "Haftungshinweis" },
   { id: "urheberrecht", label: "Urheberrecht" },
   { id: "streitbeilegung", label: "Streitbeilegung" },
+  { id: "verantwortlich", label: "Verantwortlich" },
 ];
 
 export const metadata = {
@@ -22,7 +22,7 @@ export default function ImpressumPage() {
     <LegalLayout title="Impressum" updated="1. März 2026" toc={toc}>
       <Section id="betreiber" title="Betreiber">
         <p>
-          <strong>Maurice Gerber</strong><br />
+          gunmarket.ch<br />
           Aarestr. 62<br />
           3613 Steffisburg<br />
           Schweiz
@@ -43,18 +43,6 @@ export default function ImpressumPage() {
           Für rechtliche Anfragen kontaktieren Sie uns per E-Mail an{" "}
           <a href="mailto:kontakt@gunmarket.ch" className="text-[#4d8230] hover:underline">kontakt@gunmarket.ch</a>.
         </InfoBox>
-      </Section>
-
-      <Section id="verantwortlich" title="Verantwortlich für Inhalte">
-        <p>
-          Verantwortlich für den redaktionellen Inhalt gemäss Schweizer Recht:
-        </p>
-        <p className="mt-2">
-          <strong>Maurice Gerber</strong><br />
-          Aarestr. 62<br />
-          3613 Steffisburg<br />
-          Schweiz
-        </p>
       </Section>
 
       <Section id="haftung" title="Haftungshinweis">
@@ -94,6 +82,12 @@ export default function ImpressumPage() {
         <p>
           Wir sind bemüht, Streitigkeiten aussergerichtlich beizulegen. Bei Beschwerden oder
           Anliegen nutzen Sie bitte unser <a href="/kontakt" className="text-[#4d8230] hover:underline">Kontaktformular</a>.
+        </p>
+      </Section>
+
+      <Section id="verantwortlich" title="Verantwortlich">
+        <p className="text-sm text-neutral-500">
+          Verantwortlich im Sinne des DSG: Maurice Acker, Aarestr. 62, 3613 Steffisburg, Schweiz.
         </p>
       </Section>
     </LegalLayout>

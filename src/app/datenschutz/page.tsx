@@ -34,7 +34,7 @@ export default function DatenschutzPage() {
       <Section id="verantwortlich" title="1. Verantwortliche Stelle">
         <p>Verantwortlich für die Datenbearbeitung ist:</p>
         <p className="mt-2">
-          <strong>Maurice Gerber</strong><br />
+          <strong>Maurice Acker</strong><br />
           Aarestr. 62<br />
           3613 Steffisburg<br />
           Schweiz

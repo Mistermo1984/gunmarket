@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Send,
   Bot,
@@ -30,27 +30,7 @@ const QUICK_ACTIONS = [
   { label: "Schweizer Ordonnanz", icon: Crosshair, message: "Erzähl mir über Schweizer Ordonnanzwaffen — K31, Stgw 57, Stgw 90, SIG P210." },
 ];
 
-const STORAGE_KEY = "gunmarket_berater_messages";
-
-function loadMessages(): Message[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const stored = sessionStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveMessages(msgs: Message[]) {
-  if (typeof window === "undefined") return;
-  try {
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(msgs.slice(-30)));
-  } catch { /* ignore */ }
-}
-
 function formatMessage(text: string): React.ReactNode {
-  // Convert markdown-style formatting to JSX
   const parts = text.split(/(\*\*[^*]+\*\*|\n|https?:\/\/[^\s)]+)/g);
   return parts.map((part, i) => {
     if (part === "\n") return <br key={i} />;
@@ -71,7 +51,8 @@ function formatMessage(text: string): React.ReactNode {
 }
 
 export default function BeraterPage() {
-  const [messages, setMessages] = useState<Message[]>(() => loadMessages());
+  const router = useRouter();
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -84,10 +65,6 @@ export default function BeraterPage() {
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
-
-  useEffect(() => {
-    saveMessages(messages);
-  }, [messages]);
 
   const sendMessage = useCallback(
     async (text: string) => {
@@ -166,19 +143,31 @@ export default function BeraterPage() {
     }
   };
 
+  const handleBack = () => {
+    if (messages.length > 0) {
+      // Reset to welcome screen
+      setMessages([]);
+      setInput("");
+    } else {
+      // On welcome screen — go back
+      router.back();
+    }
+  };
+
   const showWelcome = messages.length === 0;
 
   return (
-    <div className="flex min-h-[calc(100vh-64px)] flex-col bg-gray-50">
+    <div className="flex h-[calc(100vh-64px)] flex-col bg-gray-50 md:h-[calc(100vh-64px)]">
       {/* Header */}
-      <div className="border-b border-gray-200 bg-white">
+      <div className="shrink-0 border-b border-gray-200 bg-white">
         <div className="mx-auto flex max-w-3xl items-center gap-3 px-4 py-3">
-          <Link
-            href="/"
+          <button
+            onClick={handleBack}
             className="flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
+            aria-label={messages.length > 0 ? "Neue Beratung" : "Zurück"}
           >
             <ArrowLeft size={18} />
-          </Link>
+          </button>
           <div className="flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#4d8230] text-white">
               <Bot size={18} />
@@ -195,13 +184,12 @@ export default function BeraterPage() {
         </div>
       </div>
 
-      {/* Chat area */}
+      {/* Chat area — scrollable */}
       <div className="flex-1 overflow-y-auto">
         <div className="mx-auto max-w-3xl px-4 py-6">
           {/* Welcome state */}
           {showWelcome && (
             <div className="mb-8 animate-fade-in">
-              {/* Welcome message */}
               <div className="mb-6 flex gap-3">
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#4d8230] text-white">
                   <Bot size={16} />
@@ -211,7 +199,6 @@ export default function BeraterPage() {
                 </div>
               </div>
 
-              {/* Quick action cards */}
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 {QUICK_ACTIONS.map((action) => (
                   <button
@@ -292,10 +279,9 @@ export default function BeraterPage() {
         </div>
       </div>
 
-      {/* Disclaimer + Input */}
-      <div className="border-t border-gray-200 bg-white">
+      {/* Disclaimer + Input — always visible at bottom */}
+      <div className="shrink-0 border-t border-gray-200 bg-white">
         <div className="mx-auto max-w-3xl px-4 pb-4 pt-3">
-          {/* Disclaimer */}
           <div className="mb-3 flex items-start gap-1.5 rounded-lg bg-amber-50 px-3 py-2">
             <AlertTriangle
               size={12}
@@ -307,7 +293,6 @@ export default function BeraterPage() {
             </p>
           </div>
 
-          {/* Input */}
           <form onSubmit={handleSubmit} className="flex items-end gap-2">
             <textarea
               ref={inputRef}

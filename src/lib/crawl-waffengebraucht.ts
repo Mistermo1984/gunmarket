@@ -789,7 +789,7 @@ async function upsertItems(
   items: CrawledItem[],
   source: string,
   existingMap: Map<string, { id: string; preis: number; imageCount: number }>
-): Promise<{ created: number; updated: number; unchanged: number; confidenceBreakdown: { url: number; title: number; fallback: number }; categoryBreakdown: Record<string, number> }> {
+): Promise<{ created: number; updated: number; unchanged: number; confidenceBreakdown: { url: number; title: number; fallback: number }; categoryBreakdown: Record<string, number>; newListingIds: string[] }> {
   const userId =
     source === "nextgun" ? "crawler-nextgun" : GW_CRAWLER_USER.id;
   const statements: { sql: string; args: (string | number | null)[] }[] = [];
@@ -798,6 +798,7 @@ async function upsertItems(
   let unchanged = 0;
   const confidenceBreakdown = { url: 0, title: 0, fallback: 0 };
   const categoryBreakdown: Record<string, number> = {};
+  const newListingIds: string[] = [];
   const now = new Date().toISOString().replace("T", " ").slice(0, 19);
 
   for (const item of items) {
@@ -851,6 +852,7 @@ async function upsertItems(
         });
       }
       created++;
+      newListingIds.push(id);
     } else {
       // Existing listing — check for changes
       const changes: string[] = [];
@@ -920,7 +922,7 @@ async function upsertItems(
     await dbBatch(statements.slice(i, i + CHUNK_SIZE));
   }
 
-  return { created, updated, unchanged, confidenceBreakdown, categoryBreakdown };
+  return { created, updated, unchanged, confidenceBreakdown, categoryBreakdown, newListingIds };
 }
 
 // ─── Public API ──────────────────────────────────────────────
@@ -1011,6 +1013,7 @@ export async function runCrawlStep(
   stepId: string
 ): Promise<{
   inserted: number; updated: number; unchanged: number; deleted: number; source: string;
+  runId?: string;
   categories?: Record<string, number>;
   confidence_breakdown?: { url: number; title: number; fallback: number };
   unmapped_segments?: string[];
@@ -1027,6 +1030,15 @@ export async function runCrawlStep(
     "crawler@nextgun.ch",
     "NextGun",
     ".ch"
+  );
+
+  // Create crawler_runs record
+  const runId = uuidv4();
+  const startedAt = new Date().toISOString();
+  const sourceName = stepId.startsWith("gw-") ? "gebrauchtwaffen" : stepId === "nextgun" ? "nextgun" : "cleanup";
+  await dbRun(
+    `INSERT INTO crawler_runs (id, started_at, step, source, status) VALUES (?, ?, ?, ?, 'running')`,
+    [runId, startedAt, stepId, sourceName]
   );
 
   // Reset stop flag so single-step calls don't get stuck from a previous abort
@@ -1049,143 +1061,180 @@ export async function runCrawlStep(
 
   await setCrawlerState({ current_source: stepId, current_category: stepId });
 
-  if (stepId === "nextgun") {
-    const items = await crawlNextgun();
-    const newItems = items.filter((item) => !existingSourceIds.has(item.sourceId));
+  try {
+    if (stepId === "nextgun") {
+      const items = await crawlNextgun();
+      const newItems = items.filter((item) => !existingSourceIds.has(item.sourceId));
 
-    await enrichNextgunImages(newItems);
-    const result = await upsertItems(items, "nextgun", existingMap);
+      await enrichNextgunImages(newItems);
+      const result = await upsertItems(items, "nextgun", existingMap);
 
+      await ensureCrawlMetaTable();
+      const existingLiveRow = await dbGet<{ value: string }>(
+        "SELECT value FROM crawl_meta WHERE key = 'live_source_ids'"
+      );
+      const existingLive: string[] = existingLiveRow?.value
+        ? JSON.parse(existingLiveRow.value) : [];
+      const updatedLive = [...existingLive, ...items.map((i) => i.sourceId)];
+      await dbRun(
+        "INSERT OR REPLACE INTO crawl_meta (key, value) VALUES ('live_source_ids', ?)",
+        [JSON.stringify(updatedLive)]
+      );
+
+      console.log(
+        `[Crawl] NextGun: ${items.length} total, ${result.created} new, ${result.updated} updated, ${result.unchanged} unchanged`
+      );
+
+      const durationMs = Date.now() - new Date(startedAt).getTime();
+      const newIds = result.newListingIds || [];
+      await dbRun(
+        `UPDATE crawler_runs SET completed_at = ?, status = 'completed', total_scraped = ?, new_listings = ?, updated_listings = ?, unchanged_listings = ?, new_listing_ids = ?, pages_crawled = ?, duration_ms = ? WHERE id = ?`,
+        [new Date().toISOString(), items.length, result.created, result.updated, result.unchanged, JSON.stringify(newIds), 1, durationMs, runId]
+      );
+
+      return {
+        inserted: result.created, updated: result.updated, unchanged: result.unchanged, deleted: 0, source: "nextgun", runId,
+        categories: result.categoryBreakdown, confidence_breakdown: result.confidenceBreakdown, unmapped_segments: getUnmappedSegments(),
+      };
+    }
+
+    if (stepId === "cleanup") {
+      await ensureCrawlMetaTable();
+      const liveIdsRow = await dbGet<{ value: string }>(
+        "SELECT value FROM crawl_meta WHERE key = 'live_source_ids'"
+      );
+      if (!liveIdsRow?.value) {
+        await saveCrawlTimestamp();
+        const durationMs = Date.now() - new Date(startedAt).getTime();
+        await dbRun(
+          `UPDATE crawler_runs SET completed_at = ?, status = 'completed', duration_ms = ? WHERE id = ?`,
+          [new Date().toISOString(), durationMs, runId]
+        );
+        return { inserted: 0, updated: 0, unchanged: 0, deleted: 0, source: "cleanup", runId };
+      }
+      const liveSourceIds = new Set(JSON.parse(liveIdsRow.value) as string[]);
+      const toDeactivate = existingRows.filter((r) => !liveSourceIds.has(r.source_id));
+      let deleted = 0;
+      const removedIds: string[] = [];
+      if (toDeactivate.length > 0) {
+        const deactivateStatements: { sql: string; args: (string | number | null)[] }[] = [];
+        for (const row of toDeactivate) {
+          deactivateStatements.push({
+            sql: "UPDATE listings SET status = 'inaktiv', sold_at = datetime('now'), updated_at = datetime('now') WHERE source_id = ? AND status = 'aktiv'",
+            args: [row.source_id],
+          });
+          removedIds.push(row.id);
+        }
+        await dbBatch(deactivateStatements);
+        deleted = toDeactivate.length;
+      }
+      const toReactivate = existingRows.filter(
+        (r) => liveSourceIds.has(r.source_id)
+      );
+      if (toReactivate.length > 0) {
+        const reactivateStatements: { sql: string; args: (string | number | null)[] }[] = [];
+        for (const row of toReactivate) {
+          reactivateStatements.push({
+            sql: "UPDATE listings SET status = 'aktiv', sold_at = NULL WHERE source_id = ? AND status = 'inaktiv'",
+            args: [row.source_id],
+          });
+        }
+        await dbBatch(reactivateStatements);
+      }
+      await dbRun("DELETE FROM crawl_meta WHERE key = 'live_source_ids'");
+      await saveCrawlTimestamp();
+      console.log(`[Crawl] Cleanup: ${deleted} deactivated`);
+
+      const durationMs = Date.now() - new Date(startedAt).getTime();
+      await dbRun(
+        `UPDATE crawler_runs SET completed_at = ?, status = 'completed', removed_listings = ?, removed_listing_ids = ?, duration_ms = ? WHERE id = ?`,
+        [new Date().toISOString(), deleted, JSON.stringify(removedIds), durationMs, runId]
+      );
+
+      return { inserted: 0, updated: 0, unchanged: 0, deleted, source: "cleanup", runId };
+    }
+
+    // gw-{slug} — crawl single gebrauchtwaffen.com category
+    const slug = stepId.replace("gw-", "");
+    const cat = CATEGORIES.find((c) => c.slug === slug);
+    if (!cat) throw new Error(`Unknown crawl step: ${stepId}`);
+
+    // Phase 1: Collect all listing URLs from category pages (fast)
+    const refs = await collectGwListingUrls(cat.slug);
+    console.log(`[Crawl] ${cat.slug}: ${refs.length} total listings found`);
+
+    // Phase 2: Scrape detail pages for NEW listings only (slow)
+    const newRefs = refs.filter((r) => !existingSourceIds.has(r.sourceId));
+    const allItems: CrawledItem[] = [];
+    for (const ref of newRefs) {
+      if (await isCrawlerStopRequested()) {
+        console.log("[Crawl] Stop requested during scraping");
+        break;
+      }
+      await delay(1200 + Math.random() * 1300);
+      const item = await scrapeGwListing(ref.url);
+      if (item) allItems.push(item);
+    }
+
+    // Also create minimal items for existing refs so upsert can update last_seen_at
+    for (const ref of refs) {
+      if (existingSourceIds.has(ref.sourceId) && !allItems.find((i) => i.sourceId === ref.sourceId)) {
+        allItems.push({
+          sourceId: ref.sourceId,
+          titel: "", beschreibung: "", hauptkategorie: "", unterkategorie: "",
+          preis: 0, verhandelbar: 0, ortschaft: "", plz: "", kanton: "",
+          imageUrls: [], sourceUrl: ref.url,
+        });
+      }
+    }
+
+    const result = await upsertItems(allItems, "gebrauchtwaffen", existingMap);
+
+    // Track ALL source IDs for cleanup
     await ensureCrawlMetaTable();
     const existingLiveRow = await dbGet<{ value: string }>(
       "SELECT value FROM crawl_meta WHERE key = 'live_source_ids'"
     );
     const existingLive: string[] = existingLiveRow?.value
       ? JSON.parse(existingLiveRow.value) : [];
-    const updatedLive = [...existingLive, ...items.map((i) => i.sourceId)];
+    const updatedLive = [...existingLive, ...refs.map((r) => r.sourceId)];
     await dbRun(
       "INSERT OR REPLACE INTO crawl_meta (key, value) VALUES ('live_source_ids', ?)",
       [JSON.stringify(updatedLive)]
     );
 
     console.log(
-      `[Crawl] NextGun: ${items.length} total, ${result.created} new, ${result.updated} updated, ${result.unchanged} unchanged`
+      `[Crawl] ${cat.slug}: ${result.created} new, ${result.updated} updated, ${result.unchanged} unchanged`
     );
+
+    const durationMs = Date.now() - new Date(startedAt).getTime();
+    const newIds = result.newListingIds || [];
+    // Detect page count from refs (each page has ~20 listings)
+    const pagesCrawled = Math.ceil(refs.length / 20) || 1;
+    await dbRun(
+      `UPDATE crawler_runs SET completed_at = ?, status = 'completed', total_scraped = ?, new_listings = ?, updated_listings = ?, unchanged_listings = ?, new_listing_ids = ?, pages_crawled = ?, duration_ms = ?, mapping_errors = ?, mapping_issues = ? WHERE id = ?`,
+      [new Date().toISOString(), refs.length, result.created, result.updated, result.unchanged, JSON.stringify(newIds), pagesCrawled, durationMs, (result.confidenceBreakdown?.fallback || 0), JSON.stringify([]), runId]
+    );
+
     return {
-      inserted: result.created, updated: result.updated, unchanged: result.unchanged, deleted: 0, source: "nextgun",
-      categories: result.categoryBreakdown, confidence_breakdown: result.confidenceBreakdown, unmapped_segments: getUnmappedSegments(),
+      inserted: result.created,
+      updated: result.updated,
+      unchanged: result.unchanged,
+      deleted: 0,
+      source: `gw-${slug}`,
+      runId,
+      categories: result.categoryBreakdown,
+      confidence_breakdown: result.confidenceBreakdown,
+      unmapped_segments: getUnmappedSegments(),
     };
-  }
-
-  if (stepId === "cleanup") {
-    await ensureCrawlMetaTable();
-    const liveIdsRow = await dbGet<{ value: string }>(
-      "SELECT value FROM crawl_meta WHERE key = 'live_source_ids'"
+  } catch (err) {
+    // Record failure
+    await dbRun(
+      `UPDATE crawler_runs SET status = 'failed', completed_at = ?, error_log = ?, duration_ms = ? WHERE id = ?`,
+      [new Date().toISOString(), JSON.stringify([err instanceof Error ? err.message : String(err)]), Date.now() - new Date(startedAt).getTime(), runId]
     );
-    if (!liveIdsRow?.value) {
-      await saveCrawlTimestamp();
-      return { inserted: 0, updated: 0, unchanged: 0, deleted: 0, source: "cleanup" };
-    }
-    const liveSourceIds = new Set(JSON.parse(liveIdsRow.value) as string[]);
-    const toDeactivate = existingRows.filter((r) => !liveSourceIds.has(r.source_id));
-    let deleted = 0;
-    if (toDeactivate.length > 0) {
-      // Soft-delete: set status to 'inaktiv' instead of hard-deleting.
-      // This preserves user favorites that reference these listings.
-      // Also set sold_at for tracking when it disappeared.
-      const deactivateStatements: { sql: string; args: (string | number | null)[] }[] = [];
-      for (const row of toDeactivate) {
-        deactivateStatements.push({
-          sql: "UPDATE listings SET status = 'inaktiv', sold_at = datetime('now'), updated_at = datetime('now') WHERE source_id = ? AND status = 'aktiv'",
-          args: [row.source_id],
-        });
-      }
-      await dbBatch(deactivateStatements);
-      deleted = toDeactivate.length;
-    }
-    // Re-activate listings that reappear after being deactivated
-    const toReactivate = existingRows.filter(
-      (r) => liveSourceIds.has(r.source_id)
-    );
-    if (toReactivate.length > 0) {
-      const reactivateStatements: { sql: string; args: (string | number | null)[] }[] = [];
-      for (const row of toReactivate) {
-        reactivateStatements.push({
-          sql: "UPDATE listings SET status = 'aktiv', sold_at = NULL WHERE source_id = ? AND status = 'inaktiv'",
-          args: [row.source_id],
-        });
-      }
-      await dbBatch(reactivateStatements);
-    }
-    await dbRun("DELETE FROM crawl_meta WHERE key = 'live_source_ids'");
-    await saveCrawlTimestamp();
-    console.log(`[Crawl] Cleanup: ${deleted} deactivated`);
-    return { inserted: 0, updated: 0, unchanged: 0, deleted, source: "cleanup" };
+    throw err;
   }
-
-  // gw-{slug} — crawl single gebrauchtwaffen.com category
-  const slug = stepId.replace("gw-", "");
-  const cat = CATEGORIES.find((c) => c.slug === slug);
-  if (!cat) throw new Error(`Unknown crawl step: ${stepId}`);
-
-  // Phase 1: Collect all listing URLs from category pages (fast)
-  const refs = await collectGwListingUrls(cat.slug);
-  console.log(`[Crawl] ${cat.slug}: ${refs.length} total listings found`);
-
-  // Phase 2: Scrape detail pages for NEW listings only (slow)
-  const newRefs = refs.filter((r) => !existingSourceIds.has(r.sourceId));
-  const allItems: CrawledItem[] = [];
-  for (const ref of newRefs) {
-    if (await isCrawlerStopRequested()) {
-      console.log("[Crawl] Stop requested during scraping");
-      break;
-    }
-    await delay(1200 + Math.random() * 1300);
-    const item = await scrapeGwListing(ref.url);
-    if (item) allItems.push(item);
-  }
-
-  // Also create minimal items for existing refs so upsert can update last_seen_at
-  for (const ref of refs) {
-    if (existingSourceIds.has(ref.sourceId) && !allItems.find((i) => i.sourceId === ref.sourceId)) {
-      // Existing listing — push a stub so upsert updates last_seen_at
-      allItems.push({
-        sourceId: ref.sourceId,
-        titel: "", beschreibung: "", hauptkategorie: "", unterkategorie: "",
-        preis: 0, verhandelbar: 0, ortschaft: "", plz: "", kanton: "",
-        imageUrls: [], sourceUrl: ref.url,
-      });
-    }
-  }
-
-  const result = await upsertItems(allItems, "gebrauchtwaffen", existingMap);
-
-  // Track ALL source IDs for cleanup
-  await ensureCrawlMetaTable();
-  const existingLiveRow = await dbGet<{ value: string }>(
-    "SELECT value FROM crawl_meta WHERE key = 'live_source_ids'"
-  );
-  const existingLive: string[] = existingLiveRow?.value
-    ? JSON.parse(existingLiveRow.value) : [];
-  const updatedLive = [...existingLive, ...refs.map((r) => r.sourceId)];
-  await dbRun(
-    "INSERT OR REPLACE INTO crawl_meta (key, value) VALUES ('live_source_ids', ?)",
-    [JSON.stringify(updatedLive)]
-  );
-
-  console.log(
-    `[Crawl] ${cat.slug}: ${result.created} new, ${result.updated} updated, ${result.unchanged} unchanged`
-  );
-  return {
-    inserted: result.created,
-    updated: result.updated,
-    unchanged: result.unchanged,
-    deleted: 0,
-    source: `gw-${slug}`,
-    categories: result.categoryBreakdown,
-    confidence_breakdown: result.confidenceBreakdown,
-    unmapped_segments: getUnmappedSegments(),
-  };
 }
 
 export async function runCrawl(): Promise<{

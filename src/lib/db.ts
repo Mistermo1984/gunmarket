@@ -275,6 +275,32 @@ export async function initializeSchema(): Promise<void> {
       unchanged_count INTEGER DEFAULT 0
     );
     INSERT OR IGNORE INTO crawler_state (id) VALUES (1);
+
+    CREATE TABLE IF NOT EXISTS crawler_runs (
+      id TEXT PRIMARY KEY,
+      started_at TEXT NOT NULL,
+      completed_at TEXT,
+      step TEXT NOT NULL,
+      source TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'running',
+      total_scraped INTEGER DEFAULT 0,
+      new_listings INTEGER DEFAULT 0,
+      updated_listings INTEGER DEFAULT 0,
+      removed_listings INTEGER DEFAULT 0,
+      unchanged_listings INTEGER DEFAULT 0,
+      image_errors INTEGER DEFAULT 0,
+      mapping_errors INTEGER DEFAULT 0,
+      parse_errors INTEGER DEFAULT 0,
+      new_listing_ids TEXT DEFAULT '[]',
+      removed_listing_ids TEXT DEFAULT '[]',
+      mapping_issues TEXT DEFAULT '[]',
+      image_issues TEXT DEFAULT '[]',
+      error_log TEXT DEFAULT '[]',
+      duration_ms INTEGER,
+      pages_crawled INTEGER DEFAULT 0
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_crawler_runs_started ON crawler_runs(started_at);
   `);
 
   // Add columns to listings (SQLite lacks IF NOT EXISTS for ALTER TABLE)

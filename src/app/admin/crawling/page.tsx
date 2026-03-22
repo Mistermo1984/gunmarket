@@ -249,17 +249,29 @@ export default function CrawlingPage() {
         </p>
       </div>
 
-      {/* Verification Link */}
-      <a
-        href="/admin/crawling/verifikation"
-        className="flex items-center gap-3 mb-6 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl hover:bg-amber-100 transition-colors"
-      >
-        <AlertTriangle size={18} className="text-amber-600 shrink-0" />
-        <div>
-          <div className="text-sm font-medium text-amber-800">Kategorie-Verifikation</div>
-          <div className="text-xs text-amber-600">Listings mit unsicherer Kategorisierung pruefen</div>
-        </div>
-      </a>
+      {/* Quick links */}
+      <div className="flex flex-col gap-2 mb-6 sm:flex-row">
+        <a
+          href="/admin/crawling/monitoring"
+          className="flex flex-1 items-center gap-3 px-4 py-3 bg-blue-50 border border-blue-200 rounded-xl hover:bg-blue-100 transition-colors"
+        >
+          <Database size={18} className="text-blue-600 shrink-0" />
+          <div>
+            <div className="text-sm font-medium text-blue-800">Crawler Monitoring</div>
+            <div className="text-xs text-blue-600">Läufe, Statistiken & Health-Indikatoren</div>
+          </div>
+        </a>
+        <a
+          href="/admin/crawling/verifikation"
+          className="flex flex-1 items-center gap-3 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl hover:bg-amber-100 transition-colors"
+        >
+          <AlertTriangle size={18} className="text-amber-600 shrink-0" />
+          <div>
+            <div className="text-sm font-medium text-amber-800">Kategorie-Verifikation</div>
+            <div className="text-xs text-amber-600">Listings mit unsicherer Kategorisierung prüfen</div>
+          </div>
+        </a>
+      </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Manual Crawl Card */}

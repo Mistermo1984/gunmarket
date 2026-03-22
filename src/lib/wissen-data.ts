@@ -3324,32 +3324,69 @@ Die Springfield XD richtet sich an Schützen, die eine zuverlässige Polymerrahm
     hersteller: 'Marlin',
     baujahr: '1948',
     kurzbeschreibung: 'Amerikanischer Lever-Action Klassiker in .30-30. Side-Ejection ermöglicht Zielfernrohr-Montage.',
-    inhalt: `## Marlin 336 — Der Hirschjäger-Klassiker
-Die Marlin 336 wurde 1948 eingeführt und ist neben der Winchester 1894 der beliebteste Unterhebelrepetierer für die Jagd in Nordamerika. Mit über 6 Millionen verkauften Exemplaren hat sie sich als robuste, präzise Waldwaffe bewährt.
+    inhalt: `<h2>Geschichte und Entwicklung</h2>
+<p>Die Marlin Firearms Company wurde 1870 von John Mahlon Marlin in New Haven, Connecticut, gegruendet und produzierte bereits ab 1893 Unterhebelrepetierer. Das Model 336 wurde 1948 als Weiterentwicklung des aelteren Model 36 eingefuehrt und brachte zwei entscheidende technische Verbesserungen: einen runden Verschlusskopf und den seitlichen Huelsenauswurf (Side Ejection). Mit ueber 6 Millionen verkauften Exemplaren ist die 336 einer der erfolgreichsten Unterhebelrepetierer aller Zeiten.</p>
+<p>Ueber Jahrzehnte war die Marlin 336 in .30-30 Winchester die klassische amerikanische Hirschbuechse. Nach Marlins finanziellen Schwierigkeiten und der Uebernahme durch Remington (Freedom Group) 2007 sank die Qualitaet merklich — Marlin-Sammler unterscheiden streng zwischen "JM"-markierten Gewehren (originale Marlin-Produktion) und "REP"-markierten Remington-Produkten. 2020 erwarb Ruger die Marke Marlin und startete 2021 eine neue Produktion mit deutlich verbesserter Qualitaet. Die neuen Ruger-Marlin-Modelle werden von Kennern gelobt und tragen die Marke wuerdig weiter.</p>
 
-## Geschichte
-Marlin, gegründet 1870, produzierte seit dem Model 1893 Unterhebelrepetierer. Das Model 336 von 1948 führte den runden Verschlusskopf und den seitlichen Hülsenauswurf ein — beides technische Verbesserungen gegenüber dem Vorgänger Model 36. Über Jahrzehnte war die 336 in .30-30 **die** amerikanische Hirschbüchse. Nach Marlins Konkurs 2007 und der Übernahme durch Remington (Freedom Group) sank die Qualität merklich. 2020 erwarb Ruger die Marke und startete 2021 eine neue Produktion mit deutlich verbesserter Qualität.
+<h2>Technik und Konstruktion</h2>
+<p>Die Marlin 336 ist ein <strong>Unterhebelrepetierer mit seitlichem Huelsenauswurf</strong> und Roehrenmagazin. Dies ist der entscheidende technische Vorteil gegenueber der Winchester 1894, die Huelsen nach oben auswirft. Der seitliche Auswurf ermoeglicht die problemlose Montage von Zielfernrohren direkt ueber dem Systemgehaeuse — bei der Winchester ist dies durch die nach oben fliegenden Huelsen erschwert.</p>
+<p>Der Verschluss verriegelt ueber einen <strong>massiven runden Verschlusskopf</strong>, der in die Kammer eintaucht. Das System ist einfach, extrem robust und bewaehrt. Das Roehrenmagazin unter dem Lauf fasst 6 Patronen in .30-30. Wie bei allen Lever-Actions mit Roehrenmagazin duerfen nur Flachkopf- oder Rundkopfgeschosse verwendet werden.</p>
+<p>Das Systemgehaeuse ist aus massivem Stahl gefraest, der Schaft aus amerikanischem Walnussholz (bei der Classic-Version) oder Hartholz. Der Lauf ist aus kaltgehaemmertem Stahl mit sauberen Zuegen. Die Marlin-Mechanik ist bekannt fuer ihre Robustheit und Langlebigkeit — viele 336 haben Zehntausende von Schuss ohne nennenswerten Verschleiss hinter sich.</p>
 
-## Technische Daten
-- Kaliber: .30-30 Winchester (auch .35 Remington)
-- System: Unterhebelrepetierer (Lever Action)
-- Magazin: 6 Schuss (Röhrenmagazin)
-- Lauflänge: 508mm (20")
-- Gesamtlänge: 965mm
-- Gewicht: 3,4 kg
+<h2>Varianten und Modelle</h2>
+<ul>
+<li><strong>336 Classic (336C):</strong> Standardmodell mit Walnussschaft, poliertem Stahl und 20-Zoll-Lauf — das Herzerstueck der Serie</li>
+<li><strong>336W:</strong> Guenstigere Version mit Hartholz-Schaft statt Walnuss</li>
+<li><strong>336 Dark Series:</strong> Matt-schwarzes Finish auf Metall und Schaft, modernere Optik</li>
+<li><strong>336 Texan Deluxe:</strong> Aufgewertetes Modell mit besserem Holz und feinerer Verarbeitung</li>
+<li><strong>Marlin 1895:</strong> Groessere Schwesterwaffe in .45-70 Government — das kraftvollste Lever-Action-Kaliber</li>
+<li><strong>Marlin 1894:</strong> Kleinere Version in Revolverkalibern (.357 Mag, .44 Mag, .45 Colt) fuer CAS und Freizeitschiessen</li>
+<li><strong>336 SBL (Stainless Big Loop):</strong> Edelstahlversion mit grosser Hebelschleife und grauen Laminatschaft</li>
+<li><strong>Ruger/Marlin 336 Classic:</strong> Neue Produktion ab 2023 mit verbesserter Qualitaet</li>
+</ul>
 
-## Besonderheiten
-Die Marlin 336 hat gegenüber der Winchester 1894 einen entscheidenden Vorteil: der seitliche Hülsenauswurf statt nach oben. Dadurch können problemlos Zielfernrohre montiert werden — bei der Winchester stören oben ausgeworfene Hülsen. Der solide Verschlusskopf und die robuste Mechanik machen die 336 extrem zuverlässig.
+<h2>Kaliber und Ballistik</h2>
+<p>Das Standardkaliber der 336 ist <strong>.30-30 Winchester</strong>, die erfolgreichste Jagdpatrone Nordamerikas. Ein 150-Grain-Geschoss erreicht eine Muendungsgeschwindigkeit von etwa 720 m/s und eine Muendungsenergie von rund 2600 Joule. Die effektive Jagdreichweite liegt bei 150 bis 200 Metern mit Standardmunition.</p>
+<p>Mit Hornady LEVERevolution-Munition (FTX-Geschoss mit Elastomerspitze) erweitert sich die effektive Reichweite auf 250 bis 300 Meter durch den besseren ballistischen Koeffizienten.</p>
+<p>Weitere Kaliber:</p>
+<ul>
+<li><strong>.35 Remington:</strong> Staerkeres Kaliber mit 200-Grain-Geschoss, ca. 2900 Joule. Besser auf groesseres Wild, aber Munition seltener und teurer.</li>
+<li><strong>.45-70 Government (im Marlin 1895):</strong> Das staerkste gaengige Lever-Action-Kaliber mit 300- bis 405-Grain-Geschossen und bis zu 4500 Joule. Fuer Grosswild und Baerenjagd.</li>
+</ul>
 
-## Varianten
-- 336C: Classic mit Walnuss-Schaft
-- 336W: Hardwood (günstigere Version)
-- 336 Dark Series: Matt-schwarzes Finish
-- 1895: Grössere Version in .45-70 Government
-- 1894: Kleinere Version in Revolver-Kalibern
+<h2>Schweizer Markt und Preisentwicklung</h2>
+<p>Die Marlin 336 ist in der Schweiz als Jagdgewehr fuer die Waldjagd geschaetzt. Der Erwerb erfordert einen <strong>Waffenerwerbsschein (WES)</strong>. Seit der Uebernahme durch Ruger hat die Verfuegbarkeit zugenommen.</p>
+<p><strong>Neupreise (CHF, Stand 2025/2026):</strong></p>
+<ul>
+<li><em>Ruger/Marlin 336 Classic</em>: CHF 1300 bis 1600</li>
+<li><em>Ruger/Marlin 336 Dark Series</em>: CHF 1400 bis 1700</li>
+<li><em>Ruger/Marlin 1895 SBL (.45-70)</em>: CHF 1600 bis 2000</li>
+<li><em>Ruger/Marlin 1894 (.357/.44)</em>: CHF 1400 bis 1800</li>
+</ul>
+<p><strong>Gebrauchtpreise (CHF):</strong></p>
+<ul>
+<li><em>JM-markierte Marlin 336 (Original), guter Zustand</em>: CHF 800 bis 1300</li>
+<li><em>Remington-Aera Marlin (REP), guter Zustand</em>: CHF 500 bis 800</li>
+<li><em>Ruger/Marlin (ab 2021), wenig geschossen</em>: CHF 1000 bis 1400</li>
+<li><em>JM-Marlin 1895 (.45-70), guter Zustand</em>: CHF 1200 bis 1800</li>
+</ul>
+<p>JM-markierte Marlin-Gewehre (Original-Produktion vor Remington) sind bei Sammlern besonders begehrt und erzielen hoehere Preise als Remington-Aera-Modelle.</p>
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+<h2>Pflege, Wartung und Zubehoer</h2>
+<p>Die Marlin 336 ist mechanisch einfach und wartungsarm. Lauf, Kammer und Roehrenmagazin nach dem Schiessen reinigen. Die Hebelmechanik regelmaessig oelen. Ballistol ist das bevorzugte Universal-Pflegemittel.</p>
+<p><strong>Empfohlenes Zubehoer:</strong></p>
+<ul>
+<li><strong>Optiken:</strong> Niedrigvergroesserung 1-4x oder 2-7x Zielfernrohr (Leupold VX-Freedom, Vortex Diamondback), montiert auf Weaver-Basen</li>
+<li><strong>Visierung:</strong> Williams Fire Sights, XS Ghost Ring Sight, Skinner-Diopter</li>
+<li><strong>Trageriemen:</strong> Klassischer Lederriemen, Butler Creek Neopren</li>
+<li><strong>Munition:</strong> Hornady LEVERevolution 160gr (.30-30), Winchester Power-Point 150gr, Federal Fusion</li>
+<li><strong>Handschutz:</strong> Wild West Guns Big Loop Hebel, Midwest Industries M-LOK Handschutz</li>
+</ul>
+<p>Hauptverschleissteile sind der Auswerfer und die Hebelfeder. Ersatzteile sind gut erhaeltlich. Viele Buechsenmacher sind mit der Marlin-Mechanik vertraut.</p>
+
+<h2>Fazit und Kaufempfehlung</h2>
+<p>Die Marlin 336 ist der ideale Jagd-Lever-Action fuer die Waldjagd auf kurze bis mittlere Distanzen. Ihr entscheidender Vorteil gegenueber der Winchester 1894 ist der seitliche Huelsenauswurf, der die Montage von Zielfernrohren ermoeglicht. Fuer Schweizer Jaeger, die eine handliche Waldwaffe in bewaehrtem Kaliber suchen, ist die 336 in .30-30 eine exzellente Wahl.</p>
+<p>Die neuen Ruger/Marlin-Produktionen bieten hervorragende Qualitaet und sollten JM-markierten Originalen kaum nachstehen. Wer ein kraeftigeres Kaliber sucht, sollte die Marlin 1895 in .45-70 Government in Betracht ziehen — ein Jagdgewehr fuer wirklich alles. Fuer Cowboy Action Shooting und Freizeitschiessen empfiehlt sich die Marlin 1894 in Revolverkalibern.</p>`,
     rechtsstatus: 'frei',
     typischeKaliber: ['.30-30 Winchester', '.35 Remington'],
     tags: ['LeverAction', 'Marlin', '336', 'Jagd'],
@@ -3364,27 +3401,69 @@ Waffenerwerbsschein (WES) erforderlich.`,
     hersteller: 'Browning',
     baujahr: '1973',
     kurzbeschreibung: 'Die meistverkaufte Über-/Unterlaufflinten weltweit. Tontauben-Standard seit 1973.',
-    inhalt: `## Browning Citori — Die meistverkaufte Bockflinte der Welt
-Die Browning Citori wurde 1973 in Japan (Miroku) nach dem Browning Superposed-Design eingeführt und ist die meistverkaufte Bockflinte der Welt. Sie kombiniert John Brownings geniales Bockflinten-Design mit japanischer Präzisionsfertigung.
+    inhalt: `<h2>Geschichte und Entwicklung</h2>
+<p>Die Geschichte der Browning Citori beginnt mit dem legendaeren John Moses Browning, der 1926 kurz vor seinem Tod die Browning Superposed entwarf — die erste kommerziell erfolgreiche Bockflinte. Die Superposed wurde in Belgien bei FN Herstal gefertigt und galt als Premium-Flinte. In den 1970er-Jahren stiegen die Produktionskosten in Belgien jedoch stark an, und Browning suchte eine kostenguenstigere Fertigungsalternative.</p>
+<p>1973 wurde die Citori eingefuehrt, gefertigt von Miroku in Japan — einem Unternehmen mit exzellentem Ruf in der Waffenherstellung. Die Citori basiert auf dem Superposed-Design, wurde aber fuer die moderne Fertigung optimiert. Der Erfolg war ueberwael­tigend: Mit ueber 3 Millionen verkauften Exemplaren ist die Citori die meistverkaufte Bockflinte der Welt. Sie hat sich als Standard fuer Tontaubenschiessen, Jagd und Freizeitschiessen etabliert und bietet ein hervorragendes Preis-Leistungs-Verhaeltnis im gehobenen Segment.</p>
 
-## Technische Daten
-- Kaliber: 12/76 (auch 20/76, 28/70, .410)
-- System: Kipplauf-Bockflinte mit Unterverschluss
-- Läufe: 2 übereinander (O/U), 660mm bis 813mm
-- Chokes: Invector-Plus Wechselchokes (Standard)
-- Gewicht: 3,4–3,9 kg (je nach Modell)
+<h2>Technik und Konstruktion</h2>
+<p>Die Browning Citori ist eine <strong>Kipplauf-Bockflinte (Over/Under)</strong> mit zwei uebereinander angeordneten Laeufen. Das Verschlusssystem nutzt einen <strong>Unterverschluss</strong> mit massivem Verriegelungsbolzen, der in eine Ausnehmung im unteren Lauf greift. Dieses System ist extrem robust und langlebig.</p>
+<p>Das Gehaeuse (Receiver) hat ein <strong>niedriges Profil</strong>, was den Schwerpunkt naeher an die Haende bringt und den gefuehlten Rueckstoss reduziert. Die Laeufe sind aus Chromstahl gefertigt und innen verchromt fuer Langlebigkeit und einfache Reinigung. Der <strong>mechanische Abzug</strong> (nicht rueckstossgesteuert) ist ein wichtiges Feature: Bei einem Zuendversager im ersten Lauf feuert ein zweiter Abzugsdruck zuverlaessig den zweiten Lauf — bei rueckstossgesteuerten Abzuegen waere dies nicht moeglich.</p>
+<p>Die Miroku-Fertigung in Japan gilt als eine der praezisesten der Welt. Jede Citori wird einzeln eingepasst, die Holz-Metall-Passungen sind sauber und die Oberflaechenbehandlung gleichmaessig. Das <strong>Invector-Plus Wechselchoke-System</strong> erlaubt den schnellen Wechsel der Choke-Verengung fuer verschiedene Schiessdisziplinen und Jagdarten.</p>
 
-## Besonderheiten
-Das Browning-Superposed-System mit niedrigem Profil reduziert den gefühlten Rückstoss. Die Miroku-Fertigung in Japan gilt als eine der besten der Welt — jede Citori wird einzeln eingepasst. Der mechanische Abzug (nicht rückstossgesteuert) schiesst zuverlässig auch den zweiten Schuss bei Zündversager. Über 3 Millionen Stück wurden seit 1973 verkauft.
+<h2>Varianten und Modelle</h2>
+<ul>
+<li><strong>Citori 725 Field:</strong> Aktuelles Standardmodell fuer die Jagd, schlankes Gehaeuse, 26- oder 28-Zoll-Laeufe</li>
+<li><strong>Citori 725 Sporting:</strong> Sportversion mit breiterer Schiene, laengeren Laeufen (30 oder 32 Zoll), fuer Sporting Clays</li>
+<li><strong>Citori CX:</strong> Vielseitige Sportflinte fuer Tontauben (Trap, Skeet, Sporting), einstellbarer Kamm</li>
+<li><strong>Citori CXS:</strong> CX mit Seitenplatten und erhoehter Wertigkeit</li>
+<li><strong>Citori White Lightning:</strong> Elegante Version mit silberfarbenem Gehaeuse und Gravur</li>
+<li><strong>Citori Gran Lightning:</strong> Premium-Version mit AAA-Walnussholz und aufwendiger Gravur</li>
+<li><strong>Citori 725 Trap:</strong> Spezielle Trap-Version mit hohem Kamm und Monte-Carlo-Schaft</li>
+<li><strong>Citori 725 Skeet:</strong> Skeet-Version mit flacherem Kamm und offeneren Chokes</li>
+</ul>
 
-## Varianten
-- Citori 725: Aktuelles Standardmodell, schlankes Gehäuse
-- Citori CX: Sportflinte für Tontauben
-- Citori White Lightning: Silbernes Gehäuse, Gravur
-- Citori Gran Lightning: Premium mit AAA-Walnussholz
+<h2>Kaliber und Ballistik</h2>
+<p>Die Browning Citori ist in verschiedenen Kalibern (Bohrungen) erhaeltlich:</p>
+<ul>
+<li><strong>12/76 (12 Gauge):</strong> Der Standard fuer Tontauben und Jagd. Patronenlaenge 70mm (2 3/4 Zoll) oder 76mm (3 Zoll Magnum). Sportladungen mit 24 bis 28g Schrot, Jagdladungen bis 36g.</li>
+<li><strong>20/76 (20 Gauge):</strong> Leichteres Kaliber mit weniger Rueckstoss, beliebt bei Frauen und Junioren sowie fuer die Jagd auf Kleinwild. Laeufe und Gehaeuse sind leichter.</li>
+<li><strong>28/70 (28 Gauge):</strong> Nischenkaliber fuer Kenner, aeusserst angenehm zu schiessen, beliebt fuer Skeet.</li>
+<li><strong>.410 Bore:</strong> Kleinstes gaengiges Schrotflintenkaliber, fuer Expertenschuetzen und Spezialanwendungen.</li>
+</ul>
+<p>Fuer Tontaubenschiessen in der Schweiz ist 12/70 mit 24g Schrot der Standard. Fuer die Jagd werden haeufig 12/70 mit 32 bis 36g Schrot oder Flintenlaufgeschosse verwendet.</p>
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+<h2>Schweizer Markt und Preisentwicklung</h2>
+<p>Die Browning Citori ist in der Schweiz die beliebteste Bockflinte im mittleren bis gehobenen Preissegment. Der Erwerb erfordert einen <strong>Waffenerwerbsschein (WES)</strong>. Browning hat mit der Schweizer Niederlassung eine starke Praesenz im Land.</p>
+<p><strong>Neupreise (CHF, Stand 2025/2026):</strong></p>
+<ul>
+<li><em>Citori 725 Field</em>: CHF 2200 bis 2800</li>
+<li><em>Citori CX / CXS (Sport)</em>: CHF 2400 bis 3200</li>
+<li><em>Citori 725 Sporting</em>: CHF 2800 bis 3500</li>
+<li><em>Citori White Lightning</em>: CHF 2600 bis 3200</li>
+<li><em>Citori Gran Lightning</em>: CHF 3500 bis 4500</li>
+</ul>
+<p><strong>Gebrauchtpreise (CHF):</strong></p>
+<ul>
+<li><em>Citori aeltere Modelle, guter Zustand</em>: CHF 1200 bis 1800</li>
+<li><em>Citori 725, wenig geschossen</em>: CHF 1800 bis 2500</li>
+<li><em>Citori CX/Sporting gebraucht</em>: CHF 1600 bis 2400</li>
+</ul>
+<p>Browning-Flinten sind ueber das dichte Netz von Browning-Haendlern in der Schweiz gut erhaeltlich. Die Citori haelt ihren Wert gut, da die Marke einen exzellenten Ruf geniesst.</p>
+
+<h2>Pflege, Wartung und Zubehoer</h2>
+<p>Die Citori ist robust und pflegeleicht. Nach jedem Schiessen Laeufe mit Laufreiniger durchziehen, Gehaeuse abwischen und die Verschlussmechanik leicht oelen. Die Invector-Plus Chokes sollten regelmaessig entfernt und gereinigt werden, um Festfressen zu vermeiden. Anti-Seize-Paste auf den Chokegewinden verwenden.</p>
+<p><strong>Empfohlenes Zubehoer:</strong></p>
+<ul>
+<li><strong>Chokes:</strong> Browning Invector-Plus in verschiedenen Verengungen (Skeet, IC, Mod, IM, Full), auch Aftermarket von Briley oder Mueller</li>
+<li><strong>Schaftanpassung:</strong> Browning bietet verschiedene Schaftoptionen, professionelles Schaft-Fitting empfohlen</li>
+<li><strong>Koffer:</strong> Browning-Flintenkoffer, Negrini oder Americase</li>
+<li><strong>Rueckstossdaempfer:</strong> Browning Inflex II Schaftkappe (seriemaessig), Kick-Eez oder LimbSaver</li>
+<li><strong>Reinigung:</strong> Beretta/Browning Laufreiniger-Set, Snap Caps fuer Trockentraining</li>
+</ul>
+
+<h2>Fazit und Kaufempfehlung</h2>
+<p>Die Browning Citori ist die ideale Bockflinte fuer Schuetzen, die hohe Qualitaet ohne den Preis einer Krieghoff oder Perazzi suchen. Die Miroku-Fertigung garantiert exzellente Verarbeitung, und die breite Modellpalette deckt alle Einsatzbereiche ab — von der Jagd ueber Trap und Skeet bis zum Sporting.</p>
+<p>Fuer Einsteiger im Tontaubenschiessen ist die Citori CX eine hervorragende Wahl, die mit dem Schuetzen wachsen kann. Fuer die Jagd empfiehlt sich die 725 Field mit 28-Zoll-Laeufen. Wer mehr Eleganz sucht, findet in der White Lightning oder Gran Lightning eine optisch ansprechende Premium-Version. Die Citori ist eine Investition, die ueber Generationen Freude bereitet.</p>`,
     rechtsstatus: 'frei',
     typischeKaliber: ['12/70', '12/76 Magnum', '20/70'],
     tags: ['Flinte', 'Browning', 'Citori', 'Tontauben', 'O/U', 'Sport'],
@@ -3398,28 +3477,73 @@ Waffenerwerbsschein (WES) erforderlich.`,
     hersteller: 'Krieghoff',
     baujahr: '1980',
     kurzbeschreibung: 'Das deutsche Premium-Trapgewehr. Standard bei olympischen Trap/Skeet-Meisterschaften. CHF 8000–25000+.',
-    inhalt: `## Krieghoff K-80 — Deutsche Wettbewerbsflinte
-Die Krieghoff K-80 wird seit 1980 in Ulm (Deutschland) gefertigt und ist die weltweit dominierende Bockflinte im Wettkampfschiessen. Bei Olympischen Spielen, Weltmeisterschaften und Grand-Prix-Veranstaltungen schiessen mehr Medaillengewinner mit Krieghoff als mit jeder anderen Marke.
+    inhalt: `<h2>Geschichte und Entwicklung</h2>
+<p>Die Krieghoff Waffenfabrik wurde 1886 von Heinrich Krieghoff in Suhl (Thueringen) gegruendet. Nach dem Zweiten Weltkrieg verlegte die Familie den Firmensitz nach Ulm an der Donau, wo bis heute alle Krieghoff-Waffen gefertigt werden. Die K-80 wurde 1980 als Nachfolgerin der bewaehrten K-32 eingefuehrt und hat sich seither zur weltweit dominierenden Bockflinte im Wettkampfschiessen entwickelt.</p>
+<p>Bei Olympischen Spielen, Weltmeisterschaften und Grand-Prix-Veranstaltungen schiessen mehr Medaillengewinner mit Krieghoff als mit jeder anderen Marke. Der Erfolg beruht auf der kompromisslosen Qualitaet der Fertigung, der ueberragenden Ergonomie und der legendaeren Modularitaet des Systems. Krieghoff ist ein Familienunternehmen in vierter Generation und beschaeftigt rund 200 Mitarbeiter in Ulm. Jede K-80 wird in Handarbeit gefertigt und individuell eingepasst — mit einer Fertigungstiefe, die in der Flintenbranche ihresgleichen sucht.</p>
 
-## Technische Daten
-- Kaliber: 12/70 oder 12/76 (auch 20/76, 28/70, .410)
-- System: Kipplauf-Bockflinte mit Kersten-Verschluss
-- Läufe: 710mm bis 865mm
-- Chokes: Wechselchokes oder feste Chokes
-- Gewicht: 3,5–4,2 kg (je nach Konfiguration)
+<h2>Technik und Konstruktion</h2>
+<p>Die Krieghoff K-80 nutzt den <strong>Kersten-Verschluss</strong> mit Doppelgreifer, der die Laeufe sowohl oben als auch unten verriegelt. Dieses System ist extrem stabil und gewaehrleistet auch nach Hunderttausenden von Schuessen eine enge Verriegelung ohne Spiel. Die Lebensdauer einer K-80 wird auf ueber 500000 Schuss geschaetzt — ein Wert, den kaum eine andere Bockflinte erreicht.</p>
+<p>Das Gehaeuse (System) ist aus hochfestem Stahl gefraest und nitriert fuer maximale Haerte und Verschleissfestigkeit. Die Laeufe sind aus Bohrstahl gefertigt mit praezise gebohrter Laufseele. Ein Schluesselfeature ist die <strong>Modularitaet</strong>: Die Abzugsgruppe ist als kompakte Einheit herausnehmbar, das Abzugsblatt ist austauschbar (Position, Kruemmung, Gewicht individuell waehlbar), die Schaftbacke ist hoehenverstellbar, und die Schaftkappe kann in Laenge und Neigung angepasst werden.</p>
+<p>Der <strong>mechanische Einabzug</strong> erlaubt die Wahl der Schussreihenfolge (oben/unten oder unten/oben) und feuert bei einem Zuendversager zuverlaessig den zweiten Lauf. Die Abzugscharakteristik ist glasklar mit einem definierten Druckpunkt und kurzer Rueckstellung — fuer Wettkampfschuetzen essenziell.</p>
 
-## Besonderheiten
-Der Kersten-Verschluss mit Doppelgreifer verriegelt die Läufe oben und unten — extrem stabil und langlebig. Das austauschbare Abzugsblatt ermöglicht individuelle Anpassung (Position, Krümmung, Gewicht). Die K-80 ist modular: Schaftbacke, Schaftkappe und Laufgruppe sind austauschbar. Krieghoff-Service ist legendär — Reparaturen oft innerhalb 24 Stunden.
+<h2>Varianten und Modelle</h2>
+<ul>
+<li><strong>K-80 Trap:</strong> Die Referenz fuer olympisches und ISSF-Trap. Hoher Kamm, Monte-Carlo-Schaft, 30- oder 32-Zoll-Laeufe. Feste Chokes oder Wechselchokes.</li>
+<li><strong>K-80 Trap Unsingle:</strong> Einzellauf-Version fuer American Trap, hoehere Schiene fuer steilere Schusswinkel</li>
+<li><strong>K-80 Skeet:</strong> Fuer olympisches Skeet, flacherer Kamm, offenere Chokes, 28- oder 30-Zoll-Laeufe</li>
+<li><strong>K-80 Sporting:</strong> Fuer Sporting Clays und Parcours, vielseitige Konfiguration mit 30- oder 32-Zoll-Laeufen</li>
+<li><strong>K-80 Pro Sporter:</strong> Premium-Sportflinte mit verfeinertem Abzug und aufgewertetem Holz</li>
+<li><strong>K-80 Parcours:</strong> Spezialversion fuer Jagdparcours mit erhoehter Schiene</li>
+<li><strong>K-80 Gold:</strong> Handgraviertes Luxusmodell mit Seitenplatten und hochwertigstem Holz</li>
+<li><strong>K-80 Victoria:</strong> Damen-Modell mit angepassten Schaftmassen</li>
+</ul>
 
-## Varianten
-- K-80 Trap: Für Trap-Schiessen, fester Schaft
-- K-80 Skeet: Für Skeet
-- K-80 Sporting: Für Sporting Clays / Parcours
-- K-80 Pro Sporter: Premium-Sportflinte
-- K-80 Gold: Handgraviertes Luxusmodell
+<h2>Kaliber und Ballistik</h2>
+<p>Die K-80 ist primaer in <strong>12/70</strong> (12 Gauge, 70mm Patronenlaenge) kammeriert — dem Standard fuer alle ISSF-Tontaubendisziplinen. Auch 12/76 (Magnum) ist verfuegbar fuer Jagdanwendungen.</p>
+<p>Kleinere Kaliber sind als separate Laufgruppen erhaeltlich:</p>
+<ul>
+<li><strong>20/76 (20 Gauge):</strong> Leichtere Laufgruppe auf dem 12er-System, beliebt fuer Sub-Gauge-Wettbewerbe</li>
+<li><strong>28/70 (28 Gauge):</strong> Fuer spezialisierte Skeet-Wettbewerbe</li>
+<li><strong>.410 Bore:</strong> Fuer 4-Gauge-Skeet-Wettbewerbe</li>
+</ul>
+<p>Wettkampfladungen im 12er-Kaliber verwenden typischerweise 24g Schrot (ISSF-Trap und Skeet) mit Schrotkorngroesse 7,5 oder 9. Die Muendungsgeschwindigkeit liegt bei 380 bis 410 m/s. Fuer Sporting werden haeufig 28g-Ladungen mit Schrotgroesse 7,5 verwendet.</p>
+<p>Das Choke-System erlaubt die praezise Anpassung der Streuung: Von Skeet (minimal) ueber Improved Cylinder und Modified bis Full (maximal). Krieghoff bietet sowohl feste als auch Wechselchokes (Briley-Gewinde).</p>
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+<h2>Schweizer Markt und Preisentwicklung</h2>
+<p>Die Krieghoff K-80 ist in der Schweiz bei ambitionierten Tontaubenschuetzen und Wettkampfschuetzen der anerkannte Standard. Der Erwerb erfordert einen <strong>Waffenerwerbsschein (WES)</strong>. Krieghoff hat mit der Vertretung in der Schweiz einen direkten Ansprechpartner fuer Beratung und Service.</p>
+<p><strong>Neupreise (CHF, Stand 2025/2026):</strong></p>
+<ul>
+<li><em>K-80 Standard (Trap, Skeet oder Sporting)</em>: CHF 8000 bis 11000</li>
+<li><em>K-80 Pro Sporter</em>: CHF 11000 bis 14000</li>
+<li><em>K-80 mit aufgewertetem Holz (Klasse 3-5)</em>: CHF 12000 bis 18000</li>
+<li><em>K-80 Gold (handgraviert)</em>: CHF 18000 bis 30000</li>
+<li><em>Zusaetzliche Laufgruppe</em>: CHF 3500 bis 5500</li>
+</ul>
+<p><strong>Gebrauchtpreise (CHF):</strong></p>
+<ul>
+<li><em>K-80 Standard, guter Zustand</em>: CHF 5500 bis 8000</li>
+<li><em>K-80 Pro Sporter gebraucht</em>: CHF 7000 bis 10000</li>
+<li><em>K-80 mit Gravur/Sonderausfuehrung</em>: CHF 9000 bis 18000</li>
+<li><em>K-80 komplett mit 2-3 Laufgruppen</em>: CHF 10000 bis 20000</li>
+</ul>
+<p>Krieghoff-Flinten sind extrem wertstabil. Gebrauchte K-80 in gutem Zustand verlieren nur minimal an Wert und sind auf dem Gebrauchtmarkt aeusserst begehrt. Manche Sondermodelle steigen sogar im Wert.</p>
+
+<h2>Pflege, Wartung und Zubehoer</h2>
+<p>Die K-80 ist fuer hohe Beanspruchung ausgelegt und benoetigt minimale Wartung. Laeufe nach jedem Schiessen reinigen, Verschlussmechanik leicht oelen, Chokes regelmaessig entfernen und Anti-Seize auftragen. Das Holz mit Leinoel oder speziellem Schaftoel pflegen.</p>
+<p><strong>Empfohlenes Zubehoer:</strong></p>
+<ul>
+<li><strong>Chokes:</strong> Krieghoff-Wechselchokes, Briley Aftermarket-Chokes mit erweitertem Trichter</li>
+<li><strong>Schaftanpassung:</strong> Verstellbare Schaftbacke (Krieghoff-Optionen), Graco-Rueckstossdaempfer</li>
+<li><strong>Abzugsblaetter:</strong> Verschiedene Formen und Kruemmungen ab Werk erhaeltlich</li>
+<li><strong>Laufgruppen:</strong> Zusaetzliche Laufgruppen in verschiedenen Laengen und Kalibern</li>
+<li><strong>Koffer:</strong> Krieghoff-Aluminium-Koffer, Negrini oder Americase Custom</li>
+<li><strong>Reinigung:</strong> Hochwertige Putzstaebe (Parker-Hale), Snap Caps fuer Trockentraining</li>
+</ul>
+<p>Der Krieghoff-Werksservice ist legendaer: Reparaturen und Anpassungen werden oft innerhalb von 24 Stunden erledigt. Jede K-80 kann jederzeit zum Werk nach Ulm geschickt werden.</p>
+
+<h2>Fazit und Kaufempfehlung</h2>
+<p>Die Krieghoff K-80 ist die ultimative Wettkampfflinte — die Wahl der Champions und der Standard, an dem sich alle anderen messen lassen muessen. Die ueberragende Verarbeitungsqualitaet, die legendaere Langlebigkeit und die einzigartige Modularitaet rechtfertigen den hohen Preis fuer jeden ernsthaften Tontaubenschuetzen.</p>
+<p>Fuer ambitionierte Sportschuetzen, die regelmaessig an Wettbewerben teilnehmen, ist die K-80 eine Investition, die sich ueber Jahrzehnte auszahlt. Die Wertstabilitaet ist herausragend — eine gut gepflegte K-80 kann nach 20 Jahren zum gleichen oder hoeheren Preis weiterverkauft werden. Einsteiger sollten sich professionell beraten lassen und ein Probeschiessen vereinbaren, um die richtige Konfiguration zu finden. Die Investition in ein professionelles Schaft-Fitting ist bei einer K-80 ebenso wichtig wie die Waffe selbst.</p>`,
     rechtsstatus: 'frei',
     typischeKaliber: ['12/70'],
     tags: ['Flinte', 'Krieghoff', 'K80', 'Trap', 'Skeet', 'Premium'],

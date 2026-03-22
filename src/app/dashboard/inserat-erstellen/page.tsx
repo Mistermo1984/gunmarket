@@ -161,16 +161,13 @@ export default function InseratErstellenPage() {
 
       const { id } = await res.json();
 
-      // Upload photos if any
+      // Save photo URLs as listing_images (photos already uploaded to Vercel Blob in Step 3)
       if (photos.length > 0) {
-        for (let i = 0; i < photos.length; i++) {
-          const formData = new FormData();
-          const blob = await fetch(photos[i]).then((r) => r.blob());
-          formData.append("file", blob, `photo-${i}.jpg`);
-          formData.append("listing_id", id);
-          formData.append("position", String(i));
-          await fetch("/api/upload", { method: "POST", body: formData });
-        }
+        await fetch(`/api/listings/${id}/images`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ urls: photos }),
+        });
       }
 
       setShowToast(true);

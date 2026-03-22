@@ -216,16 +216,13 @@ export default function InseratBearbeitenPage() {
         return;
       }
 
-      // Upload new photos if any
+      // Save new photo URLs as listing_images (already uploaded to Vercel Blob)
       if (newPhotos.length > 0) {
-        for (let i = 0; i < newPhotos.length; i++) {
-          const formData = new FormData();
-          const blob = await fetch(newPhotos[i]).then((r) => r.blob());
-          formData.append("file", blob, `photo-${i}.jpg`);
-          formData.append("listing_id", id);
-          formData.append("position", String(existingPhotos.length + i));
-          await fetch("/api/upload", { method: "POST", body: formData });
-        }
+        await fetch(`/api/listings/${id}/images`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ urls: newPhotos }),
+        });
       }
 
       setSuccess(true);

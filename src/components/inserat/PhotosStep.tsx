@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useCallback, useRef, useState } from "react";
-import { Upload, X, Crown, Camera } from "lucide-react";
+import React, { useRef, useState } from "react";
+import { Upload, X, Crown, Camera, Loader2 } from "lucide-react";
 
 interface PhotosStepProps {
   photos: string[];
@@ -14,60 +14,61 @@ const MAX_PHOTOS = 8;
 const MAX_SIZE_MB = 10;
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
+async function uploadFile(file: File): Promise<string> {
+  const form = new FormData();
+  form.append("file", file);
+  const res = await fetch("/api/upload", { method: "POST", body: form });
+  const data = await res.json();
+  if (!res.ok || !data.url) {
+    throw new Error(data.error || "Upload fehlgeschlagen");
+  }
+  return data.url;
+}
+
 export default function PhotosStep({ photos, onPhotosChange, onBack, onNext }: PhotosStepProps) {
   const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState("");
+  const [uploading, setUploading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const processFiles = useCallback(
-    (files: FileList | null) => {
-      if (!files) return;
-      setError("");
+  async function processFiles(files: FileList | null) {
+    if (!files || files.length === 0) return;
+    setError("");
 
-      const remaining = MAX_PHOTOS - photos.length;
-      if (remaining <= 0) {
-        setError(`Maximal ${MAX_PHOTOS} Fotos erlaubt`);
+    const remaining = MAX_PHOTOS - photos.length;
+    if (remaining <= 0) {
+      setError(`Maximal ${MAX_PHOTOS} Fotos erlaubt`);
+      return;
+    }
+
+    const toProcess = Array.from(files).slice(0, remaining);
+
+    for (const file of toProcess) {
+      if (!ACCEPTED_TYPES.includes(file.type)) {
+        setError("Nur JPG, PNG und WEBP erlaubt");
         return;
       }
-
-      const toProcess = Array.from(files).slice(0, remaining);
-
-      for (const file of toProcess) {
-        if (!ACCEPTED_TYPES.includes(file.type)) {
-          setError("Nur JPG, PNG und WEBP erlaubt");
-          return;
-        }
-        if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-          setError(`Maximale Dateigrösse: ${MAX_SIZE_MB}MB`);
-          return;
-        }
+      if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+        setError(`Maximale Dateigrösse: ${MAX_SIZE_MB}MB`);
+        return;
       }
+    }
 
-      const readers = toProcess.map(
-        (file) =>
-          new Promise<string>((resolve) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result as string);
-            reader.readAsDataURL(file);
-          })
-      );
-
-      Promise.all(readers).then((results) => {
-        onPhotosChange([...photos, ...results]);
-      });
-    },
-    [photos, onPhotosChange]
-  );
+    setUploading(true);
+    try {
+      const urls = await Promise.all(toProcess.map(uploadFile));
+      onPhotosChange([...photos, ...urls]);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Upload fehlgeschlagen");
+    } finally {
+      setUploading(false);
+    }
+  }
 
   function handleDrop(e: React.DragEvent) {
     e.preventDefault();
     setDragOver(false);
     processFiles(e.dataTransfer.files);
-  }
-
-  function handleDragOver(e: React.DragEvent) {
-    e.preventDefault();
-    setDragOver(true);
   }
 
   function removePhoto(index: number) {
@@ -92,22 +93,33 @@ export default function PhotosStep({ photos, onPhotosChange, onBack, onNext }: P
       {/* Drop zone */}
       <div
         onDrop={handleDrop}
-        onDragOver={handleDragOver}
+        onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
         onDragLeave={() => setDragOver(false)}
-        onClick={() => inputRef.current?.click()}
+        onClick={() => !uploading && inputRef.current?.click()}
         className={`mb-6 flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-10 transition-colors ${
-          dragOver
+          uploading
+            ? "border-brand-green bg-brand-green-light cursor-wait"
+            : dragOver
             ? "border-brand-green bg-brand-green-light"
             : "border-brand-border bg-white hover:border-brand-green/50"
         }`}
       >
-        <Upload size={32} className={`mb-3 ${dragOver ? "text-brand-green" : "text-neutral-300"}`} />
-        <p className="mb-1 text-sm font-medium text-brand-dark">
-          Fotos hierher ziehen oder klicken zum Auswählen
-        </p>
-        <p className="text-xs text-neutral-400">
-          {photos.length}/{MAX_PHOTOS} Fotos · JPG, PNG, WEBP · max. {MAX_SIZE_MB}MB
-        </p>
+        {uploading ? (
+          <div className="flex flex-col items-center gap-3">
+            <Loader2 size={32} className="animate-spin text-brand-green" />
+            <p className="text-sm font-medium text-brand-dark">Wird hochgeladen...</p>
+          </div>
+        ) : (
+          <>
+            <Upload size={32} className={`mb-3 ${dragOver ? "text-brand-green" : "text-neutral-300"}`} />
+            <p className="mb-1 text-sm font-medium text-brand-dark">
+              Fotos hierher ziehen oder klicken zum Auswählen
+            </p>
+            <p className="text-xs text-neutral-400">
+              {photos.length}/{MAX_PHOTOS} Fotos · JPG, PNG, WEBP · max. {MAX_SIZE_MB}MB
+            </p>
+          </>
+        )}
         <input
           ref={inputRef}
           type="file"
@@ -130,9 +142,10 @@ export default function PhotosStep({ photos, onPhotosChange, onBack, onNext }: P
         <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {photos.map((photo, i) => (
             <div
-              key={i}
+              key={photo}
               className="group relative aspect-square overflow-hidden rounded-xl border border-brand-border bg-gray-100"
             >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={photo}
                 alt={`Foto ${i + 1}`}
@@ -207,7 +220,7 @@ export default function PhotosStep({ photos, onPhotosChange, onBack, onNext }: P
         </button>
         <button
           onClick={onNext}
-          disabled={photos.length === 0}
+          disabled={photos.length === 0 || uploading}
           className="rounded-lg bg-brand-green px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-green-dark disabled:cursor-not-allowed disabled:opacity-50"
         >
           Weiter

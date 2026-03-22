@@ -28,6 +28,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import Badge from "@/components/ui/Badge";
+import ShareButton from "@/components/ui/ShareButton";
 import ListingCard from "@/components/ui/ListingCard";
 import ImageLightbox from "@/components/inserat/ImageLightbox";
 import KontaktModal from "@/components/inserat/KontaktModal";
@@ -555,19 +556,13 @@ export default function InseratDetailPage() {
 
               {/* Share + Report */}
               <div className="flex gap-2">
-                <button
-                  onClick={() => {
-                    if (navigator.share) {
-                      navigator.share({ title: listing.titel, url: window.location.href });
-                    } else {
-                      navigator.clipboard.writeText(window.location.href);
-                    }
-                  }}
-                  className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-brand-border bg-white px-3 py-2 text-sm text-neutral-600 transition-colors hover:border-brand-green hover:text-brand-green"
-                >
-                  <Share2 size={14} />
-                  {t("detail_share")}
-                </button>
+                <div className="flex-1">
+                  <ShareButton
+                    url={typeof window !== "undefined" ? window.location.href : `https://gunmarket.ch/inserat/${listing.id}`}
+                    title={listing.titel}
+                    text={`${listing.titel} — CHF ${listing.preis?.toLocaleString("de-CH")} auf GunMarket.ch`}
+                  />
+                </div>
                 <button
                   onClick={() => setMeldenOpen(true)}
                   className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-brand-border bg-white px-3 py-2 text-sm text-neutral-600 transition-colors hover:border-red-300 hover:text-red-600"

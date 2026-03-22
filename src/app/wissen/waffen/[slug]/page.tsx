@@ -7,6 +7,7 @@ import KommentarSection from '@/components/wissen/KommentarSection'
 import WikiLanguageBanner from '@/components/wissen/WikiLanguageBanner'
 import YouTubeEmbed from '@/components/wissen/YouTubeEmbed'
 import WissenInserate from '@/components/wissen/WissenInserate'
+import ShareButton from '@/components/ui/ShareButton'
 import type { Metadata } from 'next'
 
 interface Props {
@@ -278,15 +279,23 @@ export default async function WaffeArtikelPage({ params }: Props) {
             {waffe.titel}
           </h1>
           <p className="mt-2 max-w-2xl text-sm text-neutral-400">{waffe.kurzbeschreibung}</p>
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-brand-green px-3 py-1 text-xs font-semibold text-white">
-              {waffe.kategorie}
-            </span>
-            {waffe.hersteller && (
-              <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-neutral-300">
-                {waffe.hersteller}
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded-full bg-brand-green px-3 py-1 text-xs font-semibold text-white">
+                {waffe.kategorie}
               </span>
-            )}
+              {waffe.hersteller && (
+                <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-neutral-300">
+                  {waffe.hersteller}
+                </span>
+              )}
+            </div>
+            <ShareButton
+              url={`https://gunmarket.ch/wissen/waffen/${slug}`}
+              title={`${waffe.titel} — GunMarket.ch Waffen-Wiki`}
+              text={waffe.kurzbeschreibung}
+              variant="icon"
+            />
           </div>
         </div>
       </section>

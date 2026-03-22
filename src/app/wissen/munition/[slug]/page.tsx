@@ -4,6 +4,7 @@ import { ChevronRight, ExternalLink } from 'lucide-react'
 import { wissenMunition } from '@/lib/wissen-data'
 import KommentarSection from '@/components/wissen/KommentarSection'
 import WikiLanguageBanner from '@/components/wissen/WikiLanguageBanner'
+import ShareButton from '@/components/ui/ShareButton'
 import type { Metadata } from 'next'
 
 interface Props {
@@ -161,15 +162,23 @@ export default async function MunitionArtikelPage({ params }: Props) {
           <h1 className="mt-4 font-display text-2xl font-black uppercase tracking-tight text-white md:text-4xl">
             {muni.bezeichnung}
           </h1>
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${typColor}`}>
-              {muni.typ}
-            </span>
-            {muni.aliase.map((a) => (
-              <span key={a} className="rounded-full bg-white/10 px-3 py-1 text-xs text-neutral-300">
-                {a}
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${typColor}`}>
+                {muni.typ}
               </span>
-            ))}
+              {muni.aliase.map((a) => (
+                <span key={a} className="rounded-full bg-white/10 px-3 py-1 text-xs text-neutral-300">
+                  {a}
+                </span>
+              ))}
+            </div>
+            <ShareButton
+              url={`https://gunmarket.ch/wissen/munition/${slug}`}
+              title={`${muni.bezeichnung} — GunMarket.ch Kaliber-Guide`}
+              text={muni.kurzbeschreibung}
+              variant="icon"
+            />
           </div>
         </div>
       </section>

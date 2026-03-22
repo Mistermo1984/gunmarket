@@ -3,14 +3,9 @@
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { MessageCircle, Crosshair } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 
-interface ChatButtonProps {
-  onClick: () => void;
-  isOpen: boolean;
-}
-
-export default function ChatButton({ onClick, isOpen }: ChatButtonProps) {
+export default function ChatButton() {
   const [showTooltip, setShowTooltip] = useState(false);
   const [showNeu, setShowNeu] = useState(true);
   const pathname = usePathname();
@@ -26,25 +21,12 @@ export default function ChatButton({ onClick, isOpen }: ChatButtonProps) {
     }
   }, []);
 
-  // Auto-open after 30 seconds (once per session)
-  useEffect(() => {
-    if (isOpen) return;
-    const autoOpened = sessionStorage.getItem("gunmarket_chat_auto_opened");
-    if (autoOpened) return;
-
-    const timer = setTimeout(() => {
-      sessionStorage.setItem("gunmarket_chat_auto_opened", "true");
-      onClick();
-    }, 30000);
-
-    return () => clearTimeout(timer);
-  }, [isOpen, onClick]);
-
-  if (isOpen || pathname === "/berater") return null;
+  // Hide on /berater page
+  if (pathname === "/berater") return null;
 
   return (
     <div
-      className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-2"
+      className="fixed bottom-6 right-6 z-40"
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
     >
@@ -56,24 +38,13 @@ export default function ChatButton({ onClick, isOpen }: ChatButtonProps) {
         </div>
       )}
 
-      {/* Waffenberater link */}
-      {showTooltip && (
-        <Link
-          href="/berater"
-          className="flex items-center gap-1.5 rounded-full bg-white px-3 py-2 text-xs font-medium text-[#4d8230] shadow-md border border-gray-100 transition-all hover:shadow-lg hover:bg-green-50 animate-fade-in"
-        >
-          <Crosshair size={14} />
-          Waffenberater
-        </Link>
-      )}
-
-      <button
-        onClick={onClick}
+      <Link
+        href="/berater"
         className="relative flex items-center gap-2 rounded-full bg-brand-green px-5 py-3 text-white shadow-lg transition-transform hover:scale-105 hover:bg-brand-green-dark active:scale-95 animate-pulse-ring"
-        aria-label="GunMarket Assistent öffnen"
+        aria-label="GunMarket Waffenberater öffnen"
       >
         <MessageCircle size={20} />
-        <span className="text-sm font-medium">Assistent</span>
+        <span className="text-sm font-medium">Waffenberater</span>
 
         {/* NEU Badge */}
         {showNeu && (
@@ -81,7 +52,7 @@ export default function ChatButton({ onClick, isOpen }: ChatButtonProps) {
             NEU
           </span>
         )}
-      </button>
+      </Link>
     </div>
   );
 }

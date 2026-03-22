@@ -38,30 +38,64 @@ const GW_CRAWLER_USER = {
 
 // STUFE 1: URL-Segment Mapping (most reliable source)
 const URL_CATEGORY_MAP: Record<string, { hauptkategorie: string; unterkategorie: string }> = {
-  // gebrauchtwaffen.com segments
+  // ── KURZWAFFEN ──
   kurzwaffen: { hauptkategorie: "kurzwaffen", unterkategorie: "pistolen" },
   pistolen: { hauptkategorie: "kurzwaffen", unterkategorie: "pistolen" },
   revolver: { hauptkategorie: "kurzwaffen", unterkategorie: "revolver" },
+  handguns: { hauptkategorie: "kurzwaffen", unterkategorie: "pistolen" },
+  firearms: { hauptkategorie: "kurzwaffen", unterkategorie: "pistolen" },
+  // ── LANGWAFFEN (comprehensive) ──
   langwaffen: { hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
   buechsen: { hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
   buchsen: { hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
   gewehre: { hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
+  repetierer: { hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
+  repetierbuechsen: { hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
+  halbautomaten: { hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
+  halbautomat: { hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
+  einzellader: { hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
+  kipplaufbuechsen: { hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
   flinten: { hauptkategorie: "langwaffen", unterkategorie: "flinten" },
   jagdflinten: { hauptkategorie: "langwaffen", unterkategorie: "flinten" },
-  kombinierte: { hauptkategorie: "langwaffen", unterkategorie: "andere-langwaffen" },
+  bockflinten: { hauptkategorie: "langwaffen", unterkategorie: "flinten" },
+  doppelflinten: { hauptkategorie: "langwaffen", unterkategorie: "flinten" },
+  bockdoppelflinten: { hauptkategorie: "langwaffen", unterkategorie: "flinten" },
+  pumpaction: { hauptkategorie: "langwaffen", unterkategorie: "flinten" },
+  kombinierte: { hauptkategorie: "langwaffen", unterkategorie: "kombinierte-waffen" },
+  kombiniertwaffen: { hauptkategorie: "langwaffen", unterkategorie: "kombinierte-waffen" },
+  kombiniertewaffen: { hauptkategorie: "langwaffen", unterkategorie: "kombinierte-waffen" },
+  bockbuechsflinten: { hauptkategorie: "langwaffen", unterkategorie: "kombinierte-waffen" },
+  drillinge: { hauptkategorie: "langwaffen", unterkategorie: "kombinierte-waffen" },
+  doppelbuechsen: { hauptkategorie: "langwaffen", unterkategorie: "kombinierte-waffen" },
+  jagdwaffen: { hauptkategorie: "langwaffen", unterkategorie: "jagdwaffen" },
+  wildjagd: { hauptkategorie: "langwaffen", unterkategorie: "jagdwaffen" },
+  wildundjagd: { hauptkategorie: "langwaffen", unterkategorie: "jagdwaffen" },
+  rifles: { hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
+  shotguns: { hauptkategorie: "langwaffen", unterkategorie: "flinten" },
+  // ── ORDONNANZ ──
   ordonnanzwaffen: { hauptkategorie: "ordonnanzwaffen", unterkategorie: "langwaffen-ordonnanz" },
   ordonnanz: { hauptkategorie: "ordonnanzwaffen", unterkategorie: "langwaffen-ordonnanz" },
   sammlerordonanzwaffen: { hauptkategorie: "ordonnanzwaffen", unterkategorie: "langwaffen-ordonnanz" },
+  sammlerordonnanzwaffen: { hauptkategorie: "ordonnanzwaffen", unterkategorie: "langwaffen-ordonnanz" },
+  // ── LUFTDRUCK ──
   luftdruckwaffen: { hauptkategorie: "luftdruckwaffen", unterkategorie: "luftgewehre" },
   luftdruckwaffensoftair: { hauptkategorie: "luftdruckwaffen", unterkategorie: "co2-waffen" },
   luftgewehre: { hauptkategorie: "luftdruckwaffen", unterkategorie: "luftgewehre" },
   luftpistolen: { hauptkategorie: "luftdruckwaffen", unterkategorie: "luftpistolen" },
+  airguns: { hauptkategorie: "luftdruckwaffen", unterkategorie: "luftgewehre" },
+  softair: { hauptkategorie: "luftdruckwaffen", unterkategorie: "co2-waffen" },
+  // ── MUNITION ──
   munition: { hauptkategorie: "munition", unterkategorie: "" },
+  ammunition: { hauptkategorie: "munition", unterkategorie: "" },
+  // ── OPTIK ──
   optik: { hauptkategorie: "optik", unterkategorie: "zielfernrohre" },
   zielfernrohre: { hauptkategorie: "optik", unterkategorie: "zielfernrohre" },
+  montagen: { hauptkategorie: "optik", unterkategorie: "montagen" },
+  // ── ZUBEHOER ──
   messer: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
   messerblankwaffen: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
   wiederladen: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
+  wiederladepressen: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
   selbstverteidigung: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
   verschiedenes: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
   magazine: { hauptkategorie: "zubehoer", unterkategorie: "magazine" },
@@ -69,44 +103,42 @@ const URL_CATEGORY_MAP: Record<string, { hauptkategorie: string; unterkategorie:
   holster: { hauptkategorie: "zubehoer", unterkategorie: "holster" },
   schafte: { hauptkategorie: "zubehoer", unterkategorie: "lauefe-teile" },
   laufe: { hauptkategorie: "zubehoer", unterkategorie: "lauefe-teile" },
-  montagen: { hauptkategorie: "optik", unterkategorie: "montagen" },
   chokes: { hauptkategorie: "zubehoer", unterkategorie: "lauefe-teile" },
   bogenschiesen: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
-  wildjagd: { hauptkategorie: "langwaffen", unterkategorie: "jagdwaffen" },
-  wildundjagd: { hauptkategorie: "langwaffen", unterkategorie: "jagdwaffen" },
-  // nextgun.ch segments
-  firearms: { hauptkategorie: "kurzwaffen", unterkategorie: "pistolen" },
-  handguns: { hauptkategorie: "kurzwaffen", unterkategorie: "pistolen" },
-  rifles: { hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
-  shotguns: { hauptkategorie: "langwaffen", unterkategorie: "flinten" },
   accessories: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
-  ammunition: { hauptkategorie: "munition", unterkategorie: "" },
   knives: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
-  airguns: { hauptkategorie: "luftdruckwaffen", unterkategorie: "luftpistolen" },
+  bekleidung: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
+  ausrustung: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
+  waffenkofferfutterale: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
+  waffenpflegeputzzeug: { hauptkategorie: "zubehoer", unterkategorie: "reinigung" },
+  buchersoftwaredvds: { hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
 };
 
 // STUFE 2: Title-Keyword Matching (fallback when URL is ambiguous)
+// Includes French terms for nextgun.ch (Suisse romande)
 const TITLE_KEYWORDS: { pattern: RegExp; hauptkategorie: string; unterkategorie: string }[] = [
   // Ordonnanz (check before Kurzwaffen due to P220/P226 overlap)
-  { pattern: /\b(k31|k11|k98|stgw\s?57|stgw\s?90|sig\s?510|sig\s?550|pe57|karabiner\s?31|ordonnanz)\b/i, hauptkategorie: "ordonnanzwaffen", unterkategorie: "langwaffen-ordonnanz" },
-  // Kurzwaffen
-  { pattern: /\b(pistole|pistol|glock|sig\s?p|walther|beretta|cz\s?\d|revolver|hk\s?p|browning\s?hp|p226|p220|p210|p38|luger)\b/i, hauptkategorie: "kurzwaffen", unterkategorie: "pistolen" },
-  { pattern: /\b(revolver|taurus|colt\s?(python|anaconda|cobra)|smith\s?&?\s?wesson|s&w\s+model)\b/i, hauptkategorie: "kurzwaffen", unterkategorie: "revolver" },
-  // Langwaffen
-  { pattern: /\b(büchse|buechse|karabiner|gewehr|rifle|mauser|sauer\s?200|blaser|merkel|browning\s+bar)\b/i, hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
-  { pattern: /\b(flinte|schrotflinte|shotgun|bockdoppel|drilling|bockbüchse)\b/i, hauptkategorie: "langwaffen", unterkategorie: "flinten" },
+  { pattern: /\b(k31|k11|k98|stgw\s?57|stgw\s?90|sig\s?510|sig\s?550|pe57|karabiner\s?31|ordonnanz|mousqueton\s?31)\b/i, hauptkategorie: "ordonnanzwaffen", unterkategorie: "langwaffen-ordonnanz" },
+  // Kurzwaffen (DE + FR)
+  { pattern: /\b(pistole|pistol|pistolet|glock|sig\s?p\d|walther|beretta\s?(px|apx|92|m9)|cz\s?\d|hk\s?(p|sfp|usp|vp)|browning\s?hp|p226|p220|p210|p38|luger|fnx|fn\s?five|canik|springfield|kimber|1911)\b/i, hauptkategorie: "kurzwaffen", unterkategorie: "pistolen" },
+  { pattern: /\b(revolver|taurus|colt\s?(python|anaconda|cobra|king)|smith\s?&?\s?wesson|s&w\s+model|ruger\s?(gp|sp|redhawk))\b/i, hauptkategorie: "kurzwaffen", unterkategorie: "revolver" },
+  // Langwaffen (DE + FR — comprehensive)
+  { pattern: /\b(büchse|buechse|karabiner|gewehr|rifle|fusil|carabine|carbine|mauser|sauer\s?\d|blaser|merkel|browning\s+(bar|x-bolt|a-bolt)|tikka|sako|remington\s?\d|winchester|savage|ruger\s?(precision|american|ranch|mini)|repetierer|repetier|halbautomat|haenel|oberland|desert\s?tech|sig\s?(55[016]|mcx|516|56\d|sauer)|mr223|ar[\s-]?15|sr[\s-]?15|hk\s?(mr|sl|g)|stgw|benelli\s?mr|cz\s?(557|600|bren)|steyr|zastava|mauserwerke|vetterli|schmidt.rubin)\b/i, hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
+  { pattern: /\b(flinte|schrotflinte|shotgun|bockdoppel|drilling|bockbüchse|beretta\s?(686|69[0-9]|dt|sv|a[34]00)|browning\s?(b[25]|maxus|a5|cynergy)|benelli\s?(m[1-4]|super|ethos|vinci)|franchi|remington\s?8[78]|winchester\s?sx|mossberg|pump\s?action|bockflinte|doppelflinte|fusil.+(chasse|trap|sport))\b/i, hauptkategorie: "langwaffen", unterkategorie: "flinten" },
+  { pattern: /\b(arme\s+d.{0,2}[ée]paule|fusil\s+semi|carabine\s+semi|mousqueton)\b/i, hauptkategorie: "langwaffen", unterkategorie: "buechsen" },
   // Luftdruck
-  { pattern: /\b(luftpistole|luftgewehr|co2|pre-charged|pcp|airguns?)\b/i, hauptkategorie: "luftdruckwaffen", unterkategorie: "luftpistolen" },
+  { pattern: /\b(luftpistole|luftgewehr|co2|pre-charged|pcp|airguns?|airsoft|softair)\b/i, hauptkategorie: "luftdruckwaffen", unterkategorie: "luftgewehre" },
   // Munition
-  { pattern: /\b(munition|patrone|patronen|schrot|blei|projektil|\d+\s?mm\s+para|\d+x\d+|\.\d{2,3}\s?(win|rem|mag|spl|lr))\b/i, hauptkategorie: "munition", unterkategorie: "" },
+  { pattern: /\b(munition|patrone|patronen|projektil|\d+\s?mm\s+para|\d+x\d+|\.\d{2,3}\s?(win|rem|mag|spl|lr))\b/i, hauptkategorie: "munition", unterkategorie: "" },
   // Zubehör
-  { pattern: /\b(magazin|magazine|mag\s+\d|clips?)\b/i, hauptkategorie: "zubehoer", unterkategorie: "magazine" },
-  { pattern: /\b(holster|halfter|schulterholster)\b/i, hauptkategorie: "zubehoer", unterkategorie: "holster" },
-  { pattern: /\b(zielfernrohr|zf|scope|visier|diopter|rotpunkt|red\s?dot|leuchtpunkt)\b/i, hauptkategorie: "optik", unterkategorie: "zielfernrohre" },
-  { pattern: /\b(reinigung|reinigungsset|lauf|putzzeug|öl|waffenöl)\b/i, hauptkategorie: "zubehoer", unterkategorie: "reinigung" },
-  { pattern: /\b(griff|griffschale|griffstück|schaft)\b/i, hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
-  { pattern: /\b(messer|klappmesser|taschenmesser|jagdmesser)\b/i, hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
+  { pattern: /\b(magazin|magazine|mag\s+\d|chargeur|clips?)\b/i, hauptkategorie: "zubehoer", unterkategorie: "magazine" },
+  { pattern: /\b(holster|halfter|schulterholster|porte-chargeur)\b/i, hauptkategorie: "zubehoer", unterkategorie: "holster" },
+  { pattern: /\b(zielfernrohr|zf|scope|visier|diopter|rotpunkt|red\s?dot|leuchtpunkt|lunette|aimpoint|eotech|holosun|vortex|zeiss|swarovski|leupold)\b/i, hauptkategorie: "optik", unterkategorie: "zielfernrohre" },
+  { pattern: /\b(reinigung|reinigungsset|putzzeug|öl|waffenöl)\b/i, hauptkategorie: "zubehoer", unterkategorie: "reinigung" },
+  { pattern: /\b(griff|griffschale|griffstück|schaft|crosse|handguard)\b/i, hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
+  { pattern: /\b(messer|klappmesser|taschenmesser|jagdmesser|couteau)\b/i, hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
   { pattern: /\b(wiederladen|ladebank|matrize|zündhütchen|hülsen)\b/i, hauptkategorie: "zubehoer", unterkategorie: "andere-zubehoer" },
+  { pattern: /\b(silencieux|schalldämpfer|kompensator|suppressor|mundungsbremse|mündungsbremse)\b/i, hauptkategorie: "zubehoer", unterkategorie: "lauefe-teile" },
 ];
 
 export function classifyListing(

@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Search, LayoutGrid, Plus, User } from 'lucide-react';
@@ -16,6 +16,14 @@ const KATEGORIEN = [
 ];
 
 export default function MobileBottomNav() {
+  return (
+    <Suspense fallback={null}>
+      <MobileBottomNavInner />
+    </Suspense>
+  );
+}
+
+function MobileBottomNavInner() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();

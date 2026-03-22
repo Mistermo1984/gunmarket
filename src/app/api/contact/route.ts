@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY || "");
+function getResend() {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) throw new Error("RESEND_API_KEY not configured");
+  return new Resend(key);
+}
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +22,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Pflichtfelder fehlen" }, { status: 400 });
     }
 
-    await resend.emails.send({
+    await getResend().emails.send({
       from: process.env.EMAIL_FROM || "GunMarket.ch <noreply@gunmarket.ch>",
       to: "maurice.acker@gmail.com",
       replyTo: body.email,

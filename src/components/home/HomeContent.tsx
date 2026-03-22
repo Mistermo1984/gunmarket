@@ -15,11 +15,6 @@ import { apiListingToCard } from "@/lib/listing-helpers";
 import { useLocale } from "@/lib/locale-context";
 
 const LIMIT = 25;
-const SS_FILTERS = "gm_search_filters";
-const SS_SORT = "gm_search_sort";
-const SS_PAGE = "gm_search_page";
-const SS_SCROLL = "gm_search_scroll";
-const SS_SEARCH_URL = "gm_last_search_url";
 
 export default function HomeContent() {
   return (
@@ -42,46 +37,56 @@ function HomeContentInner() {
   const [filterCounts, setFilterCounts] = useState<FilterCounts | null>(null);
   const { t } = useLocale();
   const searchParams = useSearchParams();
-  const restoredRef = useRef(false);
+  const isInitialMount = useRef(true);
   const pendingScrollRef = useRef<number | null>(null);
 
-  // On mount: restore saved state if returning from a listing
+  // On mount: restore scroll position if returning from listing
   useEffect(() => {
-    if (restoredRef.current) return;
-    restoredRef.current = true;
-
-    // Only restore if no URL params are driving the state
-    const hasUrlParams = searchParams.get("suche") || searchParams.get("kanton") || searchParams.get("kategorie");
-    if (hasUrlParams) return;
-
     try {
-      const savedFilters = sessionStorage.getItem(SS_FILTERS);
-      const savedSort = sessionStorage.getItem(SS_SORT);
-      const savedPage = sessionStorage.getItem(SS_PAGE);
-      const savedScroll = sessionStorage.getItem(SS_SCROLL);
-
-      if (savedFilters) {
-        setFilters(JSON.parse(savedFilters));
-        if (savedSort) setSortOrder(savedSort);
-        if (savedPage) setCurrentPage(Number(savedPage));
-        if (savedScroll) pendingScrollRef.current = Number(savedScroll);
+      const savedScroll = sessionStorage.getItem("lastScrollPosition");
+      if (savedScroll) {
+        pendingScrollRef.current = Number(savedScroll);
+        sessionStorage.removeItem("lastScrollPosition");
       }
     } catch { /* ignore */ }
-  }, [searchParams]);
+  }, []);
 
-  // Sync URL params (suche, kanton, kategorie) into filter state
+  // Sync URL params into filter state on mount
   useEffect(() => {
     const suche = searchParams.get("suche") || "";
     const kanton = searchParams.get("kanton");
     const kategorie = searchParams.get("kategorie");
-    if (suche || kanton || kategorie) {
+    const preisMin = searchParams.get("preisMin") || "";
+    const preisMax = searchParams.get("preisMax") || "";
+    const zustand = searchParams.get("zustand");
+    const rechtsstatus = searchParams.get("rechtsstatus");
+    const kaliber = searchParams.get("kaliber");
+    const unterkategorie = searchParams.get("unterkategorie");
+    const sort = searchParams.get("sort");
+    const seite = searchParams.get("seite");
+
+    const hasParams = suche || kanton || kategorie || preisMin || preisMax ||
+      zustand || rechtsstatus || kaliber || unterkategorie;
+
+    if (hasParams) {
       setFilters((prev) => ({
         ...prev,
         marke: suche || prev.marke,
         kantone: kanton ? kanton.split(",") : prev.kantone,
         kategorien: kategorie ? kategorie.split(",") : prev.kategorien,
+        preisMin: preisMin || prev.preisMin,
+        preisMax: preisMax || prev.preisMax,
+        zustand: zustand ? zustand.split(",") : prev.zustand,
+        rechtsstatus: rechtsstatus ? rechtsstatus.split(",") : prev.rechtsstatus,
+        kaliber: kaliber ? kaliber.split(",") : prev.kaliber,
+        unterkategorien: unterkategorie ? unterkategorie.split(",") : prev.unterkategorien,
       }));
     }
+    if (sort) setSortOrder(sort);
+    if (seite) setCurrentPage(Number(seite));
+
+    // Mark initial mount as done after first sync
+    isInitialMount.current = false;
   }, [searchParams]);
 
   // Fetch filter counts once on mount
@@ -92,33 +97,35 @@ function HomeContentInner() {
       .catch(() => {});
   }, []);
 
-  // Reset to page 1 when filters or sort change
+  // Reset to page 1 when filters or sort change (skip on initial mount)
   useEffect(() => {
+    if (isInitialMount.current) return;
     setCurrentPage(1);
   }, [filters, sortOrder]);
 
-  // Persist filter state to sessionStorage
+  // Sync filter state → URL via replaceState (so window.location.href captures everything)
   useEffect(() => {
-    try {
-      sessionStorage.setItem(SS_FILTERS, JSON.stringify(filters));
-      sessionStorage.setItem(SS_SORT, sortOrder);
-      sessionStorage.setItem(SS_PAGE, String(currentPage));
-    } catch { /* ignore */ }
-  }, [filters, sortOrder, currentPage]);
+    if (isInitialMount.current) return;
 
-  // Save current search URL for back navigation from listing detail
-  useEffect(() => {
-    try {
-      const params = new URLSearchParams();
-      if (filters.kategorien.length > 0) params.set("kategorie", filters.kategorien.join(","));
-      if (filters.kantone.length > 0) params.set("kanton", filters.kantone.join(","));
-      if (filters.marke) params.set("suche", filters.marke);
-      if (filters.preisMin) params.set("preisMin", filters.preisMin);
-      if (filters.preisMax) params.set("preisMax", filters.preisMax);
-      const qs = params.toString();
-      sessionStorage.setItem(SS_SEARCH_URL, qs ? `/?${qs}` : "/");
-    } catch { /* ignore */ }
-  }, [filters]);
+    const params = new URLSearchParams();
+    if (filters.kategorien.length > 0) params.set("kategorie", filters.kategorien.join(","));
+    if (filters.unterkategorien.length > 0) params.set("unterkategorie", filters.unterkategorien.join(","));
+    if (filters.kantone.length > 0) params.set("kanton", filters.kantone.join(","));
+    if (filters.marke) params.set("suche", filters.marke);
+    if (filters.preisMin) params.set("preisMin", filters.preisMin);
+    if (filters.preisMax) params.set("preisMax", filters.preisMax);
+    if (filters.zustand.length > 0) params.set("zustand", filters.zustand.join(","));
+    if (filters.rechtsstatus.length > 0) params.set("rechtsstatus", filters.rechtsstatus.join(","));
+    if (filters.kaliber.length > 0) params.set("kaliber", filters.kaliber.join(","));
+    if (sortOrder !== "neueste") params.set("sort", sortOrder);
+    if (currentPage > 1) params.set("seite", String(currentPage));
+
+    const qs = params.toString();
+    const newUrl = qs ? `/?${qs}` : "/";
+    if (newUrl !== window.location.pathname + window.location.search) {
+      window.history.replaceState(null, "", newUrl);
+    }
+  }, [filters, sortOrder, currentPage]);
 
   // Fetch listings based on filters + sort + page
   useEffect(() => {

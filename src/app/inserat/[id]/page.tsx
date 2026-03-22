@@ -111,10 +111,11 @@ export default function InseratDetailPage() {
   const [imageTransition, setImageTransition] = useState(false);
 
   // Read saved search URL for back navigation
-  const backUrlRef = useRef("/");
+  const [backUrl, setBackUrl] = useState("/");
   useEffect(() => {
     try {
-      backUrlRef.current = sessionStorage.getItem("gm_last_search_url") || "/";
+      const saved = sessionStorage.getItem("lastSearchUrl");
+      if (saved) setBackUrl(saved);
     } catch { /* ignore */ }
   }, []);
 
@@ -307,7 +308,7 @@ export default function InseratDetailPage() {
       <div className="mx-auto max-w-7xl px-4 py-4">
         <div className="flex items-center gap-2 text-sm">
           <Link
-            href={backUrlRef.current}
+            href={backUrl}
             className="flex items-center gap-1 font-medium text-green-700 hover:underline"
           >
             <ArrowLeft size={14} />
@@ -315,7 +316,7 @@ export default function InseratDetailPage() {
           </Link>
           <span className="text-gray-400">/</span>
           <nav className="flex items-center gap-1.5 text-neutral-500">
-            <Link href={backUrlRef.current} className="hover:text-brand-green transition-colors">
+            <Link href={backUrl} className="hover:text-brand-green transition-colors">
               {t("breadcrumb_home")}
             </Link>
             <ChevronRight size={14} className="text-neutral-300" />

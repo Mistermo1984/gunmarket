@@ -83,9 +83,25 @@ export default function ImageEditor({ imageUrl, onSave, onCancel }: ImageEditorP
       const imgW = imgRef.current.naturalWidth;
       const imgH = imgRef.current.naturalHeight;
 
+      console.log("[ImageEditor] Export state:", {
+        rotation,
+        isRotated,
+        zoom,
+        offsetX,
+        offsetY,
+        imgW,
+        imgH,
+      });
+
       // Set canvas size based on rotation
       exportCanvas.width = isRotated ? imgH : imgW;
       exportCanvas.height = isRotated ? imgW : imgH;
+
+      console.log("[ImageEditor] Export canvas:", {
+        canvasWidth: exportCanvas.width,
+        canvasHeight: exportCanvas.height,
+        swapped: isRotated,
+      });
 
       const ctx = exportCanvas.getContext("2d")!;
 
@@ -115,6 +131,12 @@ export default function ImageEditor({ imageUrl, onSave, onCancel }: ImageEditorP
       // Export as blob
       const blob = await new Promise<Blob | null>((resolve) => {
         exportCanvas.toBlob(resolve, "image/jpeg", 0.92);
+      });
+
+      console.log("[ImageEditor] Blob result:", {
+        blobSize: blob?.size,
+        blobType: blob?.type,
+        exportCanvasUsed: true,
       });
 
       if (!blob) {

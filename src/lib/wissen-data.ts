@@ -2145,64 +2145,36 @@ Die Springfield XD richtet sich an Schützen, die eine zuverlässige Polymerrahm
     hersteller: 'Remington',
     baujahr: '1962',
     kurzbeschreibung: 'Amerikas beliebtestes Präzisionsgewehr. Basis für M24 und M40 US-Scharfschützengewehre.',
-    inhalt: `<h2>Geschichte & Entwicklung</h2>
-<p>Die Remington Arms Company, gegründet 1816 in Ilion, New York, ist der älteste Waffenhersteller der USA. Die Model 700 wurde 1962 eingeführt und ist mit über 5 Millionen Exemplaren das meistverkaufte Zylinderverschlussgewehr aller Zeiten. Militärisch dient die 700 als Basis für das M24 SWS (US Army) und M40 (US Marines). Sie ist die Grundlage der modernen taktischen Präzisionsgewehr-Industrie. 2020 meldete Remington Insolvenz an; die Marke wurde aufgekauft und die Produktion wird fortgeführt.</p>
+    inhalt: `<h2>Geschichte &amp; Entwicklung</h2>
+<p>Die Remington Arms Company, gegründet 1816 von Eliphalet Remington in Ilion, New York, ist der älteste kontinuierlich operierende Waffenhersteller der USA. Die Model 700 wurde 1962 als Nachfolgerin der Model 721 und 722 eingeführt und entwickelte sich mit über 5 Millionen verkauften Exemplaren zum meistverkauften Zylinderverschlussgewehr aller Zeiten. Die militärische Karriere der 700 begann, als die US-Marine Corps sie als Basis für das M40-Scharfschützengewehr auswählte, gefolgt von der US Army mit dem M24 Sniper Weapon System. Diese militärische Anerkennung begründete den Ruf der 700 als ultimative Präzisionsplattform und legte den Grundstein für eine ganze Industrie von Aftermarket-Herstellern. 2020 meldete Remington Insolvenz an, die Marke wurde aufgekauft, und die Produktion wird unter der Roundhill Group Industries fortgeführt.</p>
 
-<h2>Technik & Konstruktion</h2>
-<p>Die 700 basiert auf einem <strong>zylindrischen Systemgehäuse</strong>, aus einem Stück Stahl gedreht — extrem steif und perfekte Grundlage für Präzisionsumbauten. Der <strong>Zwei-Warzen-Push-Feed-Verschluss</strong> ist einfach, robust und bewährt. Der aktuelle <strong>X-Mark Pro Trigger</strong> ist einstellbar und bietet einen sauberen Abzug. Die wahre Stärke liegt in der <strong>Aftermarket-Kompatibilität</strong>: Kein anderes Gewehr hat ein so grosses Zubehör-Ökosystem.</p>
+<h2>Technik &amp; Konstruktion</h2>
+<p>Das Herzstück der Remington 700 ist ihr zylindrisches Systemgehäuse (Receiver), das aus einem einzigen Stück Stahl gedreht wird. Diese runde Form bietet maximale Steifigkeit bei minimalem Gewicht und ist die perfekte Grundlage für Präzisionsumbauten, da sie sich ideal in Chassis-Systeme einbetten lässt. Der Zwei-Warzen-Push-Feed-Verschluss verriegelt direkt hinter dem Patronenlager und bietet eine sichere Verriegelung. Der aktuelle X-Mark Pro Trigger ist werksseitig einstellbar und bietet einen deutlich besseren Druckpunkt als der kontroverse Walker-Abzug früherer Modelle.</p>
+<h3>Technische Daten</h3>
 <ul>
-<li><strong>Kaliber:</strong> Über 40 Kaliber (.17 Rem bis .458 Win Mag)</li>
+<li><strong>Kaliber:</strong> über 40 Kaliber (.17 Rem bis .458 Win Mag)</li>
 <li><strong>System:</strong> Repetierbüchse mit 2-Warzen-Push-Feed-Verschluss</li>
-<li><strong>Magazin:</strong> 3–5 Schuss (internes oder abnehmbares Magazin)</li>
-<li><strong>Lauflänge:</strong> 508 mm bis 660 mm</li>
+<li><strong>Magazin:</strong> 3 bis 5 Schuss (intern oder abnehmbar)</li>
+<li><strong>Lauflänge:</strong> 508 bis 660 mm</li>
 <li><strong>Gewicht:</strong> ab 3,3 kg</li>
-<li><strong>Abzug:</strong> X-Mark Pro (einstellbar)</li>
+<li><strong>Abzug:</strong> X-Mark Pro, einstellbar</li>
 </ul>
+<p>Die wahre Stärke der 700 liegt in ihrer unübertroffenen Aftermarket-Kompatibilität: Hunderte von Herstellern bieten Läufe, Abzüge, Chassis-Systeme, Verschlussknäufe und Magazinboden-Umbauten an. Eine 700 kann schrittweise von einem Basis-Jagdgewehr zu einem wettkampffähigen Präzisionsgewehr aufgerüstet werden.</p>
 
-<h2>Varianten & Modelle</h2>
-<ul>
-<li><strong>700 SPS:</strong> Sport-Einstiegsmodell mit Kunststoffschaft.</li>
-<li><strong>700 CDL:</strong> Classic Deluxe mit Holzschaft.</li>
-<li><strong>700 5R:</strong> Polygonaler Drall für beste Präzision.</li>
-<li><strong>700 Long Range:</strong> Schwerer 26-Zoll-Lauf.</li>
-<li><strong>700 PCR:</strong> MDT-Aluminium-Chassis — taktische Variante ab Werk.</li>
-<li><strong>700 Sendero SF II:</strong> Edelstahllauf mit Fluting.</li>
-</ul>
+<h2>Varianten &amp; Modelle</h2>
+<p>Die Modellpalette der 700 ist umfangreich. Die <strong>700 SPS</strong> ist das Sport-Einstiegsmodell mit Kunststoffschaft. Die <strong>700 CDL</strong> besitzt einen eleganten Nussbaumschaft. Die <strong>700 5R</strong> verfügt über einen Lauf mit fünf Zügen für weniger Geschossverformung und bessere Präzision. Die <strong>700 Long Range</strong> hat einen schweren 26-Zoll-Lauf. Die <strong>700 PCR</strong> kommt ab Werk mit MDT-Aluminium-Chassis als taktische Variante. Die <strong>700 Sendero SF II</strong> bietet einen Edelstahllauf mit Fluting für Gewichtsersparnis und bessere Kühlung.</p>
 
-<h2>Kaliber & Ballistik</h2>
-<p>Die 700 ist in mehr Kalibern erhältlich als jede andere Repetierbüchse:</p>
-<ul>
-<li><strong>.308 Winchester:</strong> Standardkaliber für Präzisionsschiessen.</li>
-<li><strong>6,5 Creedmoor:</strong> Modernes Langstreckenkaliber.</li>
-<li><strong>.30-06 Springfield:</strong> Amerikanischer Klassiker.</li>
-<li><strong>.300 Win Mag:</strong> Für weite Distanzen.</li>
-<li><strong>.223 Remington:</strong> Für Varmint-Schiessen.</li>
-</ul>
-<p>Standard-Modelle liefern 1–1,5 MOA, 5R und Long-Range schaffen Sub-MOA. Mit Custom-Lauf sind 0,3–0,5 MOA möglich.</p>
+<h2>Kaliber &amp; Ballistik</h2>
+<p>Die 700 ist in mehr Kalibern erhältlich als jede andere Repetierbüchse. Die gängigsten: <strong>.308 Winchester</strong> als Standardkaliber für Präzisionsschiessen mit etwa 3500 Joule. <strong>6,5 Creedmoor</strong> als modernes Langstreckenkaliber mit überragenden ballistischen Koeffizienten. <strong>.30-06 Springfield</strong> als amerikanischer Jagdklassiker. <strong>.300 Win Mag</strong> für weite Distanzen mit rund 4500 Joule. <strong>.223 Remington</strong> für Varmint-Schiessen. Standard-Modelle liefern 1 bis 1,5 MOA, 5R und Long Range schaffen Sub-MOA. Mit Custom-Lauf von Bartlein, Krieger oder Shilen sind 0,3 bis 0,5 MOA erreichbar.</p>
 
-<h2>Schweizer Markt & Preisentwicklung</h2>
-<p>Die 700 ist in der Schweiz weniger verbreitet als europäische Büchsen, hat aber eine treue Anhängerschaft unter Präzisionsschützen. Preise (Neuwaffen):</p>
-<ul>
-<li><strong>700 SPS:</strong> CHF 900 – 1'200</li>
-<li><strong>700 CDL:</strong> CHF 1'200 – 1'500</li>
-<li><strong>700 5R:</strong> CHF 1'300 – 1'600</li>
-<li><strong>700 Long Range:</strong> CHF 1'200 – 1'500</li>
-<li><strong>700 PCR:</strong> CHF 1'800 – 2'200</li>
-</ul>
-<p>Gebrauchte 700er ab CHF 600–900. Custom-Umbauten kosten CHF 3'000–5'000.</p>
+<h2>Schweizer Markt &amp; Preisentwicklung</h2>
+<p>Die 700 ist in der Schweiz weniger verbreitet als europäische Büchsen, hat aber eine treue Anhängerschaft unter Präzisionsschützen. Neue 700 SPS kosten CHF 900 bis 1200, die CDL CHF 1200 bis 1500, die 5R CHF 1300 bis 1600 und die PCR CHF 1800 bis 2200. Gebrauchte 700er in gutem Zustand sind ab CHF 600 bis 900 erhältlich und bieten ein ausgezeichnetes Preis-Leistungs-Verhältnis als Umbauprojekt-Basis. Custom-Umbauten mit Aftermarket-Lauf, Abzug und Chassis kosten komplett CHF 3000 bis 5000.</p>
 
-<h2>Pflege, Wartung & Zubehör</h2>
-<ul>
-<li><strong>Laufreinigung:</strong> Regelmässig reinigen, besonders Chromoly-Stahl-Läufe.</li>
-<li><strong>Verschluss:</strong> Zwei-Warzen-Verschluss reinigen und leicht ölen.</li>
-<li><strong>Abzug:</strong> X-Mark Pro auf Funktion prüfen. Ältere Walker-Abzüge ersetzen.</li>
-<li><strong>Schaft/Chassis:</strong> Kunststoff pflegeleicht; Holz mit Schaftöl behandeln.</li>
-</ul>
-<p>Empfohlenes Zubehör: TriggerTech- oder Timney-Abzug, MDT- oder KRG-Chassis, Custom-Lauf, Badger-Ordnance-Magazinboden.</p>
+<h2>Pflege, Wartung &amp; Zubehör</h2>
+<p>Die Pflege der 700 ist unkompliziert. Der Lauf sollte nach jedem Schiesstag mit hochwertigem Putzstock und Lösungsmittel gereinigt werden. Der Verschluss lässt sich durch Drücken des Verschlussfanghebels entnehmen und sollte regelmässig gereinigt werden. Ältere Modelle mit Walker-Abzug sollten auf TriggerTech oder Timney umgerüstet werden. Empfehlenswertes Zubehör: Aftermarket-Abzug (CHF 200 bis 400), Chassis-System von MDT oder KRG (CHF 500 bis 1500), Custom-Lauf (CHF 400 bis 800 plus Einbau), Badger-Ordnance-Magazinboden (CHF 150 bis 300).</p>
 
-<h2>Fazit & Kaufempfehlung</h2>
-<p>Die Remington 700 ist die meistverbreitete Plattform für Präzisionsgewehre weltweit. Ihre Stärke liegt im riesigen Aftermarket-Ökosystem. Für Schweizer Schützen, die eine taktische Präzisionsplattform suchen, ist die <strong>700 PCR</strong> ein guter Einstieg. Budget-Projekte starten mit einer gebrauchten <strong>700 SPS</strong> plus Custom-Lauf und Abzug. Für die Jagd gibt es in Europa bessere Alternativen — die 700 spielt ihre Stärken im Präzisionssport aus.</p>
-<p><em>Rechtsstatus Schweiz: Waffenerwerbsschein (WES) erforderlich.</em></p>`,
+<h2>Fazit &amp; Kaufempfehlung</h2>
+<p>Die Remington 700 ist die meistverbreitete Plattform für Präzisionsgewehre weltweit und verdankt diesen Status ihrem unübertroffenen Aftermarket-Ökosystem. Für Schweizer Schützen, die eine taktische Präzisionsplattform suchen, ist die 700 PCR ein hervorragender Einstieg. Budget-Projekte starten ideal mit einer gebrauchten 700 SPS plus Custom-Lauf und Abzug. Für die reine Jagd gibt es in Europa mit Blaser R8, Sauer 404 oder Tikka T3x bessere Alternativen. Die 700 spielt ihre wahren Stärken im Präzisionssport und taktischen Schiessen aus.</p>`,
     rechtsstatus: 'frei',
     typischeKaliber: ['.308 Win', '.30-06', '6,5 Creedmoor', '.300 Win Mag'],
     tags: ['Büchse', 'Remington', '700', 'USA', 'Scharfschütze', 'Militär'],
@@ -2249,49 +2221,36 @@ Die Springfield XD richtet sich an Schützen, die eine zuverlässige Polymerrahm
     hersteller: 'SIG',
     baujahr: '1991',
     kurzbeschreibung: 'Schweizer Polizei-Scharfschützengewehr. Standard bei Kantonspolizeien. <1 MOA auf 300m.',
-    inhalt: `<h2>Geschichte & Entwicklung</h2>
-<p>Die SIG SSG 3000 wurde Anfang der 1990er von SIG Sauer als Scharfschützengewehr für Militär und Polizei entwickelt. Sie basiert auf dem Sauer 200 STR und verbindet deutsche Sauer-Präzision mit Schweizer SIG-Qualität. In der Schweiz ist sie das Standard-Präzisionsgewehr vieler Kantonspolizeien. Die Entwicklung fiel in eine Zeit steigender Anforderungen an polizeiliche Präzisionsgewehre durch Geiselnahmen und Terrorbedrohungen. SIG Sauer ist heute in Eckernförde und Exeter ansässig.</p>
-<h2>Technik & Konstruktion</h2>
-<p>Die SSG 3000 verwendet einen <strong>Sechs-Warzen-Verschluss mit 60 Grad Öffnungswinkel</strong> — einer der kürzesten aller Scharfschützengewehre. Der kaltgehämmerte Lauf liefert garantierte <strong>0,5 MOA</strong> ab Werk. Der Matchabzug ist 1–1,8 kg einstellbar und bricht sauber. Der McMillan-Fiberglas-Schaft mit Aluminium-Bettungsblock absorbiert Vibrationen und ist witterungsbeständig.</p>
+    inhalt: `<h2>Geschichte &amp; Entwicklung</h2>
+<p>Die SIG SSG 3000 wurde Anfang der 1990er-Jahre als Gemeinschaftsprodukt von SIG (Schweizerische Industrie-Gesellschaft, Neuhausen am Rheinfall) und J.P. Sauer und Sohn (Eckernförde, Deutschland) entwickelt. Sie basiert auf dem Sauer 200 STR und verbindet deutsche Sauer-Präzision mit der legendären Schweizer SIG-Qualität. Die Entwicklung fiel in eine Zeit steigender Anforderungen an polizeiliche Präzisionsgewehre, als Geiselnahmen und Terrorbedrohungen die Notwendigkeit eines hochpräzisen Einsatzmittels für Präzisionsschützen deutlich machten. In der Schweiz wurde sie zum Standard-Scharfschützengewehr vieler Kantonspolizeien. International wird sie von Spezialeinheiten in über 20 Ländern eingesetzt. Die SSG 3000 ist inzwischen nicht mehr in Produktion, was ihren Status als Sammlerstück stetig steigert.</p>
+<h2>Technik &amp; Konstruktion</h2>
+<p>Die SSG 3000 zeichnet sich durch einen Sechs-Warzen-Verschluss mit einem Öffnungswinkel von nur 60 Grad aus. Dieser kurze Öffnungswinkel gehört zu den kürzesten aller Scharfschützengewehre und ermöglicht ein extrem schnelles Repetieren, ohne dass der Schütze seinen Anschlag wesentlich verändern muss. Der kaltgehämmerte Lauf wird aus hochwertigem Laufstahl gefertigt und liefert ab Werk eine garantierte Präzision von 0,5 MOA.</p>
+<h3>Technische Daten</h3>
 <ul>
-<li><strong>Kaliber:</strong> .308 Winchester (7,62x51 mm NATO)</li>
-<li><strong>System:</strong> Repetierbüchse mit 6-Warzen-Verschluss (60 Grad)</li>
-<li><strong>Magazin:</strong> 5 Schuss (abnehmbares Kastenmagazin)</li>
-<li><strong>Lauflänge:</strong> 610 mm</li>
+<li><strong>Kaliber:</strong> .308 Winchester (7,62x51mm NATO)</li>
+<li><strong>System:</strong> Repetierbüchse mit 6-Warzen-Verschluss (60 Grad Öffnung)</li>
+<li><strong>Magazin:</strong> 5 Schuss, abnehmbares Kastenmagazin</li>
+<li><strong>Lauflänge:</strong> 610 mm (24 Zoll)</li>
 <li><strong>Gesamtlänge:</strong> 1180 mm</li>
-<li><strong>Gewicht:</strong> 5,9 kg (ohne Optik)</li>
-<li><strong>Abzug:</strong> Match-Abzug, einstellbar 1–1,8 kg</li>
+<li><strong>Gewicht:</strong> 5,9 kg ohne Optik</li>
+<li><strong>Abzug:</strong> Match-Abzug, einstellbar 1 bis 1,8 kg</li>
 </ul>
-<h2>Varianten & Modelle</h2>
-<ul>
-<li><strong>SSG 3000:</strong> Standardmodell mit McMillan-Schaft — Basis für Polizei und Militär.</li>
-<li><strong>SSG 3000 Patrol:</strong> Polizeiversion mit klappbarem Hinterschaft und verstellbarer Schaftbacke.</li>
-<li><strong>SSG 3000 Tactical:</strong> Erweitert mit Picatinny-Schiene und Zubehörschienen am Vorderschaft.</li>
-<li><strong>SIG Cross:</strong> Moderner Nachfolger (2020) mit Klappschaft und Chassis-System.</li>
-<li><strong>Sauer S404 Synchro XTC:</strong> Jagdliche Verwandte aus dem Hause Sauer.</li>
-</ul>
-<h2>Kaliber & Ballistik</h2>
-<p>Die SSG 3000 ist auf <strong>.308 Winchester</strong> ausgelegt — das weltweite Standardkaliber für Scharfschützengewehre. Mündungsenergie ca. 3500 Joule mit 168-gr-HPBT-Match, effektive Reichweite bis 800 m. Typische Munition: Federal Gold Medal Match, Lapua Scenar, Swiss P Target. Die garantierte 0,5 MOA bedeutet auf 300 m einen Streukreis unter 5 cm. Mit Swiss-P-Munition erreichen viele SSG 3000 sogar 0,3 MOA.</p>
-<h2>Schweizer Markt & Preisentwicklung</h2>
-<p>Die SSG 3000 geniesst als SIG-Produkt höchstes Vertrauen bei Behörden und Sportschützen. Preise:</p>
-<ul>
-<li><strong>SSG 3000 (Neuwaffe, falls verfügbar):</strong> CHF 3500 – 4500</li>
-<li><strong>SSG 3000 Patrol:</strong> CHF 4000 – 5000</li>
-<li><strong>SIG Cross (Nachfolger):</strong> CHF 2200 – 2800</li>
-</ul>
-<p>Gebrauchte SSG 3000 erzielen CHF 2500–3500. Ehemalige Polizeiwaffen gelegentlich ab CHF 2000. Preise steigen, da die Produktion eingestellt wurde.</p>
-<h2>Pflege, Wartung & Zubehör</h2>
-<ul>
-<li><strong>Laufreinigung:</strong> Nach jedem Schiessen reinigen. Alle 200–300 Schuss Kupferlöser verwenden.</li>
-<li><strong>Verschluss:</strong> 6-Warzen-Verschluss reinigen und leicht ölen.</li>
-<li><strong>Matchabzug:</strong> Nicht selbst zerlegen — bei Problemen Büchsenmacher konsultieren.</li>
-<li><strong>McMillan-Schaft:</strong> Fiberglas ist witterungsbeständig und pflegeleicht.</li>
-<li><strong>Optik:</strong> Montage regelmässig auf festen Sitz prüfen.</li>
-</ul>
-<p>Empfohlenes Zubehör: Schmidt und Bender oder Nightforce Zielfernrohr, Harris-Zweibein, Gewehrauflagesack, Swiss-P-Match-Munition.</p>
-<h2>Fazit & Kaufempfehlung</h2>
-<p>Die SIG SSG 3000 ist eines der besten polizeilichen Scharfschützengewehre überhaupt. Sub-MOA-Präzision, schneller 60-Grad-Verschluss und Schweizer Qualität machen sie zur Legende. Für Schweizer Präzisionsschützen ist sie ausgezeichnet — sofern man ein Exemplar findet. Wer moderner will, greift zum <strong>SIG Cross</strong>. Wer eine SSG 3000 besitzt, sollte sie behalten — der Wert steigt kontinuierlich.</p>
-<p><em>Rechtsstatus Schweiz: Waffenerwerbsschein (WES) erforderlich.</em></p>`,
+<p>Der Match-Abzug bietet einen glasklaren, trockenen Druckpunkt ohne Kriechen. Der McMillan-Fiberglas-Schaft mit integriertem Aluminium-Bettungsblock gewährleistet eine spannungsfreie Systembettung und ist vollständig witterungsbeständig. Er verändert seinen Schwingungspunkt weder bei Hitze noch bei Kälte, was für ein Polizeigewehr entscheidend ist. Die Schaftkappe ist in der Länge verstellbar, und ein verstellbares Kammstück erlaubt die Anpassung an den Schützen.</p>
+
+<h2>Varianten &amp; Modelle</h2>
+<p>Die SSG 3000 wurde in mehreren Varianten angeboten. Das <strong>Standardmodell</strong> mit McMillan-Schaft ist die Basisversion für Polizei und Militär. Die <strong>SSG 3000 Patrol</strong> ist die erweiterte Polizeiversion mit klappbarem Hinterschaft und verstellbarer Schaftbacke. Die <strong>SSG 3000 Tactical</strong> bietet zusätzliche Picatinny-Schienen am Vorderschaft für Anbaugeräte. Als Nachfolger positioniert SIG Sauer die <strong>SIG Cross</strong> (2020), eine leichte Repetierbüchse mit Klappschaft und Chassis-System. Die verwandte <strong>Sauer S404 Synchro XTC</strong> ist die jagdliche Variante mit vergleichbarer Systemtechnik. Innerhalb der SSG-Familie existiert auch die ältere <strong>SSG 2000</strong> als geschätztes Sammlerstück.</p>
+
+<h2>Kaliber &amp; Ballistik</h2>
+<p>Die SSG 3000 ist ausschliesslich für .308 Winchester (7,62x51mm NATO) kammert, das weltweite Standardkaliber für Scharfschützengewehre. Mit 168-Grain-HPBT-Match-Munition (Federal Gold Medal Match, Lapua Scenar, Swiss P Target) entwickelt die .308 Win rund 3500 Joule Mündungsenergie bei etwa 790 m/s. Die effektive Reichweite liegt bei 800 Metern für Punktziele. Die garantierte 0,5 MOA bedeutet auf 100 Meter einen Streukreis von etwa 15 mm und auf 300 Meter unter 50 mm. Viele SSG 3000 übertreffen diese Garantie und schiessen mit Swiss-P-Munition 0,3 MOA oder besser. Für den polizeilichen Einsatz unter 200 Metern bietet die SSG 3000 mehr als ausreichende Präzision. Die Lauflebensdauer beträgt etwa 5000 bis 8000 Schuss bei sorgfältiger Pflege.</p>
+
+<h2>Schweizer Markt &amp; Preisentwicklung</h2>
+<p>Die SSG 3000 geniesst als SIG-Produkt mit Schweizer Wurzeln höchstes Vertrauen. Da die Produktion eingestellt wurde, sind Neuwaffen nur noch als Restbestände verfügbar und kosten CHF 3500 bis 4500 (Standard) bzw. CHF 4000 bis 5000 (Patrol). Der SIG Cross ist neu für CHF 2200 bis 2800 erhältlich. Gebrauchte SSG 3000 erzielen CHF 2500 bis 3500. Ehemalige Polizeiwaffen beginnen ab CHF 2000, haben aber oft höhere Schusszahlen. Die Preisentwicklung zeigt klar nach oben, da das Angebot schrumpft. Magazine kosten CHF 60 bis 100 als Ersatzteil und werden zunehmend rar.</p>
+
+<h2>Pflege, Wartung &amp; Zubehör</h2>
+<p>Die Pflege der SSG 3000 sollte gewissenhaft erfolgen. Der Lauf sollte nach jedem Schiesstag gereinigt werden, alle 200 bis 300 Schuss mit Kupferlöser. Der Verschluss sollte regelmässig zerlegt, gereinigt und leicht geölt werden. Der Match-Abzug sollte nicht vom Laien zerlegt werden, bei Problemen ist ein Büchsenmacher zu konsultieren. Der McMillan-Schaft ist pflegeleicht und witterungsbeständig. Empfehlenswertes Zubehör umfasst ein Zielfernrohr von Schmidt und Bender (PM II Serie) oder Nightforce, ein Harris- oder Atlas-Zweibein, einen Gewehrauflagesack und Swiss-P-Match-Munition. Montageschrauben regelmässig auf festen Sitz prüfen.</p>
+
+<h2>Fazit &amp; Kaufempfehlung</h2>
+<p>Die SIG SSG 3000 ist eines der besten polizeilichen Scharfschützengewehre, die je gebaut wurden. Sub-MOA-Präzision, schneller 60-Grad-Verschluss, erstklassiger Match-Abzug und Schweizer Qualitätsanspruch machen sie zur Legende. Für Schweizer Präzisionsschützen ist sie eine ausgezeichnete Wahl, sofern man ein Exemplar findet. Da die Produktion eingestellt wurde, wird sie zunehmend zum Sammlerstück. Wer eine modernere Alternative sucht, findet im SIG Cross einen würdigen Nachfolger. Wer eine SSG 3000 besitzt, sollte sie behalten: Der Wert steigt kontinuierlich.</p>`,
     rechtsstatus: 'frei',
     typischeKaliber: ['.308 Win'],
     tags: ['Büchse', 'SIG', 'SSG3000', 'Scharfschütze', 'Polizei', 'Schweiz'],
@@ -2304,7 +2263,36 @@ Die Springfield XD richtet sich an Schützen, die eine zuverlässige Polymerrahm
     hersteller: 'Anschütz',
     baujahr: '1960er',
     kurzbeschreibung: 'Das olympische KK-Wettkampfgewehr. Weltklasse Präzision in .22 LR. Olympia-Standard.',
-    inhalt: `ANSCHUETZ_1913_PLACEHOLDER`,
+    inhalt: `<h2>Geschichte &amp; Entwicklung</h2>
+<p>Die Firma J.G. Anschütz GmbH aus Ulm an der Donau zählt zu den renommiertesten Herstellern von Wettkampf-Kleinkalibergewehren weltweit. Die Firmengeschichte reicht bis 1856 zurück, als Julius Gottfried Anschütz in Zella-Mehlis eine Waffenfabrik gründete. Nach dem Zweiten Weltkrieg wurde die Produktion nach Ulm verlegt, wo Anschütz bis heute hochpräzise Sportgewehre fertigt. Die Modellreihe 1900 wurde in den 1960er-Jahren als olympisches Wettkampfgewehr eingeführt und seither kontinuierlich weiterentwickelt. Die Anschütz 1913 ist die aktuelle Spitzenversion für den Dreistellungsmatch-Wettkampf (liegend, stehend, kniend), während die 1912 als leichtere Version für Frauen- und Juniorenwettbewerbe konzipiert ist. Die 1913 hat an Olympischen Spielen, Weltmeisterschaften und Europameisterschaften mehr Medaillen gewonnen als jedes andere Kleinkalibergewehr. Der Grossteil der internationalen Spitzenschützen vertraut auf Anschütz, und die Marke ist im olympischen Schiesssport ein Synonym für Höchstpräzision.</p>
+
+<h2>Technik &amp; Konstruktion</h2>
+<p>Die Anschütz 1913 arbeitet mit einem Einzellade-Geradezugverschluss, der speziell für den Wettkampfbetrieb optimiert ist. Der Verschluss wird beim Laden gerade nach hinten gezogen und nach dem Einlegen der Patrone wieder nach vorne geschoben, ohne eine Drehbewegung. Dies ermöglicht extrem schnelles und störungsfreies Repetieren. Der Lauf ist ein Match-Präzisionslauf aus speziellem Laufstahl, kaltgehämmert und mit höchster Sorgfalt gefertigt.</p>
+<h3>Technische Daten</h3>
+<ul>
+<li><strong>Kaliber:</strong> .22 LR (Long Rifle)</li>
+<li><strong>System:</strong> Einzellader mit Geradezugverschluss</li>
+<li><strong>Lauflänge:</strong> 690 mm</li>
+<li><strong>Gesamtlänge:</strong> variabel (verstellbarer Schaft)</li>
+<li><strong>Gewicht:</strong> ca. 6,4 kg (mit Schaftgewichten anpassbar)</li>
+<li><strong>Abzug:</strong> Anschütz 5018 Zweistufen-Match-Abzug, einstellbar ab 50 g</li>
+</ul>
+<p>Der Abzug ist das Herzstück der 1913: Der Anschütz 5018 ist ein Zweistufen-Match-Abzug, der in Vorzugsgewicht, Druckpunkt, Weg und Nachzug individuell einstellbar ist. Das Abzugsgewicht lässt sich bis auf 50 Gramm reduzieren. Der Schaft ist ein vollständig verstellbares Aluminium-Chassis mit einstellbarer Schaftkappe (Höhe, Neigung, Seitenversatz), verstellbarem Kammstück, verstellbarer Handauflage und Schaftgewichten zur Schwerpunktoptimierung.</p>
+
+<h2>Varianten &amp; Modelle</h2>
+<p>Anschütz bietet mehrere Modelle in der 1900er-Serie an. Die <strong>1913</strong> ist das Flaggschiff für den Dreistellungsmatch. Die <strong>1912</strong> ist eine leichtere Version für Frauen- und Juniorenwettbewerbe. Die <strong>1907</strong> ist ein Einzelladegewehr für ISSF-Liegendwettbewerbe. Die <strong>1903</strong> ist eine Jugendversion mit angepasster Geometrie. Für den Biathlon produziert Anschütz die legendäre <strong>1827 Fortner</strong> mit einzigartigem Geradezugverschluss. Die <strong>54.18</strong> ist die Referenz für Benchrest-Wettkämpfe. Alle Modelle teilen die gleiche Fertigungsphilosophie: Jeder Lauf wird einzeln auf Präzision getestet.</p>
+
+<h2>Kaliber &amp; Ballistik</h2>
+<p>Die 1913 ist ausschliesslich für .22 LR kammert, das Standard-Wettkampfkaliber für alle ISSF-Disziplinen bis 50 Meter. Im Wettkampf wird ausschliesslich Match-Munition höchster Qualität verwendet. Eley Tenex, Lapua Midas+, RWS R50 und SK Rifle Match gehören zu den bevorzugten Laborierungen. Wettkampfschützen testen Dutzende Munitionschargen, um die optimale Kombination für ihren Lauf zu finden. Match-Munition der Spitzenklasse produziert aus einer 1913 Streukreise von 8 bis 12 mm auf 50 Meter, etwa 0,5 MOA. Die Mündungsgeschwindigkeit liegt bei 320 bis 330 m/s, knapp unter der Schallgeschwindigkeit. Premium-Match-Munition kostet CHF 15 bis 25 pro 50 Patronen.</p>
+
+<h2>Schweizer Markt &amp; Preisentwicklung</h2>
+<p>Die Anschütz 1913 gehört zum Premium-Segment und ist über spezialisierte Fachhändler erhältlich. Neue 1913-Modelle kosten CHF 3500 bis 5000. Die 1912 liegt bei CHF 3200 bis 4500. Dazu kommen Diopter-Visierung (CHF 300 bis 800) und Schaftanpassungen. Gebraucht werden 1913 für CHF 2000 bis 3500 gehandelt. Ältere Modelle sind für CHF 1200 bis 2500 erhältlich. Für Einsteiger bietet die 1710 eine günstigere Alternative (CHF 1200 bis 1800 neu). Die 1903 als Jugendmodell kostet CHF 2500 bis 3500.</p>
+
+<h2>Pflege, Wartung &amp; Zubehör</h2>
+<p>Die Pflege muss mit besonderer Sorgfalt erfolgen. Der Lauf sollte regelmässig, aber nicht übertrieben gereinigt werden: Viele Wettkampfschützen reinigen erst nach 200 bis 500 Schuss, da ein leicht belegter Lauf oft präziser schiesst. Zur Reinigung werden Carbon-Putzstöcke, Kleinkaliberbürsten und milde Lösungsmittel verwendet. Wichtiges Zubehör umfasst Diopter-Visierung (Anschütz, Centra oder AHG), Schiesshandschuh, Schiessriemen, Schiessjacke und -hose, Unterlegkeile und einen Gewehrkoffer. Die Dokumentation von Munitionschargen ist für Wettkampfschützen unerlässlich.</p>
+
+<h2>Fazit &amp; Kaufempfehlung</h2>
+<p>Die Anschütz 1913 ist das Mass aller Dinge im olympischen Kleinkaliber-Wettkampfschiessen. Wer ernsthaft ISSF-Disziplinen betreiben möchte, kommt an Anschütz kaum vorbei. Die Investition ist erheblich, zahlt sich aber durch jahrzehntelange Nutzbarkeit und herausragende Präzision aus. Für Vereinsschützen ist die 1907 oder eine gebrauchte 1913 eine sinnvolle Wahl. Einsteiger sollten mit einem günstigeren Modell wie der 1710 beginnen. Eine Anschütz ist eine Anschaffung fürs Leben.</p>`,
     rechtsstatus: 'frei',
     typischeKaliber: ['.22 LR'],
     tags: ['KK', 'Anschütz', 'Olympisch', 'Wettkampf', 'Präzision'],
@@ -2541,30 +2529,37 @@ Die Springfield XD richtet sich an Schützen, die eine zuverlässige Polymerrahm
     hersteller: 'Accuracy International',
     baujahr: '1982',
     kurzbeschreibung: 'Das Referenz-Scharfschützengewehr britischer Spezialeinheiten. Weltrekord: 2475m (Craig Harrison, 2009).',
-    inhalt: `## Accuracy International AWM — Scharfschützengewehr der Spezialeinheiten
-Die Accuracy International Arctic Warfare Magnum (AWM) wurde in den 1990er Jahren als Magnum-Version der AW-Serie entwickelt. Sie ist das Scharfschützengewehr zahlreicher Spezialeinheiten weltweit und hält den Rekord für den längsten bestätigten Scharfschützen-Treffer (2'475m, 2009).
+    inhalt: `<h2>Geschichte &amp; Entwicklung</h2>
+<p>Die Geschichte von Accuracy International beginnt 1978 in Portsmouth, England, als der Olympia-Schütze Malcolm Cooper und der Ingenieur Dave Walls beschlossen, das beste Scharfschützengewehr der Welt zu bauen. Ihr erstes Modell, die PM (Precision Marksman), gewann 1982 die Ausschreibung des britischen Militärs als L96A1 und ersetzte die veraltete Lee-Enfield L42A1. In den 1990er-Jahren folgte die Arctic Warfare (AW) Serie, die für extreme Kältebedingungen optimiert wurde und bei der schwedischen Armee als PSG 90 in Dienst gestellt wurde. Die AWM (Arctic Warfare Magnum) erweiterte das Konzept auf das Kaliber .338 Lapua Magnum und wurde als L115A3 beim britischen Militär eingeführt. 2009 erlangte die AWM Weltberühmtheit, als Corporal Craig Harrison damit den längsten bestätigten Scharfschützentreffer der Geschichte über 2475 Meter erzielte. Die AXMC stellt die neueste Evolution dar und bietet ein vollständig modulares Chassissystem mit Kaliberwechsel.</p>
 
-## Technische Daten
-- Kaliber: .338 Lapua Magnum (auch .300 Win Mag)
-- System: Repetierbüchse mit Zylinderverschluss, 6 Verriegelungswarzen
-- Magazin: 5 Schuss (abnehmbares Kastenmagazin)
-- Lauflänge: 686mm (27")
-- Gesamtlänge: 1230mm
-- Gewicht: 6,9 kg (ohne Optik)
-- Abzug: Einstellbar, ab 1,5 kg
+<h2>Technik &amp; Konstruktion</h2>
+<p>Das Herzstück aller AI-Gewehre ist das revolutionäre Chassis-System, das 1982 die Waffenwelt veränderte. Statt eines traditionellen Holz- oder Kunststoffschaftes verwendete AI ein Aluminium-Chassis, das System und Lauf in einem steifen Rahmen aufnimmt und mit Polymerverkleidungen umhüllt. Dieses Konzept war damals revolutionär und ist heute der Standard im modernen Präzisionsbüchsenbau. Der Verschluss arbeitet mit sechs Verriegelungswarzen für maximale Festigkeit und einen kurzen Öffnungswinkel von 60 Grad.</p>
+<h3>Technische Daten (AWM)</h3>
+<ul>
+<li><strong>Kaliber:</strong> .338 Lapua Magnum (auch .300 Win Mag, .308 Win)</li>
+<li><strong>System:</strong> Repetierbüchse, Zylinderverschluss mit 6 Verriegelungswarzen</li>
+<li><strong>Magazin:</strong> 5 Schuss, abnehmbares Kastenmagazin</li>
+<li><strong>Lauflänge:</strong> 686 mm (27 Zoll)</li>
+<li><strong>Gesamtlänge:</strong> 1230 mm (Schaft ausgeklappt)</li>
+<li><strong>Gewicht:</strong> 6,9 kg ohne Optik</li>
+<li><strong>Abzug:</strong> Einstellbar ab 1,5 kg</li>
+</ul>
+<p>Der klappbare Schaft schwenkt nach links und reduziert die Transportlänge erheblich. Die Schaftkappe ist in Länge und Höhe verstellbar, ebenso das Kammstück. Die Montageschiene bietet 20 MOA Vorlage für extreme Distanzen. Die Präzision ist legendär: Sub-0,5-MOA-Streukreise sind mit guter Munition Standard, viele Exemplare schiessen unter 0,3 MOA. Die Lauflebensdauer liegt bei etwa 3000 bis 5000 Schuss in .338 Lapua Magnum.</p>
 
-## Besonderheiten
-Das AI-Chassis-System (Aluminium-Rahmen mit Polymerverkleidung) war 1982 revolutionär — heute ist es Standard. Der Folding Stock klappt nach links und reduziert die Transportlänge. Das System ist so präzise, dass Sub-0.5-MOA-Gruppen Standard sind. Die .338 Lapua Magnum liefert 6'600 Joule Mündungsenergie und ist auf 1'500m+ effektiv.
+<h2>Varianten &amp; Modelle</h2>
+<p>Die AI-Produktpalette umfasst eine breite Familie. Die <strong>AW (Arctic Warfare)</strong> ist das Basismodell in .308 Winchester und dient zahlreichen Armeen als Standard-Scharfschützengewehr. Die <strong>AWM</strong> ist die Magnum-Version für .338 Lapua Magnum und .300 Winchester Magnum. Die <strong>AWS</strong> ist eine integriert schalgedämpfte Version für Spezialoperationen. Die <strong>AW50</strong> kammert das mächtige .50 BMG. Die <strong>AXMC</strong> (Multi Caliber) erlaubt den werkzeuglosen Kaliberwechsel zwischen .308 Win, .300 Win Mag und .338 Lapua Magnum durch Austausch von Lauf, Verschlusskopf und Magazin. Die neueste <strong>AT (2021)</strong> ist die leichteste Generation mit verbesserter Ergonomie und noch höherer Modularität. Für den zivilen Markt bietet AI die gleichen Modelle in entmilitarisierten Versionen an.</p>
 
-## Varianten
-- AW (Arctic Warfare): .308 Win Basismodell
-- AWM: .338 Lapua Magnum
-- AWS: Schalldämpfer-Version
-- AX (AXMC): Modulares Chassis, Multi-Kaliber
-- AT (2021): Neueste Generation, noch leichter
+<h2>Kaliber &amp; Ballistik</h2>
+<p>Die AWM ist primär für das Kaliber .338 Lapua Magnum konzipiert, das speziell für den militärischen Langstrecken-Scharfschützeneinsatz entwickelt wurde. Die .338 Lapua Magnum verschiesst ein 16,2 g schweres Geschoss mit rund 900 m/s Mündungsgeschwindigkeit und entwickelt etwa 6600 Joule Mündungsenergie. Auf 1000 Meter behält das Geschoss noch über 1500 Joule Energie. Die effektive Reichweite gegen Personenziele liegt bei über 1500 Metern. Im Vergleich bietet die .308 Winchester mit etwa 3500 Joule eine effektive Reichweite bis etwa 800 Meter. Die .300 Winchester Magnum positioniert sich dazwischen mit rund 4500 Joule. Die AXMC erlaubt den Wechsel zwischen diesen drei Kalibern, was sie zur vielseitigsten Präzisionsplattform der Welt macht. Für zivile Langstreckenschützen ist die .338 Lapua Magnum das Mass aller Dinge jenseits von 1000 Metern.</p>
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+<h2>Schweizer Markt &amp; Preisentwicklung</h2>
+<p>AI-Gewehre gehören zum absoluten Premium-Segment und sind in der Schweiz über spezialisierte Fachhändler erhältlich. Neuwaffen bewegen sich auf hohem Niveau: Eine AW in .308 Win kostet CHF 6500 bis 8000. Die AWM in .338 Lapua Magnum liegt bei CHF 8000 bis 10000. Die modulare AXMC startet bei etwa CHF 9000 und kann mit Zubehör CHF 12000 bis 15000 erreichen. Die AT-Generation liegt bei CHF 7500 bis 10000. Auf dem Gebrauchtmarkt sind AI-Gewehre selten und begehrt: Gebrauchte AW werden für CHF 4500 bis 7000 gehandelt, AWM für CHF 6000 bis 9000, AXMC für CHF 7000 bis 11000. Zusätzlich fallen Kosten für Optik an: Ein passendes Zielfernrohr von Schmidt und Bender, Nightforce oder Vortex kostet CHF 2000 bis 5000. Munitionskosten für .338 Lapua Magnum liegen bei CHF 5 bis 10 pro Schuss.</p>
+
+<h2>Pflege, Wartung &amp; Zubehör</h2>
+<p>AI-Gewehre sind für harten militärischen Einsatz konstruiert und entsprechend robust. Dennoch erfordern sie sorgfältige Pflege für optimale Präzision. Der Lauf sollte nach jedem Schiesstag mit hochwertigen Reinigungsmitteln und einem einteiligen Carbon-Putzstock gereinigt werden. Bei der .338 Lapua Magnum ist die Kupferentfernung besonders wichtig, da die hohen Geschwindigkeiten zu stärkerem Kupferabrieb führen. Der Verschluss sollte regelmässig zerlegt und die Verriegelungswarzen auf Abnutzung geprüft werden. Empfehlenswertes Zubehör umfasst hochwertige Zielfernrohre mit mindestens 5-25-facher Vergrösserung, ein stabiles Zweibein von Atlas oder Harris, einen Rear-Bag, einen Schalldämpfer sowie einen ballistischen Rechner oder Kestrel-Wettermessgerät. AI-Originalmagazine kosten CHF 100 bis 150 und sollten mehrfach vorhanden sein.</p>
+
+<h2>Fazit &amp; Kaufempfehlung</h2>
+<p>Accuracy International Gewehre setzen seit über 40 Jahren den Massstab bei Präzisionsbüchsen. Die Kombination aus legendärer Präzision, militärischer Robustheit und durchdachter Ergonomie macht sie zur ersten Wahl für professionelle Scharfschützen und ambitionierte Langstreckenschützen. Der Preis ist hoch, aber gerechtfertigt. Für Einsteiger in den Long-Range-Bereich empfiehlt sich die AW in .308 Win. Wer die ultimative Langstreckenplattform sucht, greift zur AXMC mit ihrer Multikaliber-Fähigkeit. Die Wertstabilität ist hervorragend, und eine AI ist eine Anschaffung, die man selten bereut.</p>`,
     rechtsstatus: 'frei',
     typischeKaliber: ['.308 Win', '.338 Lapua Magnum', '.300 Win Mag'],
     tags: ['Scharfschütze', 'AI', 'AXMC', 'UK', 'Präzision', 'Weltrekord'],
@@ -2577,30 +2572,37 @@ Waffenerwerbsschein (WES) erforderlich.`,
     hersteller: 'Barrett Firearms',
     baujahr: '1982',
     kurzbeschreibung: 'Das "Anti-Material Rifle" in .50 BMG. 14 kg, 10 Schuss, effektive Reichweite 1800m.',
-    inhalt: `## Barrett M82 — Anti-Materiel-Gewehr im Kaliber .50 BMG
-Die Barrett M82 (militärisch M107) wurde 1982 von Ronnie Barrett als erstes halbautomatisches .50 BMG Gewehr entwickelt. Sie ist das bekannteste Anti-Materiel-Gewehr der Welt und wird von über 60 Armeen eingesetzt — konzipiert zum Bekämpfen von Fahrzeugen, Radaranlagen und Material.
+    inhalt: `<h2>Geschichte &amp; Entwicklung</h2>
+<p>Die Barrett M82 verdankt ihre Existenz der Vision eines einzelnen Mannes: Ronnie Barrett, ein Fotograf aus Tennessee ohne formale Ingenieursausbildung, entwickelte 1982 in seiner Garagenwerkstatt das erste schulterbare, halbautomatische Gewehr im Kaliber .50 BMG. Die Idee entstand, als Barrett einen M2-Browning-Maschinengewehrlauf sah und sich fragte, warum niemand ein schultertaugliches Gewehr in diesem mächtigen Kaliber gebaut hatte. Die ersten Prototypen wurden von Hand gefertigt. Der Durchbruch kam 1990 mit einer Bestellung der schwedischen Armee, gefolgt vom massiven Einsatz im Golfkrieg 1991. Im Golfkrieg erwies sich die M82 als verheerend effektiv gegen Fahrzeuge, Radaranlagen und befestigte Stellungen. Seither wurde sie von über 60 Armeen weltweit übernommen und unter der Bezeichnung M107 standardisiert.</p>
 
-## Technische Daten
-- Kaliber: .50 BMG (12,7×99mm NATO)
-- System: Kurzrecoil-Halbautomatik, Drehkopfverschluss
-- Magazin: 10 Schuss (abnehmbares Kastenmagazin)
-- Lauflänge: 737mm (29")
-- Gesamtlänge: 1448mm
-- Gewicht: 14 kg (!!)
-- Mündungsenergie: ca. 18'000 Joule
+<h2>Technik &amp; Konstruktion</h2>
+<p>Die Barrett M82A1 arbeitet mit einem Kurzrückstoss-System (Short Recoil), bei dem der Lauf nach dem Schuss zusammen mit dem Verschluss einige Zentimeter zurückgleitet, bevor sich der Drehkopfverschluss entriegelt. Zusätzlich reduziert eine massive Doppelkammer-Mündungsbremse den gefühlten Rückstoss um etwa 70 Prozent. Trotz der enormen 18000 Joule Mündungsenergie ist der Rückstoss subjektiv vergleichbar mit einer .300 Winchester Magnum.</p>
+<h3>Technische Daten</h3>
+<ul>
+<li><strong>Kaliber:</strong> .50 BMG (12,7x99mm NATO)</li>
+<li><strong>System:</strong> Kurzrückstoss-Halbautomatik mit Drehkopfverschluss</li>
+<li><strong>Magazin:</strong> 10 Schuss, abnehmbares Kastenmagazin</li>
+<li><strong>Lauflänge:</strong> 737 mm (29 Zoll)</li>
+<li><strong>Gesamtlänge:</strong> 1448 mm</li>
+<li><strong>Gewicht:</strong> 14 kg ohne Optik und Magazin</li>
+<li><strong>Mündungsenergie:</strong> ca. 18000 Joule</li>
+</ul>
+<p>Der Lauf ist mit Längsrillen (Fluting) versehen, die Gewicht sparen und die Kühlung verbessern. Der obere Receiver trägt eine durchgehende Picatinny-Schiene. Das Zweibein ist abnehmbar und höhenverstellbar. Der Schaft aus Kunststoff besitzt eine dicke Gummischaftkappe. Die Präzision liegt typischerweise bei 1,5 bis 2 MOA.</p>
 
-## Besonderheiten
-Die doppelte Rückstossfeder und die massive Mündungsbremse reduzieren den Rückstoss auf ein erträgliches Mass — trotz 18'000 Joule. Effektive Reichweite über 1'800m. Der Fluted-Lauf spart Gewicht. Als Halbautomatik ermöglicht sie schnelle Folgeschüsse. Die Barrett wurde im Golfkrieg 1991 berühmt und wird seither als EOD-Werkzeug (Sprengmittelvernichtung aus Distanz) geschätzt.
+<h2>Varianten &amp; Modelle</h2>
+<p>Barrett bietet mehrere Varianten an. Die <strong>M82A1</strong> ist das Standard-Halbautomatik-Modell. Die <strong>M82A2</strong> war eine kurzlebige Bullpup-Variante, inzwischen eingestellt. Die <strong>M107A1</strong> ist die modernisierte Version mit reduziertem Gewicht von etwa 12,5 kg und QD-Schalldämpfer-Option. Die <strong>M95</strong> ist eine manuelle Repetierbüchse im Bullpup-Design, leichter und kompakter. Die <strong>M99</strong> ist ein Einzelschuss-Kipplaufgewehr für Wettkampfschützen. Barrett bietet zudem die <strong>MRAD</strong> als modulare Repetierbüchse in .308 Win und .338 Lapua Magnum an.</p>
 
-## Varianten
-- M82A1: Standard-Halbautomatik
-- M82A2: Bullpup-Version (eingestellt)
-- M107A1: Leichtere Version mit QD-Schalldämpfer
-- M95: Repetierbüchse (Bullpup)
-- M99: Einzelschuss-Kipplauf
+<h2>Kaliber &amp; Ballistik</h2>
+<p>Das Kaliber .50 BMG (12,7x99mm NATO) wurde 1921 von John Moses Browning entwickelt und ist eines der leistungsstärksten Infanteriekaliber der Welt. Eine Standard-Vollmantelpatrone verschiesst ein 42 g schweres Geschoss mit rund 900 m/s und entwickelt etwa 18000 Joule, das Zehnfache einer .308 Winchester. Auf 1000 Meter behält das Geschoss noch über 5000 Joule Energie. Die effektive Reichweite gegen Materialziele liegt bei über 1800 Metern. Zivile Match-Munition von Hornady oder Barrett kostet CHF 8 bis 15 pro Schuss.</p>
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich. Kein Verbotskategorie-Waffenrecht in der Schweiz für .50 BMG.`,
+<h2>Schweizer Markt &amp; Preisentwicklung</h2>
+<p>Die Barrett M82 ist in der Schweiz legal erwerbbar. Der Neupreis für eine M82A1 liegt bei CHF 12000 bis 15000, die M107A1 bei CHF 14000 bis 17000. Die M95 kostet neu CHF 7000 bis 9000, die M99 etwa CHF 5000 bis 7000. Gebraucht werden M82A1 in gutem Zustand für CHF 9000 bis 13000 gehandelt. Ein geeignetes Zielfernrohr kostet CHF 1500 bis 4000, die Munition CHF 8 bis 15 pro Schuss. Nicht jeder Schiessstand erlaubt .50 BMG.</p>
+
+<h2>Pflege, Wartung &amp; Zubehör</h2>
+<p>Die Pflege einer Barrett erfordert aufgrund der Grösse etwas mehr Aufwand. Der Lauf sollte nach jedem Schiesstag gründlich gereinigt werden mit speziellen .50-Kaliber-Reinigungssets. Die Mündungsbremse muss regelmässig von Verbrennungsrückständen befreit werden. Verschluss und Rückstossfedern sollten regelmässig inspiziert und gefettet werden. Montageschrauben auf festen Sitz prüfen, da der Rückstoss Schrauben lockern kann. Empfehlenswertes Zubehör: robustes Zielfernrohr mit grossem Objektivdurchmesser, stabiles Zweibein, gepolsterte Transporttasche, Gehörschutz mit hohem Dämmwert.</p>
+
+<h2>Fazit &amp; Kaufempfehlung</h2>
+<p>Die Barrett M82 ist eine Ikone der modernen Waffentechnik und das ultimative Langstreckengewehr für Enthusiasten, die das Extreme suchen. Sie ist keine praktische Jagd- oder Sportwaffe, sondern ein Erlebnisgerät. Anschaffungskosten, laufende Munitionskosten und begrenzte Einsatzmöglichkeiten in der Schweiz sind erheblich. Für den reinen Long-Range-Sport ist eine Repetierbüchse in .338 Lapua Magnum die rationalere Wahl, doch Rationalität war nie das Argument für eine Barrett.</p>`,
     rechtsstatus: 'wes',
     typischeKaliber: ['.50 BMG (12,7×99mm)'],
     tags: ['Scharfschütze', 'Barrett', 'M82', '.50BMG', 'Anti-Material'],
@@ -2615,30 +2617,37 @@ Waffenerwerbsschein (WES) erforderlich. Kein Verbotskategorie-Waffenrecht in der
     hersteller: 'IZHMASH',
     baujahr: '1947',
     kurzbeschreibung: 'Das meistproduzierte Sturmgewehr der Geschichte. Über 100 Millionen Exemplare. Symbol des 20. Jh.',
-    inhalt: `## AK-47 / AKM — Das meistproduzierte Gewehr der Geschichte
-Die AK-47 wurde 1947 von Michail Kalaschnikow in der Sowjetunion entwickelt und ist mit geschätzten 100+ Millionen Exemplaren die meistproduzierte Waffe der Geschichte. Das AKM (1959) ist die vereinfachte, leichtere Massenproduktionsversion mit Blechprägeteilen statt Frästeilen.
+    inhalt: `<h2>Geschichte &amp; Entwicklung</h2>
+<p>Die AK-47 (Awtomat Kalaschnikowa obrasza 1947 goda) wurde von Michail Timofejewitsch Kalaschnikow in der Sowjetunion entwickelt und 1949 offiziell bei der Roten Armee eingeführt. Kalaschnikow, ein verwundeter Panzersoldat, begann seine Konstruktionsarbeit während seiner Genesungszeit im Zweiten Weltkrieg. Nach mehreren Prototypen und einem Wettbewerb gegen erfahrene Waffenentwickler wurde sein Entwurf 1947 als Sieger ausgewählt. Die erste Serie (Typ I) besass einen Receiver aus gefrästen Stahlblöcken, was die Produktion aufwändig und teuer machte. Der wahre Durchbruch kam 1959 mit dem AKM (Awtomat Kalaschnikowa Modernisirowanny), das einen aus Stahlblech gepressten Receiver verwendete und damit deutlich leichter und kostengünstiger zu produzieren war. Die Sowjetunion vergab Produktionslizenzen an verbündete Staaten, was zu einer weltweiten Verbreitung führte. Geschätzte 100 bis 150 Millionen Exemplare aller AK-Varianten wurden produziert, womit die AK die meistproduzierte Schusswaffe der Geschichte ist.</p>
 
-## Technische Daten
-- Kaliber: 7,62×39mm (AK-47/AKM), 5,45×39mm (AK-74)
-- System: Gasdrucklader mit Drehkopfverschluss (Langhubtreiber)
-- Magazin: 30 Schuss (gebogenes Kastenmagazin)
-- Lauflänge: 415mm
-- Gesamtlänge: 870mm (fester Schaft)
-- Gewicht: 3,5 kg (AKM, leer)
-- Feuerarten: Einzelschuss, Dauerfeuer (militärisch)
+<h2>Technik &amp; Konstruktion</h2>
+<p>Die AK-47 arbeitet als Gasdrucklader mit einem langen Gaskolben (Long-Stroke Gas Piston), der fest mit dem Verschlussträger verbunden ist. Nach dem Schuss wird Pulvergas in den Gaszylinder geleitet, wo es den Gaskolben nach hinten treibt. Der Verschlussträger nimmt den Drehkopfverschluss mit, der sich beim Rücklauf entriegelt. Dieses Langhubtreiber-System ist robuster als Kurzhubtreiber oder Direct-Impingement-Systeme.</p>
+<h3>Technische Daten (AKM)</h3>
+<ul>
+<li><strong>Kaliber:</strong> 7,62x39mm (AK-47/AKM), 5,45x39mm (AK-74)</li>
+<li><strong>System:</strong> Gasdrucklader mit Drehkopfverschluss, Langhubtreiber</li>
+<li><strong>Magazin:</strong> 30 Schuss, gebogenes Kastenmagazin</li>
+<li><strong>Lauflänge:</strong> 415 mm</li>
+<li><strong>Gesamtlänge:</strong> 870 mm (fester Schaft)</li>
+<li><strong>Gewicht:</strong> 3,5 kg (AKM, leer)</li>
+<li><strong>Feuerrate:</strong> ca. 600 Schuss/min (Vollautomat)</li>
+</ul>
+<p>Das Konstruktionsprinzip setzt auf grosse Toleranzen zwischen den beweglichen Teilen. Sand, Schlamm, Eis und andere Fremdkörper beeinträchtigen die Funktion kaum. Die Kehrseite ist eine geringere Schussgenauigkeit im Vergleich zu westlichen Systemen, was für Einsatzdistanzen unter 300 Metern jedoch nebensächlich ist. Die Sicherung ist ein grosser Hebel auf der rechten Seite, der gleichzeitig als Staubschutzdeckel dient. Die Zerlegung erfolgt werkzeuglos in Sekunden.</p>
 
-## Besonderheiten
-Die AK ist für extreme Zuverlässigkeit konstruiert — sie funktioniert unter Sand, Schlamm, Frost und Vernachlässigung. Grosse Toleranzen zwischen den beweglichen Teilen verhindern Blockaden. Der Langhubtreiber (Gaskolben fest mit Verschlussträger verbunden) ist robuster als Kurzhubtreiber-Systeme. In der Schweiz sind nur halbautomatische Zivilversionen legal.
+<h2>Varianten &amp; Modelle</h2>
+<p>Die AK-Familie umfasst unzählige Varianten aus über einem Dutzend Ländern. Die <strong>AK-47 Typ I bis III</strong> sind die originalen sowjetischen Modelle (1949-1959). Das <strong>AKM</strong> (1959) mit gepresstem Blechreceiver ist die am weitesten verbreitete Version. Die <strong>AK-74</strong> (1974) wechselte zum Kaliber 5,45x39mm. Die <strong>AK-103/104</strong> sind modernisierte Versionen. Bedeutende ausländische Produktionen umfassen die chinesische Typ 56, die rumänische WASR, die polnische WBP, die serbische Zastava M70 und die finnische Valmet. Für den zivilen Schweizer Markt sind die <strong>Zastava ZPAP M70</strong>, die <strong>WBP Jack</strong> und <strong>Saiga</strong>-Modelle die gängigsten Optionen.</p>
 
-## Varianten
-- AK-47 Typ I–III: Originalvarianten (1949–1959)
-- AKM: Vereinfachte Produktion ab 1959
-- AK-74: Kaliber 5,45×39mm ab 1974
-- AK-103/104: Modernisierte Versionen
-- Zivilversionen: Saiga, WBP Jack, Zastava ZPAP M70
+<h2>Kaliber &amp; Ballistik</h2>
+<p>Das Standardkaliber 7,62x39mm ist ein sowjetisches Zwischenkaliber von 1943. Es verschiesst ein 7,9 g schweres Geschoss mit rund 715 m/s und etwa 2000 Joule Mündungsenergie. Die Flugbahn fällt ab 200 Metern merklich ab, die effektive Reichweite liegt bei 300 bis 400 Metern. Das 5,45x39mm der AK-74 bietet mit 3,4 g bei 900 m/s eine flachere Flugbahn. Auf dem Schweizer Markt kostet Surplus-Munition CHF 0.40 bis 0.80, Sportmunition von Sellier und Bellot oder PPU CHF 0.80 bis 1.50 pro Schuss. Für die Rehwildjagd ist das 7,62x39mm mit Teilmantelgeschossen in einigen Kantonen zugelassen.</p>
 
-## Rechtsstatus Schweiz
-Halbautomatische Zivilversionen: WES erforderlich. Vollautomat: Verboten (Ausnahmebewilligung nötig).`,
+<h2>Schweizer Markt &amp; Preisentwicklung</h2>
+<p>Halbautomatische AK-Varianten sind in der Schweiz mit WES legal erwerbbar. Eine neue Zastava ZPAP M70 kostet CHF 800 bis 1200, eine WBP Jack CHF 900 bis 1300. Arsenal SAM7 aus Bulgarien liegen bei CHF 1500 bis 2000. Gebrauchte AK-Varianten sind für CHF 500 bis 900 zu finden. Originale sowjetische AK-47 oder AKM erzielen CHF 1500 bis 3000. Magazine kosten CHF 15 bis 40. Bakelitmagazine sind begehrte Sammlerstücke zu CHF 50 bis 100 pro Stück.</p>
+
+<h2>Pflege, Wartung &amp; Zubehör</h2>
+<p>Die AK ist legendär pflegeleicht. Die werkzeuglose Zerlegung dauert unter 30 Sekunden. Nach dem Schiessen sollten Lauf, Gaskammer und Verschluss gereinigt werden. Bei Surplus-Munition mit korrosiven Zündhütchen ist sofortige Reinigung mit heissem Wasser zwingend. An Zubehör bieten Magpul, Zenitco, SLR Rifleworks und RS Regulate modernisierte Handschützer, Pistolengriffe, Schäfte und Optik-Montagen an.</p>
+
+<h2>Fazit &amp; Kaufempfehlung</h2>
+<p>Die AK-47 und ihre Nachfolger sind lebende Legenden der Waffentechnik. Zuverlässigkeit, einfache Bedienung und günstige Betriebskosten machen sie attraktiv. Zastava ZPAP M70 bietet das beste Preis-Leistungs-Verhältnis, Arsenal SAM7 die höchste Qualität. Wer eine robuste, unkomplizierte Waffe mit Geschichte sucht, wird mit einer AK glücklich.</p>`,
     rechtsstatus: 'wes',
     typischeKaliber: ['7,62×39mm'],
     tags: ['Sturmgewehr', 'AK47', 'Kalaschnikow', 'Russland', 'Ikone'],
@@ -2731,28 +2740,68 @@ Halbautomatische Zivilversionen: WES erforderlich. Vollautomat: Verboten (Ausnah
     hersteller: 'HK',
     baujahr: '2004',
     kurzbeschreibung: 'Deutsche Weiterentwicklung des AR-15. Gaskolben statt Direktimpuls. US Navy SEALs, Bundeswehr.',
-    inhalt: `## Heckler & Koch HK416 — Das bessere M16
-Die HK416 wurde 2004 von Heckler & Koch als verbesserte AR-15-Plattform mit Gaskolben-System entwickelt. Sie wurde berühmt als die Waffe, mit der Osama bin Laden 2011 getötet wurde (DEVGRU/SEAL Team Six). Seit 2016 ist sie als M27 IAR auch das Standard-Infanteriegewehr der US Marines.
+    inhalt: `<h2>Geschichte und Entwicklung</h2>
+<p>Die HK416 entstand aus einer Zusammenarbeit zwischen Heckler und Koch und der US-Spezialeinheit Delta Force (1st SFOD-D) in den fruehen 2000er-Jahren. Die Elitesoldaten wuenschten ein zuverlaessigeres AR-15-System, das die Verschmutzungsprobleme des Direct-Impingement-Prinzips beseitigte. HK-Ingenieure integrierten das bewaehrte Kurzhubtreiber-Gaskolbensystem des G36 in die AR-15-Plattform und schufen damit eine Waffe, die volle Kompatibilitaet mit AR-15-Zubehoer bot, aber deutlich zuverlaessiger lief.</p>
+<p>Die HK416 wurde 2004 offiziell vorgestellt und erlangte 2011 weltweite Bekanntheit als die Waffe, mit der Osama bin Laden durch DEVGRU (SEAL Team Six) getoetet wurde. 2016 waehlten die US Marines die HK416 als M27 Infantry Automatic Rifle (IAR) und ersetzten damit sowohl das M249 SAW als auch teilweise das M4. Frankreich fuehrte die HK416F 2017 als neues Standardgewehr ein, und auch Norwegen, Litauen und weitere NATO-Staaten nutzen die Waffe. Die Bundeswehr setzt die HK416A7 als Nachfolger des G36 bei Spezialeinheiten ein.</p>
 
-## Technische Daten
-- Kaliber: 5,56×45mm NATO
-- System: Gasdrucklader mit Kurzhubtreiber (HK-Gaskolben) und Drehkopfverschluss
-- Magazin: 30 Schuss (STANAG-kompatibel)
-- Lauflänge: 264mm (10,4"), 368mm (14,5"), 419mm (16,5"), 508mm (20")
-- Gewicht: 3,5 kg (14,5" Lauf, leer)
-- Feuerarten: Halbautomatik (zivil), Einzelschuss/Dauerfeuer (militärisch)
+<h2>Technik und Konstruktion</h2>
+<p>Das Herzstueck der HK416 ist der <strong>Kurzhubtreiber</strong> (Short-Stroke Gas Piston), abgeleitet vom bewaehrten G36-System. Pulvergas wird am Gasblock abgegriffen und treibt einen kurzen Kolben an, der auf den Verschlusstraeger schlaegt. Im Gegensatz zum Direct-Impingement-System des M16 gelangt kein heisses, verschmutztes Gas in den Verschlussbereich — die Waffe laeuft dadurch erheblich sauberer und kuehler.</p>
+<p>Der Verschluss nutzt einen <strong>Drehkopfverschluss</strong> mit sieben Verriegelungswarzen, identisch zum AR-15-Standard. Der Lauf ist kaltgehammert und innen verchromt, was eine Lebensdauer von ueber 20000 Schuss gewaehrleistet. Das Gehaeuse (Upper und Lower Receiver) ist aus hochfestem Aluminium gefraest und mit Picatinny-Schienen versehen.</p>
+<p>Die HK416 ist vollstaendig kompatibel mit Standard-AR-15-Unterteilen, STANAG-Magazinen und den meisten AR-15-Abzugsgruppen. Der Handschutz ist frei schwimmend (Free-Float) und bietet M-LOK- oder Picatinny-Befestigungspunkte. Das Gaskolbensystem fuegt gegenueber einem DI-AR-15 etwa 200 bis 300 Gramm Gewicht hinzu.</p>
 
-## Besonderheiten
-Der HK-Kurzhubtreiber (abgeleitet vom G36) ersetzt das verschmutzungsanfällige Direct-Impingement-System des M16 — das Gas wird nicht mehr in den Verschlussträger geleitet. Dadurch läuft die HK416 sauberer und zuverlässiger. Die kaltgehämmerte Chrombeschichtung des Laufs hält 20'000+ Schuss. Volle Kompatibilität mit AR-15-Unterteilen, Magazinen und Zubehör.
+<h2>Varianten und Modelle</h2>
+<ul>
+<li><strong>HK416A5:</strong> Aktuelle Militaerversion mit verbessertem Handschutz, einstellbarem Gasblock und ueberarbeitetem Schaft. Im Einsatz beim deutschen KSK, der norwegischen Armee und weiteren NATO-Streitkraeften.</li>
+<li><strong>HK416A7:</strong> Speziell fuer die Bundeswehr angepasste Version mit deutschen Spezifikationen.</li>
+<li><strong>HK416F:</strong> Franzoesische Militaerversion, seit 2017 Standardgewehr der franzoesischen Streitkraefte als Ersatz fuer das FAMAS.</li>
+<li><strong>M27 IAR:</strong> US Marines Infantry Automatic Rifle mit 16,5-Zoll-Lauf, ersetzt M249 SAW und teilweise M4.</li>
+<li><strong>HK416C:</strong> Ultrakompakte Version mit 228mm-Lauf fuer Fahrzeugbesatzungen und Personenschutz.</li>
+<li><strong>MR223A3 / MR556:</strong> Zivile halbautomatische Version fuer den europaeischen und US-Markt. Identische Qualitaet wie die Militaerversion.</li>
+<li><strong>HK416D:</strong> Fruehe Version mit 10,4-Zoll- und 14,5-Zoll-Lauf, noch im Einsatz bei US-Spezialkraeften.</li>
+</ul>
 
-## Varianten
-- HK416A5: Aktuelle Militärversion (deutsches KSK, norwegische Armee)
-- MR223/MR556: Zivile halbautomatische Version
-- HK416C: Ultrakompakt (228mm Lauf)
-- M27 IAR: US Marines Infanterie-Automatikgewehr
+<h2>Kaliber und Ballistik</h2>
+<p>Die HK416 ist standardmaessig in <strong>5,56x45mm NATO</strong> kammeriert. Mit dem 16,5-Zoll-Lauf (419mm) erreicht ein M855-Geschoss (62 Grain) eine Muendungsgeschwindigkeit von etwa 940 m/s und eine Muendungsenergie von rund 1750 Joule. Die Praezision liegt typischerweise bei 1 bis 1,5 MOA mit Standardmunition und unter 1 MOA mit Match-Munition.</p>
+<p>Die Lauflaenge beeinflusst die Ballistik erheblich:</p>
+<ul>
+<li><strong>10,4 Zoll (264mm):</strong> Kompakt, aber reduzierte Geschwindigkeit (ca. 820 m/s). Ideal fuer CQB (Nahkampf).</li>
+<li><strong>14,5 Zoll (368mm):</strong> Guter Kompromiss zwischen Handlichkeit und Ballistik (ca. 900 m/s).</li>
+<li><strong>16,5 Zoll (419mm):</strong> Standardlaenge fuer zivile Versionen und M27, volle ballistische Leistung.</li>
+<li><strong>20 Zoll (508mm):</strong> Maximale Geschwindigkeit (ca. 980 m/s), fuer Praezision auf groessere Distanz.</li>
+</ul>
+<p>Kompatibel mit allen 5,56mm NATO- und .223 Remington-Laborierungen. Die Verwendung von .223 Rem in einer 5,56mm-Kammer ist unproblematisch, umgekehrt jedoch nicht empfohlen wegen hoeherer Druecke.</p>
 
-## Rechtsstatus Schweiz
-Halbautomatische Version (MR223): WES erforderlich.`,
+<h2>Schweizer Markt und Preisentwicklung</h2>
+<p>In der Schweiz ist die HK416 als zivile MR223A3 erhaeltlich und erfordert einen <strong>Waffenerwerbsschein (WES)</strong>. Die MR223 gilt als eine der hochwertigsten AR-15-Plattformen auf dem Markt und wird von Sportschuetzen und Sammlern gleichermassen geschaetzt.</p>
+<p><strong>Neupreise (CHF, Stand 2025/2026):</strong></p>
+<ul>
+<li><em>HK MR223A3 Slim-Line</em>: CHF 3400 bis 3900</li>
+<li><em>HK MR223A3 mit Picatinny-Handschutz</em>: CHF 3600 bis 4200</li>
+<li><em>HK MR223A3 RAL8000 (Sonderfarbe)</em>: CHF 3800 bis 4400</li>
+</ul>
+<p><strong>Gebrauchtpreise (CHF):</strong></p>
+<ul>
+<li><em>MR223 aeltere Versionen (A1/A2), guter Zustand</em>: CHF 2400 bis 3200</li>
+<li><em>MR223A3, wenig geschossen</em>: CHF 2800 bis 3600</li>
+<li><em>MR223 neuwertig / OVP</em>: CHF 3200 bis 3800</li>
+</ul>
+<p>Die MR223 ist bei Schweizer Haendlern wie Waffen Glaser, Bruenig Indoor und Wyss Waffen erhaeltlich. Die Verfuegbarkeit ist manchmal eingeschraenkt, da HK die Produktion nicht immer der Nachfrage anpassen kann. Gebrauchte MR223 sind auf dem Schweizer Markt begehrt und verlieren nur wenig an Wert.</p>
+
+<h2>Pflege, Wartung und Zubehoer</h2>
+<p>Die HK416 ist wartungsfreundlicher als DI-AR-15-Systeme, da der Verschlussbereich deutlich sauberer bleibt. Dennoch sollte nach jedem Schiessen der Gaskolben, der Verschlusstraeger und der Lauf gereinigt werden. Der Gaskolben neigt zur Karbonablagerung und sollte mit einem Messingschaber oder speziellem Reinigungsmittel behandelt werden.</p>
+<p><strong>Empfohlenes Zubehoer:</strong></p>
+<ul>
+<li><strong>Optiken:</strong> Aimpoint CompM5, Eotech EXPS3, Vortex Razor HD Gen III 1-10x (fuer Praezision)</li>
+<li><strong>Abzuege:</strong> Geissele SSA-E oder Super Dynamic Enhanced (SDE), kompatibel mit HK Lower</li>
+<li><strong>Schalldaempfer:</strong> B und T Rotex-V, OSS/HUXWRX Flow-Through (reduzierter Gegendruck ideal fuer Gaskolben)</li>
+<li><strong>Magazine:</strong> HK-Stahlmagazine, Magpul PMAG Gen M3, Lancer L5AWM</li>
+<li><strong>Beleuchtung:</strong> Surefire M600DF, Modlite PLHv2</li>
+</ul>
+<p>Verschleissteile der HK416 sind langlebig. Der kaltgehammerte Lauf haelt typischerweise 20000 bis 25000 Schuss. Die Gaskolbenfeder sollte alle 10000 Schuss kontrolliert werden.</p>
+
+<h2>Fazit und Kaufempfehlung</h2>
+<p>Die HK416 bzw. MR223 ist die Premium-Wahl fuer Schuetzen, die eine AR-15-Plattform mit maximaler Zuverlaessigkeit und hoechster Fertigungsqualitaet suchen. Die deutsche Praezisionsarbeit von Heckler und Koch zeigt sich in jedem Detail — vom kaltgehammerten Lauf bis zum perfekt sitzenden Gaskolben. Fuer Sportschuetzen, die Wert auf ein sauber laufendes System legen, ist die MR223 eine exzellente Wahl.</p>
+<p>Der hoehere Preis gegenueber Standard-AR-15 ist durch die ueberlegene Verarbeitung, die militaerische Erprobung und die Langlebigkeit gerechtfertigt. Wer bereits AR-15-Zubehoer besitzt, kann dieses groesstenteils weiterverwenden. Fuer Einsteiger, die direkt in Qualitaet investieren moechten, ist die MR223A3 eine Waffe fuers Leben. Auf dem Gebrauchtmarkt sind HK-Modelle wertstabil und immer gefragt.</p>`,
     rechtsstatus: 'wes',
     typischeKaliber: ['5,56×45mm NATO'],
     tags: ['Sturmgewehr', 'HK', 'HK416', 'Deutschland', 'NATO', 'SEALs'],
@@ -2766,30 +2815,64 @@ Halbautomatische Version (MR223): WES erforderlich.`,
     hersteller: 'HK',
     baujahr: '1959',
     kurzbeschreibung: 'Deutsches Bundeswehr-Kampfgewehr 1959–1997. Rollenverzögertes System. Zivil als HK91.',
-    inhalt: `## Heckler & Koch G3 — Das Rollenverschluss-Gewehr
-Das G3 wurde 1959 als Standard-Sturmgewehr der Bundeswehr eingeführt und diente über 40 Jahre in über 80 Armeen weltweit. Das rollenverzögerte Rückstoss-System stammt ursprünglich vom spanischen CETME und basiert auf dem deutschen StG 45(M) aus dem Zweiten Weltkrieg.
+    inhalt: `<h2>Geschichte und Entwicklung</h2>
+<p>Die Geschichte des G3 reicht zurueck bis in die letzten Tage des Zweiten Weltkriegs. Deutsche Ingenieure bei Mauser entwickelten das StG 45(M) mit einem neuartigen rollenverzogerten Verschlusssystem. Nach Kriegsende floh der Konstrukteur Ludwig Vorgrimler nach Spanien und entwickelte dort bei CETME das Konzept weiter zum CETME Modelo B in 7,62x51mm NATO. Die junge Firma Heckler und Koch in Oberndorf am Neckar erwarb die Lizenz und ueberarbeitete den Entwurf grundlegend.</p>
+<p>1959 fuehrte die Bundeswehr das resultierende Gewehr als G3 ein. Es wurde zum Standardgewehr der deutschen Streitkraefte und diente ueber 38 Jahre bis zur Abloesung durch das G36 im Jahr 1997. Das G3 wurde in Lizenz in ueber einem Dutzend Laendern produziert — darunter die Tuerkei, Pakistan, Iran, Schweden, Norwegen und Portugal — und in ueber 80 Armeen weltweit eingesetzt. Es ist eines der meistproduzierten Gewehre des Kalten Krieges mit geschaetzten 7 bis 8 Millionen Stueck.</p>
 
-## Technische Daten
-- Kaliber: 7,62×51mm NATO
-- System: Rollenverzögerter Rückstosslader
-- Magazin: 20 Schuss (Aluminiummagazin)
-- Lauflänge: 450mm
-- Gesamtlänge: 1023mm
-- Gewicht: 4,4 kg (leer)
-- Feuerarten: Einzelschuss, Dauerfeuer (militärisch)
+<h2>Technik und Konstruktion</h2>
+<p>Das G3 nutzt das <strong>rollenverzogerte Rueckstosssystem</strong>, bei dem zwei Rollen im Verschlusskopf in Ausnehmungen des Verschlussgehaeuses greifen und den Verschluss verriegeln. Beim Schuss drueckt der Gasdruck auf den Huelsenboden, die Rollen werden durch Schraegstuecke im Verschlusstraeger nach innen gedraengt, und der Verschluss oeffnet sich verzogert. Dieses System benoetigt keinen Gaskanal und keine Gaskolben — es ist mechanisch sehr einfach und extrem robust.</p>
+<p>Eine Besonderheit ist das <strong>geriffelte Patronenlager</strong>: Laengsrillen im Lager leiten Pulvergas entlang der Huelse und verhindern so das Festkleben der Huelse bei hohem Druck. Die Kehrseite ist, dass die Huelsen sichtbare Rillenabdruecke tragen und fuer Wiederlader weniger geeignet sind. Der Auswurf erfolgt mit erheblicher Kraft — ein G3 wirft Huelsen mehrere Meter weit.</p>
+<p>Der Lauf ist kaltgehammert und hat eine Laenge von 450mm. Das Verschlussgehaeuse besteht aus gepresstem und geschweisstem Stahlblech, was die Fertigung kostenguenstig macht. Der Abzug bietet im Militaermodell Einzelfeuer und Dauerfeuer. Die Visierung besteht aus einer Trommelkimme mit vier Einstellungen (100 bis 400 Meter) und einem geschuetzten Korn.</p>
 
-## Besonderheiten
-Der Rollenverschluss verzögert das Öffnen durch zwei Rollen, die in Ausnehmungen im Patronenlager greifen. Dieses System braucht keinen Gaskanal und ist extrem einfach und robust. Die Hülsen werden jedoch stark deformiert (Rillen vom geriffelten Patronenlager). Das G3 war eines der ersten Gewehre mit Kunststoff-Handschutz und Polymergriff.
+<h2>Varianten und Modelle</h2>
+<ul>
+<li><strong>G3A3:</strong> Standardversion mit festem Kunststoffschaft, das am weitesten verbreitete Modell</li>
+<li><strong>G3A4:</strong> Version mit einziehbarem Teleskopschaft fuer Fallschirmjaeger und Fahrzeugbesatzungen</li>
+<li><strong>G3SG/1:</strong> Scharfschuetzenversion mit verbessertem Abzug (1,5 kg Abzugsgewicht), Zielfernrohr-Montage und ausgewaehltem Praezisionslauf</li>
+<li><strong>MSG90:</strong> Weiterentwickelte Scharfschuetzenversion mit Match-Lauf und verbesserter Ergonomie</li>
+<li><strong>HK91:</strong> Zivile halbautomatische Version, in den USA sehr begehrt und heute selten</li>
+<li><strong>PTR-91:</strong> US-amerikanischer Nachbau der HK91 auf Original-HK-Maschinen, hergestellt von PTR Industries</li>
+<li><strong>G3K / HK51:</strong> Verkuerzte Versionen mit kurzerem Lauf fuer Spezialkraefte</li>
+<li><strong>HK21:</strong> Maschinengewehr-Variante mit Gurtzufuehrung, basierend auf dem G3-System</li>
+</ul>
 
-## Varianten
-- G3A3: Standardmodell mit festem Schaft
-- G3A4: Teleskopschaft
-- G3SG/1: Scharfschützenversion mit Match-Abzug
-- MSG90: Verbesserte Scharfschützenversion
-- HK91/PTR-91: Halbautomatische Zivilversionen
+<h2>Kaliber und Ballistik</h2>
+<p>Das G3 ist in <strong>7,62x51mm NATO (.308 Winchester)</strong> kammeriert. Das Standardgeschoss M80 (147 Grain / 9,5 g) erreicht eine Muendungsgeschwindigkeit von etwa 800 m/s und eine Muendungsenergie von rund 3000 Joule. Die effektive Reichweite liegt bei 400 bis 600 Metern, die maximale Schussweite bei ueber 3700 Metern.</p>
+<p>Das 7,62mm-NATO-Kaliber bietet gegenueber 5,56mm erheblich mehr Durchschlagskraft und Wirkung im Ziel, ist aber auch deutlich schwerer — 20 Patronen im G3-Magazin wiegen etwa 560 Gramm, waehrend 30 Patronen 5,56mm nur rund 450 Gramm wiegen. Die Praezision des Standard-G3 liegt bei etwa 2 bis 3 MOA, die SG/1-Version erreicht unter 1,5 MOA mit Match-Munition.</p>
+<p>Fuer den zivilen Markt ist .308 Winchester die gaengige Laborierung. Hochwertige Jagd- und Match-Munition von Lapua, RWS, Norma oder Hornady ist in der Schweiz gut erhaeltlich.</p>
 
-## Rechtsstatus Schweiz
-Halbautomatische Version (HK91/PTR-91): WES erforderlich.`,
+<h2>Schweizer Markt und Preisentwicklung</h2>
+<p>Das G3 bzw. seine zivilen Varianten haben in der Schweiz eine treue Fangemeinschaft. Der Erwerb erfordert einen <strong>Waffenerwerbsschein (WES)</strong>. Originale HK91 sind selten und bei Sammlern begehrt, waehrend PTR-91-Nachbauten eine erschwingliche Alternative bieten.</p>
+<p><strong>Neupreise (CHF, Stand 2025/2026):</strong></p>
+<ul>
+<li><em>PTR-91 GI (Basismodell)</em>: CHF 1200 bis 1600</li>
+<li><em>PTR-91 KFM4R (M-LOK Handschutz)</em>: CHF 1400 bis 1800</li>
+<li><em>PTR-91 MSG (Praezisionsversion)</em>: CHF 1800 bis 2400</li>
+</ul>
+<p><strong>Gebrauchtpreise (CHF):</strong></p>
+<ul>
+<li><em>PTR-91 gebraucht, guter Zustand</em>: CHF 900 bis 1400</li>
+<li><em>Originale HK91, guter Zustand</em>: CHF 2500 bis 4000</li>
+<li><em>G3 Bundeswehr-Abgabe (Sammler, deaktiviert oder halbautomatisch umgebaut)</em>: CHF 1500 bis 3000</li>
+<li><em>G3SG/1 original</em>: CHF 4000 bis 7000 (Sammlerstueck)</li>
+</ul>
+<p>Die Preise fuer originale HK-Modelle steigen stetig, da keine neuen Exemplare produziert werden. PTR-91 sind ueber Schweizer Haendler regelmaessig verfuegbar.</p>
+
+<h2>Pflege, Wartung und Zubehoer</h2>
+<p>Das G3 ist fuer seine Robustheit und geringe Wartungsanforderungen bekannt. Das Verschlusssystem ohne Gaskanal reduziert die Verschmutzung erheblich. Nach dem Schiessen sollten Lauf, Patronenlager (besonders die Rillen) und Verschluss gereinigt werden. Das geriffelte Patronenlager erfordert eine spezielle Kammerbuerste.</p>
+<p><strong>Empfohlenes Zubehoer:</strong></p>
+<ul>
+<li><strong>Optik-Montagen:</strong> HK-Klauenmontage (Original), Picatinny-Adapter fuer Weaver/Picatinny-Optiken</li>
+<li><strong>Handschutz:</strong> Breiter Tropenschutz (original), moderne M-LOK-Handschuetzer von Magpul oder MLok</li>
+<li><strong>Magazine:</strong> Original HK-Aluminiummagazine (20 Schuss), auch von MagPul erhaeltlich</li>
+<li><strong>Schaft:</strong> Original Festschaft oder A4-Teleskopschaft, MSG90-Praezisionsschaft</li>
+<li><strong>Muendungsgeraete:</strong> Original Blitzverberger, Kompensatoren, Schalldaempfer-Adapter</li>
+</ul>
+<p>Der Verschluss des G3 ist sehr langlebig. Hauptverschleissteile sind Verschlussrollen (alle 5000 bis 10000 Schuss pruefen) und die Schliessfeder. Ersatzteile sind ueber HK-Teilehaendler und PTR gut erhaeltlich.</p>
+
+<h2>Fazit und Kaufempfehlung</h2>
+<p>Das G3 ist ein Stueck Waffengeschichte und gleichzeitig ein aeusserst funktionales Gewehr in kraftvollem Kaliber. Fuer Liebhaber klassischer Militaerwaffen ist ein originales HK91 oder G3 eine lohnende Investition, die im Wert steigt. Fuer Sportschuetzen und Schuetzen mit kleinerem Budget bietet die PTR-91 eine hervorragende Alternative mit identischer Technik zu einem Bruchteil des Preises.</p>
+<p>Das rollenverzogerte System hat seinen eigenen Reiz — der markante Huelsenwurf und das einzigartige Schiessgefuehl machen das G3 unverwechselbar. Allerdings ist der Rueckstoss in 7,62mm NATO kraeftig, und das Gewehr ist mit 4,4 kg nicht leicht. Fuer Praezisionsschiessen empfiehlt sich die SG/1- oder MSG-Version. Insgesamt ist das G3 eine zuverlaessige, historisch bedeutsame Waffe mit starkem Sammlerwert.</p>`,
     rechtsstatus: 'wes',
     typischeKaliber: ['7,62×51mm NATO'],
     tags: ['Sturmgewehr', 'HK', 'G3', 'Bundeswehr', 'Deutschland'],
@@ -2802,28 +2885,64 @@ Halbautomatische Version (HK91/PTR-91): WES erforderlich.`,
     hersteller: 'Steyr Arms',
     baujahr: '1977',
     kurzbeschreibung: 'Österreichisches Bullpup-Sturmgewehr. Das erste erfolgreiche Bullpup weltweit. Österreichische Ordonnanz.',
-    inhalt: `## Steyr AUG — Das erste erfolgreiche Bullpup-Sturmgewehr
-Das Steyr AUG (Armee Universal Gewehr) wurde 1977 als StG 77 beim österreichischen Bundesheer eingeführt und war das erste erfolgreiche Bullpup-Sturmgewehr der Welt. Das integrierte Zielfernrohr und der modulare Aufbau waren revolutionär.
+    inhalt: `<h2>Geschichte und Entwicklung</h2>
+<p>Das Steyr AUG (Armee Universal Gewehr) wurde Anfang der 1970er-Jahre von einem oesterreichischen Ingenieurteam unter der Leitung von Horst Wesp und Karl Wagner bei Steyr-Daimler-Puch entwickelt. Ziel war ein voellig neuartiges Waffensystem, das mehrere Funktionen in einer Plattform vereinen sollte — vom Karabiner ueber das Standardgewehr bis zum leichten Maschinengewehr, alles durch einfachen Laufwechsel.</p>
+<p>1977 fuehrte das oesterreichische Bundesheer das AUG als Sturmgewehr 77 (StG 77) ein. Es war das erste Bullpup-Gewehr, das sich in grossem Massstab bei einer Armee durchsetzte. Australien uebernahm es 1989 als F88 Austeyr, und Neuseeland, Irland, Saudi-Arabien, Luxemburg und weitere Laender folgten. Das revolutionaere Design mit integrierter Optik, Kunststoffgehaeuse und modularem Aufbau beeinflusste die gesamte Waffenentwicklung der folgenden Jahrzehnte. Bis heute ist das AUG im Dienst des oesterreichischen Bundesheers und wird weltweit geschaetzt.</p>
 
-## Technische Daten
-- Kaliber: 5,56×45mm NATO
-- System: Gasdrucklader mit Drehkopfverschluss, Kurzhubtreiber
-- Magazin: 30 Schuss (transparentes Kunststoffmagazin)
-- Lauflänge: 508mm (Standard), auch 407mm und 621mm
-- Gesamtlänge: 790mm (mit 508mm Lauf)
-- Gewicht: 3,6 kg (leer)
+<h2>Technik und Konstruktion</h2>
+<p>Das AUG ist ein <strong>Gasdrucklader mit Kurzhubtreiber und Drehkopfverschluss</strong>. Das Bullpup-Design platziert die Abzugsgruppe und das Magazin hinter dem Abzug, wodurch das Gewehr bei einer Lauflaenge von 508mm nur 790mm lang ist — etwa 200mm kuerzer als ein konventionelles Gewehr gleicher Lauflaenge.</p>
+<p>Das Gehaeuse besteht aus einem <strong>Aluminium-Druckguss-Oberteil</strong> und einem glasfaserverstaerkten Polyamid-Unterteil (Schaft). Diese Kombination war 1977 wegweisend und machte das AUG leichter als vergleichbare Systeme. Der Lauf ist kaltgehammert und verchromt mit einer Lebensdauer von ueber 15000 Schuss.</p>
+<p>Eine Besonderheit ist der werkzeuglose Laufwechsel: Durch Druecken eines Knopfes kann der Lauf in weniger als einer Minute getauscht werden. Dies ermoeglicht den Wechsel zwischen Karabiner (407mm), Standard (508mm) und HBAR-Lauf (621mm). Das Magazin aus transparentem Kunststoff erlaubt eine sofortige optische Kontrolle des Munitionsvorrats. Das integrierte 1,5x-Zielfernrohr des A1-Modells mit Strichkreis war ein Novum und gab jedem Soldaten eine optische Zielhilfe.</p>
+<p>Der Abzug des AUG ist konstruktionsbedingt laenger und schwammiger als bei konventionellen Gewehren, da das Abzugsgestaenge ueber eine groessere Distanz zum Verschluss gefuehrt werden muss. Moderne A3-Versionen mit Picatinny-Schiene und verbessertem Abzug haben dieses Problem deutlich gemildert.</p>
 
-## Besonderheiten
-Das Bullpup-Design platziert das Magazin hinter dem Abzug — dadurch ist das AUG bei gleicher Lauflänge 200mm kürzer als konventionelle Gewehre. Das serienmässige 1,5x Zielfernrohr mit Strichkreis war 1977 einzigartig. Die Konstruktion aus Kunststoff und Aluminium war visionär. Schneller Laufwechsel in unter einer Minute — vom Karabiner bis zum leichten MG.
+<h2>Varianten und Modelle</h2>
+<ul>
+<li><strong>AUG A1:</strong> Originalversion mit integriertem 1,5x-Zielfernrohr und Tragegriff. Das klassische Modell.</li>
+<li><strong>AUG A2:</strong> Uebergangsversion mit abnehmbarer Optik und verbessertem Abzug</li>
+<li><strong>AUG A3:</strong> Modernisierte Version mit Picatinny-Schiene am Oberteil. Erlaubt die Montage beliebiger Optiken. Aktueller Produktionsstandard.</li>
+<li><strong>AUG A3 SA:</strong> Zivile halbautomatische Version fuer den europaeischen Markt</li>
+<li><strong>AUG HBAR:</strong> Heavy Barrel Automatic Rifle mit schwerem 621mm-Lauf, als leichtes Maschinengewehr einsetzbar</li>
+<li><strong>AUG Para:</strong> Umruestung auf 9x19mm Parabellum mit eigenem Verschluss und Magazinadapter</li>
+<li><strong>AUG A3 M1 (Mud):</strong> US-Zivilversion mit STANAG-Magazinschacht, kompatibel mit AR-15-Magazinen</li>
+<li><strong>F88 Austeyr / EF88:</strong> Australische Version mit eigenen Modifikationen, aktuell als EF88 im Dienst</li>
+</ul>
 
-## Varianten
-- AUG A1: Original mit integrierter Optik
-- AUG A3: Picatinny-Schiene statt integrierter Optik
-- AUG HBAR: Schwerer Lauf als leichtes MG
-- AUG Para: 9mm Maschinenpistolen-Version
+<h2>Kaliber und Ballistik</h2>
+<p>Das AUG ist standardmaessig in <strong>5,56x45mm NATO</strong> kammeriert. Mit dem 508mm-Standardlauf erreicht ein SS109/M855-Geschoss (62 Grain) eine Muendungsgeschwindigkeit von etwa 970 m/s und eine Muendungsenergie von rund 1780 Joule. Die effektive Reichweite liegt bei 300 bis 500 Metern.</p>
+<p>Der laengere 621mm-HBAR-Lauf steigert die Muendungsgeschwindigkeit auf etwa 1000 m/s, waehrend der kurze 407mm-Karabinerlauf auf etwa 900 m/s zurueckfaellt. Die Praezision des Standard-AUG liegt bei etwa 1,5 bis 2 MOA mit Militaermunition und erreicht mit Match-Munition 1 bis 1,5 MOA.</p>
+<p>Die 9mm-Para-Version verschiesst Standard-9x19mm-Munition und eignet sich fuer Nahverteidigung und Personenschutz. Weitere Kaliber wie .300 Blackout sind ueber Konversionslaeufe moeglich, jedoch weniger verbreitet.</p>
 
-## Rechtsstatus Schweiz
-Halbautomatische Version: WES erforderlich.`,
+<h2>Schweizer Markt und Preisentwicklung</h2>
+<p>Das Steyr AUG geniesst in der Schweiz als Produkt des Nachbarlandes Oesterreich eine besondere Beliebtheit. Der Erwerb der halbautomatischen Version erfordert einen <strong>Waffenerwerbsschein (WES)</strong>. Steyr Arms hat mit der Niederlassung Steyr Sport Schweiz eine direkte Praesenz im Land.</p>
+<p><strong>Neupreise (CHF, Stand 2025/2026):</strong></p>
+<ul>
+<li><em>AUG A3 SA (Standardmodell, Picatinny)</em>: CHF 2200 bis 2800</li>
+<li><em>AUG A3 SA mit Originaloptik 1,5x</em>: CHF 2500 bis 3200</li>
+<li><em>AUG A3 SA in Sonderfarben (OD, Mud, Schwarz)</em>: CHF 2400 bis 3000</li>
+</ul>
+<p><strong>Gebrauchtpreise (CHF):</strong></p>
+<ul>
+<li><em>AUG A1 (Original mit Optik), guter Zustand</em>: CHF 1600 bis 2400</li>
+<li><em>AUG A3 SA, wenig geschossen</em>: CHF 1800 bis 2500</li>
+<li><em>AUG A1 Sammlermodell, neuwertig</em>: CHF 2500 bis 3500</li>
+</ul>
+<p>Steyr-Waffen sind ueber Haendler wie Waffen Glaser, Bruenig Indoor und spezialisierte Steyr-Haendler gut erhaeltlich. Originale A1-Modelle mit integrierter Optik werden zunehmend zu Sammlerstuecken.</p>
+
+<h2>Pflege, Wartung und Zubehoer</h2>
+<p>Das AUG ist bemerkenswert pflegeleicht. Das geschlossene Polymergehaeuse schuetzt die Mechanik vor Verschmutzung. Die Zerlegung erfolgt werkzeuglos durch Entfernen des Verschlusstraegergehaeuses nach hinten. Lauf, Gaskolben und Verschluss sollten nach jedem Schiessen gereinigt werden.</p>
+<p><strong>Empfohlenes Zubehoer:</strong></p>
+<ul>
+<li><strong>Optiken (fuer A3):</strong> Aimpoint Micro T-2, Eotech XPS3, Vortex UH-1 Gen II, oder LPVOs wie Kahles K18i</li>
+<li><strong>Originaloptik:</strong> Steyr 1,5x-Zielfernrohr fuer A1/A2, Ersatzteile und Fadenkreuze erhaeltlich</li>
+<li><strong>Vordergriff:</strong> Steyr-Original-Vordergriff oder Aftermarket-Loesungen</li>
+<li><strong>Magazine:</strong> Original Steyr-Waffle-Magazine (30 Schuss, transparent), 42-Schuss-Trommelmagazin</li>
+<li><strong>Trageriemen:</strong> Original Bundesheer-Riemen oder taktische Zwei-Punkt-Riemen</li>
+</ul>
+<p>Die Hauptverschleissteile sind der Auswerferstift und die Gaskolbenfeder. Der kaltgehammerte Lauf haelt typischerweise 15000 bis 20000 Schuss. Steyr bietet einen vorbildlichen Werkservice mit Reparatur und Ueberholung.</p>
+
+<h2>Fazit und Kaufempfehlung</h2>
+<p>Das Steyr AUG ist ein Design-Klassiker und technisches Meisterwerk aus Oesterreich. Die kompakte Bauform bei voller Lauflaenge macht es ideal fuer Schuetzen, die ein handliches Gewehr mit guter Ballistik suchen. Fuer Sammler ist das A1 mit integrierter Optik ein ikonisches Stueck Waffengeschichte.</p>
+<p>Fuer Sportschuetzen empfiehlt sich das AUG A3 SA mit Picatinny-Schiene, da es die Montage moderner Optiken erlaubt. Der Abzug ist im Vergleich zu AR-15-Plattformen weniger praezise, was fuer Praezisionsschiessen ein Nachteil sein kann. Fuer dynamisches Schiessen und allgemeinen Sportgebrauch ist das AUG jedoch hervorragend geeignet. Der faire Preis und die oesterreichische Qualitaet machen es zu einer lohnenden Investition.</p>`,
     rechtsstatus: 'wes',
     typischeKaliber: ['5,56×45mm NATO'],
     tags: ['Sturmgewehr', 'Steyr', 'AUG', 'Bullpup', 'Österreich'],
@@ -2836,29 +2955,65 @@ Halbautomatische Version: WES erforderlich.`,
     hersteller: 'FN Herstal',
     baujahr: '1953',
     kurzbeschreibung: '"The Right Arm of the Free World". Von über 90 Ländern eingesetzt. Kaliber 7,62 NATO.',
-    inhalt: `## FN FAL — Das rechte Arm der freien Welt
-Die FN FAL (Fusil Automatique Léger) wurde 1953 von FN Herstal in Belgien vorgestellt und diente in über 90 Armeen. Im Kalten Krieg war sie das Standard-Gewehr der westlichen Welt — daher der Beiname "The Right Arm of the Free World". Über 7 Millionen Stück wurden produziert.
+    inhalt: `<h2>Geschichte und Entwicklung</h2>
+<p>Die FN FAL (Fusil Automatique Leger — leichtes automatisches Gewehr) wurde von Dieudonne Saive bei der belgischen Fabrique Nationale (FN) in Herstal entwickelt. Die Arbeit begann bereits in den 1940er-Jahren, urspruenglich fuer die Patrone 7,92x33mm Kurz. Als die NATO 1953 das Kaliber 7,62x51mm standardisierte, wurde die FAL entsprechend angepasst und 1954 offiziell in Produktion genommen.</p>
+<p>Die FAL wurde zum dominierenden Gewehr der westlichen Welt waehrend des Kalten Krieges und erhielt den Beinamen "The Right Arm of the Free World". Ueber 90 Laender setzten die FAL ein, darunter Grossbritannien (als L1A1 SLR), Australien, Kanada, Oesterreich, Israel, Argentinien, Brasilien und zahlreiche afrikanische und asiatische Staaten. Die Gesamtproduktion wird auf ueber 7 Millionen Stueck geschaetzt. Die FAL sah Kampfeinsaetze in praktisch jedem Konflikt der zweiten Haelfte des 20. Jahrhunderts — vom Suezkrieg ueber den Falklandkrieg bis zu den Buschkriegen im suedlichen Afrika.</p>
 
-## Technische Daten
-- Kaliber: 7,62×51mm NATO
-- System: Gasdrucklader mit Kippblockverschluss
-- Magazin: 20 Schuss
-- Lauflänge: 533mm (Standard)
-- Gesamtlänge: 1090mm
-- Gewicht: 4,3 kg (leer, Standardmodell)
+<h2>Technik und Konstruktion</h2>
+<p>Die FAL ist ein <strong>Gasdrucklader mit Kippblockverschluss</strong>. Pulvergas wird ueber eine Bohrung im Lauf abgefuehrt und treibt einen Langhubtreiber (Long-Stroke Piston) an, der den Verschlussblock nach hinten drueckt. Der Verschluss kippt dabei nach unten aus der Verriegelung — ein einfaches und robustes System.</p>
+<p>Ein herausragendes Merkmal ist der <strong>einstellbare Gasregler</strong> am Gasblock. Ueber ein Drehrad kann die Gasmenge stufenlos reguliert werden, um verschiedene Munitionstypen und Umweltbedingungen auszugleichen. In der Stellung Null wird der Gaskanal vollstaendig geschlossen, und das Gewehr funktioniert als manueller Repetierer — nuetzlich fuer den Einsatz mit Gewehrgranaten.</p>
+<p>Der Lauf ist kaltgehammert und hat eine Laenge von 533mm im Standardmodell. Die Gehaeuseteile (Upper und Lower Receiver) sind aus Stahlfraeteilen gefertigt. Es gibt zwei Fertigungssysteme: <strong>metrische</strong> (Original-FN) und <strong>Zoll-Versionen</strong> (Commonwealth-Laender). Teile beider Systeme sind nicht immer austauschbar, was beim Kauf von Zubehoer wichtig ist.</p>
 
-## Besonderheiten
-Die FAL hat einen einstellbaren Gasregler — die Gasmenge kann an verschiedene Munitionstypen und Umweltbedingungen angepasst werden. Das Gewehr kann mit dem Gasregler auf "0" gestellt als Repetierer genutzt werden. Die FAL diente als Grundlage für das britische L1A1 SLR (nur Halbautomatik). In der Schweiz bekannt als "Fass" — die belgische Dienstwaffe.
+<h2>Varianten und Modelle</h2>
+<ul>
+<li><strong>FAL 50.00:</strong> Standard-Infanteriemodell mit festem Schaft und 533mm-Lauf</li>
+<li><strong>FAL 50.63 (Para):</strong> Fallschirmjaeger-Version mit klappbarem Metallschaft und verkuerztem Lauf (436mm)</li>
+<li><strong>FAL 50.41 (FALO):</strong> Version mit schwerem Lauf und Zweibein fuer die LMG-Rolle, 30-Schuss-Magazin</li>
+<li><strong>L1A1 SLR:</strong> Britische/Commonwealth-Version, nur Halbautomatik, Zoll-Masssystem</li>
+<li><strong>StG 58:</strong> Oesterreichische Version, hergestellt von Steyr, mit klappbarem Tragegriff und eigenem Handschutz</li>
+<li><strong>C1/C1A1:</strong> Kanadische Version mit eigenen Modifikationen</li>
+<li><strong>DSA SA58:</strong> Moderne US-Zivilversion von DS Arms, in verschiedenen Konfigurationen erhaeltlich</li>
+<li><strong>Imbel FAL:</strong> Brasilianische Lizenzproduktion, heute noch fuer den Export gefertigt</li>
+</ul>
 
-## Varianten
-- FAL 50.00: Standard-Infanteriemodell
-- FAL 50.63 (Para): Klappschaft, kurzer Lauf
-- FAL FALO (50.41): Schwerer Lauf, Zweibein (LMG-Rolle)
-- L1A1 SLR: Britische Variante (metrisch vs. inch)
-- DSA SA58: Moderne US-Zivilversion
+<h2>Kaliber und Ballistik</h2>
+<p>Die FAL ist in <strong>7,62x51mm NATO (.308 Winchester)</strong> kammeriert. Das Standard-M80-Geschoss (147 Grain) erreicht eine Muendungsgeschwindigkeit von etwa 840 m/s und eine Muendungsenergie von rund 3300 Joule aus dem 533mm-Lauf. Die effektive Reichweite liegt bei 400 bis 600 Metern, die maximale Schussweite bei ueber 3700 Metern.</p>
+<p>Die FAL ist fuer ihre zuverlaessige Funktion mit unterschiedlichster Munition bekannt, insbesondere dank des einstellbaren Gasreglers. Von leichten Sportladungen bis zu schwerer Militaermunition kann der Gasdruck optimal angepasst werden. Die Praezision liegt bei 2 bis 3 MOA mit Standardmunition — fuer ein Kampfgewehr dieser Aera ausreichend, aber nicht im Match-Bereich.</p>
+<p>Einige fruehe Prototypen wurden fuer das Kaliber 7,92x33mm Kurz und spaeter fuer .280 British entwickelt, diese Versionen erreichten jedoch nie die Serienproduktion. Moderne DSA-Modelle sind ausschliesslich in .308 Win kammeriert.</p>
 
-## Rechtsstatus Schweiz
-Halbautomatische Versionen: WES erforderlich.`,
+<h2>Schweizer Markt und Preisentwicklung</h2>
+<p>Die FN FAL hat in der Schweiz eine besondere Stellung, da die Waffe in der europaeischen Waffenkultur tief verankert ist. Halbautomatische Versionen erfordern einen <strong>Waffenerwerbsschein (WES)</strong>.</p>
+<p><strong>Neupreise (CHF, Stand 2025/2026):</strong></p>
+<ul>
+<li><em>DSA SA58 Standard (neuproduziert)</em>: CHF 2200 bis 3000</li>
+<li><em>DSA SA58 Tactical (Schienen, kurzer Lauf)</em>: CHF 2500 bis 3500</li>
+<li><em>DSA SA58 Predator (Jagdversion)</em>: CHF 2800 bis 3800</li>
+</ul>
+<p><strong>Gebrauchtpreise (CHF):</strong></p>
+<ul>
+<li><em>Original FN FAL (metrisch), guter Zustand</em>: CHF 1800 bis 3000</li>
+<li><em>StG 58 (oesterreichisch), guter Zustand</em>: CHF 1500 bis 2500</li>
+<li><em>L1A1 SLR (Zoll), guter Zustand</em>: CHF 1400 bis 2200</li>
+<li><em>DSA SA58 gebraucht</em>: CHF 1600 bis 2500</li>
+<li><em>FAL Sammlermodelle, neuwertig</em>: CHF 3000 bis 5000</li>
+</ul>
+<p>Originale FN-FAL in gutem Zustand werden zunehmend zu Sammlerstuecken. Militaerabgaben aus verschiedenen Laendern tauchen gelegentlich auf dem Schweizer Markt auf.</p>
+
+<h2>Pflege, Wartung und Zubehoer</h2>
+<p>Die FAL ist robust und wartungsfreundlich. Die Zerlegung erfolgt durch Oeffnen des Gehaeuses am Drehpunkt zwischen Upper und Lower Receiver. Lauf, Gaskolben, Gasregler und Verschluss sollten nach jedem Schiessen gereinigt werden. Der Gasregler neigt zu Kohlenstoffablagerungen und sollte regelmaessig gereinigt werden.</p>
+<p><strong>Empfohlenes Zubehoer:</strong></p>
+<ul>
+<li><strong>Optik-Montagen:</strong> DSA-Staubschutzdeckel mit Picatinny-Schiene, SUIT-Optik (Original britisch)</li>
+<li><strong>Handschutz:</strong> Original Holz oder Kunststoff, DSA-Aluminium-Handschutz mit Schienen</li>
+<li><strong>Magazine:</strong> Original FN-Stahlmagazine (20 Schuss), metrisch oder Zoll beachten</li>
+<li><strong>Muendungsgeraete:</strong> Original Blitzverberger, FN-Kompensator, Schalldaempfer-Adapter</li>
+<li><strong>Schaefte:</strong> Original Holz, Kunststoff oder Para-Klappschaft, DSA-Teleskopschaft</li>
+</ul>
+<p>Wichtig: Beim Kauf von Ersatzteilen muss zwischen metrischen und Zoll-Versionen unterschieden werden. Verschleissteile wie Verschlusshalter, Auswerfer und Gaskolbenfeder sollten vorraetig sein.</p>
+
+<h2>Fazit und Kaufempfehlung</h2>
+<p>Die FN FAL ist ein Stueck Weltgeschichte — das Gewehr, das die freie Welt im Kalten Krieg bewaffnete. Fuer Sammler und Geschichtsinteressierte ist eine originale FAL ein faszinierendes Stueck. Fuer Sportschuetzen bieten DSA-Neuproduktionen eine moderne, zuverlaessige Plattform in .308 Win mit guter Zubehoerversorgung.</p>
+<p>Das kraftvolle 7,62mm-NATO-Kaliber macht die FAL zu einer wirksamen Waffe, aber der Rueckstoss ist fuer laengere Schiesssessions ermuedend. Der einstellbare Gasregler ist ein grosser Vorteil fuer Wiederlader und flexible Munitionswahl. Wer ein klassisches Kampfgewehr mit Charakter sucht und den kraeftigen Rueckstoss schaetzt, ist mit der FAL bestens bedient.</p>`,
     rechtsstatus: 'wes',
     typischeKaliber: ['7,62×51mm NATO'],
     tags: ['Sturmgewehr', 'FN', 'FAL', 'Belgien', 'KalterKrieg'],
@@ -2871,30 +3026,66 @@ Halbautomatische Versionen: WES erforderlich.`,
     hersteller: 'HK',
     baujahr: '1966',
     kurzbeschreibung: 'Ikone der Spezialeinheiten. Als halbautomatische SP5 in der Schweiz erhältlich.',
-    inhalt: `## HK MP5 — Die Referenz unter den Maschinenpistolen
-Die HK MP5 wurde 1966 von Heckler & Koch vorgestellt und ist die meistverbreitete Maschinenpistole der Welt — eingesetzt von Militär, Polizei und Spezialeinheiten in über 80 Ländern. Das rollenverzögerte Verschlusssystem (vom G3) macht sie ungewöhnlich präzise für eine MP.
+    inhalt: `<h2>Geschichte und Entwicklung</h2>
+<p>Die HK MP5 wurde 1966 von Heckler und Koch in Oberndorf am Neckar vorgestellt und ist die meistverbreitete Maschinenpistole der Welt. Die Grundidee war einfach: Das bewaehrte rollenverzogerte Verschlusssystem des G3-Gewehrs wurde auf das Pistolenkaliber 9x19mm Parabellum verkleinert. Das Ergebnis war eine Maschinenpistole mit einer fuer diesen Waffentyp beispiellosen Praezision.</p>
+<p>Den Durchbruch erlangte die MP5 am 18. Oktober 1977, als die deutsche GSG-9 die entfuehrte Lufthansa-Maschine "Landshut" in Mogadischu stuermte und dabei MP5-Maschinenpistolen einsetzte. Von diesem Moment an wurde die MP5 zur Standardwaffe von Anti-Terror-Einheiten weltweit. Der britische SAS, die US Navy SEALs, das franzoesische GIGN und praktisch jede namhafte Spezialeinheit fuehrte die MP5 ein. Ueber 100 Varianten wurden produziert, und die MP5 dient bis heute in ueber 80 Laendern — obwohl sie technisch laengst durch modernere Designs ergaenzt wird.</p>
 
-## Technische Daten
-- Kaliber: 9×19mm (auch .40 S&W und 10mm Auto)
-- System: Rollenverzögerter Rückstosslader (vom G3 abgeleitet)
-- Magazin: 15 oder 30 Schuss
-- Lauflänge: 225mm
-- Gesamtlänge: 660mm (fester Schaft), 490mm (eingeklappt)
-- Gewicht: 2,5 kg (leer, MP5A2)
-- Feuerarten: Halbautomatik (zivil)
+<h2>Technik und Konstruktion</h2>
+<p>Die MP5 nutzt das <strong>rollenverzogerte Rueckstosssystem</strong> des G3, verkleinert auf Pistolenpatronenformat. Zwei Rollen im Verschlusskopf greifen in Ausnehmungen des Lauftraegerstuecks und verzogern das Oeffnen des Verschlusses. Im Unterschied zu den meisten Maschinenpistolen feuert die MP5 aus <strong>geschlossenem Verschluss</strong> — der Verschluss ist vor dem Schuss verriegelt und in Ruheposition. Dies eliminiert die Massentraegheit eines vorschnellenden Verschlusses und ergibt eine fuer Maschinenpistolen einzigartige Praezision.</p>
+<p>Das Patronenlager ist wie beim G3 geriffelt, um das Loesen der Huelse zu erleichtern. Der Lauf hat eine Laenge von 225mm im Standardmodell. Das Gehaeuse ist aus Stahl gefertigt, der Abzugsmechanismus bietet in der Militaerversion Einzelfeuer, Dreiergruppe und Dauerfeuer. Der Handschutz und der Pistolengriff bestehen aus schlagfestem Polymer.</p>
+<p>Die zivile Version SP5 hat einen verlaengerten Lauf (226mm in der SP5, aber fuer den Schweizer Markt oft mit laengerem Lauf erhaeltlich) und ist auf reine Halbautomatik beschraenkt. Die Mechanik und Fertigungsqualitaet entsprechen dem Militaerstandard.</p>
 
-## Besonderheiten
-Der geschlossene Verschluss bei Schussabgabe (statt offenem Verschluss wie bei den meisten MPs) gibt der MP5 eine für Maschinenpistolen einzigartige Präzision. Die GSG-9 setzte sie 1977 bei der Befreiung der Landshut (Mogadischu) ein — seitdem Standardwaffe für Anti-Terror-Einheiten. Die zivile Version ist halbautomatisch mit langem Lauf.
+<h2>Varianten und Modelle</h2>
+<ul>
+<li><strong>MP5A2:</strong> Standardmodell mit festem Kunststoffschaft</li>
+<li><strong>MP5A3:</strong> Standardmodell mit einziehbarem Metallschaft</li>
+<li><strong>MP5SD:</strong> Variante mit integriertem Schalldaempfer und gelochtem Lauf, reduziert die Geschossgeschwindigkeit auf Unterschall</li>
+<li><strong>MP5K:</strong> Ultrakompakte Version ohne Schaft, nur 325mm lang, entwickelt fuer Personenschutz und verdeckten Einsatz</li>
+<li><strong>MP5K-PDW:</strong> MP5K mit klappbarem Schaft fuer Personal Defense Weapon Rolle</li>
+<li><strong>MP5/10 und MP5/40:</strong> Versionen in 10mm Auto und .40 S und W, entwickelt fuer das FBI</li>
+<li><strong>SP5:</strong> Offizielle zivile halbautomatische Version von HK, seit 2019 in Produktion</li>
+<li><strong>SP5K:</strong> Zivile Version der MP5K</li>
+<li><strong>MKE T94:</strong> Tuerkische Lizenzproduktion auf Original-HK-Maschinen, deutlich guenstiger</li>
+<li><strong>POF MP5:</strong> Pakistanische Lizenzproduktion</li>
+</ul>
 
-## Varianten
-- MP5A2/A3: Standard mit Fest-/Klappschaft
-- MP5SD: Integrierter Schalldämpfer
-- MP5K: Ultrakompakt (Aktentaschen-Grösse)
-- SP5: Zivile halbautomatische Version von HK
-- MKE T94: Lizenzproduktion aus der Türkei
+<h2>Kaliber und Ballistik</h2>
+<p>Die Standard-MP5 ist in <strong>9x19mm Parabellum</strong> kammeriert. Ein 124-Grain-Geschoss (8g) erreicht aus dem 225mm-Lauf eine Muendungsgeschwindigkeit von etwa 400 m/s und eine Muendungsenergie von rund 640 Joule. Die effektive Reichweite liegt bei 100 bis 200 Metern — fuer Nahkampf und Gebaeudeeinsatz ideal.</p>
+<p>Die Praezision der MP5 ist legendaer: Auf 25 Meter sind Streukreise von 25 bis 30mm moeglich, auf 100 Meter etwa 100 bis 150mm. Kein anderer Maschinenpistolentyp erreicht vergleichbare Werte.</p>
+<p>Weitere verfuegbare Kaliber sind .40 S und W (MP5/40, ca. 570 Joule) und 10mm Auto (MP5/10, ca. 750 Joule). Die SD-Version reduziert die 9mm-Geschwindigkeit auf Unterschall (unter 340 m/s) durch einen gelochten Lauf, der Gas in den integrierten Schalldaempfer ableitet.</p>
 
-## Rechtsstatus Schweiz
-Halbautomatische Zivilversion (SP5): WES erforderlich.`,
+<h2>Schweizer Markt und Preisentwicklung</h2>
+<p>Die MP5 bzw. SP5 ist in der Schweiz ein begehrtes Sammlerstueck und Sportgeraet. Der Erwerb der halbautomatischen Version erfordert einen <strong>Waffenerwerbsschein (WES)</strong>. Die SP5 ist aufgrund limitierter Produktion oft schwer erhaeltlich.</p>
+<p><strong>Neupreise (CHF, Stand 2025/2026):</strong></p>
+<ul>
+<li><em>HK SP5 (offizielle Zivilversion)</em>: CHF 3200 bis 3800</li>
+<li><em>HK SP5K (kompakte Version)</em>: CHF 3400 bis 4000</li>
+<li><em>MKE T94 (tuerkische Lizenzproduktion)</em>: CHF 1400 bis 1800</li>
+</ul>
+<p><strong>Gebrauchtpreise (CHF):</strong></p>
+<ul>
+<li><em>HK SP5, wenig geschossen</em>: CHF 2800 bis 3500</li>
+<li><em>MKE T94 gebraucht</em>: CHF 1000 bis 1400</li>
+<li><em>Aeltere HK94 / HK SP89 (Sammlerstuecke)</em>: CHF 3500 bis 6000</li>
+</ul>
+<p>Die Nachfrage nach SP5-Modellen uebersteigt regelmaessig das Angebot. HK produziert nur in begrenzten Stueckzahlen fuer den Zivilmarkt. MKE-Produkte bieten eine kostenguenstige Alternative mit identischer Technik.</p>
+
+<h2>Pflege, Wartung und Zubehoer</h2>
+<p>Die MP5 ist aeusserst zuverlaessig und wartungsarm. Das rollenverzogerte System laeuft sauber und benoetigt weniger Reinigung als gasdruckbetriebene Systeme. Nach dem Schiessen sollten Lauf, Patronenlager und Verschluss gereinigt werden. Ballistol oder Break-Free CLP sind ideale Reinigungsmittel.</p>
+<p><strong>Empfohlenes Zubehoer:</strong></p>
+<ul>
+<li><strong>Optiken:</strong> Aimpoint Micro T-2, Holosun 510C, EOTech XPS2 — ueber HK-Klauenmontage oder Picatinny-Adapter</li>
+<li><strong>Beleuchtung:</strong> Surefire 628 (original HK), Streamlight TLR-1 mit Adapter</li>
+<li><strong>Magazine:</strong> Original HK-Stahlmagazine (15 oder 30 Schuss), ETS-Polymermagazine</li>
+<li><strong>Schaefte:</strong> A2-Festschaft, A3-Klappschaft, B und T-Klappschaft, SB Tactical Brace (je nach Rechtsgebiet)</li>
+<li><strong>Handschutz:</strong> Original Slim-Line, breiter Tropenschutz, Midwest Industries MLOK-Handschutz</li>
+<li><strong>Muendungsgeraete:</strong> Dreizack-Blitzverberger (ikonisch), Schalldaempfer mit Dreier-Lug</li>
+</ul>
+<p>Die Hauptverschleissteile sind die Verschlussrollen und die Schliessfeder. Bei regelmaessigem Schiessen sollten die Rollen alle 5000 bis 10000 Schuss geprueft werden.</p>
+
+<h2>Fazit und Kaufempfehlung</h2>
+<p>Die MP5 ist die Ikone unter den Maschinenpistolen und als SP5 auch fuer Schweizer Zivilschuetzen zugaenglich. Die einzigartige Praezision durch den geschlossenen Verschluss, die legendaere Zuverlaessigkeit und der ikonische Status machen sie zu einem besonderen Stueck in jeder Sammlung.</p>
+<p>Fuer Sportschuetzen bietet die SP5 ein faszinierendes Schiesserlebnis mit minimalem Rueckstoss und hoher Praezision. Die guenstige 9mm-Munition macht sie zudem wirtschaftlich im Betrieb. Wer das Budget im Auge behalten will, sollte die MKE T94 in Betracht ziehen — identische Technik zu einem Bruchteil des HK-Preises. Die SP5 ist jedoch die Referenz und ein Sammlerstueck mit stabiler Wertsteigerung.</p>`,
     rechtsstatus: 'wes',
     typischeKaliber: ['9×19mm'],
     tags: ['Maschinenpistole', 'HK', 'MP5', 'Spezialeinheiten', 'SP5'],
@@ -2910,29 +3101,70 @@ Halbautomatische Zivilversion (SP5): WES erforderlich.`,
     hersteller: 'Winchester',
     baujahr: '1894',
     kurzbeschreibung: 'Das meistverkaufte Repetiergewehr aller Zeiten. Über 7 Millionen produziert. .30-30 Winchester-Standard.',
-    inhalt: `## Winchester Model 1894 — Der meistverkaufte Unterhebelrepetierer
-Die Winchester 1894 wurde von John Browning konstruiert und ist mit über 7,5 Millionen Exemplaren der meistproduzierte Unterhebelrepetierer aller Zeiten. Sie war das erste Repetiergewehr für rauchlose Patronen und ist untrennbar mit der amerikanischen Jagdtradition verbunden.
+    inhalt: `<h2>Geschichte und Entwicklung</h2>
+<p>Die Winchester Model 1894 wurde vom legendaeren Waffenkonstrukteur John Moses Browning entworfen und ab 1894 von der Winchester Repeating Arms Company produziert. Sie war das erste kommerzielle Repetiergewehr, das fuer rauchlose Patronen konstruiert wurde, und fuehrte die beruehmte .30-30 Winchester (auch .30 WCF — Winchester Center Fire) ein. Mit ueber 7,5 Millionen produzierten Exemplaren ist sie der meistverkaufte Unterhebelrepetierer aller Zeiten.</p>
+<p>Die 1894 wurde zum Synonym fuer die amerikanische Jagdtradition. Generationen von Jaegern in Nordamerika nutzten sie als zuverlaessige Buechse fuer die Hirschjagd im Wald. Die Produktion lief ueber 112 Jahre im Original-Winchester-Werk in New Haven, Connecticut, bis zur Schliessung 2006. Seit 2011 wird das Modell von Miroku in Japan unter dem Winchester-Namen weiterproduziert — in hervorragender Qualitaet, die dem Original in nichts nachsteht.</p>
 
-## Technische Daten
-- Kaliber: .30-30 Winchester (Original), auch .44 Magnum, .45 Colt, .357 Magnum
-- System: Unterhebelrepetierer (Lever Action)
-- Magazin: 6–8 Schuss (Röhrenmagazin)
-- Lauflänge: 508mm (20", Carbine)
-- Gesamtlänge: 953mm
-- Gewicht: 3,1 kg (Carbine)
+<h2>Technik und Konstruktion</h2>
+<p>Die Winchester 1894 ist ein <strong>Unterhebelrepetierer (Lever Action)</strong> mit einem Roehrenmagazin unter dem Lauf. Durch Herunterschwenken des Unterhebels wird der Verschluss geoeffnet, die leere Huelse ausgeworfen und beim Zurueckschwenken eine neue Patrone aus dem Magazin in die Kammer gefuehrt. Dieser Vorgang ist intuitiv und erlaubt eine hohe Feuerrate.</p>
+<p>Der Verschluss verriegelt ueber einen vertikalen Verschlussblock, der in eine Aussparung im Systemgehaeuse greift. Dieses System ist einfach, robust und bewaehrt. Das Roehrenmagazin fasst je nach Lauflaenge 6 bis 8 Patronen. Wichtig: Da die Patronen Spitze an Zuendhuetchen im Magazin liegen, duerfen ausschliesslich <strong>Flachkopf- oder Rundkopfgeschosse</strong> verwendet werden — Spitzgeschosse koennten bei Rueckstoss das Zuendhuetchen der vorderen Patrone ausloesen.</p>
+<p>Moderne Miroku-Produktionen bieten hervorragende Verarbeitungsqualitaet mit sauber geschliffenen Systemteilen, gut sitzendem Holzschaft und praezise gefertigtem Lauf. Die Gehaeuseteile sind aus Stahl gefraest, der Schaft aus amerikanischem Nussbaum.</p>
 
-## Besonderheiten
-Die 1894 führte die .30-30 Winchester ein — die erfolgreichste Jagdpatrone Nordamerikas, die mehr Hirsche erlegt hat als jedes andere Kaliber. Das Röhrenmagazin unter dem Lauf erfordert Rundkopfgeschosse (bei Spitzgeschossen droht Kettenreaktion im Magazin). Der Unterhebel-Mechanismus ermöglicht extrem schnelles Repetieren.
+<h2>Varianten und Modelle</h2>
+<ul>
+<li><strong>Carbine (Standard):</strong> 20-Zoll-Lauf, Rundlauf, das am weitesten verbreitete Modell</li>
+<li><strong>Rifle:</strong> 24- oder 26-Zoll-Lauf, laengerer Vorderschaft, hoehere Muendungsgeschwindigkeit</li>
+<li><strong>Short Rifle:</strong> Kompakte Version mit 20-Zoll-Lauf und geradem Pistolengriff-Schaft</li>
+<li><strong>Sporter:</strong> Moderne Version mit Kreuzschraube fuer Zielfernrohr-Montage und halbem Pistolengriff</li>
+<li><strong>Trails End Takedown:</strong> Zerlegbare Version fuer Cowboy Action Shooting</li>
+<li><strong>Limited Edition / Commemorative:</strong> Zahlreiche Sondermodelle mit Gravuren und speziellen Ausfuehrungen</li>
+<li><strong>Pre-64:</strong> Vor 1964 gefertigte Exemplare gelten als besonders begehrt wegen der geschmiedeten Stahlteile</li>
+</ul>
 
-## Varianten
-- Carbine: 20" Lauf, Standardmodell
-- Rifle: 24" oder 26" Lauf, Oktagonlauf optional
-- Trails End: Cowboy Action Shooting Version
-- Sporter: Moderne Version mit Kreuzschraube
-- Short Rifle: Kompakte Version mit 20" Lauf
+<h2>Kaliber und Ballistik</h2>
+<p>Das Standardkaliber <strong>.30-30 Winchester</strong> verschiesst ein 150- bis 170-Grain-Geschoss mit einer Muendungsgeschwindigkeit von 720 bis 790 m/s und einer Muendungsenergie von rund 2600 bis 2700 Joule. Die effektive Jagdreichweite liegt bei 150 bis 200 Metern — ideal fuer die Waldjagd auf Hirsch und Reh.</p>
+<p>Dank Hornady LEVERevolution-Munition mit Elastomer-Spitze sind nun auch aerodynamisch optimierte Geschosse im Roehrenmagazin sicher verwendbar, was die effektive Reichweite auf 250 bis 300 Meter erweitert.</p>
+<p>Weitere verbreitete Kaliber:</p>
+<ul>
+<li><strong>.357 Magnum:</strong> Pistolenpatrone, ideal fuer Cowboy Action Shooting und Kleintiere, 10 Schuss Kapazitaet</li>
+<li><strong>.44 Magnum:</strong> Kraeftige Pistolenpatrone, jagdtauglich auf kurze Distanz, beliebt in der Schweiz</li>
+<li><strong>.45 Colt:</strong> Klassische Westernpatrone, sanfter Rueckstoss, Cowboy Action Standard</li>
+<li><strong>.38-55 Winchester:</strong> Historisches Kaliber, Schwarzpulver-Aera</li>
+</ul>
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+<h2>Schweizer Markt und Preisentwicklung</h2>
+<p>Die Winchester 1894 ist in der Schweiz als Repetierer mit Waffenerwerbsschein (WES) erhaeltlich. Sie wird von Jagd- und Sportschuetzen gleichermassen geschaetzt — fuer die Waldjagd auf Reh und Gams ebenso wie fuer Cowboy Action Shooting und Freizeitschiessen.</p>
+<p><strong>Neupreise (CHF, Stand 2025/2026):</strong></p>
+<ul>
+<li><em>Winchester 1894 Carbine (Miroku)</em>: CHF 1400 bis 1700</li>
+<li><em>Winchester 1894 Sporter</em>: CHF 1500 bis 1900</li>
+<li><em>Winchester 1894 Short Rifle</em>: CHF 1400 bis 1800</li>
+<li><em>Winchester 1894 Trails End Takedown</em>: CHF 1600 bis 2000</li>
+</ul>
+<p><strong>Gebrauchtpreise (CHF):</strong></p>
+<ul>
+<li><em>Miroku-Produktion (ab 2011), guter Zustand</em>: CHF 1000 bis 1400</li>
+<li><em>US-Winchester (post-64), guter Zustand</em>: CHF 800 bis 1200</li>
+<li><em>Pre-64 Winchester, guter Zustand</em>: CHF 1500 bis 3000</li>
+<li><em>Pre-64 Sammlermodelle, neuwertig</em>: CHF 3000 bis 8000</li>
+</ul>
+<p>Pre-64-Modelle sind auf dem Sammlermarkt stark nachgefragt. Miroku-Neuproduktionen bieten exzellente Qualitaet zu vernuenftigen Preisen und sind ueber Schweizer Waffenhaendler gut erhaeltlich.</p>
+
+<h2>Pflege, Wartung und Zubehoer</h2>
+<p>Die Winchester 1894 ist mechanisch einfach und pflegeleicht. Nach dem Schiessen sollten Lauf, Kammer und Roehrenmagazin gereinigt werden. Der Unterhebel-Mechanismus benoetigt gelegentlich etwas Oel an den Gelenkpunkten. Ballistol ist das bevorzugte Pflegemittel.</p>
+<p><strong>Empfohlenes Zubehoer:</strong></p>
+<ul>
+<li><strong>Optiken:</strong> Scout-Montage, Picatinny-Schiene auf dem Systemgehaeuse, oder klassische offene Visierung</li>
+<li><strong>Leuchtpunkte:</strong> Skinner-Diopter als Kimmenersatz, Williams Fire Sights</li>
+<li><strong>Trageriemen:</strong> Klassischer Lederriemen, Paracord-Riemen</li>
+<li><strong>Schaftverlaengerung:</strong> Schaftverlaengerungen fuer groessere Schuetzen</li>
+<li><strong>Munition:</strong> Hornady LEVERevolution fuer verbesserte Reichweite, Winchester Power-Point fuer Jagd</li>
+</ul>
+<p>Das Hauptverschleissteil ist die Hebelmechanik — bei aelteren Modellen kann das Spiel am Unterhebel zunehmen. Ein Buechsenmacher kann dies durch Nacharbeiten der Verschlussverriegelung beheben.</p>
+
+<h2>Fazit und Kaufempfehlung</h2>
+<p>Die Winchester 1894 ist ein Stueck amerikanische Geschichte und gleichzeitig ein aeusserst praktisches Jagd- und Sportgewehr. Fuer die Schweizer Waldjagd auf kurze und mittlere Distanzen ist sie in .30-30 ideal geeignet. Die schnelle Repetierung und die handliche Bauform machen sie im dichten Unterholz unschlagbar.</p>
+<p>Fuer Cowboy Action Shooting empfehlen sich die Pistolenkalibervarianten (.357 Mag, .44 Mag, .45 Colt), die mit einem passenden Revolver kombiniert werden koennen. Die Miroku-Neuproduktionen bieten hervorragende Qualitaet zum fairen Preis und sind der ideale Einstieg in die Welt der Unterhebelrepetierer. Sammler sollten nach Pre-64-Exemplaren Ausschau halten — diese steigen kontinuierlich im Wert.</p>`,
     rechtsstatus: 'frei',
     typischeKaliber: ['.30-30 Winchester', '.357 Magnum', '.44 Magnum'],
     tags: ['LeverAction', 'Winchester', '1894', 'Klassiker', 'Western'],
@@ -2945,32 +3177,68 @@ Waffenerwerbsschein (WES) erforderlich.`,
     hersteller: 'Winchester',
     baujahr: '1873',
     kurzbeschreibung: '"The Gun that Won the West". Klassiker des Wilden Westens. Standard für Cowboy-Action Schiessen.',
-    inhalt: `## Winchester Model 1873 — The Gun that Won the West
-Die Winchester 1873 gilt als "The Gun that Won the West" und ist die ikonischste Waffe des Wilden Westens. Sie wurde in den gleichen Revolver-Kalibern gefertigt wie der Colt SAA — Jäger und Cowboys brauchten nur eine Munitionssorte für Gewehr und Revolver.
+    inhalt: `<h2>Geschichte und Entwicklung</h2>
+<p>Die Winchester Model 1873 ist die ikonischste Waffe des Wilden Westens und traegt zu Recht den Beinamen "The Gun that Won the West". Sie wurde von der Winchester Repeating Arms Company als Nachfolgerin der Model 1866 (Yellow Boy) entwickelt und ab 1873 produziert. Die entscheidende Innovation war der Wechsel von Kupferpatronenhuelsen zu Messinghuelsen, was staerkere Ladungen und hoehere Zuverlaessigkeit ermoeglichte.</p>
+<p>Der grosse kommerzielle Erfolg beruhte auf einem genialen Marketingschachzug: Winchester bot die 1873 in denselben Kalibern an wie den Colt Single Action Army Revolver — insbesondere .44-40 WCF (Winchester Center Fire). Cowboys, Siedler und Jaeger brauchten somit nur eine einzige Munitionssorte fuer Gewehr und Revolver. Bis zur Produktionseinstellung 1919 wurden ueber 720000 Exemplare hergestellt. Heute wird das Modell von Miroku in Japan als originalgetreue Reproduktion weitergefertigt.</p>
 
-## Technische Daten
-- Kaliber: .44-40 WCF (Original), auch .38-40, .32-20
-- System: Unterhebelrepetierer (Lever Action), Toggle-Link
-- Magazin: 15 Schuss (Röhrenmagazin, Rifle)
-- Lauflänge: 508mm (20", Carbine), 610mm (24", Rifle)
-- Gesamtlänge: 991mm (Rifle)
-- Gewicht: 3,6 kg
+<h2>Technik und Konstruktion</h2>
+<p>Die Winchester 1873 nutzt den <strong>Toggle-Link-Verschluss</strong>, ein Kniegelenksystem aehnlich dem spaeter bei der Luger-Pistole verwendeten Mechanismus. Beim Betaetigen des Unterhebels knickt das Kniegelenk nach unten, oeffnet den Verschluss und wirft die leere Huelse aus. Beim Schliessen wird eine neue Patrone aus dem Roehrenmagazin in die Kammer gefuehrt und das Kniegelenk streckt sich zur Verriegelung.</p>
+<p>Dieses System ist fuer Pistolenpatronen ausreichend stark, aber nicht fuer die hohen Druecke moderner Gewehrpatronen geeignet — weshalb erst die Winchester 1886 mit ihrem staerkeren Browning-Verschluss Buechsenpatronen verschoss. Das Roehrenmagazin unter dem Lauf fasst je nach Lauflaenge 10 bis 15 Patronen. Das Gehaeuse ist aus Stahl gefertigt, der Schaft und der Vorderschaft aus Nussbaumholz.</p>
+<p>Die Miroku-Reproduktionen verwenden moderne Stahle und Fertigungsmethoden, behalten aber das originale Design bei. Die Verarbeitung ist hervorragend, mit sauberen Passungen und schoener Holzmaserung. Die modernen Versionen sind in .357 Magnum und .45 Colt kammeriert — staerkere und leichter erhaeltliche Kaliber als die historischen Originale.</p>
 
-## Besonderheiten
-Die 1873 verwendete das gleiche Kaliber wie der Colt SAA (.44-40 WCF) — ein enormer logistischer Vorteil im Westen. Der Toggle-Link-Verschluss (ähnlich der Luger-Pistole) war weniger robust als spätere Systeme, aber für Pistolenpatronen ausreichend. Über 720'000 Stück wurden bis 1919 produziert.
+<h2>Varianten und Modelle</h2>
+<ul>
+<li><strong>Carbine:</strong> 20-Zoll-Rundlauf mit Sattelring, die beliebteste und handlichste Version</li>
+<li><strong>Rifle:</strong> 24-Zoll-Lauf, meist als Oktagonlauf, das klassische Vollmodell</li>
+<li><strong>Short Rifle:</strong> Kompakte Version mit 20-Zoll-Oktagonlauf</li>
+<li><strong>Sporter:</strong> Moderne Variante mit halbem Pistolengriff und Kreuzschraube fuer Optikmontage</li>
+<li><strong>Musket:</strong> Seltene Militaerversion mit 30-Zoll-Lauf und Bajonetthaltung</li>
+<li><strong>"One of One Thousand":</strong> Werkseitig selektierte Praezisionsexemplare — nur 136 Stueck wurden je so markiert, heute unbezahlbare Sammlerstuecke</li>
+<li><strong>Uberti 1873:</strong> Italienische Reproduktion, beliebt fuer Cowboy Action Shooting, guenstiger als Miroku/Winchester</li>
+</ul>
 
-## Varianten
-- Carbine: 20" Lauf, Sattelring
-- Rifle: 24" Oktagon- oder Rundlauf
-- Musket: Militärversion mit 30" Lauf
-- "One of One Thousand": Werkseitig selektierte Präzisionsexemplare (136 Stück)
-- Miroku-Nachbau: Aktuelle Produktion in Japan
+<h2>Kaliber und Ballistik</h2>
+<p>Die originale Winchester 1873 wurde primaer in <strong>.44-40 WCF</strong> (auch .44 Winchester) angeboten — eine Pistolenpatrone mit 200-Grain-Bleigeschoss und einer Muendungsgeschwindigkeit von etwa 360 m/s aus dem Gewehrlauf. Weitere historische Kaliber waren .38-40 WCF und .32-20 WCF.</p>
+<p>Moderne Reproduktionen sind in praxistauglicheren Kalibern erhaeltlich:</p>
+<ul>
+<li><strong>.357 Magnum / .38 Special:</strong> Das vielseitigste Kaliber fuer die 1873. Mit .38 Special sehr angenehm zu schiessen, mit .357 Magnum deutlich kraftvoller. Muendungsenergie ca. 700 bis 900 Joule aus dem Gewehrlauf. Ideal fuer Cowboy Action Shooting und Freizeitschiessen.</li>
+<li><strong>.45 Colt:</strong> Klassische Westernpatrone mit 250-Grain-Geschoss, sanfter Rueckstoss, authentisches Western-Feeling. Muendungsenergie ca. 600 Joule.</li>
+<li><strong>.44-40 WCF:</strong> Fuer Authentizitaetsfans und historisches Schiessen weiterhin erhaeltlich, Munition jedoch teurer und seltener.</li>
+</ul>
 
-## Sammlerwert
-Originale: CHF 2'000–30'000+ je nach Zustand und Jahrgang.
+<h2>Schweizer Markt und Preisentwicklung</h2>
+<p>Die Winchester 1873 ist in der Schweiz besonders bei Cowboy Action Shooting-Vereinen beliebt. Der Erwerb erfordert einen <strong>Waffenerwerbsschein (WES)</strong>. Die Schweiz hat eine aktive CAS-Szene mit regelmaessigen Wettbewerben.</p>
+<p><strong>Neupreise (CHF, Stand 2025/2026):</strong></p>
+<ul>
+<li><em>Winchester 1873 Short Rifle (Miroku)</em>: CHF 1500 bis 1900</li>
+<li><em>Winchester 1873 Sporter Octagon</em>: CHF 1600 bis 2100</li>
+<li><em>Winchester 1873 Carbine</em>: CHF 1400 bis 1800</li>
+<li><em>Uberti 1873 (diverse Varianten)</em>: CHF 1100 bis 1600</li>
+</ul>
+<p><strong>Gebrauchtpreise (CHF):</strong></p>
+<ul>
+<li><em>Miroku-Produktion, guter Zustand</em>: CHF 1100 bis 1500</li>
+<li><em>Uberti 1873 gebraucht</em>: CHF 700 bis 1200</li>
+<li><em>Originale Winchester 1873 (antik), guter Zustand</em>: CHF 2000 bis 8000</li>
+<li><em>Originale "One of One Thousand"</em>: CHF 50000 und mehr (museale Raritaet)</li>
+</ul>
+<p>Originale Winchester 1873 aus dem 19. Jahrhundert sind bedeutende Sammlerstuecke. Fuer den praktischen Einsatz im CAS oder als Freizeitwaffe sind die Miroku- und Uberti-Reproduktionen die bessere Wahl.</p>
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+<h2>Pflege, Wartung und Zubehoer</h2>
+<p>Die Winchester 1873 erfordert regelmaessige Pflege des Toggle-Link-Mechanismus. Die Gelenkpunkte sollten nach jedem Schiessen geoelt werden. Lauf, Kammer und Roehrenmagazin werden mit Ballistol gereinigt. Bei Bleigeschossen (wie im CAS ueblich) ist eine gruendliche Laufreinigung mit Kupfer-/Bleientferner wichtig.</p>
+<p><strong>Empfohlenes Zubehoer:</strong></p>
+<ul>
+<li><strong>Visierung:</strong> Original Buckhorn-Kimme und Messingkorn, Marble-Ersatzvisierung</li>
+<li><strong>Trageriemen:</strong> Lederriemen im Western-Stil</li>
+<li><strong>Patronengurt:</strong> Leder-Patronengurt fuer CAS-Wettbewerbe</li>
+<li><strong>Munition:</strong> Wiederladen empfohlen fuer CAS (leichte Ladungen), kommerzielle Cowboy-Ladungen von Magtech, Fiocchi, Sellier und Bellot</li>
+<li><strong>Laufbuersten:</strong> Messingbuersten fuer Bleireste, Nylonbuersten fuer allgemeine Reinigung</li>
+</ul>
+<p>Bei Uberti-Modellen kann ein leichtes Tuning durch einen Buechsenmacher sinnvoll sein (Abzug glaetten, Federspannung anpassen). Miroku-Modelle sind in der Regel ab Werk perfekt eingestellt.</p>
+
+<h2>Fazit und Kaufempfehlung</h2>
+<p>Die Winchester 1873 ist der Inbegriff der Western-Waffe und ein Muss fuer jeden Cowboy Action Shooter. In .357 Magnum / .38 Special ist sie aeusserst vielseitig und angenehm zu schiessen. Die Kombination mit einem Revolver im gleichen Kaliber (z.B. Ruger Vaquero oder Uberti Cattleman) ist das Herzstueck jeder CAS-Ausruestung.</p>
+<p>Fuer Qualitaetsbewusste empfiehlt sich die Miroku/Winchester-Produktion, fuer budgetbewusste Schuetzen die Uberti-Variante. Sammler sollten nach originalen Exemplaren aus dem 19. Jahrhundert Ausschau halten — diese sind historische Artefakte von unschaetzbarem kulturellem Wert. Als Freizeitwaffe bietet die 1873 pures Schiessvergnuegen mit Western-Flair.</p>`,
     rechtsstatus: 'frei',
     typischeKaliber: ['.357 Magnum', '.45 Colt', '.44-40 WCF'],
     tags: ['LeverAction', 'Winchester', '1873', 'CowboyAction', 'Western'],
@@ -2983,28 +3251,67 @@ Waffenerwerbsschein (WES) erforderlich.`,
     hersteller: 'Henry Repeating Arms',
     baujahr: '1996',
     kurzbeschreibung: 'Moderner Unterhebelrepetierer in Messing. Schiesst Revolverkaliber — visuell beeindruckend.',
-    inhalt: `## Henry Big Boy — Amerikanischer Unterhebelrepetierer
-Die Henry Big Boy ist ein moderner Unterhebelrepetierer im klassischen Stil, gefertigt von Henry Repeating Arms in Wisconsin (USA). Sie ist bekannt für ihre Messinggehäuse-Optik und die butterweiche Hebelwirkung — oft als der geschmeidigste Lever-Action am Markt bezeichnet.
+    inhalt: `<h2>Geschichte und Entwicklung</h2>
+<p>Henry Repeating Arms wurde 1996 von Anthony Imperato in Brooklyn, New York, gegruendet — benannt nach Benjamin Tyler Henry, dem Erfinder der Original-Henry-Buechse von 1860. Das Unternehmen produziert heute in Rice Lake, Wisconsin und hat sich zum groessten Hersteller von Unterhebelrepetierern in den USA entwickelt. Die Big Boy-Serie wurde als Hommage an die klassische Henry-Buechse mit ihrem charakteristischen Messinggehaeuse entwickelt.</p>
+<p>Die Henry Big Boy erlangte schnell Kultstatus bei Lever-Action-Fans dank herausragender Verarbeitungsqualitaet und butterweicher Hebelwirkung. Henry hat den Ruf, den geschmeidigsten Hebelmechanismus aller Lever-Action-Hersteller zu produzieren.</p>
 
-## Technische Daten
-- Kaliber: .44 Magnum/.44 Spl, .357 Mag/.38 Spl, .45 Colt, .30-30 Win
-- System: Unterhebelrepetierer (Lever Action)
-- Magazin: 7–10 Schuss (Röhrenmagazin)
-- Lauflänge: 508mm (20")
-- Gesamtlänge: 965mm
-- Gewicht: 3,9 kg (Stahl), 3,1 kg (All Weather)
+<h2>Technik und Konstruktion</h2>
+<p>Die Henry Big Boy ist ein <strong>Unterhebelrepetierer (Lever Action)</strong> mit Roehrenmagazin. Der Verschluss wird durch den Unterhebel betaetigt und verriegelt ueber einen massiven Verschlussblock. Die Mechanik ist praezise gefertigt mit engen Toleranzen. Ein Unterscheidungsmerkmal zu Winchester und Marlin ist das <strong>Ladesystem</strong>: Das Roehrenmagazin wird von vorne durch einen abnehmbaren Messingverschluss beladen, nicht ueber eine seitliche Ladeklappe. Das Gehaeuse der Classic-Version besteht aus <strong>poliertem Messing</strong>. Die Steel-Versionen verwenden ein mattiertes Stahlgehaeuse. Alle Modelle verfuegen ueber einen amerikanischen Walnussschaft.</p>
 
-## Besonderheiten
-Das polierte Messinggehäuse ist das Markenzeichen der Big Boy-Serie und erinnert an die Original-Henry-Büchse von 1860. Die Hebelwirkung ist ungewöhnlich sanft und kurzhubig. Laden erfolgt von vorne durch den Röhrenmagazin-Verschluss — keine seitliche Ladeklappe. Präzision ab Werk ist überraschend gut.
+<h2>Varianten und Modelle</h2>
+<ul>
+<li><strong>Big Boy Classic:</strong> Poliertes Messinggehaeuse, Walnussschaft, Oktagonlauf — das Flaggschiff</li>
+<li><strong>Big Boy Steel:</strong> Stahlgehaeuse mit mattem Finish, runder Lauf, leichter</li>
+<li><strong>Big Boy X Model:</strong> Taktische Version mit Picatinny-Schiene, Kunststoff-Schaft, Gewindelauf</li>
+<li><strong>Big Boy All Weather:</strong> Hartholz-Schaft mit wetterfestem Finish, matter Stahl</li>
+<li><strong>Big Boy Color Case Hardened:</strong> Gehaertetes Gehaeuse mit Farbhaertung</li>
+<li><strong>Big Boy Carbine:</strong> Verkuerzte Version mit 16,5-Zoll-Lauf, grosse Hebelschleife</li>
+<li><strong>Big Boy Side Gate:</strong> Neuere Modelle mit seitlicher Ladeklappe zusaetzlich zum Roehrenverschluss</li>
+<li><strong>Henry Long Ranger:</strong> Henry-Lever-Action fuer Gewehrpatronen (.223, .308, 6.5 Creedmoor) mit abnehmbarem Magazin</li>
+</ul>
 
-## Varianten
-- Big Boy Classic: Messing-Gehäuse, Walnuss-Schaft
-- Big Boy Steel: Stahlgehäuse, matter Finish
-- Big Boy X: Taktische Version mit Picatinny-Schiene
-- Big Boy All Weather: Hartholz, rostbeständig
+<h2>Kaliber und Ballistik</h2>
+<p>Die Henry Big Boy ist primaer in <strong>Revolverkalibern</strong> erhaeltlich:</p>
+<ul>
+<li><strong>.357 Magnum / .38 Special:</strong> Das vielseitigste Kaliber. Aus dem 20-Zoll-Lauf erreicht .357 Mag ca. 580 m/s (158 Grain) und ca. 900 Joule. 10 Schuss Kapazitaet.</li>
+<li><strong>.44 Magnum / .44 Special:</strong> Kraeftiges Kaliber mit 240-Grain-Geschoss, ca. 1400 Joule. Jagdtauglich auf kurze Distanz. 10 Schuss.</li>
+<li><strong>.45 Colt:</strong> Klassische Westernpatrone, sanfter Rueckstoss. 10 Schuss.</li>
+<li><strong>.30-30 Winchester:</strong> Verfuegbar in der Side Gate-Version, klassisches Jagdkaliber.</li>
+</ul>
+<p>Die Praezision ist ueberraschend gut — auf 50 Meter Streukreise unter 50mm, auf 100 Meter unter 100mm mit guter Munition.</p>
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+<h2>Schweizer Markt und Preisentwicklung</h2>
+<p>Die Henry Big Boy hat in der Schweiz eine wachsende Fangemeinschaft. Der Erwerb erfordert einen <strong>Waffenerwerbsschein (WES)</strong>.</p>
+<p><strong>Neupreise (CHF, Stand 2025/2026):</strong></p>
+<ul>
+<li><em>Big Boy Classic (Messing)</em>: CHF 1200 bis 1500</li>
+<li><em>Big Boy Steel</em>: CHF 1000 bis 1300</li>
+<li><em>Big Boy X Model</em>: CHF 1100 bis 1400</li>
+<li><em>Big Boy Side Gate</em>: CHF 1200 bis 1600</li>
+<li><em>Big Boy Color Case Hardened</em>: CHF 1300 bis 1700</li>
+</ul>
+<p><strong>Gebrauchtpreise (CHF):</strong></p>
+<ul>
+<li><em>Big Boy Classic gebraucht, guter Zustand</em>: CHF 900 bis 1200</li>
+<li><em>Big Boy Steel gebraucht</em>: CHF 750 bis 1000</li>
+<li><em>Big Boy X gebraucht</em>: CHF 800 bis 1100</li>
+</ul>
+<p>Henry-Gewehre sind ueber spezialisierte Schweizer Haendler erhaeltlich. Die Verfuegbarkeit kann schwanken.</p>
+
+<h2>Pflege, Wartung und Zubehoer</h2>
+<p>Die Henry Big Boy ist wartungsarm und robust. Das Messinggehaeuse mit weichem Tuch und Messingpolitur pflegen. Nach dem Schiessen Lauf, Kammer und Roehrenmagazin reinigen. Bei Bleigeschossen gruendlich entbleien.</p>
+<p><strong>Empfohlenes Zubehoer:</strong></p>
+<ul>
+<li><strong>Optiken:</strong> Scout-Zielfernrohre (Leupold, Burris), Red Dots beim X-Model</li>
+<li><strong>Visierung:</strong> Williams Fire Sights, Skinner-Diopter</li>
+<li><strong>Trageriemen:</strong> Lederriemen fuer den klassischen Look</li>
+<li><strong>Patronenhalter:</strong> Schaftpatronen-Halter aus Leder</li>
+<li><strong>Munition:</strong> Hornady FTX LeveRevolution, Federal Premium, Wiederladen mit Bleigeschossen</li>
+</ul>
+<p>Das Messinggehaeuse laeuft mit der Zeit an und entwickelt eine attraktive Patina. Wer Hochglanz bevorzugt, kann mit Brasso oder Autosol polieren.</p>
+
+<h2>Fazit und Kaufempfehlung</h2>
+<p>Die Henry Big Boy ist der Rolls-Royce unter den modernen Lever-Action-Gewehren — herausragende Verarbeitung, sanfteste Hebelwirkung am Markt, und das Messinggehaeuse ein Hingucker. Fuer .357 Magnum als vielseitigstes Kaliber — erschwinglich mit .38 Special, ausreichend stark, 10 Schuss Kapazitaet. Die Side-Gate-Modelle bieten zusaetzlich die seitliche Ladeklappe. Das X-Model ist die moderne Interpretation fuer taktisch orientierte Schuetzen.</p>`,
     rechtsstatus: 'frei',
     typischeKaliber: ['.357 Magnum', '.44 Magnum', '.45 Colt'],
     tags: ['LeverAction', 'Henry', 'Messing', 'Western'],

@@ -191,12 +191,12 @@ export default function BeraterPage() {
         <div className="mx-auto flex max-w-3xl items-center gap-3 px-4 py-2.5">
           <button
             onClick={handleBack}
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 active:scale-95"
+            className="flex h-11 w-11 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 active:scale-95"
             aria-label={messages.length > 0 ? "Neue Beratung" : "Zurück"}
           >
             {messages.length > 0 ? <RotateCcw size={18} /> : <ArrowLeft size={18} />}
           </button>
-          <div className="flex items-center gap-2.5">
+          <div className="flex flex-1 items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#4d8230] text-white">
               <Bot size={18} />
             </div>
@@ -209,6 +209,15 @@ export default function BeraterPage() {
               </p>
             </div>
           </div>
+          {messages.length > 0 && (
+            <button
+              onClick={handleBack}
+              className="flex h-11 items-center gap-1 rounded-lg px-3 text-xs font-medium text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 active:scale-95"
+            >
+              <RotateCcw size={13} />
+              <span className="hidden sm:inline">Neue Beratung</span>
+            </button>
+          )}
         </div>
       </div>
 

@@ -46,7 +46,7 @@ export default function ErgebnisHeader({
           <SlidersHorizontal size={16} />
           {t("filter_title")}
           {activeFilterCount > 0 && (
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand-green text-[10px] font-bold text-white">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand-green text-[11px] font-bold text-white">
               {activeFilterCount}
             </span>
           )}

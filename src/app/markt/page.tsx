@@ -91,7 +91,7 @@ function StatCard({ label, value, sub }: { label: string; value: string; sub?: s
       <div className="absolute left-0 top-0 h-full w-0.5 rounded-l-2xl bg-[#4d8230] opacity-60" />
       <div className="absolute -left-4 -top-4 h-20 w-20 rounded-full opacity-20" style={{ background: "#4d8230", filter: "blur(20px)" }} />
       <div className="relative">
-        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-gray-500">{label}</p>
+        <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.15em] text-gray-500">{label}</p>
         <p className="text-2xl font-black leading-none text-white md:text-3xl">{value}</p>
         {sub && <p className="mt-2 text-xs text-gray-500">{sub}</p>}
       </div>
@@ -297,7 +297,7 @@ export default function MarktInsightsPage() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4ade80] opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-[#4ade80]" />
                 </span>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-gray-500">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-gray-500">
                   {o.todayNew > 0 ? "Heute neu" : "Diese Woche"}
                 </p>
               </div>
@@ -340,7 +340,7 @@ export default function MarktInsightsPage() {
                     <div className="p-2">
                       <div className="truncate text-xs leading-tight text-[#9ca3af]">{listing.titel?.substring(0, 30)}</div>
                       <div className="mt-0.5 text-sm font-bold text-[#4ade80]">CHF {listing.preis?.toLocaleString("de-CH")}</div>
-                      {listing.kanton && <div className="mt-0.5 text-[10px] text-[#6b7280]">{listing.kanton}</div>}
+                      {listing.kanton && <div className="mt-0.5 text-[11px] text-[#6b7280]">{listing.kanton}</div>}
                     </div>
                   </Link>
                 );
@@ -393,7 +393,7 @@ export default function MarktInsightsPage() {
                       {m.count > 0 ? (
                         <>
                           <GradientPrice value={`CHF ${m.median.toLocaleString("de-CH")}`} />
-                          <p className="mt-1 text-[10px] text-gray-600">Median · {m.count} Inserate</p>
+                          <p className="mt-1 text-[11px] text-gray-600">Median · {m.count} Inserate</p>
                         </>
                       ) : (
                         <p className="text-xs text-gray-600">Keine Inserate</p>
@@ -401,7 +401,7 @@ export default function MarktInsightsPage() {
                     </Link>
                   ))}
                 </div>
-                <p className="mt-4 text-center text-[10px] text-gray-600">
+                <p className="mt-4 text-center text-[11px] text-gray-600">
                   * Medianpreise basierend auf aktiven Inseraten auf gunmarket.ch
                 </p>
               </GradientCard>
@@ -430,7 +430,7 @@ export default function MarktInsightsPage() {
                       <p className="mb-0.5 text-xl font-black text-white">
                         CHF {cat.median.toLocaleString("de-CH")}
                       </p>
-                      <p className="text-[10px] text-gray-600">Median · {cat.count} Inserate</p>
+                      <p className="text-[11px] text-gray-600">Median · {cat.count} Inserate</p>
                     </Link>
                   ))}
                 </div>
@@ -460,7 +460,7 @@ export default function MarktInsightsPage() {
                       className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors group-hover:brightness-125"
                       style={{ background: "linear-gradient(135deg, #1e3314 0%, #162810 100%)", border: "1px solid rgba(77,130,48,0.2)" }}
                     >
-                      <span className="text-[10px] font-bold text-[#7dc855]">{abbrev}</span>
+                      <span className="text-[11px] font-bold text-[#7dc855]">{abbrev}</span>
                     </div>
                     <span className="w-20 shrink-0 text-sm text-gray-300 transition-colors group-hover:text-white">{k.kanton}</span>
                     <div className="h-5 flex-1 overflow-hidden rounded-full bg-[#0f1a0a]">
@@ -526,7 +526,7 @@ export default function MarktInsightsPage() {
                 <div key={r.key} className="text-center">
                   <div className="mx-auto mb-1 h-3 w-3 rounded-sm" style={{ backgroundColor: r.color }} />
                   <p className="text-sm font-semibold text-white">{r.count.toLocaleString("de-CH")}</p>
-                  <p className="text-[10px] text-gray-500">{r.label}</p>
+                  <p className="text-[11px] text-gray-500">{r.label}</p>
                 </div>
               ))}
             </div>
@@ -566,14 +566,14 @@ export default function MarktInsightsPage() {
                         ) : (
                           <div className="flex h-full w-full items-center justify-center text-[#4d8230] opacity-30"><BarChart3 size={32} /></div>
                         )}
-                        <div className="absolute left-2 top-2 rounded-full bg-[#4d8230] px-2 py-1 text-[10px] font-bold text-white">
+                        <div className="absolute left-2 top-2 rounded-full bg-[#4d8230] px-2 py-1 text-[11px] font-bold text-white">
                           {listing.good_deal_count}
                         </div>
                       </div>
                       <div className="p-2.5">
                         <p className="mb-1 truncate text-xs font-medium leading-tight text-white">{listing.titel}</p>
                         <p className="text-sm font-bold text-[#7dc855]">CHF {listing.preis?.toLocaleString("de-CH")}</p>
-                        {listing.kanton && <p className="mt-0.5 text-[10px] text-[#6b7280]">{listing.kanton}</p>}
+                        {listing.kanton && <p className="mt-0.5 text-[11px] text-[#6b7280]">{listing.kanton}</p>}
                       </div>
                     </Link>
                   );

@@ -107,7 +107,7 @@ export default function PriceDistributionChart() {
             { label: "Inserate", value: stats.total.toLocaleString("de-CH") },
           ].map((s) => (
             <div key={s.label} className="rounded-xl bg-[#1a2e12] p-3 text-center">
-              <p className="mb-1 text-[10px] uppercase tracking-wider text-gray-500">{s.label}</p>
+              <p className="mb-1 text-[11px] uppercase tracking-wider text-gray-500">{s.label}</p>
               <p className="text-sm font-bold text-[#7dc855]">{s.value}</p>
             </div>
           ))}
@@ -123,7 +123,7 @@ export default function PriceDistributionChart() {
         <div className="flex h-40 items-end gap-2">
           {stats.ranges.map((r, i) => (
             <div key={i} className="group flex flex-1 cursor-default flex-col items-center gap-1">
-              <span className="h-4 text-[10px] font-bold text-[#7dc855] opacity-0 transition-opacity group-hover:opacity-100">
+              <span className="h-4 text-[11px] font-bold text-[#7dc855] opacity-0 transition-opacity group-hover:opacity-100">
                 {r.pct > 0 ? `${r.pct}%` : ""}
               </span>
               <div
@@ -136,7 +136,7 @@ export default function PriceDistributionChart() {
               >
                 <div className="absolute inset-0 bg-white/5 transition-colors group-hover:bg-white/10" />
               </div>
-              <span className="text-center text-[9px] leading-tight text-gray-500">{r.label}</span>
+              <span className="text-center text-[11px] leading-tight text-gray-500">{r.label}</span>
               <span className="text-[11px] font-semibold text-gray-300">{r.count}</span>
             </div>
           ))}

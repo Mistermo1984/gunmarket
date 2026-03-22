@@ -42,7 +42,7 @@ export default function CategoryGrid({ onSelect, inserateCounts }: CategoryGridP
                 {hk.label}
               </span>
               {count > 0 && (
-                <span className="text-[10px] text-neutral-400">
+                <span className="text-[11px] text-neutral-400">
                   {count}
                 </span>
               )}

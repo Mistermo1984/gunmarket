@@ -176,7 +176,7 @@ export default function PreisfinderWidget() {
                     key={s.label}
                     className={`rounded-xl p-3 text-center ${s.hl ? "border border-[#4d8230]/40 bg-[#4d8230]/20" : "bg-[#1a2e12]"}`}
                   >
-                    <p className="mb-1 text-[9px] font-semibold uppercase tracking-wider text-gray-500">{s.label}</p>
+                    <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-gray-500">{s.label}</p>
                     <p className={`text-sm font-bold ${s.hl ? "text-[#7dc855]" : "text-white"}`}>{s.value}</p>
                   </div>
                 ))}
@@ -184,7 +184,7 @@ export default function PreisfinderWidget() {
 
               {/* Price range bar */}
               <div className="mb-4 rounded-xl bg-[#1a2e12] p-3">
-                <p className="mb-2 text-[10px] text-gray-500">
+                <p className="mb-2 text-[11px] text-gray-500">
                   Preisspanne aus {result.count} Inseraten
                   {result.totalCount > result.count && (
                     <span className="text-gray-600"> (von {result.totalCount} total)</span>
@@ -207,7 +207,7 @@ export default function PreisfinderWidget() {
                     />
                   )}
                 </div>
-                <div className="mt-1 flex justify-between text-[10px] text-gray-600">
+                <div className="mt-1 flex justify-between text-[11px] text-gray-600">
                   <span>CHF {result.min.toLocaleString("de-CH")}</span>
                   <span className="text-[#7dc855]">▼ Median</span>
                   <span>CHF {result.max.toLocaleString("de-CH")}</span>
@@ -237,7 +237,7 @@ export default function PreisfinderWidget() {
               {/* Outlier listings (toggle) */}
               {showOutliers && result.outliersRemoved.length > 0 && (
                 <div className="mb-4 rounded-xl border border-amber-500/20 bg-[#1a1a0a] p-3">
-                  <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-amber-600">
+                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-amber-600">
                     Ausgeschlossene Inserate ({result.outliersRemoved.length})
                   </p>
                   <div className="space-y-1.5">
@@ -254,7 +254,7 @@ export default function PreisfinderWidget() {
                       </Link>
                     ))}
                     {result.outliersRemoved.length > 8 && (
-                      <p className="pt-1 text-center text-[10px] text-gray-600">
+                      <p className="pt-1 text-center text-[11px] text-gray-600">
                         +{result.outliersRemoved.length - 8} weitere
                       </p>
                     )}
@@ -279,7 +279,7 @@ export default function PreisfinderWidget() {
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-xs text-white group-hover:text-[#7dc855]">{l.titel}</p>
-                        <p className="text-[10px] text-gray-500">{l.kanton}</p>
+                        <p className="text-[11px] text-gray-500">{l.kanton}</p>
                       </div>
                       <p className="shrink-0 text-sm font-bold text-[#7dc855]">
                         CHF {l.preis?.toLocaleString("de-CH")}

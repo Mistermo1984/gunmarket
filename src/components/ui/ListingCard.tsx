@@ -139,7 +139,7 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
             <WaffenIcon size={36} className="text-gray-300" />
           )}
           {imageCount > 0 && (
-            <span className="absolute left-1.5 top-1.5 z-20 flex items-center gap-1 rounded bg-white/80 px-1.5 py-0.5 text-[10px] text-neutral-500">
+            <span className="absolute left-1.5 top-1.5 z-20 flex items-center gap-1 rounded bg-white/80 px-1.5 py-0.5 text-[11px] text-neutral-500">
               <Camera size={10} />{imageCount}
             </span>
           )}
@@ -187,7 +187,7 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
           const diffHours = (Date.now() - new Date(listing.createdAt).getTime()) / (1000 * 60 * 60);
           return diffHours < 24;
         })() && (
-          <div className="absolute top-2 left-2 z-20 flex items-center gap-1 bg-[#eef5e8] border border-[#4d8230] rounded-full px-2 py-0.5 text-[10px] font-semibold text-[#3a6224] shadow-sm">
+          <div className="absolute top-2 left-2 z-20 flex items-center gap-1 bg-[#eef5e8] border border-[#4d8230] rounded-full px-2 py-0.5 text-[11px] font-semibold text-[#3a6224] shadow-sm">
             <div className="w-1.5 h-1.5 bg-[#4d8230] rounded-full" />
             {t("badge_new_listing")}
           </div>
@@ -227,12 +227,12 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
         {((listing.goodDealCount ?? 0) >= 3 || (listing.priceChangePct ?? 0) <= -5) && (
           <div className="mb-2 flex flex-wrap gap-1">
             {(listing.goodDealCount ?? 0) >= 3 && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-green-50 border border-green-200 px-2 py-0.5 text-[10px] font-semibold text-green-700">
+              <span className="inline-flex items-center gap-1 rounded-full bg-green-50 border border-green-200 px-2 py-0.5 text-[11px] font-semibold text-green-700">
                 👍 {listing.goodDealCount}
               </span>
             )}
             {(listing.priceChangePct ?? 0) <= -5 && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">
                 ↓ {Math.round(listing.priceChangePct!)}%
               </span>
             )}

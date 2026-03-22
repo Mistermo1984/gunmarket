@@ -129,7 +129,7 @@ export default function PreisTrendChart() {
           </div>
           <div>
             <h2 className="text-sm font-semibold text-white">Preisentwicklung</h2>
-            <p className="text-[10px] text-gray-500">Medianpreis im Zeitverlauf</p>
+            <p className="text-[11px] text-gray-500">Medianpreis im Zeitverlauf</p>
           </div>
         </div>
         {data?.trend && (
@@ -209,7 +209,7 @@ export default function PreisTrendChart() {
           </svg>
           <div className="text-center">
             <p className="text-xs font-medium text-gray-500">Daten werden gesammelt</p>
-            <p className="mt-1 text-[10px] text-gray-600">
+            <p className="mt-1 text-[11px] text-gray-600">
               Preistrends erscheinen ab dem 2. Tag
               <br />
               Täglich um 04:00 Uhr neue Snapshots

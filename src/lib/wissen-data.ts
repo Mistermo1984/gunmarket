@@ -52,29 +52,19 @@ export const wissenWaffen: WissenWaffe[] = [
     hersteller: 'SIG / Swiss Arms',
     baujahr: '1990',
     kurzbeschreibung: 'Die Ordonnanzwaffe der Schweizer Armee seit 1990. Gilt weltweit als eines der präzisesten Sturmgewehre.',
-    inhalt: `## Sturmgewehr 90 — Die Schweizer Ordonnanzwaffe
-Das SIG 550 (militärisch: Sturmgewehr 90, Stgw 90) ist seit 1990 die Standardwaffe der Schweizer Armee. Bis heute wurden über 450'000 Exemplare an die Armee geliefert.
+    inhalt: `Das Sturmgewehr 90, international als SIG 550 bekannt, ist seit 1990 die Standardwaffe der Schweizer Armee und gilt weltweit als eines der präzisesten und zuverlässigsten Sturmgewehre überhaupt. Über 450'000 Exemplare wurden an die Schweizer Armee geliefert, und die Waffe hat sich in drei Jahrzehnten Dienst als absolut feldtauglich bewiesen. Für Schweizer Schützen und Sammler ist das Stgw 90 weit mehr als ein Armeegewehr — es ist ein Stück nationale Identität.
 
-## Technische Daten
-- Kaliber: 5,56×45mm NATO (Gw Pat 90)
-- System: Gasdrucklader, Drehkopfverschluss
-- Magazin: 5, 10, 20 oder 30 Schuss (transparenter Kunststoff)
-- Länge: 998mm / eingeklappt 772mm
-- Gewicht: 4,1 kg (leer)
-- Feuerarten: Einzelschuss, 3-Schuss-Feuerstoss, Dauerfeuer
+Die Entwicklung des SIG 550 begann in den späten 1970er-Jahren, als die Schweizer Armee nach einem Nachfolger für das schwere Sturmgewehr 57 suchte. SIG in Neuhausen am Rheinfall erhielt den Auftrag, ein leichteres, moderneres Gewehr im NATO-Kaliber 5,56×45mm zu entwickeln. Die ersten Prototypen (SG 540/542) wurden bereits in den 1970ern getestet, doch erst das überarbeitete SG 550 erfüllte die strengen Schweizer Anforderungen. 1986 gewann SIG die Ausschreibung, und ab 1990 lief die Serienproduktion an. Die Waffe wurde vollständig in der Schweiz gefertigt — zunächst bei SIG, später bei Swiss Arms in Neuhausen.
 
-## Besonderheiten
-Das Stgw 90 arbeitet mit einem indirekten Gasdrucksystem (wie AK-47, nicht wie M16). Jedes Gewehr wird ab Werk auf max. 11cm Streukreis auf 300m geprüft.
+Technisch arbeitet das Stgw 90 mit einem indirekten Gasdrucksystem und einem Drehkopfverschluss mit zwei Verriegelungswarzen. Das Gasdrucksystem ähnelt dem des AK-47 — ein langer Gaskolben treibt den Verschlussträger an — und nicht dem Direktgassystem des M16. Das macht die Waffe deutlich weniger empfindlich gegenüber Verschmutzung und Schmierung. Im Kaliber 5,56×45mm NATO (Schweizer Bezeichnung: Gewehrpatrone 90, GP90) verschiesst das Gewehr sowohl die Schweizer GP90 als auch NATO-Standardmunition. Das Magazin aus transparentem Kunststoff fasst 5, 10, 20 oder 30 Patronen und erlaubt eine schnelle visuelle Füllstandskontrolle. Zwei Magazine lassen sich seitlich zusammenstecken, was den Magazinwechsel im Feld massiv beschleunigt. Die Gesamtlänge beträgt 998mm, mit eingeklapptem Schaft 772mm, bei einem Gewicht von 4,1 kg leer. Die Feuerarten umfassen Einzelschuss, 3-Schuss-Feuerstoss und Dauerfeuer. Ab Werk wird jedes Gewehr auf maximal 11cm Streukreis auf 300 Meter geprüft — ein Wert, den viele zivile Präzisionsgewehre nicht erreichen.
 
-## Zivilversion (PE 90)
-Die halbautomatische Zivilversion SG 550 PE wurde in der Schweiz über 33'000 Mal verkauft. Das persönliche Armeegewehr kann nach dem Dienst übernommen werden — umgebaut auf halbautomatisch.
+Im Schweizer Kontext nimmt das Stgw 90 eine besondere Stellung ein. Jeder Schweizer Soldat erhält sein persönliches Sturmgewehr für die Dauer der Dienstpflicht und kann es nach dem Dienst als halbautomatische Version übernehmen. Die zivile Variante, die SG 550 PE (Privat-Einzelfeuer), wurde über 33'000 Mal verkauft und ist an Schweizer Schiesständen allgegenwärtig. Das Obligatorische Schiessen und das Feldschiessen werden regelmässig mit dem Stgw 90 absolviert. Die Waffe ist damit tief in der Schweizer Schiesstradition verankert. Neben der Standardversion existieren die kompaktere SG 551 (LB/SB) sowie die sehr kompakte SG 553, die als Stgw 04/07 bei Schweizer Spezialeinheiten im Einsatz ist. Die SG 553 wird auch international von Eliteeinheiten verwendet.
 
-## Varianten
-- SG 551 (LB/SB): Kompaktere Ausführung
-- SG 553 / Stgw 04/07: Sehr kompakt, für Spezialeinheiten
+Der Preisguide für den Schweizer Markt 2026 zeigt folgendes Bild: Ein übernommenes Armeegewehr in gutem Zustand, also mit normalen Gebrauchsspuren aus dem Dienst, wird für CHF 600 bis 900 gehandelt. Exemplare in sehr gutem Zustand, mit wenig Schusszahlen und intaktem Finish, erzielen CHF 900 bis 1'400. Neuwertige oder ungeschossene PE 90 mit Originalverpackung und Zubehör liegen bei CHF 1'400 bis 2'200. Die kurze SG 553 erzielt als zivile Halbautomatversion deutlich höhere Preise, oft CHF 3'000 bis 5'000, da sie nur in kleinen Stückzahlen auf den Markt kommt.
 
-## Rechtsstatus Schweiz
-Ordonnanzwaffe — Käufer muss Schweizer Bürger oder Niederlassungsbewilligung C besitzen.`,
+Beim Kauf eines Stgw 90 sollte man vor allem den Lauf prüfen. Exemplare aus dem Dienst haben oft 1'000 bis 3'000 Schuss auf dem Zähler, was bei guter Pflege kein Problem darstellt. Kritisch sind Laufmündungen mit Beschädigungen vom Blindverschluss und ausgefranste Züge. Der Verschluss sollte leichtgängig arbeiten, und die Verriegelungswarzen dürfen keine übermässige Abnutzung zeigen. Beim Klappschaft auf Spiel prüfen — ein lockerer Schaft deutet auf starke Beanspruchung hin. Originalmagazine in gutem Zustand sind ein Plus, da Ersatzmagazine einzeln CHF 30 bis 50 kosten. Der Gasregler sollte sich leicht drehen lassen, sonst droht er festzukorrodieren.
+
+Rechtlich ist das Stgw 90 als Ordonnanzwaffe klassifiziert. Der Erwerb setzt Schweizer Bürgerrecht oder eine Niederlassungsbewilligung C voraus. Ein Waffenerwerbsschein ist nicht erforderlich — es genügt ein Kaufvertrag zwischen Verkäufer und Käufer. Die vollautomatische Armeeversion darf nur als halbautomatische Variante in Privatbesitz gehalten werden. Der Umbau wird bei der Rückgabe durch die Armee durchgeführt.`,
     rechtsstatus: 'ordonnanz',
     typischeKaliber: ['5,56×45mm NATO'],
     tags: ['Ordonnanz', 'Sturmgewehr', 'Schweiz', 'SIG', 'Armee', 'Stgw90', 'PE90'],
@@ -89,29 +79,19 @@ Ordonnanzwaffe — Käufer muss Schweizer Bürger oder Niederlassungsbewilligung
     hersteller: 'SIG / W+F Bern',
     baujahr: '1931',
     kurzbeschreibung: 'Der legendäre Schweizer Karabiner mit Geradezugverschluss. Einer der genauesten Serienkarabiner aller Zeiten.',
-    inhalt: `## Karabiner 31 — Schweizer Präzisionslegende
-Der K31 war von 1933 bis ca. 1974 die Ordonnanzwaffe der Schweizer Armee und wurde in der Eidgenössischen Waffenfabrik Bern gefertigt. Er gilt bis heute als einer der präzisesten je in Serie gefertigten Karabiner und wird von Sammlern und Sportschützen gleichermassen geschätzt.
+    inhalt: `Der Karabiner 31, kurz K31, ist der wohl ikonischste Schweizer Karabiner und gilt bis heute als einer der präzisesten Serienkarabiner, die je gefertigt wurden. Von 1933 bis etwa 1974 war er die Ordonnanzwaffe der Schweizer Armee, und sein legendärer Ruf zieht Sammler und Sportschützen aus aller Welt an. Wer einen K31 in der Hand hält, spürt sofort die Qualität Schweizer Waffenbaukunst.
 
-## Technische Daten
-- Kaliber: 7,5×55mm Swiss (GP11)
-- System: Geradezugverschluss (Schweizer Eigenentwicklung)
-- Magazin: 6 Schuss (abnehmbares Kastenmagazin)
-- Lauflänge: 652mm
-- Gesamtlänge: 1100mm
-- Gewicht: 4,0 kg (leer)
-- Visierlinie: Dioptervisier oder Kimmvisier
-- Produziert: ca. 583'000 Stück (1933–1958)
+Die Entwicklung des K31 begann Ende der 1920er-Jahre in der Eidgenössischen Waffenfabrik Bern unter der Leitung von Oberst Adolf Furrer. Ziel war es, den Karabiner 1911 (K11) durch ein moderneres, kompakteres und vor allem schneller zu bedienendes Modell zu ersetzen. Der K31 übernahm das bewährte Geradezug-Prinzip des Schmidt-Rubin-Systems, konstruierte den Verschluss aber kompakter und kürzer. Die Serienproduktion lief von 1933 bis 1958, und insgesamt wurden rund 583'000 Stück gefertigt — ausschliesslich in der Waffenfabrik Bern. Jeder K31 wurde einzeln eingeschossen und musste strenge Präzisionsnormen erfüllen, bevor er an die Truppe ausgeliefert wurde.
 
-## Besonderheiten
-Der Geradezugverschluss ist die zentrale Innovation: Nur gerade ziehen und stossen — keine Drehbewegung nötig. Das ermöglicht deutlich schnelleres Repetieren ohne Verschieben des Zielpunkts. Unter dem Schaftblech findet sich oft ein Truppzettel mit dem Namen des letzten Soldaten.
+Das Herzstück des K31 ist sein einzigartiger Geradezugverschluss. Anders als beim Mauser-System, das eine Dreh-Zug-Bewegung erfordert, wird der K31-Verschluss nur gerade zurückgezogen und vorgeschoben. Zwei Verriegelungswarzen am Verschlusskopf greifen durch eine kurze Drehung in den Verschlussring — diese Drehung wird aber automatisch durch die Geradebewegung des Kammergriffs erzeugt. Das Resultat: Der Schütze repetiert ohne Anheben des Kopfes und ohne Verschiebung des Zielpunkts, was eine deutlich höhere Feuerrate ermöglicht als vergleichbare Repetiergewehre der Epoche. Das Kaliber ist die leistungsstarke 7,5×55mm Swiss (GP11), die mit einer Mündungsgeschwindigkeit von rund 780 m/s und einem 11,3g-Geschoss eine flache Flugbahn und hohe Präzision auf grosse Distanzen bietet. Das abnehmbare Kastenmagazin fasst 6 Patronen und wird von oben mit Ladestreifen befüllt. Die Lauflänge beträgt 652mm, die Gesamtlänge 1'100mm bei einem Gewicht von 4,0 kg.
 
-## Varianten
-- K31 Standard: Infanteriekarabiner mit Dioptervisier
-- K31/42 (ZfK 31/42): Scharfschützenversion mit Zielfernrohr, sehr selten
-- K31/43 (ZfK 31/43): Verbesserte Scharfschützenversion
+Im Schweizer Kontext ist der K31 tief verankert. Generationen von Schweizer Soldaten haben mit diesem Karabiner den Dienst absolviert, und am Feldschiessen wird auch heute noch auf 300 Meter mit dem K31 geschossen. Für Sportschützen ist der K31 ein preiswerter Einstieg ins Präzisionsschiessen auf lange Distanz — die GP11-Munition ist vergleichsweise günstig und die Präzision des K31 überraschend gut. Sammler schätzen besonders die Truppzettel, die sich unter dem Schaftblech finden: kleine Zettel mit dem Namen, der Einheit und dem Jahrgang des letzten Soldaten, der die Waffe trug. Neben dem Standard-K31 existieren die seltenen Scharfschützenversionen ZfK 31/42 und ZfK 31/43 mit montierten Zielfernrohren, von denen nur wenige hundert Stück gefertigt wurden.
 
-## Rechtsstatus Schweiz
-Ordonnanzwaffe — Käufer muss Schweizer Bürger oder Niederlassungsbewilligung C besitzen. Gut erhaltene K31: CHF 300–800, Scharfschützenmodelle bis CHF 5000+.`,
+Beim Preisguide Schweiz 2026 sieht der Markt wie folgt aus: K31 in gutem Zustand mit normalen Gebrauchsspuren, intaktem Lauf und funktionierendem Verschluss werden für CHF 300 bis 500 gehandelt. Exemplare in sehr gutem Zustand mit scharfen Zügen, wenig Schaftdellen und vollständiger Nummerierung erzielen CHF 500 bis 800. Ungeschossene oder nahezu neuwertige K31, die direkt aus dem Zeughaus kamen, liegen bei CHF 800 bis 1'200. Die seltenen Scharfschützenversionen ZfK 31/42 und 31/43 beginnen bei CHF 3'000 und können bei hervorragendem Zustand CHF 5'000 bis 8'000 erreichen. Diopter-Modelle und spezielle Versuchsausführungen sind ebenfalls stark nachgefragt.
+
+Beim Kauf eines K31 sollte man zuerst den Lauf prüfen — mit einem Laufspiegel die Züge und Felder begutachten. Scharfe, klar definierte Züge deuten auf wenig Gebrauch hin. Ausgewaschene oder dunkle Züge zeigen starke Abnutzung oder mangelhafte Pflege. Den Verschluss auf Leichtgängigkeit prüfen und sicherstellen, dass die Verriegelungswarzen keine Grate oder Risse aufweisen. Die Nummerngleichheit ist ein wichtiger Wertfaktor: Schaft, System, Lauf und Magazin sollten die gleiche Seriennummer tragen. Ein K31 mit gemischten Nummern ist funktional einwandfrei, erzielt aber weniger am Sammlermarkt. Den Holzschaft auf Risse und Reparaturen prüfen — originaler Schaft in gutem Zustand steigert den Wert erheblich. Unter dem Schaftblech nach dem Truppzettel schauen, der für Sammler einen besonderen Reiz darstellt.
+
+Rechtlich ist der K31 eine Ordonnanzwaffe der Kategorie C im Schweizer Waffengesetz. Der Erwerb setzt Schweizer Bürgerrecht oder eine Niederlassungsbewilligung C voraus. Ein Waffenerwerbsschein ist nicht nötig — ein einfacher Kaufvertrag zwischen den Parteien genügt. Der K31 ist als Repetiergewehr frei erwerbbar und unterliegt keiner Meldepflicht gegenüber der Kantonspolizei, solange der Kaufvertrag korrekt ausgefüllt und aufbewahrt wird.`,
     rechtsstatus: 'ordonnanz',
     typischeKaliber: ['7,5×55mm Swiss (GP11)'],
     tags: ['Ordonnanz', 'K31', 'Karabiner', 'Schweiz', 'Geradezug', 'Sammler', 'GP11'],
@@ -127,30 +107,19 @@ Ordonnanzwaffe — Käufer muss Schweizer Bürger oder Niederlassungsbewilligung
     hersteller: 'SIG',
     baujahr: '1957',
     kurzbeschreibung: 'Vorgänger des Stgw 90. Robust, präzise — und mit 5,7 kg das schwerste Schweizer Ordonnanzgewehr.',
-    inhalt: `## Sturmgewehr 57 — Schweres Schweizer Qualitätsgewehr
-Das Stgw 57 (SIG SG 510) war von 1957 bis zur Einführung des Stgw 90 die Ordonnanzwaffe der Schweizer Armee. Es basiert auf dem rollenverzögerten Verschlusssystem, das bei der deutschen StG 45 entwickelt wurde. Trotz seines hohen Gewichts war es für seine hervorragende Präzision und Robustheit bekannt.
+    inhalt: `Das Sturmgewehr 57, international als SIG SG 510 bekannt, war von 1957 bis 1990 die Ordonnanzwaffe der Schweizer Armee und geniesst bis heute einen exzellenten Ruf für Präzision und Robustheit. Mit einem Gewicht von 5,7 kg war es das schwerste Sturmgewehr seiner Ära, doch genau diese Masse trug zur hervorragenden Schussstabilität bei. Für Sammler und Schützen in der Schweiz ist das Stgw 57 ein begehrtes Stück Militärgeschichte.
 
-## Technische Daten
-- Kaliber: 7,5×55mm Swiss (GP11)
-- System: Rollenverzögerter Rückstoßlader
-- Magazin: 24 Schuss (Stahlmagazin)
-- Gesamtlänge: 1016mm
-- Lauflänge: 583mm
-- Gewicht: 5,7 kg (leer, ohne Magazin)
-- Feuerarten: Einzelschuss, Dauerfeuer
-- Kadenz: ca. 450–600 Schuss/min
-- Zweibein: integriert, klappbar
+Die Wurzeln des Stgw 57 reichen zurück in die deutsche Waffenentwicklung des Zweiten Weltkriegs. Das rollenverzögerte Verschlusssystem basiert auf dem Prinzip der StG 45 (Mauser), das später von CETME in Spanien und Heckler und Koch in Deutschland weiterentwickelt wurde. SIG in Neuhausen lizenzierte das System und passte es an das leistungsstarke Schweizer Kaliber 7,5×55mm GP11 an. Die Schweizer Armee nahm das Gewehr 1957 als Sturmgewehr 57 an — als eines der ersten Sturmgewehre weltweit, das gleichzeitig als leichtes Maschinengewehr eingesetzt werden konnte. Die Produktion lief von 1957 bis in die 1980er-Jahre, wobei rund 600'000 Stück für die Schweizer Armee und Exportkunden gefertigt wurden.
 
-## Besonderheiten
-Das Stgw 57 verfügt über ein integriertes Zweibein und ein Winterabzug, der mit Handschuhen bedient werden kann. Der rollenverzögerte Verschluss sorgt für einen sehr weichen Rückstoss trotz des leistungsstarken GP11-Kalibers. Das Gewehr dient auch als leichtes MG auf Zweibein.
+Technisch ist das Stgw 57 ein rollenverzögerter Rückstoßlader. Zwei Rollen im Verschlusskopf werden beim Verriegeln in Aussparungen im Laufträger gedrückt und verlangsamen die Verschlussöffnung durch mechanischen Nachteil. Das Resultat ist ein extrem weicher, kontrollierter Rückstoss trotz des leistungsstarken GP11-Kalibers. Das Stahlmagazin fasst 24 Patronen. Die Lauflänge beträgt 583mm bei einer Gesamtlänge von 1'016mm. Feuerarten sind Einzelschuss und Dauerfeuer mit einer Kadenz von 450 bis 600 Schuss pro Minute. Ein integriertes klappbares Zweibein erlaubt den Einsatz als leichtes Maschinengewehr. Der Winterabzug — ein vergrösserter Abzugsbügel — ermöglicht das Schiessen mit Handschuhen. Die Visierung reicht bis 640 Meter, und die Präzision des Stgw 57 auf diese Distanz ist bemerkenswert.
 
-## Varianten
-- SG 510-1: Schweizer Armeeversion (7,5×55mm)
-- SG 510-4: Exportversion in 7,62×51mm NATO
-- PE 57: Halbautomatische Zivilversion
+In der Schweiz hat das Stgw 57 Generationen von Soldaten geprägt. Wer zwischen 1957 und 1990 Militärdienst leistete, hat mit dem Stgw 57 geschossen, und viele erinnern sich an das markante Geräusch des rollenverzögerten Verschlusses. Die halbautomatische Zivilversion PE 57 war lange Zeit am Schweizer Markt erhältlich und wird an Schiesständen noch regelmässig verwendet. Sportschützen schätzen die Präzision, die mit GP11-Munition auf 300 Meter Gruppen unter 5 cm ermöglicht. Sammler suchen besonders nach vollständigen Exemplaren mit Originalzubehör wie Zweibein, Reinigungsgerät und Magazintasche. Die Exportversion SG 510-4 in 7,62×51mm NATO wurde an Chile, Bolivien und mehrere afrikanische Staaten verkauft.
 
-## Rechtsstatus Schweiz
-Ordonnanzwaffe — Käufer muss Schweizer Bürger oder Niederlassungsbewilligung C besitzen. Sammlerwert CHF 600–1500.`,
+Der Preisguide Schweiz 2026 für das Stgw 57 zeigt stabile bis leicht steigende Preise. Exemplare in gutem Zustand mit normalen Dienst-Gebrauchsspuren werden für CHF 600 bis 900 gehandelt. Waffen in sehr gutem Zustand mit intaktem Finish und scharfen Zügen erzielen CHF 900 bis 1'500. Neuwertige oder ungeschossene Stgw 57, etwa aus aufgelösten Zeughausbeständen, können CHF 1'500 bis 2'200 erreichen. Die PE 57 Zivilversion liegt preislich ähnlich, wobei Exemplare mit niedrigen Seriennummern einen Aufpreis erzielen. Originalmagazine in gutem Zustand sind mit CHF 20 bis 40 pro Stück vergleichsweise günstig.
+
+Beim Kauf eines Stgw 57 ist der Lauf das wichtigste Prüfkriterium. GP11-Munition ist korrosiv, und schlecht gepflegte Exemplare zeigen Lochfrass im Lauf. Mit einem Laufspiegel die Züge auf Schärfe und Gleichmässigkeit prüfen. Den Verschluss auf Leichtgängigkeit testen — die Rollen müssen frei beweglich sein und dürfen keine Grate aufweisen. Das Zweibein auf Funktion prüfen, da die Scharniere bei vernachlässigten Waffen gerne festkorrodieren. Die Holzteile — Pistolengriff, Handschutz und Schaft — auf Risse und Ausbrüche kontrollieren. Nummerngleichheit ist auch hier ein Wertfaktor, wobei das Stgw 57 oft zeughausbedingte Teiletausche aufweist. Das Gasgestänge und den Gasregler auf Korrosion prüfen.
+
+Rechtlich ist das Stgw 57 als Ordonnanzwaffe klassifiziert und fällt unter Kategorie C des Schweizer Waffengesetzes. Der Erwerb setzt Schweizer Bürgerrecht oder eine Niederlassungsbewilligung C voraus. Kein Waffenerwerbsschein nötig — ein Kaufvertrag genügt. Die vollautomatische Armeeversion darf nur als halbautomatische Variante in Privatbesitz sein.`,
     rechtsstatus: 'ordonnanz',
     typischeKaliber: ['7,5×55mm Swiss (GP11)'],
     tags: ['Ordonnanz', 'Stgw57', 'SIG', 'Schweiz', 'Sammler', 'GP11'],
@@ -166,31 +135,19 @@ Ordonnanzwaffe — Käufer muss Schweizer Bürger oder Niederlassungsbewilligung
     hersteller: 'SIG',
     baujahr: '1949',
     kurzbeschreibung: 'Die Schweizer Präzisionspistole. Ordonnanz der Armee 1949–1975. Heute Sammlerstück und Sportikone.',
-    inhalt: `## SIG P210 — Die Schweizer Präzisionspistole
-Die SIG P210 (Ordonnanz: Pistole 49) wurde 1947 von SIG Neuhausen entwickelt und gilt weltweit als eine der präzisesten je in Serie gefertigten Pistolen. Von 1949 bis 1975 war sie die Ordonnanzpistole der Schweizer Armee und wurde auch von zahlreichen Polizeikorps eingesetzt.
+    inhalt: `Die SIG P210 ist eine Legende unter den Pistolen und gilt weltweit als eine der präzisesten Serienpistolen, die je gebaut wurden. Als Ordonnanzpistole 49 diente sie von 1949 bis 1975 der Schweizer Armee, und ihr Ruf für Präzision und Verarbeitungsqualität hat sie zu einem der begehrtesten Sammlerstücke im Faustfeuerwaffen-Bereich gemacht. Wer eine P210 besitzt, hält ein Stück Schweizer Waffenbaukunst der Spitzenklasse in der Hand.
 
-## Technische Daten
-- Kaliber: 9×19mm (Armee), auch 7,65×21mm Parabellum
-- System: Rückstoßlader, verriegelter Browning-Verschluss, SA
-- Magazin: 8 Schuss
-- Lauflänge: 120mm (Standard)
-- Gesamtlänge: 215mm
-- Gewicht: ca. 900g (leer)
-- Abzugsgewicht: ca. 1,5–2 kg (SA)
+Die Entwicklung der P210 begann während des Zweiten Weltkriegs bei SIG in Neuhausen am Rheinfall. Charles Petter, ein französischer Ingenieur, hatte ein verbessertes Browning-Verschlusssystem entworfen, das SIG als Basis für die neue Pistole verwendete. Ab 1944 entstanden die ersten Prototypen unter der Bezeichnung SP 47/8. Die Schweizer Armee evaluierte die Waffe ausführlich und nahm sie 1949 als Pistole 49 an — als Nachfolgerin der Parabellum P06. Die Produktion lief bis 2006 bei SIG in Neuhausen, wobei jede einzelne Pistole von Hand eingepasst und auf dem Schiessstand geprüft wurde. Insgesamt wurden etwa 200'000 Stück gefertigt.
 
-## Besonderheiten
-Das einzigartige Konstruktionsmerkmal der P210: Der Verschluss (Schlitten) läuft INNEN im Rahmen — nicht aussen wie bei fast allen anderen Pistolen. Dies ergibt minimales Spiel und damit aussergewöhnliche Präzision. Jede P210 wurde aufwändig von Hand eingepasst.
+Das zentrale Konstruktionsmerkmal der P210 ist einzigartig in der Welt der Pistolen: Der Verschluss — also der Schlitten — läuft innen im Rahmen, nicht aussen wie bei praktisch allen anderen Pistolenmodellen. Diese umgekehrte Schlitten-Rahmen-Anordnung ergibt minimalstes Spiel zwischen den Teilen und damit eine Präzision, die ihresgleichen sucht. Das Kaliber ist 9×19mm im Armeestandard, alternativ 7,65×21mm Parabellum. Das Magazin fasst 8 Patronen. Der Abzug arbeitet im Single-Action-Modus (SA) mit einem Abzugsgewicht von nur 1,5 bis 2 kg — knackig, trocken und ohne Kriechweg. Die Lauflänge beträgt 120mm beim Standardmodell, die Gesamtlänge 215mm bei einem Gewicht von rund 900g. Jede P210 wurde mit Handarbeit eingepasst, was die hohen Herstellungskosten und den entsprechenden Preis erklärt.
 
-## Varianten
-- P210-1: Polierter Rahmen, Holzgriffschalen
-- P210-2: Sandgestrahlter Rahmen (Armee-Standard)
-- P210-5: Sportmodell, verlängerter Lauf 150mm
-- P210-6: Sportmodell, Lauf 120mm, am verbreitetsten
-- P210-7: .22 LR Ausführung für Training
-- P210 Target (ab 2018): Modernisierte Neuauflage von SIG Sauer
+In der Schweiz nimmt die P210 eine besondere Stellung ein. Neben dem Militärdienst wurde sie von zahlreichen Kantonspolizeien als Dienstwaffe geführt und war jahrzehntelang die Pistole der Wahl im Schweizer Pistolensport. Am 25- und 50-Meter-Schiessen ist die P210 eine Ikone. Die wichtigsten Varianten sind die P210-1 mit poliertem Rahmen und Holzgriffschalen, die P210-2 als sandgestrahlte Armeeversion, die P210-5 mit verlängertem 150mm-Lauf für den Sport, die P210-6 als meistverkauftes Sportmodell mit 120mm-Lauf, und die P210-7 in .22 LR für günstiges Training. Seit 2018 bietet SIG Sauer mit der P210 Target eine modernisierte Neuauflage an, die zwar die Grundform beibehält, aber mit modernen Fertigungsmethoden hergestellt wird.
 
-## Rechtsstatus Schweiz
-Ordonnanzwaffe — Käufer muss Schweizer Bürger oder Niederlassungsbewilligung C besitzen. Sammlerwert: CHF 800–3000+, seltene Varianten deutlich mehr.`,
+Der Preisguide Schweiz 2026 für die P210 ist stark varianten- und zustandsabhängig. Eine P210-2 (Armeeversion) in gutem Zustand mit normalen Gebrauchsspuren wird für CHF 800 bis 1'400 gehandelt. Exemplare in sehr gutem Zustand mit intaktem Finish und scharfem Lauf erzielen CHF 1'400 bis 2'200. Die begehrte P210-6 in sehr gutem Zustand liegt bei CHF 2'000 bis 3'000. Die seltene P210-1 mit poliertem Rahmen und Originalholzgriff kann CHF 3'000 bis 5'000 erreichen. Neuwertige, ungeschossene Exemplare oder seltene Varianten wie die P210-5 mit langem Lauf werden für CHF 4'000 bis 8'000+ gehandelt. Die neue P210 Target von SIG Sauer kostet im Handel ab CHF 2'500 neu.
+
+Beim Kauf einer P210 ist die Passung das wichtigste Kriterium. Den Schlitten auf dem Rahmen vor- und zurückbewegen — es darf praktisch kein Spiel spürbar sein. Jede P210 hat eine individuelle Passung, und nachgesetzte Teile können die Präzision ruinieren. Die Nummerngleichheit ist entscheidend: Rahmen, Schlitten und Lauf müssen die gleiche Nummer tragen. Den Lauf auf Verschleiss prüfen — bei einer Waffe, die für Präzision gebaut wurde, sind abgenutzte Züge besonders wertmindernd. Den Abzug testen: Er sollte trocken und ohne Spiel brechen. Die Griffschalen auf Risse prüfen — originale Holz- oder Kunststoffgriffe sind wertvoller als Ersatzteile. Beim Kauf einer Armeeversion darauf achten, ob es sich um eine Rückgabe oder einen freien Verkauf handelt — Armeerückgaben haben manchmal nachlässig überarbeitete Oberflächen.
+
+Rechtlich fällt die P210 als ehemalige Ordonnanzpistole unter spezielle Regelungen. Armeemodelle (P210-2) sind als Ordonnanzwaffen klassifiziert — der Erwerb setzt Schweizer Bürgerrecht oder Niederlassungsbewilligung C voraus, ein Kaufvertrag genügt. Zivile Modelle (P210-1, -5, -6, -7) erfordern hingegen einen Waffenerwerbsschein (WES), da sie als gewöhnliche Faustfeuerwaffen gelten und unter Kategorie B fallen.`,
     rechtsstatus: 'ordonnanz',
     typischeKaliber: ['9×19mm', '7,65mm Parabellum'],
     tags: ['Ordonnanz', 'SIG', 'P210', 'P49', 'Schweiz', 'Sammler', 'Präzision'],
@@ -205,30 +162,19 @@ Ordonnanzwaffe — Käufer muss Schweizer Bürger oder Niederlassungsbewilligung
     hersteller: 'DWM / W+F Bern',
     baujahr: '1906',
     kurzbeschreibung: 'Die ikonische Kniehebelpistole. Schweizer Ordonnanzpistole 1906–1949. Heiss begehrtes Sammlerstück.',
-    inhalt: `## Parabellum P06 — Die ikonische Kniehebelpistole
-Die Parabellum-Pistole (bekannt als "Luger") war von 1906 bis 1949 die Ordonnanzpistole der Schweizer Armee. Sie wurde von Georg Luger auf Basis der Borchardt C-93 entwickelt und ist eine der bekanntesten Handfeuerwaffen der Geschichte. Die Schweizer Armee war 1900 der erste militärische Abnehmer weltweit.
+    inhalt: `Die Parabellum P06, weltweit als Luger bekannt, ist eine der ikonischsten Handfeuerwaffen der Geschichte und war von 1906 bis 1949 die Ordonnanzpistole der Schweizer Armee. Ihr unverwechselbarer Kniehebelverschluss, die elegante Linienführung und die hervorragende Fertigungsqualität machen sie zu einem der begehrtesten Sammlerstücke überhaupt. Die Schweiz war 1900 der erste Staat weltweit, der die Parabellum als Militärpistole einführte — noch vor dem Deutschen Kaiserreich.
 
-## Technische Daten
-- Kaliber: 7,65×21mm Parabellum (P06), 9×19mm (P06/29)
-- System: Kniehebelverschluss (Toggle-Lock)
-- Magazin: 8 Schuss (Kastenmagazin im Griff)
-- Lauflänge: 120mm (Standard), 150mm (Artillerie-Modell)
-- Gewicht: 870g (leer)
-- Gesamtlänge: 222mm
+Die Geschichte der Parabellum beginnt mit Hugo Borchardt, der 1893 die Borchardt C-93 entwickelte — eine der ersten selbstladenden Pistolen. Georg Luger, ein österreichischer Ingenieur bei DWM (Deutsche Waffen- und Munitionsfabriken), überarbeitete Borchardts Konstruktion grundlegend und schuf eine kompaktere, handlichere Waffe. Er behielt den Kniehebelverschluss bei, verkürzte aber den Mechanismus und veränderte den Griffwinkel. Die Schweizer Armee testete die neue Pistole ab 1898 und führte sie 1900 als Ordonnanzpistole ein — im damals neuen Kaliber 7,65×21mm Parabellum, das Luger eigens für diese Waffe entwickelte. 1906 folgte die überarbeitete P06, und ab 1918 wurde die Produktion an die Eidgenössische Waffenfabrik Bern (W+F Bern) übertragen, die bis 1949 rund 30'000 Stück fertigte.
 
-## Besonderheiten
-Der Kniehebelverschluss ist einzigartig in der Waffengeschichte — zwei Gelenkhebel knicken beim Rückstoss nach oben ab. Dieses System ermöglicht einen extrem flachen Griffwinkel von 55°, der ein natürliches Zielen erlaubt. Die Fertigungsqualität war aussergewöhnlich hoch, was die Waffe teuer aber zuverlässig machte. Schweizer P06 von W+F Bern gelten als die bestverarbeiteten aller Parabellum-Pistolen.
+Technisch ist die Parabellum ein Rückstoßlader mit Kniehebelverschluss — ein System, das in der Waffengeschichte einzigartig geblieben ist. Beim Abfeuern bewegen sich Lauf und Verschluss kurz gemeinsam zurück, bevor der Kniehebel an einer Steuerkurve nach oben knickt und den Verschluss freigibt. Dieses System ermöglicht einen extrem flachen Griffwinkel von 55 Grad, der ein natürliches, instinktives Zielen erlaubt. Das Magazin fasst 8 Patronen im Kastenmagazin im Griff. Die ursprüngliche P06 verschoss 7,65×21mm Parabellum, die ab 1929 eingeführte P06/29 wurde auf 9×19mm umgestellt. Die Lauflänge beträgt 120mm beim Standardmodell, das Gewicht liegt bei 870g, die Gesamtlänge bei 222mm. Die Fertigungsqualität, insbesondere bei den Schweizer Exemplaren von W+F Bern, war aussergewöhnlich hoch — jedes Teil wurde von Hand eingepasst und poliert.
 
-## Varianten
-- P06 (1906): Kaliber 7,65mm, Schweizer Erstausführung
-- P06/29 (1929): Umstellung auf 9×19mm
-- Artillerie-Modell: Langer Lauf (200mm), Trommelmagazin optional
+Im Schweizer Kontext ist die P06 ein Stück Militärgeschichte von besonderem Rang. Die Schweizer Parabellum-Pistolen von W+F Bern gelten unter Sammlern als die bestverarbeiteten aller Luger-Varianten weltweit. Die Produktion in Bern unter strengster Qualitätskontrolle resultierte in Waffen, die selbst nach über 100 Jahren noch tadellos funktionieren. Für Schweizer Sammler sind besonders die frühen P00 (Modell 1900) und die P06 mit niedrigen Seriennummern interessant. Das Schweizer Armeewappen auf dem Rahmen und die W+F-Markierung sind Erkennungszeichen, die den Wert erheblich steigern. Die P06 wurde 1949 durch die SIG P210 abgelöst, doch ihr Legendenstatus blieb ungebrochen.
 
-## Sammlerwert
-Schweizer P06 von W+F Bern: CHF 1'500–5'000+ je nach Zustand und Jahrgang. Seltene frühe Modelle deutlich mehr.
+Der Preisguide Schweiz 2026 für die P06 ist stark von Jahrgang, Variante und Zustand abhängig. Standardmässige P06 von W+F Bern in gutem Zustand, also funktionsfähig mit normalen Gebrauchsspuren und leicht abgegriffenem Finish, werden für CHF 1'200 bis 2'000 gehandelt. Exemplare in sehr gutem Zustand mit weitgehend intakter Brünierung und scharfem Lauf erzielen CHF 2'000 bis 3'500. Neuwertige oder ungeschossene P06 mit Originalholster und Zubehör können CHF 3'500 bis 6'000 erreichen. Besonders seltene frühe Modelle (P00, Baujahre 1900 bis 1906) oder Exemplare mit nachweisbarer Regimentsgeschichte können deutlich über CHF 8'000 gehandelt werden. Die P06/29 in 9mm liegt preislich leicht unter den 7,65mm-Modellen.
 
-## Rechtsstatus Schweiz
-Ordonnanzwaffe — Erwerb nur für Schweizer Bürger oder Personen mit Niederlassungsbewilligung C.`,
+Beim Kauf einer P06 ist die Nummerngleichheit das A und O. Rahmen, Verschluss, Kniehebel, Schliessfeder, Seitenplatte und Magazin sollten die gleiche Seriennummer tragen. Gemischte Nummern deuten auf Teiletausche hin und mindern den Sammlerwert erheblich. Den Kniehebelmechanismus auf Leichtgängigkeit prüfen — er muss sauber auf- und zuklappen. Den Lauf auf Korrosion und Züge kontrollieren. Die Brünierung begutachten: Originale Schweizer Brünierung hat einen charakteristischen Blauton. Nachbrünierte Waffen sind deutlich weniger wert. Das Holzgriffstück auf Risse prüfen — originale Griffschalen mit Schweizer Kreuz sind wertsteigernd. Besondere Vorsicht bei "Zusammenbauten" aus verschiedenen Teilen, die als original verkauft werden.
+
+Rechtlich ist die P06 als Ordonnanzwaffe der Kategorie C klassifiziert. Der Erwerb setzt Schweizer Bürgerrecht oder eine Niederlassungsbewilligung C voraus. Ein Waffenerwerbsschein ist nicht erforderlich — es genügt ein Kaufvertrag. Da die P06 vor 1900 respektive vor 1906 entwickelt wurde, fallen besonders alte Exemplare teilweise unter antike Waffen, was den Erwerb noch vereinfacht.`,
     rechtsstatus: 'ordonnanz',
     typischeKaliber: ['7,65×21mm Parabellum', '9×19mm'],
     tags: ['Ordonnanz', 'P06', 'Luger', 'Parabellum', 'Schweiz', 'Sammler', 'Kniehebel'],
@@ -244,30 +190,21 @@ Ordonnanzwaffe — Erwerb nur für Schweizer Bürger oder Personen mit Niederlas
     hersteller: 'W+F Bern / SIG',
     baujahr: '1911',
     kurzbeschreibung: 'Vorgänger des K31. Schmidt-Rubin System mit Geradezugverschluss. Beliebtes Sammlerstück.',
-    inhalt: `## Karabiner 11 — Schweizer Langwaffe der Belle Époque
-Der Karabiner Modell 1911 (K11) war von 1913 bis 1933 die Standard-Kurzwaffe der Schweizer Armee. Er löste das Infanteriegewehr 1911 in der Kavallerietruppe ab und war der direkte Vorgänger des legendären K31.
+    inhalt: `Der Karabiner Modell 1911, im Volksmund schlicht K11 genannt, gehört zu den prägenden Ordonnanzwaffen der Schweizer Militärgeschichte. Er steht für eine Epoche, in der die Schweiz waffentechnisch auf Augenhöhe mit den Grossmächten agierte und mit dem Schmidt-Rubin-System einen eigenständigen, technisch überlegenen Weg beschritt. Wer heute einen K11 in den Händen hält, hält ein Stück Schweizer Ingenieurskunst aus der Belle Époque, das in seiner Präzision und Verarbeitungsqualität noch immer beeindruckt.
 
-## Technische Daten
-- Kaliber: 7,5×55mm Swiss (GP11)
-- System: Geradezugverschluss (Schmidt-Rubin System)
-- Magazin: 6 Schuss (abnehmbares Kastenmagazin)
-- Lauflänge: 590mm
-- Gesamtlänge: 1100mm
-- Gewicht: 3,9 kg
-- Produziert: ca. 135'000 Stück (1913–1933)
+Die Entwicklung des K11 geht auf die Arbeiten von Oberst Rudolf Schmidt und dem Ballistiker Eduard Rubin zurück, die bereits Ende des 19. Jahrhunderts den Geradezugverschluss für die Schweizer Armee konzipierten. Das Vorgängermodell, das Gewehr 1889, war das erste Seriengewehr mit diesem revolutionären Verschlusssystem. Über das Modell 1896/11 und das Infanteriegewehr 1911 wurde das System kontinuierlich verbessert, bis 1913 der Karabiner 1911 als verkürzte Variante für berittene Truppen, Artilleristen und Versorgungssoldaten eingeführt wurde. Die Produktion lief von 1913 bis 1933 bei der Eidgenössischen Waffenfabrik Bern (W+F Bern) und bei SIG in Neuhausen. Insgesamt wurden rund 135'000 Stück gefertigt, bevor der K31 den K11 als Standardwaffe ablöste.
 
-## Besonderheiten
-Der K11 verwendet den Schmidt-Rubin-Geradezugverschluss mit 12 Zügen im Lauf — ungewöhnlich viele für diese Epoche. Der Verschluss wird nur gerade zurückgezogen und vorgeschoben, ohne Drehbewegung. Dies ermöglicht schnelleres Repetieren als bei Mauser-Systemen, erfordert aber einen längeren Verschlussweg.
+Technisch zeichnet sich der K11 durch den Schmidt-Rubin-Geradezugverschluss aus. Anders als beim weit verbreiteten Mauser-System wird der Verschluss nicht gedreht und dann zurückgezogen, sondern ausschliesslich gerade nach hinten gezogen und wieder vorgeschoben. Die Verriegelung erfolgt über Stützwarzen, die sich beim Vorführen des Verschlusses in entsprechende Ausnehmungen im Hülsengehäuse drehen. Dieses Prinzip erlaubt ein deutlich schnelleres Repetieren als bei Drehverschlüssen, erfordert allerdings einen längeren Verschlussweg. Das Kaliber ist 7,5x55mm Swiss, verschossen wird die legendäre GP11-Patrone, die für ihre hervorragende Ballistik und Präzision bekannt ist. Der Lauf misst 590 mm und weist 12 Züge auf, was für die damalige Zeit ungewöhnlich viele waren und zur hohen Treffgenauigkeit beiträgt. Das abnehmbare Kastenmagazin fasst 6 Patronen und wird von oben über Ladestreifen befüllt. Die Gesamtlänge beträgt 1100 mm bei einem Gewicht von 3,9 kg. Die Visierung ist eine offene Kimme mit Korn, justierbar bis 1500 Meter.
 
-## Varianten
-- Infanteriegewehr 1911 (IG11): Längere Version mit 780mm Lauf
-- K11 Kavallerie: Standardausführung mit kürzerem Lauf
+Was den K11 besonders macht, ist die Kombination aus Präzision und Handhabungsgeschwindigkeit. In den Händen eines geübten Schützen lässt sich der Geradezugverschluss deutlich schneller betätigen als ein Mauser-Verschluss, was im damaligen militärischen Kontext ein erheblicher Vorteil war. Die Verarbeitungsqualität ist typisch schweizerisch: sauber gefräste Metallteile, passgenau eingesetzte Nussbaum-Schäfte und eine insgesamt sehr solide Konstruktion. Viele K11 tragen Truppenstempel und Einheitszuordnungen, die heute für Sammler von grossem Interesse sind. Die Ladestreifen-Befüllung funktioniert zuverlässig, und die GP11-Munition ist auch 2026 noch problemlos über Schweizer Händler erhältlich, was den K11 auch als Schiesswaffe praxistauglich macht.
 
-## Sammlerwert
-CHF 250–600 je nach Zustand. Exemplare mit Truppenstempel und komplettem Originalzustand erzielen Höchstpreise.
+Im Schweizer Kontext nimmt der K11 eine besondere Stellung ein. Er war die Waffe einer Generation, die zwischen den beiden Weltkriegen diente, und er steht im Schatten seines berühmteren Nachfolgers, des K31. Gerade deshalb ist der K11 bei Sammlern beliebt: Er ist weniger gehypt als der K31, historisch aber ebenso interessant und oft zu günstigeren Preisen erhältlich. In der Schweizer Schützentradition wird der K11 regelmässig an historischen Schiessanlässen und Veteranenmatches eingesetzt. Viele Exemplare stammen aus Armeebeständen und wurden nach der Ausmusterung an die Soldaten abgegeben oder über den Waffenhandel verkauft. Die eidgenössische Herkunft macht den K11 zu einem durch und durch schweizerischen Sammlerstück, das in keiner Ordonnanzsammlung fehlen sollte.
 
-## Rechtsstatus Schweiz
-Ordonnanzwaffe — Erwerb nur für Schweizer Bürger oder C-Bewilligung.`,
+Der Preisrahmen für den K11 auf dem Schweizer Markt im Jahr 2026 lässt sich in drei Kategorien einteilen. In gutem Zustand, also mit Gebrauchsspuren, etwas nachgedunkeltem Schaft und leichten Oberflächenspuren am Metall, aber voll funktionsfähigem Verschluss und intakter Visierung, sind K11 für CHF 280 bis 400 zu haben. In sehr gutem Zustand, mit überwiegend erhaltenem Originalblau, sauberem Schaft ohne grössere Beschädigungen und gut lesbaren Stempeln, liegen die Preise bei CHF 400 bis 600. Neuwertige oder ungebrauchte Exemplare, die selten sind und oft aus Arsenalbeständen stammen, können CHF 600 bis 900 erzielen, insbesondere wenn sie mit Originalzubehör wie Bajonett, Mündungsschoner und Ladestreifen angeboten werden.
+
+Beim Kauf eines K11 sollte man zunächst den Verschluss prüfen: Er muss leichtgängig laufen und sauber verriegeln. Der Lauf sollte mit einem Blick durch die Mündung auf Rostnarben und Verschleiss geprüft werden. Scharfe, klar definierte Züge deuten auf einen guten Lauf hin. Die Holzteile sind wichtig für den Sammlerwert: Originale Nussbaum-Schäfte mit Regimentsstempel und Soldatennummer sind wertvoller als Ersatzschäfte. Die Seriennummer auf dem Hülsengehäuse sollte mit der Nummer auf dem Verschluss übereinstimmen (nummerngleich). Nicht nummerngleiche Exemplare sind deutlich weniger wert. Zusätzlich lohnt es sich, auf den Zustand des Magazins zu achten und sicherzustellen, dass es original ist und nicht vom K31 stammt, da die Magazine nicht identisch sind.
+
+Rechtlich ist der K11 als Ordonnanzwaffe der Schweizer Armee klassifiziert. Der Erwerb ist in der Schweiz für Schweizer Bürger und Personen mit Niederlassungsbewilligung C ohne Waffenerwerbsschein möglich. Es genügt ein Kaufvertrag mit Ausweiskopien beider Parteien. Für Personen mit Aufenthaltsbewilligung B oder andere Ausländer ist ein Waffenerwerbsschein (WES) beim kantonalen Waffenbüro zu beantragen. Der K11 unterliegt keiner Meldepflicht beim Kauf unter Schweizer Bürgern, muss aber bei Besitzwechsel korrekt dokumentiert werden. Die GP11-Munition ist frei erhältlich. Der K11 ist somit eine der am einfachsten zu erwerbenden historischen Schweizer Waffen und bietet einen ausgezeichneten Einstieg in die Welt der Ordonnanzwaffen.`,
     rechtsstatus: 'ordonnanz',
     typischeKaliber: ['7,5×55mm Swiss'],
     tags: ['Ordonnanz', 'K11', 'Karabiner', 'Schmidt-Rubin', 'Schweiz', 'Sammler'],
@@ -282,31 +219,23 @@ Ordonnanzwaffe — Erwerb nur für Schweizer Bürger oder C-Bewilligung.`,
     hersteller: 'Eidg. Waffenfabrik',
     baujahr: '1869',
     kurzbeschreibung: 'Das erste Repetiergewehr der Schweizer Armee (1869). Vor 1871 — frei erhältlich, kein Kaufvertrag.',
-    inhalt: `## Vetterli — Die erste Schweizer Repetierwaffe
-Das Vetterli-Gewehr Modell 1869 war das weltweit erste Repetiergewehr einer Armee und wurde von Friedrich Vetterli in Neuhausen entwickelt. Die Schweiz war damit allen anderen Nationen voraus — die meisten Armeen verwendeten noch Einzellader.
+    inhalt: `Das Vetterli-Gewehr Modell 1869 nimmt in der Waffengeschichte eine einzigartige Stellung ein: Es war das erste Repetiergewehr, das von einer Armee offiziell als Ordonnanzwaffe eingeführt wurde. Während die grossen europäischen Mächte noch mit Einzelladern wie dem Chassepot oder dem Dreyse-Zündnadelgewehr hantierten, verfügte die kleine Schweiz bereits über ein Mehrladergewehr mit elf Schuss im Röhrenmagazin. Diese technische Pionierleistung macht das Vetterli zu einem der bedeutendsten Sammlerstücke der Schweizer Militärgeschichte und zu einem begehrten Objekt für internationale Waffensammler.
 
-## Technische Daten
-- Kaliber: 10,4×38mm Randfeuer (später 7,5×53,5mm Umbau GP90)
-- System: Zylinderverschluss mit Röhrenmagazin
-- Magazin: 11 Schuss (Röhrenmagazin unter dem Lauf) + 1 im Lauf
-- Lauflänge: 840mm (Gewehr), 540mm (Karabiner)
-- Gewicht: 4,5 kg (Gewehr)
-- Gesamtlänge: 1310mm
+Die Entwicklung des Vetterli geht auf Friedrich Vetterli zurück, einen Büchsenmacher und Ingenieur aus Neuhausen am Rheinfall, der bei der Schweizerischen Industrie-Gesellschaft (SIG) tätig war. Vetterli erkannte früh das Potenzial von Repetierwaffen und kombinierte bewährte Konstruktionsprinzipien auf innovative Weise. Er übernahm den Zylinderverschluss, der sich vom Dreyse-Prinzip ableitete, und paarte ihn mit einem Röhrenmagazin, das dem amerikanischen Henry-Gewehr nachempfunden war. Die Verwendung von Randfeuer-Patronen im Kaliber 10,4x38mm war ein weiteres Novum für Militärgewehre. Die Schweizer Bundesversammlung nahm das Gewehr 1868 an, und ab 1869 begann die Serienproduktion bei SIG in Neuhausen sowie bei der Eidgenössischen Waffenfabrik in Bern. Insgesamt wurden über 150'000 Exemplare in verschiedenen Ausführungen gefertigt.
 
-## Besonderheiten
-Das Vetterli kombinierte erstmals einen Zylinderverschluss nach Dreyse-Prinzip mit dem Röhrenmagazin des Henry-Systems. Die Schweizer Version verwendete Randfeuer-Munition — ein Novum für Militärgewehre. Über 150'000 Stück wurden bei SIG in Neuhausen und W+F Bern gefertigt.
+Technisch betrachtet ist das Vetterli ein beeindruckendes Stück Handwerkskunst. Der Zylinderverschluss wird durch Anheben und Zurückziehen des Verschlussgriffs bedient, wobei die abgeschossene Hülse ausgeworfen wird. Beim Vorführen des Verschlusses wird eine neue Patrone aus dem Röhrenmagazin unter dem Lauf zugeführt. Das Magazin fasst elf Patronen, dazu kommt eine zwölfte im Patronenlager. Das Kaliber 10,4x38mm Randfeuer erzeugt eine moderate Rückstossenergie und war für die damalige Zeit ballistisch ausreichend. Der Lauf des Gewehrmodells misst 840 mm bei einer Gesamtlänge von 1310 mm. Das Gewicht beträgt rund 4,5 kg. Die Visierung besteht aus einer klappbaren Leitervisierung, die auf verschiedene Distanzen eingestellt werden kann. Die Karabinerversion hat einen verkürzten Lauf von 540 mm und war für berittene Truppen und Artilleristen vorgesehen.
 
-## Varianten
-- Modell 1869: Originalausführung, Randfeuer
-- Modell 1869/71: Verbessertes Modell
-- Modell 1878: Umbau auf 10,4mm Zentralfeuer
-- Modell 1881: Umbau Rubin-Munition (Versuch)
+Was das Vetterli besonders macht, ist nicht nur sein historischer Pionierstatus, sondern auch die handwerkliche Qualität der Fertigung. Die Metallteile sind sauber verarbeitet, die Nussbaumschäfte zeigen die typische schweizerische Sorgfalt. Die Randfeuer-Mechanik des Originalmodells 1869 ist dabei besonders interessant: Der Schlagbolzen trifft auf den Rand des Patronenbodens, nicht auf ein zentrales Zündhütchen. Dieses System wurde bei späteren Modellen aufgegeben. Das Modell 1869/71 brachte kleinere Verbesserungen, das Modell 1878 wurde auf 10,4mm Zentralfeuer umgerüstet, und das Modell 1881 war ein Versuchsmodell mit Rubin-Munition im kleineren Kaliber. Besonders selten und sammlerwürdig sind die frühen Originalmodelle 1869, die noch die Randfeuer-Konfiguration aufweisen.
 
-## Sammlerwert
-CHF 200–800. Gut erhaltene Originalmodelle 1869 mit Randfeuer-Mechanik sind besonders gesucht.
+Im Schweizer Kontext ist das Vetterli ein Symbol für den technologischen Fortschritt der jungen Eidgenossenschaft. Nur zwei Jahrzehnte nach der Gründung des Bundesstaates 1848 gelang es der Schweiz, eine waffentechnische Innovation hervorzubringen, die weltweit Beachtung fand. Das Vetterli-System wurde auch nach Italien exportiert, wo es als Fucile Vetterli-Vitali in abgewandelter Form übernommen wurde. In der Schweiz selbst blieb das Vetterli bis zur Einführung des Schmidt-Rubin-Systems 1889 im Dienst und wurde danach schrittweise ausgemustert. Viele Exemplare landeten in privaten Händen oder wurden zu Scheibengewehren umgebaut. Die Schweizer Schützentradition hat dafür gesorgt, dass zahlreiche Vetterli-Gewehre erhalten geblieben sind, auch wenn der Zustand stark variiert.
 
-## Rechtsstatus Schweiz
-Ordonnanzwaffe — Erwerb nur mit Schweizer Bürgerrecht oder C-Bewilligung.`,
+Die Munitionsfrage ist beim Vetterli ein zentrales Thema. Die originale 10,4x38mm Randfeuer-Munition wird seit über hundert Jahren nicht mehr hergestellt. Für Sammler, die ihr Vetterli auch schiessen möchten, gibt es spezialisierte Anbieter, die Randfeuer-Patronen in Kleinserie fertigen, allerdings zu hohen Stückpreisen. Die auf Zentralfeuer umgebauten Modelle 1878 sind in dieser Hinsicht praktischer, da für diese Patronen leichter Hülsen und Komponenten zum Wiederladen beschafft werden können. Wer ein Vetterli primär als Sammlerstück erwirbt, muss sich um die Munitionsfrage weniger kümmern.
+
+Der Preisrahmen für Vetterli-Gewehre auf dem Schweizer Markt 2026 staffelt sich wie folgt. In gutem Zustand, also mit deutlichen Gebrauchsspuren, nachgedunkeltem oder repariertem Schaft und funktionsfähiger Mechanik, sind Vetterli-Gewehre für CHF 250 bis 450 erhältlich. In sehr gutem Zustand, mit überwiegend erhaltenem Originalfinish, sauberem Schaft und gut lesbaren Stempeln, liegen die Preise bei CHF 450 bis 800. Herausragende Exemplare, insbesondere frühe Modelle 1869 im Originalzustand mit Randfeuer-Mechanik und vollständiger Stempelung, können CHF 800 bis 1'400 erzielen. Karabinerversionen und seltene Varianten wie das Scharfschützenmodell sind tendenziell teurer.
+
+Beim Kauf eines Vetterli sollte man besonders auf den Zustand des Röhrenmagazins achten, da dieses anfällig für Dellen und Verformungen ist, die die Funktion beeinträchtigen. Der Verschluss muss sauber laufen und der Schlagbolzen intakt sein. Bei Randfeuer-Modellen ist die Funktionsfähigkeit des Schlagbolzens besonders zu prüfen, da dieser anders positioniert ist als bei Zentralfeuer-Waffen. Der Lauf sollte auf Rostnarben und Verschleiss kontrolliert werden. Die Holzteile sind bei einem über 150 Jahre alten Gewehr naturgemäss oft beansprucht. Originale Schäfte ohne Risse oder Reparaturen steigern den Wert erheblich. Die Seriennummer und Stempel sind wichtig für die Zuordnung zum Produktionszeitraum und Hersteller.
+
+Rechtlich ist das Vetterli-Gewehr in der Schweiz als Waffe vor 1871 klassifiziert, sofern es sich um ein Originalmodell 1869 handelt. Waffen, die vor 1871 konstruiert wurden, sind in der Schweiz frei erhältlich und erfordern weder einen Waffenerwerbsschein noch einen Kaufvertrag. Es genügt, dass beide Parteien handlungsfähig und volljährig sind. Spätere Modelle wie das 1878 oder 1881 fallen hingegen unter die Ordonnanzwaffen-Regelung und erfordern für Schweizer Bürger und Personen mit C-Bewilligung lediglich einen Kaufvertrag. Das Vetterli 1869 ist damit eine der wenigen historischen Waffen, die in der Schweiz ohne jegliche bürokratische Hürde erworben werden können, was es besonders für Einsteiger in die Welt der historischen Waffen attraktiv macht.`,
     rechtsstatus: 'frei',
     typischeKaliber: ['10,4×38mm R'],
     tags: ['Historisch', 'Vetterli', 'Schweiz', 'Sammler', 'Vor1871'],
@@ -323,29 +252,23 @@ Ordonnanzwaffe — Erwerb nur mit Schweizer Bürgerrecht oder C-Bewilligung.`,
     hersteller: 'SIG Sauer',
     baujahr: '1984',
     kurzbeschreibung: 'Profi-Pistole der Polizei und Spezialeinheiten weltweit. Navy SEALs, GSG9 und mehr.',
-    inhalt: `## SIG P226 — Kampfpistole der Eliteeinheiten
-Die SIG Sauer P226 wurde 1984 als Weiterentwicklung der P220 vorgestellt und gewann die US-Army-Ausschreibung XM9 technisch — verlor aber den Auftrag an Beretta aus Kostengründen. Seitdem ist sie die bevorzugte Pistole von Navy SEALs, SAS und zahlreichen Spezialeinheiten weltweit.
+    inhalt: `Die SIG Sauer P226 gilt seit über vier Jahrzehnten als eine der besten Kampfpistolen der Welt. Sie vereint schweizerisch-deutsche Ingenieurskunst mit kompromissloser Zuverlässigkeit und wurde zur Standardwaffe von Eliteeinheiten auf der ganzen Welt. Für Schweizer Schützen hat die P226 eine besondere Bedeutung, denn sie trägt das Erbe der SIG-Werke in Neuhausen am Rheinfall in sich, auch wenn die Produktion heute grösstenteils in Deutschland und den USA stattfindet.
 
-## Technische Daten
-- Kaliber: 9×19mm (auch .40 S&W, .357 SIG)
-- System: Kurzhub-Rückstosslader, verriegelter Verschluss
-- Magazin: 15 Schuss (9mm), 12 (.40), 12 (.357 SIG)
-- Lauflänge: 112mm
-- Gesamtlänge: 196mm
-- Gewicht: 844g (leer)
-- Abzug: DA/SA mit Spannabzug
+Die Geschichte der P226 beginnt in den frühen 1980er Jahren, als die US-Armee eine neue Dienstpistole suchte, um die alternde Colt M1911 im Kaliber .45 ACP abzulösen. SIG Sauer entwickelte die P226 als Weiterentwicklung der bewährten P220 und reichte sie bei der XM9-Ausschreibung ein. Technisch schnitt die P226 am besten ab, sie bestand alle Tests ohne eine einzige Funktionsstörung. Den Zuschlag erhielt jedoch Beretta mit der 92F, da diese im Stückpreis günstiger war. Diese Niederlage erwies sich paradoxerweise als Segen für SIG Sauer: Die US Navy SEALs, die von der Zuverlässigkeit der P226 überzeugt waren, wählten sie als eigene Dienstpistole. Im Laufe der folgenden Jahre übernahmen zahlreiche weitere Eliteeinheiten die P226, darunter die britischen SAS, die deutsche GSG9, verschiedene FBI-Abteilungen und zahlreiche Polizeibehörden weltweit. Die P226 wurde zum Inbegriff der professionellen Kampfpistole.
 
-## Besonderheiten
-Die P226 hat keinen manuellen Sicherungshebel — stattdessen bietet der lange DA-Erstschuss und der Entkupplungshebel (Decocking Lever) die Sicherheit. Der Stahlschlitten auf Leichtmetallrahmen sorgt für ein ausgezeichnetes Rückstossverhalten. Die Verarbeitung aus deutscher/Schweizer Fertigung gilt als Benchmark der Branche.
+Technisch basiert die P226 auf dem Prinzip des verriegelten Kurzhub-Rückstossladers mit modifiziertem Browning-Verschluss. Der Lauf ist über einen Verriegelungsblock mit dem Schlitten verbunden und entriegelt sich beim Rückstoss durch eine Steuerkurve am Laufende. Das Kaliber ist primär 9x19mm Parabellum, es gibt jedoch auch Versionen in .40 S&W und .357 SIG. Das doppelreihige Magazin fasst 15 Patronen im Kaliber 9mm, was gegenüber der einreihigen P220 eine deutliche Kapazitätssteigerung darstellt. Der Lauf misst 112 mm, die Gesamtlänge beträgt 196 mm, und das Leergewicht liegt bei 844 Gramm. Der Abzug arbeitet im DA/SA-Modus: Der erste Schuss kann mit langem, schwerem Spannabzug (Double Action) abgefeuert werden, alle folgenden Schüsse erfolgen im kurzen, leichten Single-Action-Modus. Ein Entspannhebel (Decocking Lever) auf der linken Seite erlaubt das sichere Entspannen des Hahns, ohne den Abzug zu betätigen. Einen manuellen Sicherungshebel gibt es bewusst nicht, die Sicherheit wird durch den langen DA-Erstschuss und die Schlagbolzensicherung gewährleistet.
 
-## Varianten
-- P226 MK25: Navy SEAL Version mit Phosphat-Beschichtung und Ankermarkierung
-- P226 Legion: Premium-Ausführung mit G10-Griffschalen und SRT-Abzug
-- P226 X-Five: Sportversion, SA-only, verlängerter Lauf
-- P226 Nitron: Standard-Ausführung mit Nitron-Beschichtung
+Was die P226 besonders auszeichnet, ist die Verarbeitungsqualität. Der Stahlschlitten sitzt auf einem Rahmen aus eloxiertem Leichtmetall, was eine optimale Balance zwischen Gewicht und Rückstossdämpfung ergibt. Die Passgenauigkeit zwischen Schlitten und Rahmen ist minimal, was sich in einer hervorragenden Präzision niederschlägt. Die Oberflächenbehandlung, je nach Modell Nitron-Beschichtung oder Phosphatierung, bietet exzellenten Korrosionsschutz. Die Ergonomie des Griffs gilt als vorbildlich und die P226 liegt auch in kleineren Händen gut. Der SRT-Abzug (Short Reset Trigger), der bei neueren Modellen serienmässig verbaut ist, verkürzt den Abzugsweg im SA-Modus erheblich und ermöglicht schnellere Folgeschüsse.
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich — Standardprozedur für Faustfeuerwaffen.`,
+Im Schweizer Kontext ist die P226 vor allem bei Sportschützen und bei kantonalen Polizeikorps verbreitet. Verschiedene Schweizer Polizeieinheiten führten oder führen die P226 als Dienstwaffe. Auf dem zivilen Markt ist sie bei IPSC-Schützen und allgemein bei Pistolenschützen beliebt, die eine zuverlässige, präzise und hochwertig verarbeitete Waffe suchen. Die P226 wird in der Schweiz über autorisierte Händler vertrieben. Die X-Five-Variante ist im Sportbereich besonders geschätzt und wird auch für Wettkämpfe der Stufe A eingesetzt. Die Verfügbarkeit von Ersatzteilen und Zubehör ist in der Schweiz über den Fachhandel gut gewährleistet.
+
+Die wichtigsten Varianten der P226 sind die Standard-Nitron-Ausführung, die MK25 (die Navy-SEAL-Version mit Phosphatbeschichtung, Ankermarkierung und Picatinny-Rail), die Legion-Serie (eine Premium-Ausführung mit G10-Griffschalen, SRT-Abzug und verbesserter Ergonomie) sowie die X-Five (eine Sportversion mit verlängertem Lauf, Balancegewicht und Single-Action-Abzug). Die neueren Modelle verfügen über eine Picatinny-Rail für Lichtmodule und Laser.
+
+Preislich bewegt sich die P226 auf dem Schweizer Markt 2026 in folgendem Rahmen. Gebrauchte Exemplare in gutem Zustand, also funktionsfähig mit normalen Gebrauchsspuren am Finish, aber intaktem Abzugssystem und zuverlässiger Funktion, kosten CHF 650 bis 900. In sehr gutem Zustand, mit wenig Tragespuren, sauberem Lauf und gepflegtem Gesamtbild, liegen die Preise bei CHF 900 bis 1'300. Neuwertige oder wenig geschossene Exemplare, insbesondere die Legion- oder MK25-Varianten, erzielen CHF 1'300 bis 1'800. Die X-Five-Sportversion liegt neu bei rund CHF 2'200 bis 2'800. Neupreise für die Standard-P226 liegen 2026 bei etwa CHF 1'200 bis 1'500.
+
+Beim Kauf einer gebrauchten P226 sollte man besonders auf den Verschleiss an der Verriegelung achten: Ein ausgeschlagener Verriegelungsblock kann die Präzision beeinträchtigen. Der Abzug sollte in beiden Modi sauber brechen, ohne Kratzen oder Schleifen. Die Magazinfeder sollte noch ausreichend Spannung haben, da ermüdete Federn zu Zuführstörungen führen können. Originalmagazine sind wertvoller als Nachbauten. Der Lauf sollte scharfe Züge und Felder aufweisen. Ein Blick auf die Schlitteninnenseite gibt Aufschluss über die Schussbelastung: Starke Abriebspuren deuten auf hohe Schusszahlen hin. Bei älteren Modellen ohne Picatinny-Rail ist der Anbau von Lichtmodulen nur über Adapter möglich.
+
+Rechtlich erfordert der Erwerb einer SIG P226 in der Schweiz einen Waffenerwerbsschein (WES). Dieser wird beim kantonalen Waffenbüro beantragt und setzt voraus, dass keine Einträge im Strafregister vorliegen, kein Hinweis auf Selbst- oder Fremdgefährdung besteht und der Antragsteller mindestens 18 Jahre alt ist. Schweizer Bürger und Personen mit C-Bewilligung erhalten den WES in der Regel innerhalb weniger Wochen. Für EU-Bürger mit B-Bewilligung gelten zusätzliche Anforderungen. Die P226 darf nach Erwerb zu Hause aufbewahrt werden, wobei die Munition separat gelagert werden muss, wenn die Waffe nicht in einem Waffenschrank verwahrt wird. Für das Schiessen auf bewilligten Schiessanlagen ist keine weitere Bewilligung nötig. Der Transport zum Schiessstand muss auf direktem Weg und mit entladener, gesicherter Waffe erfolgen.`,
     rechtsstatus: 'wes',
     typischeKaliber: ['9×19mm', '.40 S&W', '.357 SIG'],
     tags: ['Pistole', 'SIG', 'P226', 'Polizei', 'DA/SA', 'SEALs'],
@@ -358,29 +281,23 @@ Waffenerwerbsschein (WES) erforderlich — Standardprozedur für Faustfeuerwaffe
     hersteller: 'SIG Sauer',
     baujahr: '2014',
     kurzbeschreibung: 'Modulare Pistole. Seit 2017 die neue US-Army Pistole (M17). Austauschbarer Griffrahmen.',
-    inhalt: `## SIG P320 — Modulare Militärpistole der neuen Generation
-Die SIG Sauer P320 wurde 2014 vorgestellt und gewann 2017 die Ausschreibung der US-Armee als M17/M18 — die erste neue Armeepistole seit 30 Jahren. Das modulare Fire-Control-Unit-Konzept (FCU) revolutionierte den Pistolenmarkt.
+    inhalt: `Die SIG Sauer P320 markiert einen Paradigmenwechsel im modernen Pistolenbau. Mit ihrem revolutionären modularen Konzept, bei dem das serialisierte Waffenstück ein herausnehmbares Stahlchassis ist, hat sie die Art und Weise verändert, wie Pistolen konfiguriert und angepasst werden. Der Gewinn der Ausschreibung der US-Armee im Jahr 2017 als M17/M18 hat die P320 endgültig als eine der wichtigsten Militärpistolen des 21. Jahrhunderts etabliert. Auch auf dem Schweizer Markt erfreut sich die P320 wachsender Beliebtheit bei Sport- und Freizeitschützen.
 
-## Technische Daten
-- Kaliber: 9×19mm (auch .40 S&W, .357 SIG, .45 ACP)
-- System: Kurzhub-Rückstosslader, modifizierter Browning-Verschluss
-- Magazin: 17 Schuss (Full-Size 9mm), 15 (Compact), 12 (Subcompact)
-- Lauflänge: 119mm (Full), 99mm (Compact), 91mm (Sub)
-- Gewicht: 833g (Full-Size, leer)
-- Abzug: Striker-fired (Schlagbolzenschloss)
+Die Entwicklungsgeschichte der P320 beginnt um 2012, als SIG Sauer eine striker-fired Pistole entwickelte, die das Erbe der P250 antreten sollte. Die P250, die ebenfalls über ein modulares Chassis verfügte, hatte sich am Markt nicht durchsetzen können, weil sie einen reinen Double-Action-Abzug besass, der im Vergleich zu Glock und anderen Striker-Pistolen als Nachteil empfunden wurde. Die P320 übernahm das modulare Chassis-Konzept, wechselte aber zu einem Schlagbolzenschloss-System (Striker), das einen deutlich kürzeren und leichteren Abzug ermöglichte. 2014 wurde die P320 offiziell vorgestellt. 2017 gewann sie als M17 (Full-Size) und M18 (Compact) die Modular Handgun System-Ausschreibung der US-Armee und löste damit die Beretta M9 ab, die seit 1985 im Dienst war. Dies war das erste Mal seit über 30 Jahren, dass die US-Streitkräfte eine neue Standardpistole einführten.
 
-## Besonderheiten
-Die FCU (Fire Control Unit) — ein serialisiertes Stahlchassis mit Abzugsgruppe — ist das eigentliche Waffenstück. Der Polymerrahmen, Schlitten und Lauf sind waffenrechtlich Zubehör. Dadurch kann eine P320 mit wenigen Handgriffen von Full-Size 9mm auf Compact .45 ACP umgebaut werden — ohne Waffenkauf.
+Das technische Herzstück der P320 ist die Fire Control Unit (FCU), ein serialisiertes Stahlchassis, das die Abzugsgruppe, den Schlagbolzen und alle wesentlichen Funktionskomponenten enthält. Dieses Chassis kann aus dem Polymergriffmodul herausgenommen und in ein anderes Griffmodul eingesetzt werden, etwa von Full-Size auf Compact oder Subcompact. Da waffenrechtlich nur das Chassis die Waffe darstellt, sind Griffmodule, Schlitten und Läufe als Zubehör klassifiziert und können ohne weitere Formalitäten getauscht werden. Die P320 im Full-Size-Format verschiesst 9x19mm aus einem doppelreihigen Magazin mit 17 Patronen. Die Lauflänge beträgt 119 mm bei der Full-Size-Version, 99 mm bei der Compact und 91 mm bei der Subcompact. Das Leergewicht der Full-Size liegt bei 833 Gramm. Der modifizierte Browning-Verschluss sorgt für eine sichere Verriegelung. Neben 9mm ist die P320 auch in .40 S&W, .357 SIG und .45 ACP erhältlich, wobei 9mm die mit Abstand populärste Variante ist.
 
-## Varianten
-- M17 (Full-Size): US-Armee Standardpistole, Coyote Tan
-- M18 (Compact): US Marines, kompaktere Version
-- P320 X-Five Legion: Wettkampfpistole mit Tungsten-Griffmodul
-- P320 AXG: Griffmodul aus Aluminium statt Polymer
-- P320 Spectre: Premium-Serie mit Kompensator
+Was die P320 besonders macht, ist die beispiellose Modularität. Ein Schütze kann mit einer einzigen registrierten Waffe verschiedene Konfigurationen nutzen: Full-Size für den Schiessstand, Compact für verdecktes Tragen, Subcompact als Backup. Der Wechsel dauert wenige Minuten und erfordert kein Werkzeug. Die Abzugscharakteristik der P320 wird allgemein als eine der besten unter den Striker-Pistolen bewertet: kurzer Vorlauf, sauberes Brechen und ein definierter Reset. Die P320 verfügt über keine manuellen Sicherungshebel in der Standardkonfiguration, die M17/M18-Militärversionen haben jedoch einen manuellen Sicherungshebel auf Anforderung der US-Armee erhalten. Die Zuverlässigkeit ist hervorragend, was durch die bestandenen Militärtests mit über 12'000 Schuss ohne Störung dokumentiert ist.
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+Im Schweizer Kontext gewinnt die P320 zunehmend an Bedeutung. Sie ist bei Sportschützen beliebt, die eine vielseitige Plattform suchen, und wird auch von einigen Sicherheitsdiensten evaluiert. Die X-Five-Legion-Variante mit Tungsten-Griffmodul hat sich als ernsthafte Wettkampfpistole etabliert und wird bei IPSC-Matches und anderen Pistolenwettbewerben eingesetzt. Die Verfügbarkeit verschiedener Griffmodule, darunter das AXG-Aluminiumgriffmodul und diverse Aftermarket-Optionen, macht die P320 zu einer Plattform, die sich individuell auf die Bedürfnisse des Schützen anpassen lässt. In der Schweiz werden P320-Modelle über den autorisierten Fachhandel vertrieben, und die Ersatzteilversorgung ist gut.
+
+Die Variantenvielfalt der P320 ist beachtlich. Die M17 in Coyote Tan ist die US-Armee-Standardversion mit manuellem Sicherungshebel. Die M18 ist die kompaktere Version für die US Marines. Die X-Five Legion ist eine Wettkampfpistole mit schwerem Tungsten-Griffmodul für reduzierte Mündungsbewegung. Die AXG-Serie ersetzt den Polymergriff durch ein Aluminiumgriffmodul, was der Waffe ein solideres Gefühl und bessere Balance verleiht. Die Spectre-Serie bietet Premium-Features wie einen integrierten Kompensator und spezielle Grifftexturen. Die P320 XTEN erweitert das System ins Kaliber 10mm Auto. Alle diese Varianten teilen die gleiche FCU als Basis.
+
+Auf dem Schweizer Markt 2026 liegen die Preise für gebrauchte P320-Pistolen wie folgt. In gutem Zustand, funktionsfähig mit normalen Gebrauchsspuren, kostet eine P320 CHF 550 bis 750. In sehr gutem Zustand, mit wenig Tragespuren und gepflegtem Lauf, liegen die Preise bei CHF 750 bis 1'000. Neuwertige Exemplare oder wenig geschossene Modelle erzielen CHF 1'000 bis 1'400. Die X-Five Legion liegt gebraucht bei CHF 1'200 bis 1'600, neu bei rund CHF 1'800 bis 2'200. Die M17/M18-Militärversionen sind bei Sammlern beliebt und erzielen ähnliche Preise wie die Legion-Modelle. Neupreise für die Standard-P320 beginnen bei etwa CHF 850.
+
+Beim Kauf einer gebrauchten P320 ist der Zustand der FCU das Wichtigste. Das Chassis sollte keine Risse oder Verformungen aufweisen. Der Abzug muss sauber brechen und der Striker-Reset klar spürbar sein. Die Polymergriffmodule sollten auf Risse an den Schienennuten geprüft werden, insbesondere bei älteren Modellen. Es gab bei frühen P320-Produktionen Berichte über unbeabsichtigte Schussabgaben bei Sturz, was SIG Sauer durch ein freiwilliges Upgrade-Programm mit verbessertem Abzugsmechanismus behoben hat. Beim Gebrauchtkauf sollte man prüfen, ob das Upgrade durchgeführt wurde, erkennbar an der modifizierten Abzugsstange. Originalmagazine von SIG sind den Nachbauten vorzuziehen.
+
+Rechtlich benötigt man für den Erwerb einer P320 in der Schweiz einen Waffenerwerbsschein (WES). Dieser wird beim kantonalen Waffenbüro beantragt. Die Voraussetzungen sind dieselben wie bei anderen Faustfeuerwaffen: Mindestalter 18, kein Strafregistereintrag, keine Hinweise auf Selbst- oder Fremdgefährdung. Die Bearbeitungszeit beträgt in der Regel zwei bis vier Wochen. Wichtig zu wissen: Zusätzliche Griffmodule, Schlitten und Läufe können ohne WES erworben werden, da nur die FCU als Waffe gilt. Dies macht die P320 in der Schweiz besonders attraktiv, da man die Konfiguration ohne bürokratischen Aufwand ändern kann. Die Aufbewahrung zu Hause unterliegt den üblichen Vorschriften für Faustfeuerwaffen.`,
     rechtsstatus: 'wes',
     typischeKaliber: ['9×19mm', '.40 S&W', '.45 ACP'],
     tags: ['Pistole', 'SIG', 'P320', 'M17', 'US-Army', 'Modular', 'Striker'],
@@ -393,29 +310,23 @@ Waffenerwerbsschein (WES) erforderlich.`,
     hersteller: 'Glock',
     baujahr: '1982',
     kurzbeschreibung: 'Die revolutionäre Kunststoffpistole. Meistverkaufte Pistole weltweit. 34 Teile, extrem zuverlässig.',
-    inhalt: `## Glock 17 — Die Pistole, die alles veränderte
-Die Glock 17 wurde 1982 von Gaston Glock in Österreich entwickelt und gewann sofort die Ausschreibung des österreichischen Bundesheeres. Heute ist sie die meistverbreitete Dienstpistole der Welt — über 65% aller US-Polizeibehörden verwenden Glock-Pistolen.
+    inhalt: `Die Glock 17 ist die meistverkaufte Pistole der Welt und hat den modernen Pistolenbau wie kaum eine andere Waffe geprägt. Was 1982 als unkonventioneller Entwurf eines branchenfremden Ingenieurs begann, wurde innerhalb weniger Jahrzehnte zum globalen Standard für Militär, Polizei und Zivilisten. Die Kombination aus Polymerrahmen, Striker-Abzug und radikaler Einfachheit war revolutionär und ist bis heute das Konzept, an dem sich alle anderen Dienstpistolen messen lassen müssen. Auch in der Schweiz gehört die Glock 17 zu den beliebtesten Faustfeuerwaffen auf dem zivilen Markt.
 
-## Technische Daten
-- Kaliber: 9×19mm
-- System: Modifizierter Browning-Verschluss, Schlagbolzenschloss (Striker)
-- Magazin: 17 Schuss (Standard), 19, 24, 33 Schuss optional
-- Lauflänge: 114mm
-- Gesamtlänge: 186mm (Gen5)
-- Gewicht: 625g (leer, Gen5)
-- Abzug: Safe-Action (teilgespannt, 3 passive Sicherungen)
+Die Entstehungsgeschichte der Glock 17 ist ungewöhnlich. Gaston Glock, ein österreichischer Ingenieur und Unternehmer, der zuvor Vorhangstangen, Messergriffe und Feldspaten produzierte, erfuhr 1980 von der Ausschreibung des österreichischen Bundesheeres für eine neue Dienstpistole. Ohne jegliche Erfahrung im Waffenbau begann er, eine Pistole zu konstruieren, die alle Anforderungen der Ausschreibung optimal erfüllen sollte. Er befragte führende Schiesstrainer und Militärexperten und entwarf eine Waffe, die konsequent auf Einfachheit, Zuverlässigkeit und geringe Herstellungskosten ausgelegt war. Der Einsatz von Polymer für den Rahmen war zu dieser Zeit höchst unkonventionell und stiess zunächst auf Skepsis. 1982 gewann die Glock 17 jedoch die österreichische Ausschreibung gegen etablierte Hersteller wie SIG Sauer, Beretta und Heckler und Koch. Der Name 17 bezieht sich auf Glocks siebzehntes Patent, nicht auf die Magazinkapazität, obwohl das Standardmagazin zufälligerweise ebenfalls 17 Patronen fasst.
 
-## Besonderheiten
-Die Glock 17 war die erste erfolgreiche Polymerrahmen-Pistole. Das „Safe Action"-System verwendet drei passive Sicherungen (Schlagbolzen-, Abzugsstangen- und Fallsicherung) — kein manueller Sicherungshebel. Nur 34 Teile insgesamt — die einfachste Konstruktion aller modernen Dienstpistolen. Extrem zuverlässig: über 300'000 Schuss ohne Funktionsstörung im Dauertest.
+Technisch ist die Glock 17 ein Kurzhub-Rückstosslader mit modifiziertem Browning-Verschluss. Der Lauf verriegelt sich über einen rechteckigen Verriegelungsblock mit dem Schlitten und wird beim Rückstoss durch eine Steuerkurve abgekippt. Das Kaliber ist 9x19mm Parabellum. Der Lauf misst 114 mm, die Gesamtlänge beträgt 186 mm bei der aktuellen Gen5, und das Leergewicht liegt bei lediglich 625 Gramm, was die Glock 17 zu einer der leichtesten Full-Size-Pistolen macht. Das Safe-Action-Abzugssystem ist ein teilgespanntes Schlagbolzenschloss: Der Striker wird beim Durchladen nur teilweise gespannt und erst beim Betätigen des Abzugs vollständig gespannt und ausgelöst. Drei passive Sicherungen arbeiten zusammen: die Abzugssicherung (ein Hebel im Abzugszüngel, der gedrückt werden muss), die Schlagbolzensicherung (ein federbelasteter Stift, der den Striker blockiert, bis der Abzug fast vollständig durchgezogen ist) und die Fallsicherung (eine Raste, die den Abzugsstollen bei Erschütterung fixiert). Einen manuellen Sicherungshebel gibt es nicht. Die gesamte Pistole besteht aus nur 34 Teilen, weniger als jede andere moderne Dienstpistole.
 
-## Varianten
-- Gen1–Gen5: Fünf Generationen mit stetigen Verbesserungen
-- Glock 17L: Langversion für Sportschützen (153mm Lauf)
-- Glock 17 MOS: Modular Optic System für Rotpunktvisiere
-- Glock 17C: Kompensatorschlitze im Lauf
+Was die Glock 17 besonders macht, ist die kompromisslose Fokussierung auf Zuverlässigkeit und Einfachheit. In Dauertests hat die Glock 17 über 300'000 Schuss ohne Funktionsstörung überstanden. Sie funktioniert unter extremsten Bedingungen: nach Eintauchen in Schlamm, Sand, Salzwasser und bei Temperaturen von minus 40 bis plus 70 Grad Celsius. Die Zerlegung zur Reinigung erfolgt werkzeuglos in Sekunden. Die Austauschbarkeit der Teile ist so hoch, dass Komponenten verschiedener Glock-17-Pistolen ohne Anpassung untereinander getauscht werden können. Der Polymerrahmen ist korrosionsfrei, leichter als Aluminium und absorbiert Rückstossenergie. Die Fertigungskosten sind dank des Spritzgussverfahrens für den Rahmen und der geringen Teilezahl niedrig, was sich in einem attraktiven Verkaufspreis niederschlägt.
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+Die Glock 17 hat im Laufe ihrer Geschichte fünf Generationen durchlaufen. Die Gen1 von 1982 war das Originalmodell mit glattem Griff. Die Gen2 von 1988 erhielt eine texturierte Griffoberfläche. Die Gen3 von 1998 führte Fingermulden und eine Picatinny-Rail für Lichtmodule ein. Die Gen4 von 2010 brachte austauschbare Griffrücken in verschiedenen Grössen und eine doppelseitige Magazinhalterung. Die aktuelle Gen5 von 2017 verzichtet auf die Fingermulden für universellere Ergonomie, hat einen verbesserten Lauf mit Marksman-Profil und eine leicht modifizierte Oberfläche des Schlittens. Neben der Standard-Glock-17 gibt es die Glock 17L mit verlängertem 153-mm-Lauf für Sportschützen, die Glock 17 MOS mit gefräster Schlittenoberseite für die Montage von Rotpunktvisieren und die Glock 17C mit Kompensatorschlitzen in Lauf und Schlitten zur Reduzierung des Mündungshochschlags.
+
+Im Schweizer Kontext ist die Glock 17 eine der am häufigsten gehandelten Pistolen auf dem Gebrauchtmarkt. Sie wird von zahlreichen Sportschützen geschätzt, die ihre Zuverlässigkeit und die niedrigen Betriebskosten zu schätzen wissen. Auch im IPSC-Schiesssport ist die Glock 17 in der Production Division weit verbreitet. Einige kantonale Polizeikorps und Sicherheitsdienste setzen Glock-Pistolen ein. Die grosse Verbreitung hat zur Folge, dass Zubehör, Magazine und Ersatzteile in der Schweiz leicht verfügbar sind. Es existiert eine aktive Community von Glock-Schützen, und an den meisten Schweizer Schiessständen sind Glock-Pistolen regelmässig anzutreffen. Im Vergleich zu SIG-Pistolen gilt die Glock als das pragmatische, schnörkellose Arbeitswerkzeug, das ohne Allüren seinen Dienst verrichtet.
+
+Die Preise für die Glock 17 auf dem Schweizer Markt 2026 gliedern sich in drei Stufen. In gutem Zustand, also voll funktionsfähig mit sichtbaren Gebrauchsspuren am Schlitten und Rahmen, aber intaktem Abzugssystem und sauberem Lauf, kostet eine Glock 17 CHF 450 bis 600. In sehr gutem Zustand, mit minimalen Tragespuren und gepflegtem Gesamteindruck, liegen die Preise bei CHF 600 bis 800. Neuwertige oder kaum geschossene Exemplare, insbesondere die Gen5 oder die MOS-Variante, erzielen CHF 800 bis 1'000. Der Neupreis für eine Glock 17 Gen5 liegt in der Schweiz 2026 bei rund CHF 750 bis 900, die MOS-Variante bei CHF 850 bis 1'050. Die Glock 17 gehört damit zu den preisgünstigsten hochwertigen Full-Size-Pistolen auf dem Markt.
+
+Beim Kauf einer gebrauchten Glock 17 gibt es einige Punkte zu beachten. Der Polymerrahmen sollte auf Risse geprüft werden, insbesondere an den Schienennuten und im Bereich der Verschlussfanghebel-Aufnahme. Der Schlitten sollte auf übermässigen Verschleiss an der Innenseite und an den Verriegelungsflächen kontrolliert werden. Der Lauf sollte scharfe Züge und Felder aufweisen. Der Abzug muss sauber zurücksetzen und der Striker-Reset deutlich spürbar sein. Bei Gen3-Modellen und älter kann die Abzugsstangenfeder ermüdet sein, was sich in einem schwammigen Abzugsgefühl äussert. Originalteile von Glock sind günstig und leicht erhältlich, was Reparaturen und Wartung unkompliziert macht. Magazine sollten auf korrekten Sitz und einwandfreie Zuführung geprüft werden. Aftermarket-Modifikationen wie geänderte Abzüge oder Stipplings am Griff können den Wiederverkaufswert sowohl positiv als auch negativ beeinflussen, je nach Geschmack des Käufers.
+
+Der Erwerb einer Glock 17 in der Schweiz erfordert einen Waffenerwerbsschein (WES), wie bei allen Faustfeuerwaffen. Der WES wird beim kantonalen Waffenbüro des Wohnkantons beantragt. Die Voraussetzungen sind Volljährigkeit, ein sauberes Strafregister und keine Hinweise auf Gefährdung. Die Bearbeitungszeit beträgt üblicherweise zwei bis vier Wochen. Nach dem Erwerb muss die Waffe sicher aufbewahrt werden, idealerweise in einem Waffenschrank oder zumindest getrennt von der Munition. Für den Transport zum Schiessstand gelten die üblichen Regeln: entladen, in einer geschlossenen Tasche oder einem Koffer, auf direktem Weg. Die 9mm-Munition ist in der Schweiz über den Fachhandel und an Schiessständen frei erhältlich. Magazine jeder Kapazität sind in der Schweiz legal erwerbbar, was die Glock 17 mit optionalen 19-, 24- oder 33-Schuss-Magazinen zu einer äusserst vielseitigen Plattform macht.`,
     rechtsstatus: 'wes',
     typischeKaliber: ['9×19mm'],
     tags: ['Pistole', 'Glock', 'G17', 'Polymer', 'Polizei', 'Safe-Action'],
@@ -430,28 +341,21 @@ Waffenerwerbsschein (WES) erforderlich.`,
     hersteller: 'Glock',
     baujahr: '1988',
     kurzbeschreibung: 'Der universelle Allrounder. Kompakter als G17, 15+1 Schuss — die meistverkaufte Pistole der Welt.',
-    inhalt: `## Glock 19 — Der Kompakt-Bestseller
-Die Glock 19 ist die kompakte Version der Glock 17 und seit ihrer Einführung 1988 die weltweit meistverkaufte Pistole. Sie kombiniert die Grösse einer Kompaktpistole mit einer Kapazität von 15 Schuss und akzeptiert auch die grösseren Glock-17-Magazine.
+    inhalt: `Die Glock 19 ist die kompakte Version der legendären Glock 17 und hat sich seit ihrer Einführung 1988 zur meistverkauften Pistole der Welt entwickelt. Was sie besonders macht, ist der nahezu perfekte Kompromiss zwischen Kompaktheit und Leistungsfähigkeit. Mit 15 Schuss im Standardmagazin bietet sie die gleiche Feuerkraft wie viele vollgrosse Dienstpistolen, lässt sich aber deutlich besser verbergen und tragen. Hinzu kommt die volle Abwärtskompatibilität mit den grösseren Glock-17-Magazinen — wer möchte, kann also auch 17-, 19-, 24- oder sogar 33-Schuss-Magazine verwenden. Diese Kombination aus Kompaktheit, Kapazität und Vielseitigkeit hat die Glock 19 zur universellen Referenzpistole gemacht, an der sich alle Konkurrenten messen lassen müssen.
 
-## Technische Daten
-- Kaliber: 9×19mm
-- System: Modifizierter Browning-Verschluss, Safe-Action-Striker
-- Magazin: 15 Schuss (Standard), kompatibel mit 17/19/24/33-Schuss-Magazinen
-- Lauflänge: 102mm
-- Gesamtlänge: 174mm (Gen5)
-- Gewicht: 602g (leer, Gen5)
+Die Geschichte der Glock 19 beginnt mit dem Erfolg der Glock 17. Gaston Glock hatte 1982 mit seiner ersten Pistole die Fachwelt überrascht — ein Ingenieur ohne jede Erfahrung im Waffenbau konstruierte eine Pistole, die alle etablierten Hersteller in den österreichischen Armeetests schlug. Die Glock 17 wurde schnell zum Exporterfolg, doch es gab eine wachsende Nachfrage nach einer kompakteren Version. US-Strafverfolgungsbehörden und verdeckte Ermittler benötigten eine Waffe, die unter einem Sakko verschwand, ohne auf Feuerkraft verzichten zu müssen. 1988 stellte Glock die Modell 19 vor, die genau diese Lücke füllte. Der Schlitten wurde um 12mm und der Griff um eine halbe Fingerbreite gekürzt. Das Resultat war so überzeugend, dass die Glock 19 ihre grosse Schwester an Verkaufszahlen bald überholte. US-Spezialeinheiten wie Delta Force und Navy SEALs wählten die G19 als bevorzugte Seitenwaffe, und heute ist sie die meistverkaufte einzelne Pistolenvariante weltweit.
 
-## Besonderheiten
-Die Glock 19 gilt als der beste Kompromiss zwischen Grösse, Kapazität und Schiesskomfort. Der nur 12mm kürzere Lauf gegenüber der G17 hat kaum Einfluss auf die Präzision. US-Spezialeinheiten (Delta Force, Navy SEALs) bevorzugen die G19 wegen der kompakteren Abmessungen. Sie ist auch die beliebteste Zivilpistole in der Schweiz.
+Technisch arbeitet die Glock 19 mit dem modifizierten Browning-Kurzrücklaufsystem und dem patentierten Safe-Action-System. Der Schlagbolzen ist nicht vorgespannt, sondern wird erst beim Durchziehen des Abzugs vollständig gespannt und ausgelöst. Drei automatische Sicherungen — Schlagbolzensicherung, Abzugssteg-Sicherung und Fallsicherung — verhindern eine unbeabsichtigte Schussabgabe ohne manuellen Sicherungshebel. Das Kaliber ist 9x19mm Parabellum. Die Lauflänge beträgt 102mm, die Gesamtlänge 174mm in der aktuellen Gen5-Version. Das Leergewicht liegt bei 602 Gramm. Der Polymerrahmen mit Stahleinlagen macht die Pistole korrosionsbeständig und leicht. Der Tenifer-beschichtete Schlitten bietet eine Oberflächenhärte von 64 HRC — härter als viele Industriewerkzeuge. Die Gen5-Version brachte mehrere Verbesserungen: den Marksman-Lauf mit verbessertem Züge-Profil für höhere Präzision, den ambidextren Verschlussfanghebel, den Wegfall der Fingerrillen am Griff für bessere Anpassbarkeit und die nDLC-Beschichtung des Schlittens.
 
-## Varianten
-- Gen5: Aktuelle Generation mit Marksman-Lauf und ambidextrem Verschlussfanghebel
-- Glock 19X: Hybrid mit G17-Griffstück und G19-Schlitten (Coyote Tan)
-- Glock 19 MOS: Mit Rotpunktvisier-Schnittstelle
-- Glock 45: Wie 19X, aber in Schwarz und mit Gen5-Front-Serrations
+In der Schweiz ist die Glock 19 die beliebteste Zivilpistole überhaupt. Kein anderes Modell wird häufiger auf Schweizer Schiesständen gesehen. Das liegt nicht nur an der bewährten Technik, sondern auch an der hervorragenden Teile- und Zubehörversorgung. Schweizer Waffenhändler führen die gesamte Glock-Palette permanent an Lager, und Ersatzteile sind günstig und überall erhältlich. Für Sportschützen eignet sich die G19 als Einstiegspistole in die IPSC Production Division, auch wenn die längere G34 dort Vorteile hat. Im Heimverteidigungskontext schätzen Schweizer Besitzer die unkomplizierte Handhabung — keine Sicherung zum Vergessen, keine komplizierte Entriegelung, einfach durchladen und fertig. Die Glock 19 wird auch regelmässig in Schweizer Waffenmagazinen getestet und empfohlen.
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+Neben der Standardversion gibt es mehrere wichtige Varianten. Die Glock 19X kombiniert das längere Griffstück der G17 mit dem kompakten Schlitten der G19 in Coyote-Tan-Farbe — ursprünglich für die US-Armeeausschreibung entwickelt. Die Glock 45 ist im Grunde die gleiche Konfiguration in Schwarz und mit Front-Serrations. Die Glock 19 MOS (Modular Optic System) bietet eine ab Werk gefräste Optik-Schnittstelle für Rotpunktvisiere wie Trijicon RMR, Holosun 507C oder Aimpoint Acro. Die MOS-Version wird in der Schweiz zunehmend populär, da Rotpunktvisiere im Sportschiessbetrieb immer verbreiteter werden.
+
+Der Preisguide für den Schweizer Markt 2026 zeigt folgendes Bild: Gebrauchte Glock 19 in gutem Zustand mit normalen Gebrauchsspuren und funktional einwandfrei werden für CHF 450 bis 550 gehandelt. Exemplare in sehr gutem Zustand mit wenig Schusszahlen und intaktem Finish erzielen CHF 550 bis 700. Neuwertige oder ungeschossene Glock 19 Gen5, eventuell noch mit Originalverpackung und allen Beilagen, liegen bei CHF 700 bis 850. Die MOS-Varianten erzielen einen Aufpreis von rund CHF 80 bis 120 gegenüber der Standardversion. Fabrikneue Glock 19 Gen5 sind beim Schweizer Händler ab etwa CHF 750 bis 850 erhältlich, die MOS-Version ab CHF 850 bis 950.
+
+Beim Kauf einer gebrauchten Glock 19 gibt es einige Punkte zu beachten. Zunächst die Generation identifizieren: Gen1 bis Gen3 haben keine austauschbaren Griffrücken, Gen4 hat den vergrösserten Magazinschachtausschnitt und RTF-Griffstruktur, Gen5 den Marksman-Lauf und die flache Frontpartie ohne Fingerrillen. Den Lauf auf Verschleiss prüfen — Glock-Läufe halten typischerweise 40'000 bis 60'000 Schuss, aber bei starker Nutzung mit heissen Ladungen kann der Verschleiss früher eintreten. Die Schlittenführungsschienen im Polymerrahmen auf Verschleiss kontrollieren, obwohl dies bei Glocks selten ein Problem ist. Den Abzug auf gleichmässigen Druckpunkt prüfen. Beim Zerlegen auf Risse im Rahmen achten, besonders an den Schlittenführungsschienen. Originalmagazine bevorzugen — Glock-Magazine kosten neu CHF 35 bis 45 und sind ein Qualitätsmerkmal. Generell gilt die Glock 19 als ausserordentlich langlebig und wartungsarm, weshalb selbst stärker gebrauchte Exemplare oft problemlos funktionieren.
+
+Rechtlich unterliegt die Glock 19 in der Schweiz dem Waffenerwerbsschein (WES). Schweizer Bürger und Personen mit Niederlassungsbewilligung C können den WES bei der zuständigen kantonalen Behörde beantragen. Der Antrag erfordert einen Strafregisterauszug, der nicht älter als drei Monate sein darf, sowie einen Nachweis, dass kein Waffenerwerbsverbot vorliegt. Der WES wird in der Regel innert zwei bis vier Wochen ausgestellt und berechtigt zum Erwerb einer Waffe innerhalb von sechs Monaten. Die Glock 19 ist als halbautomatische Handfeuerwaffe in der Schweiz frei erwerbbar mit WES — es braucht keine Ausnahmebewilligung.`,
     rechtsstatus: 'wes',
     typischeKaliber: ['9×19mm'],
     tags: ['Pistole', 'Glock', 'G19', 'Compact', 'Allrounder'],
@@ -464,31 +368,20 @@ Waffenerwerbsschein (WES) erforderlich.`,
     hersteller: 'Glock',
     baujahr: '1998',
     kurzbeschreibung: 'Glock Wettbewerbspistole. Langer Lauf, langer Sichtradius, optimierter Abzug. IPSC Standard.',
-    inhalt: `## Glock 34 — Die Wettkampf-Glock
-Die Glock 34 wurde 1998 als Sportpistole für IPSC Production und IDPA eingeführt. Sie basiert auf dem Glock-17-Rahmen mit verlängertem Lauf und Schlitten für bessere Visierung und ruhigeres Schwingungsverhalten.
+    inhalt: `Die Glock 34 ist Glocks Antwort auf die Anforderungen des Wettkampfschiessens und hat sich seit ihrer Einführung 1998 zur dominierenden Pistole in der IPSC Production Division entwickelt. Was sie besonders macht, ist die konsequente Optimierung der bewährten Glock-Plattform für Präzision und schnelle Folgeschüsse. Der verlängerte Lauf und Schlitten bieten einen längeren Sichtradius und eine ruhigere Schwingungscharakteristik, während der leichtere Schlitten den Rückstoss reduziert und schnellere Zielaufnahme ermöglicht. Die G34 beweist, dass das Glock-System nicht nur als robuste Dienstwaffe taugt, sondern auch im Wettkampf auf höchstem Niveau bestehen kann.
+Die Entstehungsgeschichte der Glock 34 ist eng mit dem Aufstieg des dynamischen Schiessens verbunden. Ende der 1990er-Jahre erkannte Glock, dass die Standard-G17 im Wettkampfbereich gegen spezialisierte Sportpistolen wie die CZ 75 Shadow, die Beretta 92 Stock oder die Tanfoglio Stock kaum konkurrenzfähig war. Diese Waffen boten längere Visierlinien, bessere Abzüge und geringeren Rückstoss. Glocks Lösung war elegant simpel: ein verlängerter Schlitten auf dem bewährten G17-Rahmen, kombiniert mit einem erleichterten Abzug. 1998 wurden die G34 im Kaliber 9x19mm und die G35 im Kaliber .40 S&W gleichzeitig vorgestellt. Der Erfolg war durchschlagend — innerhalb weniger Jahre dominierte die G34 die IPSC Production Division weltweit. Das lag nicht nur an der Waffe selbst, sondern auch am riesigen Aftermarket-Angebot. Tuner und Zubehörhersteller entwickelten Abzugsverbesserungen, Visierungen, Griffbearbeitungen und Kompensatoren speziell für die G34. Heute ist die Glock 34 Gen5 MOS die meistverwendete Pistole in der Production Division — sowohl auf nationaler als auch auf internationaler Ebene.
 
-## Geschichte
-Glock erkannte Ende der 1990er-Jahre, dass die G17 im Wettkampfbereich gegen spezialisierte Sportpistolen (CZ Shadow, Beretta 92 Stock) kaum konkurrenzfähig war. Die Lösung: ein verlängerter Schlitten auf dem bewährten G17-Rahmen. 1998 wurde die G34 (9mm) zusammen mit der G35 (.40 S&W) vorgestellt. Innerhalb weniger Jahre dominierte die G34 die IPSC Production Division — heute ist sie die meistverwendete Pistole in dieser Klasse weltweit.
+Technisch basiert die Glock 34 auf dem identischen modifizierten Browning-Kurzrücklaufsystem wie alle Glock-Modelle, wurde aber gezielt für den Wettkampf angepasst. Das Kaliber ist 9x19mm Parabellum. Die Lauflänge beträgt 135mm — 21mm mehr als bei der G17 — und die Gesamtlänge 207mm. Das Leergewicht liegt bei 650 Gramm. Der entscheidende Vorteil ist die Visierlänge von 172mm gegenüber 153mm bei der G17. Diese zusätzlichen 19mm Sichtradius machen sich besonders auf grössere Distanzen bemerkbar, wo kleine Visierfehler stärker ins Gewicht fallen. Der Schlitten ist durch grosszügige Ausfräsungen leichter als bei der G17, was den gefühlten Rückstoss reduziert und ein schnelleres Zurückschwingen ins Ziel ermöglicht. Ab Werk wird die G34 mit einem erleichterten Abzug von circa 2 Kilogramm ausgeliefert, im Vergleich zu den üblichen 2,5 Kilogramm bei der G17. Die Gen5-MOS-Version bietet zusätzlich die Optik-Schnittstelle für Rotpunktvisiere, austauschbare Griffrücken und den Marksman-Lauf mit polygonalem Profil.
 
-## Technische Daten
-- Kaliber: 9×19mm
-- System: Modifizierter Browning-Verschluss, Safe-Action
-- Magazin: 17 Schuss (Standard)
-- Lauflänge: 135mm
-- Gesamtlänge: 207mm
-- Gewicht: 650g (leer)
-- Visierlänge: 172mm (vs. 153mm bei G17)
+Im Schweizer Kontext ist die Glock 34 die erste Wahl für Sportschützen, die in der IPSC Production oder Production Optics Division antreten. Schweizer IPSC-Schützen sind international erfolgreich, und viele von ihnen setzen auf die G34. Die Schweizer Sektion des IPSC-Verbandes verzeichnet stetig wachsende Mitgliederzahlen, und an den nationalen Meisterschaften ist die G34 das am häufigsten verwendete Modell. Auch für das statische Sportschiessen auf 25 und 50 Meter eignet sich die G34 hervorragend — die längere Visierlinie und der ruhigere Haltepunkt zahlen sich auf diese Distanzen besonders aus. Wer sich ernsthaft mit dem Pistolenschiessen beschäftigen will, findet in der G34 einen zuverlässigen Partner, der bei Bedarf mit Aftermarket-Teilen wie verbessertem Abzug, Fiberoptik-Visierung oder Rotpunktvisier weiter aufgerüstet werden kann. Schweizer Waffenhändler führen die G34 Gen5 MOS in der Regel an Lager, und die Versorgung mit Ersatzteilen und Zubehör ist hervorragend.
 
-## Besonderheiten
-Der verlängerte Lauf und die grössere Visierlinie machen die G34 zur präzisesten Serien-Glock. Der leichtere Schlitten reduziert den Rückstoss und ermöglicht schnellere Folgeschüsse. Standardmässig mit erleichtertem Abzug (ca. 2 kg) statt der üblichen 2,5 kg. Dominiert die IPSC Production Division weltweit.
+Neben der Standard-G34 gibt es die Glock 35 in .40 S&W, die in der IPSC Standard Division eingesetzt wird, und die Glock 41 in .45 ACP. Die Gen5-MOS-Variante ist heute der Standard für Wettkampfschützen, da die ab Werk integrierte Optik-Schnittstelle einen soliden und repetierbaren Sitz für Rotpunktvisiere gewährleistet. Im Aftermarket-Bereich sind vor allem verbesserte Abzugssysteme von Herstellern wie Timney, Overwatch Precision oder Agency Arms beliebt, ebenso wie erweiterte Magazinhalter und Magwells für schnellere Nachladungen.
 
-## Varianten
-- Glock 34 Gen5 MOS: Mit Optik-Schnittstelle für Rotpunktvisiere
-- Glock 35: Gleiche Plattform in .40 S&W
-- Glock 41: Gleiche Plattform in .45 ACP
+Der Preisguide für den Schweizer Markt 2026 sieht wie folgt aus: Gebrauchte Glock 34 in gutem Zustand mit normalen Gebrauchsspuren aus dem Wettkampfbetrieb werden für CHF 500 bis 650 gehandelt. Exemplare in sehr gutem Zustand mit moderaten Schusszahlen und intaktem Finish erzielen CHF 650 bis 800. Neuwertige oder wenig geschossene G34 Gen5 MOS liegen bei CHF 800 bis 1'000. Fabrikneue Glock 34 Gen5 MOS sind beim Schweizer Händler ab etwa CHF 900 bis 1'050 erhältlich. Ältere Generationen (Gen3, Gen4) sind günstiger, wobei Gen3-Modelle oft unter CHF 500 zu finden sind. Wettkampfmässig aufgerüstete G34 mit Custom-Abzug, Visierung und Stippling können je nach Ausbaustufe CHF 1'200 bis 1'800 erzielen.
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+Beim Kauf einer gebrauchten Glock 34 sollte man bedenken, dass viele Exemplare aus dem Wettkampfbetrieb kommen und entsprechend hohe Schusszahlen aufweisen können. Den Lauf auf Verschleiss prüfen — bei Wettkampfpistolen sind 20'000 bis 50'000 Schuss keine Seltenheit. Die Schlittenführungsschienen kontrollieren, da die häufigen Schlitten-Zyklen im Trockentraining Verschleiss verursachen können. Den Abzug auf Konsistenz prüfen — viele Wettkampf-G34 haben modifizierte Abzüge, die nicht immer fachgerecht eingebaut wurden. Falls ein Aftermarket-Abzug verbaut ist, dessen Hersteller und Einbauqualität überprüfen. Die MOS-Plattform auf Beschädigungen der Optik-Schnittstelle kontrollieren, da häufiges Wechseln von Visieren die Gewinde belasten kann. Originalmagazine bevorzugen und auf Risse in den Magazinlippen achten, besonders bei stark genutzten Wettkampfmagazinen.
+
+Rechtlich unterliegt die Glock 34 in der Schweiz dem Waffenerwerbsschein (WES). Der Erwerb ist für Schweizer Bürger und Personen mit Niederlassungsbewilligung C über den normalen WES-Prozess möglich. Ein aktueller Strafregisterauszug und die Bestätigung, dass kein Waffenerwerbsverbot besteht, sind erforderlich. Die Glock 34 ist als halbautomatische Handfeuerwaffe ohne Einschränkungen erwerbbar — es braucht keine Ausnahmebewilligung oder Sondergenehmigung.`,
     rechtsstatus: 'wes',
     typischeKaliber: ['9×19mm', '.40 S&W'],
     tags: ['Pistole', 'Glock', 'IPSC', 'Wettkampf'],
@@ -501,31 +394,21 @@ Waffenerwerbsschein (WES) erforderlich.`,
     hersteller: 'Walther',
     baujahr: '1931',
     kurzbeschreibung: 'James Bonds Pistole. Kompakt, elegant, DA/SA. Klassiker der Taschenpistolen seit 1931.',
-    inhalt: `## Walther PPK — James Bonds Dienstwaffe
-Die Walther PPK (Polizeipistole Kriminal) wurde 1931 als kompaktere Version der PP vorgestellt. Sie wurde weltberühmt als die Waffe von James Bond — Ian Fleming wählte sie 1962 auf Empfehlung des Waffenexperten Geoffrey Boothroyd.
+    inhalt: `Die Walther PPK ist eine der berühmtesten Pistolen der Welt und untrennbar mit dem Namen James Bond verbunden. Was sie besonders macht, geht aber weit über ihren Filmruhm hinaus. Die PPK (Polizeipistole Kriminal) war bei ihrer Einführung 1931 eine technische Revolution — die erste kommerziell erfolgreiche Kompaktpistole mit Double-Action/Single-Action-Abzug, Signalstift und sicherem Entspannhebel. Diese Kombination aus kompakten Abmessungen, zuverlässiger Funktion und eleganter Formgebung machte sie über Jahrzehnte zur bevorzugten Waffe von Kriminalbeamten, Geheimdienstagenten und anspruchsvollen Zivilisten weltweit. Noch heute wird die PPK produziert und verkauft — ein Beweis für die zeitlose Qualität dieses Designs.
 
-## Geschichte
-Fritz Walther entwickelte 1929 die PP (Polizeipistole) als erste kommerziell erfolgreiche Selbstladepistole mit DA/SA-Abzug. 1931 folgte die PPK — 7mm kürzer und leichter, optimiert für Kriminalbeamte in Zivilkleidung. Im Zweiten Weltkrieg war sie die beliebteste Offizierspistole der Wehrmacht. Ab 1945 wurde sie weltweit von Geheimdiensten und Polizei eingesetzt. Die Produktion wechselte mehrfach: Zella-Mehlis (bis 1945), Manurhin in Frankreich (1952–1986), USA (Smith & Wesson/Interarms), und seit 2018 wieder bei Walther in Ulm.
+Die Geschichte der Walther PPK beginnt 1929 mit der Walther PP (Polizeipistole). Fritz Walther und sein Sohn Carl entwickelten in Zella-Mehlis (Thüringen) eine Selbstladepistole mit einem für die damalige Zeit revolutionären DA/SA-Abzugssystem. Der Schütze konnte die Waffe geladen und entspannt tragen und im Bedarfsfall durch einfaches Durchziehen des Abzugs feuern — ohne manuelles Spannen des Hahns. 1931 folgte die PPK als kompaktere Version für Kriminalbeamte in Zivilkleidung. Der Name steht für Polizeipistole Kriminal, nicht wie oft fälschlich behauptet für Polizeipistole Kurz. Im Zweiten Weltkrieg wurde die PPK zur beliebtesten Offizierspistole der Wehrmacht — Hunderttausende wurden produziert. Nach 1945 wechselte die Produktion mehrfach den Standort: Manurhin in Frankreich fertigte sie von 1952 bis 1986 in Lizenz, dann wurde sie in den USA unter verschiedenen Marken (Interarms, Smith and Wesson) hergestellt. Seit 2018 produziert Walther die PPK wieder selbst in Ulm. Der grösste Bekanntheitsschub kam 1962, als Ian Fleming auf Empfehlung des Waffenexperten Geoffrey Boothroyd die PPK als Dienstwaffe seines Romancharakters James Bond einführte. Seither ist die PPK untrennbar mit dem Agenten ihrer Majestät verbunden.
 
-## Technische Daten
-- Kaliber: 7,65mm Browning (.32 ACP), auch .380 ACP (9mm kurz)
-- System: Einfacher Rückstosslader (Blowback), unbeweglicher Lauf
-- Magazin: 7 Schuss (7,65mm), 6 Schuss (.380)
-- Lauflänge: 83mm
-- Gesamtlänge: 155mm
-- Gewicht: 568g (leer, Stahl)
+Technisch ist die Walther PPK ein einfacher Rückstosslader (Blowback) mit feststehendem Lauf. Dieses System ist bei den verwendeten Kalibern — 7,65mm Browning (.32 ACP) und .380 ACP (9mm kurz) — ausreichend und ermöglicht eine besonders kompakte Bauweise. Die Lauflänge beträgt nur 83mm, die Gesamtlänge 155mm und das Gewicht 568 Gramm leer. Das Ganzstahl-Design macht die Pistole für ihre Grösse relativ schwer, was den spürbaren Rückstoss des Blowback-Systems dämpft. Das Magazin fasst 7 Schuss im Kaliber 7,65mm Browning oder 6 Schuss in .380 ACP. Der DA/SA-Abzug erlaubt einen langen Erstschuss mit circa 6 Kilogramm Abzugsgewicht und kurze Folgeschüsse mit circa 2,5 Kilogramm. Der Sicherungshebel dient gleichzeitig als Entspannhebel — eine elegante Lösung, die viele spätere Pistolen kopierten. Der Signalstift am Schlittenende zeigt taktil und visuell an, ob eine Patrone im Lauf ist.
 
-## Besonderheiten
-Die PPK war die erste kommerziell erfolgreiche DA/SA-Pistole mit Signalstift — einem Ladezustandsanzeiger, der anzeigt ob eine Patrone im Lauf ist. Das Ganzstahl-Design macht sie für ihre Grösse relativ schwer, was den Rückstoss dämpft. Der Griff ist mit dem Abzugsbügel verschweisst — ein Designmerkmal, das sofort erkennbar ist.
+Im Schweizer Kontext ist die Walther PPK vor allem als Sammler- und Liebhaberstück gefragt. Als Selbstverteidigungswaffe hat sie in der Schweiz keine grosse praktische Bedeutung, da Concealed Carry nicht üblich ist. Dafür schätzen Schweizer Sammler die PPK als eines der elegantesten und historisch bedeutsamsten Pistolendesigns überhaupt. Besonders gesucht sind die frühen Zella-Mehlis-Produktionen mit ihrem hervorragenden Finish und die Manurhin-Modelle, die in der französischen Qualitätstradition gefertigt wurden. Auf Schweizer Waffenbörsen und in Waffengeschäften tauchen regelmässig PPK verschiedener Produktionsepochen auf. Die PPK wird auch gelegentlich auf Schweizer Schiesständen im Kurzwaffenprogramm eingesetzt, wobei sie im Kaliber .32 ACP wegen des minimalen Rückstosses besonders angenehm zu schiessen ist.
 
-## Varianten
-- PP (Polizeipistole): Grössere Urversion von 1929
-- PPK: Verkürzte Version ab 1931
-- PPK/S: Hybrid mit PP-Griffstück und PPK-Schlitten (für US-Import)
-- PPK/E: Moderne Neuauflage
+Die wichtigsten Varianten umfassen die grössere PP (Polizeipistole) von 1929, die eigentliche PPK ab 1931, die PPK/S — ein Hybrid mit dem PP-Griffstück und dem PPK-Schlitten, der für den US-Import geschaffen wurde, da die ursprüngliche PPK nach dem Gun Control Act von 1968 zu klein für den Import war — sowie die moderne Neuauflage PPK/E. Aktuelle Produktionsmodelle aus Ulm sind in .380 ACP erhältlich und bieten ein verbessertes Finish sowie modernere Materialien, behalten aber das klassische Design bei.
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+Der Preisguide für den Schweizer Markt 2026 variiert stark nach Produktionsepoche und Zustand. Nachkriegs-PPK (Manurhin oder spätere Walther) in gutem Zustand mit normalen Gebrauchsspuren werden für CHF 400 bis 600 gehandelt. Exemplare in sehr gutem Zustand mit intakter Brünierung und wenig Tragespuren erzielen CHF 600 bis 900. Neuwertige PPK, ob aktuelle Produktion oder ungeschossene ältere Modelle, liegen bei CHF 900 bis 1'200. Kriegsproduktionen aus Zella-Mehlis sind Sammlerstücke und beginnen bei CHF 800 für abgenutzte Exemplare, können in hervorragendem Zustand aber CHF 1'500 bis 3'000 erreichen. Seltene Varianten, etwa mit speziellen Markierungen oder in ungewöhnlichen Konfigurationen, erzielen am Sammlermarkt deutlich höhere Preise.
+
+Beim Kauf einer gebrauchten Walther PPK sollte man zunächst die Produktionsepoche identifizieren. Zella-Mehlis-Modelle haben die höchste Sammlerqualität, Manurhin-Modelle gelten als qualitativ hervorragend, US-Produktionen variieren stärker in der Qualität. Den Lauf auf Verschleiss und Lochfrass prüfen — ältere PPK, die mit korrosiver Munition geschossen wurden, zeigen oft Schäden. Die Brünierung begutachten — Holsterabnutzung an den Kanten ist normal, grossflächiger Brünierungsverlust mindert den Wert. Den DA/SA-Abzug auf Funktion prüfen und sicherstellen, dass der Entspannhebel sauber arbeitet. Den Signalstift auf korrekte Funktion kontrollieren. Beim Griffstück auf Risse im Bereich der Abzugsbügelverschweissung achten — bei sehr alten Modellen eine bekannte Schwachstelle. Originalmagazine sind bei älteren PPK oft schwer zu beschaffen und entsprechend wertvoll.
+
+Rechtlich unterliegt die Walther PPK in der Schweiz dem Waffenerwerbsschein (WES). Als halbautomatische Kurzwaffe ist sie ohne Einschränkungen mit WES erwerbbar. Der übliche Prozess mit Strafregisterauszug und Antrag bei der kantonalen Behörde gilt. Für Kriegsproduktionen oder historisch bedeutsame Exemplare kann zusätzlich eine Registrierung als Sammlerstück sinnvoll sein, ist aber nicht zwingend vorgeschrieben.`,
     rechtsstatus: 'wes',
     typischeKaliber: ['.380 ACP', '.32 ACP'],
     tags: ['Pistole', 'Walther', 'PPK', 'JamesBond', 'Kompakt'],
@@ -538,31 +421,21 @@ Waffenerwerbsschein (WES) erforderlich.`,
     hersteller: 'Walther',
     baujahr: '1997',
     kurzbeschreibung: 'James Bonds Dienstpistole seit 1997. Anti-Stress Abzugssystem — kombiniert SA und DA.',
-    inhalt: `## Walther P99 — Deutscher Striker-Pionier
-Die Walther P99 wurde 1997 als moderne Polymerrahmen-Pistole vorgestellt und war Walthers Antwort auf die Glock-Dominanz. Sie führte das innovative AS-Abzugssystem (Anti-Stress) ein und wurde bekannt als neue James-Bond-Pistole ab "Tomorrow Never Dies" (1997).
+    inhalt: `Die Walther P99 war bei ihrer Einführung 1997 ein Meilenstein in der Pistolenentwicklung und markierte Walthers Eintritt ins Zeitalter der Polymer-Striker-Pistolen. Was sie besonders macht, ist das innovative Anti-Stress-Abzugssystem (AS), das drei verschiedene Abzugsmodi in einer Waffe vereint — eine Lösung, die kein anderer Hersteller in dieser Form anbietet. Zudem war die P99 die weltweit erste Striker-Fired-Pistole mit austauschbaren Griffrücken, ein Konzept das Glock erst 13 Jahre später mit der Gen4 übernahm. Bekannt wurde die P99 auch als neue James-Bond-Pistole — ab dem Film Tomorrow Never Dies (1997) ersetzte sie die klassische Walther PPK als Dienstwaffe des Agenten.
 
-## Geschichte
-Nach dem Ende des Kalten Krieges und dem Auslaufen der PP-Serie verlor Walther Marktanteile an Glock und SIG Sauer. 1994 begann die Entwicklung einer völlig neuen Pistole. 1997 wurde die P99 vorgestellt — Walthers erste Polymer-Pistole und zugleich die erste Striker-Fired-Pistole mit austauschbaren Griffrücken. Zahlreiche deutsche Polizeien übernahmen sie als Dienstwaffe (u. a. Nordrhein-Westfalen, Bayern). Die Produktion endete 2024 — als Nachfolger gilt die PDP.
+Die Geschichte der Walther P99 ist eine Geschichte des Comebacks. Nach dem Ende des Kalten Krieges und dem allmählichen Auslaufen der klassischen PP-Serie verlor Walther in den frühen 1990er-Jahren massiv Marktanteile an Glock, SIG Sauer und Beretta. Die traditionellen Stahlpistolen waren in der Produktion teurer und schwerer als die neuen Polymer-Modelle, und der Markt verlangte nach modernen Lösungen. 1994 begann Walther in Arnsberg mit der Entwicklung einer völlig neuen Pistole. Das Ziel war klar: eine Waffe schaffen, die technisch mit der Glock mithalten oder sie übertreffen konnte, ohne Walthers Tradition innovativer Abzugssysteme aufzugeben. 1997 wurde die P99 vorgestellt und sofort als technischer Durchbruch anerkannt. Das Anti-Stress-System war die Antwort auf eine reale Problemstellung bei Polizeieinsätzen: In Stresssituationen spannen Beamte oft unbewusst den Abzug vor, was zu unbeabsichtigten Schussabgaben führen kann. Die P99 AS löste dieses Problem elegant. Zahlreiche deutsche Polizeien übernahmen die P99 als Dienstwaffe, darunter Nordrhein-Westfalen, Bayern und Hamburg. Die Produktion endete 2024, wobei die PDP (Performance Duty Pistol) als offizielle Nachfolgerin gilt.
 
-## Technische Daten
-- Kaliber: 9×19mm (auch .40 S&W)
-- System: Kurzhub-Rückstosslader, Schlagbolzenschloss
-- Magazin: 15 Schuss (9mm), 12 (.40 S&W)
-- Lauflänge: 102mm
-- Gesamtlänge: 180mm
-- Gewicht: 630g (leer)
+Technisch ist die Walther P99 ein Kurzhub-Rückstosslader mit modifiziertem Browning-Verschluss und Schlagbolzenschloss (Striker). Das Kaliber ist primär 9x19mm Parabellum, es existiert auch eine Version in .40 S&W. Die Lauflänge beträgt 102mm, die Gesamtlänge 180mm und das Leergewicht 630 Gramm. Das Magazin fasst 15 Schuss in 9mm oder 12 Schuss in .40 S&W. Das Herzstück ist das AS-Abzugssystem, das drei Modi kombiniert. Im ersten Modus (Double Action) hat der Abzug einen langen Weg mit circa 4,5 Kilogramm Gewicht — ideal für den sicheren Erstschuss. Nach dem ersten Schuss schaltet der Abzug automatisch in den SA-Modus (Single Action) mit kurzem Weg und circa 2 Kilogramm Gewicht für präzise Folgeschüsse. Der dritte Modus, der namensgebende Anti-Stress-Modus, wird durch Drücken eines Entkupplungsknopfes am Schlitten aktiviert — der Abzug kehrt in den langen DA-Modus zurück, ohne dass die Waffe entladen werden muss. Die drei austauschbaren Griffrücken in den Grössen S, M und L ermöglichen eine individuelle Anpassung an unterschiedliche Handgrössen.
 
-## Besonderheiten
-Das AS-Abzugssystem kombiniert drei Abzugsmodi: langer DA-Erstschuss (ca. 4,5 kg), kurzer SA-Folgeschuss (ca. 2 kg) und Anti-Stress-Modus — durch Drücken des Entkupplungsknopfes kehrt der Abzug in den langen DA-Modus zurück. Drei austauschbare Griffrücken für unterschiedliche Handgrössen waren 1997 revolutionär — Glock übernahm dieses Konzept erst 2010.
+Im Schweizer Kontext hat die Walther P99 eine treue, wenn auch nicht riesige Anhängerschaft. Sie wird von Schützen geschätzt, die das AS-Abzugssystem als überlegen gegenüber dem reinen Striker-Abzug der Glock empfinden. Das DA/SA-ähnliche Verhalten bietet ein Sicherheitsplus, das besonders für Heimverteidigung und für Schützen, die von klassischen DA/SA-Pistolen wie der SIG P226 kommen, attraktiv ist. Auf dem Gebrauchtmarkt tauchen regelmässig P99 auf, da die Waffe seit den späten 1990er-Jahren in der Schweiz verkauft wurde. Die P99 hat den Ruf einer zuverlässigen und ergonomisch gelungenen Pistole, die allerdings in Sachen Aftermarket-Unterstützung und Zubehörvielfalt nicht mit der Glock mithalten kann. Für Sportschützen in der IPSC Production Division ist die P99 eine exotische, aber durchaus konkurrenzfähige Wahl. Ersatzteile sind über Walther-Servicepartner in der Schweiz erhältlich, wenn auch nicht so breit wie bei Glock.
 
-## Varianten
-- P99 AS: Anti-Stress Standard
-- P99 DAO: Nur Double-Action
-- P99 QA: Quick Action (teilgespannt, konstanter Abzugsweg)
-- P99 RAD: Behördenversion der deutschen Polizei
+Die wichtigsten Varianten der P99 umfassen die P99 AS (Anti-Stress Standard), die P99 DAO (nur Double Action mit konstantem langen Abzugsweg), die P99 QA (Quick Action mit teilgespanntem Schlagbolzen und konstantem kurzem Abzugsweg — das Modell, das zur PPQ weiterentwickelt wurde) und die P99 RAD (Behördenversion der deutschen Polizei mit spezifischen Anpassungen). Es existieren auch kompakte Versionen und Varianten mit verlängertem Lauf.
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+Der Preisguide für den Schweizer Markt 2026 zeigt folgendes Bild: Gebrauchte P99 in gutem Zustand mit normalen Gebrauchsspuren werden für CHF 350 bis 500 gehandelt. Da die Produktion eingestellt wurde, sinken die Preise für Standardmodelle tendenziell. Exemplare in sehr gutem Zustand mit wenig Schusszahlen erzielen CHF 500 bis 650. Neuwertige P99, insbesondere letzte Produktionsserien oder ungeschossene Exemplare, liegen bei CHF 650 bis 800. Die P99 QA-Version kann etwas höhere Preise erzielen, da sie als Vorläufer der beliebten PPQ ein gewisses Sammlerinteresse weckt. Originalzubehör wie Ersatzmagazine (CHF 30 bis 45) und Griffrücken-Sets sind noch über den Fachhandel erhältlich.
+
+Beim Kauf einer gebrauchten Walther P99 sollte man zunächst die Variante identifizieren — AS, DAO oder QA, da sich die Abzugssysteme grundlegend unterscheiden. Den Entkupplungsknopf bei der AS-Version auf korrekte Funktion prüfen — er muss den Abzug zuverlässig in den DA-Modus zurücksetzen. Den Lauf auf Verschleiss kontrollieren, wobei die P99 als langlebig gilt. Die Polymerrahmen-Schienen auf Verschleiss prüfen. Die austauschbaren Griffrücken auf korrekten Sitz testen — lose Griffrücken deuten auf ausgeschlagene Rastpunkte hin. Die Magazine auf Risse und korrekte Zuführung prüfen. Da die P99 nicht mehr produziert wird, ist die langfristige Ersatzteilversorgung ein Faktor, den man beim Kauf berücksichtigen sollte — Walther hat jedoch zugesagt, Ersatzteile weiterhin bereitzuhalten.
+
+Rechtlich unterliegt die Walther P99 in der Schweiz dem Waffenerwerbsschein (WES). Der Erwerb ist für Schweizer Bürger und Personen mit Niederlassungsbewilligung C über den regulären WES-Prozess möglich. Ein aktueller Strafregisterauszug ist erforderlich, und es darf kein Waffenerwerbsverbot bestehen. Die P99 ist als halbautomatische Handfeuerwaffe ohne Einschränkungen erwerbbar.`,
     rechtsstatus: 'wes',
     typischeKaliber: ['9×19mm', '.40 S&W'],
     tags: ['Pistole', 'Walther', 'P99', 'JamesBond', 'AS-System'],
@@ -575,8 +448,7 @@ Waffenerwerbsschein (WES) erforderlich.`,
     hersteller: 'Walther',
     baujahr: '2011',
     kurzbeschreibung: 'Moderner Striker mit legendär gutem Abzug. Von vielen Testern als bester Serienmässig-Abzug bewertet.',
-    inhalt: `## Walther PPQ — Bester Serienabzug seiner Klasse
-Die Walther PPQ (Police Pistol Quick Defence) wurde 2011 als Nachfolger der P99 QA entwickelt. Sie ist bekannt für ihren aussergewöhnlich guten Striker-Abzug — vielfach als bester Serienabzug aller Polymerrahmen-Pistolen bezeichnet.
+    inhalt: `Die Walther PPQ (Police Pistol Quick Defence) hat sich seit ihrer Einführung 2011 den Ruf erarbeitet, den besten Serienabzug aller Polymerrahmen-Pistolen zu besitzen. Was sie besonders macht, ist der legendäre Quick-Defence-Abzug mit nur 9mm Abzugsweg und einem extrem kurzen, taktil klar spürbaren Reset von circa 2,5mm. Dieses Abzugsverhalten ermöglicht schnelle, präzise Folgeschüsse, wie sie sonst nur mit aufwendig getunten Wettkampfpistolen möglich sind — und das ab Werk. Dazu kommt eine Ergonomie, die von nahezu allen Testern als herausragend bewertet wird. Die PPQ liegt in der Hand, als wäre sie dafür gegossen worden.
 
 ## Geschichte
 Walther erkannte, dass der P99-QA-Abzug bei Sportschützen beliebt war, bei Behörden aber die fehlende zweite Abzugslänge (Anti-Stress) zum Problem wurde. 2011 destillierten sie das Beste aus der P99 QA in ein neues Modell: die PPQ. Der Name knüpft an die Polizeipistolen-Tradition (PP, PPK, PPQ) an. Ab 2013 folgte die M2 mit dem weltweit bevorzugten Druckknopf-Magazinlöser. 2021 wurde die PPQ durch die PDP (Performance Duty Pistol) abgelöst, die ab Werk Optics-Ready ist.
@@ -613,29 +485,21 @@ Waffenerwerbsschein (WES) erforderlich.`,
     hersteller: 'CZ (Česká Zbrojovka)',
     baujahr: '1975',
     kurzbeschreibung: 'Die tschechische Präzisionspistole. Ergonomisch, präzise, günstig — einer der besten Werte.',
-    inhalt: `## CZ 75 — Die meistkopierte Pistole der Welt
-Die CZ 75 wurde 1975 von den Brüdern František und Josef Koucký in der Tschechoslowakei entwickelt. Da der Ostblock keine Patente im Westen anmeldete, wurde sie von über 20 Herstellern kopiert — von Tanfoglio über IMI bis Springfield. Das Design gilt als eines der besten je gebauten.
+    inhalt: `Die CZ 75 ist eine der einflussreichsten und meistkopierten Pistolen der Waffengeschichte. Seit ihrer Einführung 1975 hat sie sich weltweit einen Ruf als aussergewöhnlich präzise, ergonomische und zuverlässige Handfeuerwaffe erarbeitet. Was die CZ 75 besonders macht, ist die Kombination aus einem Ganzstahlrahmen, einer innenliegenden Schlittenführung und einem Double-Action/Single-Action-Abzug, die zusammen ein Schiesserlebnis bieten, das in dieser Preisklasse nahezu unerreicht ist. Der Schlitten läuft innerhalb der Rahmenführungen, ähnlich wie bei der legendären SIG P210, was das Schlittenspiel minimiert und die Präzision deutlich steigert. Diese Konstruktionsweise ist bei modernen Pistolen eine Seltenheit und verleiht der CZ 75 einen Vorteil, den man beim Schiessen sofort spürt.
 
-## Technische Daten
-- Kaliber: 9×19mm (auch .40 S&W)
-- System: Kurzhub-Rückstosslader, Browning-Verschluss (Kammerverriegelung)
-- Magazin: 16 Schuss (9mm)
-- Lauflänge: 120mm
-- Gesamtlänge: 206mm
-- Gewicht: 1000g (Stahl, leer)
-- Abzug: DA/SA mit manueller Sicherung
+Die Geschichte der CZ 75 beginnt in der damaligen Tschechoslowakei. Die Brüder František und Josef Koucký entwickelten die Pistole bei Česká Zbrojovka in Uherský Brod. Ihr Ziel war eine Dienstpistole, die westliche Designs in Präzision und Ergonomie übertreffen sollte. Die Konstrukteure studierten insbesondere die Browning Hi-Power und die SIG P210 und kombinierten deren beste Eigenschaften in einem neuen Design. Da der Ostblock keine Patente im Westen anmeldete, wurde die CZ 75 von über zwanzig Herstellern weltweit kopiert oder adaptiert. Tanfoglio in Italien, IMI in Israel mit der Jericho 941, Springfield Armory in den USA, Sphinx in der Schweiz und viele weitere Hersteller bauten Pistolen auf Basis des CZ-75-Designs. Diese Verbreitung ist ein eindrücklicher Beweis für die Qualität der Konstruktion. Während des Kalten Krieges war die CZ 75 im Westen schwer erhältlich, was ihren Mythos nur verstärkte. Erst nach 1989 wurde sie frei exportiert und eroberte rasch die internationalen Märkte.
 
-## Besonderheiten
-Der Schlitten läuft INNEN in den Rahmenführungen — wie bei der SIG P210. Dies gibt der CZ 75 eine extrem geringe Schlittenspiel-Toleranz und hervorragende Präzision. Der Ganzstahlrahmen absorbiert den Rückstoss merklich besser als Polymer. Der tief liegende Lauf reduziert die Mündungsbewegung.
+Technisch arbeitet die CZ 75 als Kurzhub-Rückstosslader mit einem modifizierten Browning-Verschlusssystem und Kammerverriegelung. Das Kaliber ist primär 9×19mm Parabellum, es gibt aber auch Versionen in .40 S&W. Das Magazin fasst in der Standardausführung 16 Schuss in 9mm. Die Lauflänge beträgt 120mm bei einer Gesamtlänge von 206mm. Das Gewicht liegt bei rund 1000 Gramm leer, was für eine Polymerpistolen-verwöhnte Generation viel klingt, aber den Rückstoss spürbar dämpft und die Waffe beim schnellen Schiessen ruhig in der Hand liegen lässt. Der DA/SA-Abzug erlaubt den ersten Schuss wahlweise im Double-Action-Modus mit längerem, schwererem Abzugsweg oder im Single-Action-Modus mit gespanntem Hahn und kurzem, leichtem Abzug. Eine manuelle Sicherung ergänzt das Sicherheitskonzept. Der tief liegende Lauf reduziert den Muzzle Flip, was besonders bei schnellen Schussfolgen vorteilhaft ist.
 
-## Varianten
-- CZ 75 B: Modernisierte Version mit Schlagbolzensicherung
-- CZ 75 SP-01: Zubehörschiene, 18-Schuss-Magazin
-- CZ 75 Shadow: Wettkampfversion ohne Sicherungshebel
-- CZ 75 Compact: Verkürzte Version für verdecktes Tragen
+Die Variantenvielfalt der CZ 75 ist beachtlich. Die CZ 75 B ist die modernisierte Standardversion mit integrierter Schlagbolzensicherung, die ein Auslösen des Schlagbolzens ohne Betätigung des Abzugs verhindert. Die CZ 75 SP-01 verfügt über eine Zubehörschiene nach Picatinny-Standard und ein erweitertes 18-Schuss-Magazin, womit sie sich besonders als Dienstpistole eignet. Die CZ 75 Shadow ist die wettkampforientierte Version ohne Sicherungshebel, dafür mit optimiertem Abzug. Die CZ 75 Compact ist die verkürzte Variante mit kürzerem Lauf und Griff für verdecktes Tragen. Daneben existieren zahlreiche weitere Ausführungen wie die CZ 75 TS Tactical Sport für IPSC Standard Division und die CZ 75 Kadet, ein Wechselsystem im Kaliber .22 LR zum günstigen Training.
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+Im Schweizer Kontext ist die CZ 75 seit Jahrzehnten ein fester Bestandteil der Schiesssportszene. Viele Schweizer Sportschützen schätzen die CZ 75 als Einstieg in den IPSC-Sport, da sie werksseitig einen guten Abzug bietet und preislich deutlich unter vergleichbaren Schweizer oder deutschen Pistolen liegt. An den Schweizer Schiesständen trifft man die CZ 75 in allen Varianten an, besonders die SP-01 und die Shadow-Modelle sind im Wettkampf verbreitet. Die Ersatzteilversorgung in der Schweiz ist über spezialisierte Händler und den Importeur gut gesichert. Auch Tuning-Teile von Eemann Tech, Cajun Gun Works oder CZ Custom sind in der Schweiz problemlos erhältlich.
+
+Der Preisguide für den Schweizer Markt 2026 gliedert sich in drei Stufen. Eine CZ 75 B in gutem Zustand mit normalen Gebrauchsspuren wird für CHF 450 bis 600 gehandelt. Exemplare in sehr gutem Zustand mit wenig Schusszahlen und intaktem Finish erzielen CHF 600 bis 800. Neuwertige oder ungeschossene Exemplare mit Originalverpackung und Zubehör liegen bei CHF 800 bis 1000. Die SP-01-Versionen liegen preislich etwa CHF 100 bis 200 höher, die Shadow-Modelle können gebraucht CHF 900 bis 1300 erreichen. Originalmagazine kosten einzeln CHF 35 bis 50, was im Vergleich zu SIG oder HK moderat ist.
+
+Beim Kauf einer gebrauchten CZ 75 sollte man den Zustand der Schlittenführungen besonders beachten. Da der Schlitten innen läuft, können abgenutzte Führungsflächen die Präzision beeinträchtigen. Den Abzug im DA- und SA-Modus testen und auf Kratzen oder ungleichmässigen Druckpunkt achten. Die Laufmündung auf Beschädigungen prüfen und durch den Lauf schauen, um den Zustand der Züge und Felder zu beurteilen. Der Hahn sollte sicher in der Rast einrasten, und die manuelle Sicherung muss fest und eindeutig arbeiten. Seriennummern auf Rahmen, Schlitten und Lauf sollten übereinstimmen. Bei älteren Modellen ohne Schlagbolzensicherung (Pre-B) ist besondere Vorsicht geboten, diese Modelle haben aber bei Sammlern einen eigenen Reiz.
+
+Rechtlich unterliegt die CZ 75 in der Schweiz dem Waffengesetz und erfordert einen Waffenerwerbsschein (WES). Schweizer Bürger und Personen mit Niederlassungsbewilligung C können den WES beim kantonalen Waffenbüro beantragen. EU-Bürger mit Aufenthaltsbewilligung B benötigen zusätzlich eine Bescheinigung des Heimatlandes. Die CZ 75 ist als halbautomatische Pistole mit Magazinen bis 20 Schuss WES-pflichtig. Magazine mit einer Kapazität über 20 Schuss würden eine Ausnahmebewilligung erfordern, sind aber für die CZ 75 ohnehin nicht standardmässig erhältlich.`,
     rechtsstatus: 'wes',
     typischeKaliber: ['9×19mm', '.40 S&W'],
     tags: ['Pistole', 'CZ', 'CZ75', 'Tschechien', 'IPSC', 'Präzision'],
@@ -648,31 +512,23 @@ Waffenerwerbsschein (WES) erforderlich.`,
     hersteller: 'CZ',
     baujahr: '2016',
     kurzbeschreibung: 'Die dominante IPSC Production-Pistole. Werksseitig mit bestem DA/SA-Abzug auf dem Markt.',
-    inhalt: `## CZ Shadow 2 — Dominanz in IPSC Production
-Die CZ Shadow 2 wurde 2016 als dedizierte Wettkampfpistole vorgestellt und dominiert seither die IPSC Production Division weltweit. Sie ist eine kompromisslose Weiterentwicklung der CZ 75 SP-01 Shadow, optimiert für schnelle und präzise Schussabgabe.
+    inhalt: `Die CZ Shadow 2 ist die dominierende Wettkampfpistole in der IPSC Production Division und hat sich seit ihrer Einführung 2016 als Mass aller Dinge in dieser Disziplin etabliert. Was die Shadow 2 besonders macht, ist die kompromisslose Ausrichtung auf den Schiesssport bei gleichzeitig werksseitig so hoher Qualität, dass viele Schützen sie direkt aus der Schachtel im Wettkampf einsetzen. Das absichtlich hohe Gewicht von 1280 Gramm, der tiefe Griffansatz und der ab Werk hervorragende Single-Action-Abzug machen sie zu einer Pistole, die auf Geschwindigkeit und Präzision gleichermassen optimiert ist.
 
-## Geschichte
-Die Shadow-Linie begann 2009 mit der CZ 75 SP-01 Shadow, die in Zusammenarbeit mit dem CZ-Werksteam entwickelt wurde. Obwohl erfolgreich, fehlte der SP-01 Shadow ein dediziertes Wettkampf-Design. 2016 stellte CZ die Shadow 2 vor — mit komplett überarbeitetem Griffstück, höherer Beavertail-Abdeckung und deutlich höherem Gewicht. Innerhalb eines Jahres nach Einführung gewann die Shadow 2 die IPSC-Weltmeisterschaft und hält seitdem den Markt in der Production Division fest im Griff.
+Die Entwicklungsgeschichte der Shadow 2 beginnt mit der CZ 75 SP-01 Shadow, die 2009 in Zusammenarbeit mit dem CZ-Werksteam für den Schiesssport entwickelt wurde. Die SP-01 Shadow war bereits erfolgreich, doch fehlte ihr ein von Grund auf als Wettkampfwaffe konzipiertes Design. CZ analysierte das Feedback von Spitzenschützen weltweit und entwickelte eine komplett überarbeitete Version. 2016 wurde die Shadow 2 vorgestellt, mit neuem Griffstück, höherer Beavertail-Abdeckung, verbesserter Schlittenführung und deutlich mehr Gewicht. Der Erfolg war durchschlagend. Innerhalb eines Jahres nach der Markteinführung gewann die Shadow 2 die IPSC-Weltmeisterschaft in der Production Division. Seither dominiert sie diese Klasse mit einer Verbreitung, die keine andere Pistole erreicht. An IPSC-Wettkämpfen weltweit schiessen regelmässig über 50 Prozent der Teilnehmer in der Production Division eine Shadow 2.
 
-## Technische Daten
-- Kaliber: 9×19mm
-- System: Kurzhub-Rückstosslader, modifizierter Browning-Verschluss
-- Magazin: 17 Schuss
-- Lauflänge: 120mm
-- Gesamtlänge: 228mm
-- Gewicht: 1280g (leer!) — absichtlich schwer
-- Abzug: DA/SA, SA ca. 1,3 kg (Werkszustand)
+Die technischen Daten sprechen für sich. Die Shadow 2 verschiesst das Kaliber 9×19mm und arbeitet als Kurzhub-Rückstosslader mit modifiziertem Browning-Verschluss. Das Magazin fasst 17 Schuss. Die Lauflänge beträgt 120mm bei einer Gesamtlänge von 228mm. Das Gewicht von 1280 Gramm leer ist bewusst hoch gewählt, denn mehr Masse bedeutet weniger Rückstoss und schnellere Folgschüsse. Der DA/SA-Abzug erreicht im Single-Action-Modus ab Werk ein Abzugsgewicht von rund 1,3 Kilogramm mit einem kurzen, knackigen Reset. Dieser Abzug ist so gut, dass er in der Welt der Serienpistolen als Referenz gilt. Im Double-Action-Modus liegt das Abzugsgewicht bei etwa 4,5 Kilogramm mit einem langen, aber gleichmässigen Weg. Die Schlittenführung wurde gegenüber der SP-01 verbessert und bietet minimales Spiel, was sich direkt in der Präzision niederschlägt.
 
-## Besonderheiten
-Das hohe Gewicht von 1'280g ist Absicht — es dämpft den Rückstoss und stabilisiert die Waffe beim schnellen Schiessen. Der überarbeitete Griff ist weiter nach oben verlegt, sodass die Hand näher am Lauf liegt (reduziert Muzzle Flip). Der SA-Abzug ab Werk ist so gut, dass viele Schützen keinen Tuning-Bedarf sehen.
+Der Griff der Shadow 2 wurde komplett neu gestaltet. Er sitzt höher als bei der SP-01, sodass die schiessende Hand näher an der Laufachse liegt. Dies reduziert den Muzzle Flip erheblich und ermöglicht schnellere Schussfolgen. Die Griffschalen sind aus Aluminium gefertigt und tragen zum hohen Gewicht bei. Die Checkering an den Griffseiten bietet ausreichend Halt, ohne bei langen Wettkämpfen die Hände zu strapazieren. Der erweiterte Beavertail schützt die Hand vor dem Hahn und ermöglicht einen höheren, festeren Griff. Der Magazintrichter ist ab Werk montiert und erleichtert schnelle Magazinwechsel unter Stress.
 
-## Varianten
-- Shadow 2: Standardmodell in Schwarz oder Urban Grey
-- Shadow 2 OR (Optics Ready): Gefräste Schlitten-Aufnahme für Rotpunktvisiere
-- Shadow 2 Orange: Handgefittete Premium-Ausführung
+Es gibt drei Hauptvarianten der Shadow 2. Das Standardmodell ist in Schwarz oder Urban Grey erhältlich und deckt die Bedürfnisse der meisten Schützen ab. Die Shadow 2 OR (Optics Ready) verfügt über einen gefrästen Schlitten zur Aufnahme von Rotpunktvisieren und richtet sich an Schützen, die in der Production Optics Division antreten. Die Shadow 2 Orange ist die Premium-Ausführung, die im CZ-Werk von Hand gefittet wird, mit poliertem Abzugsmechanismus und noch engeren Toleranzen. Sie ist die Wahl für ambitionierte Wettkampfschützen, die das Maximum aus der Plattform herausholen wollen.
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+Im Schweizer Kontext hat die CZ Shadow 2 die Wettkampfszene nachhaltig verändert. An Schweizer IPSC-Matches ist sie die mit Abstand häufigste Pistole in der Production Division. Die Kombination aus hoher Qualität ab Werk, moderatem Preis im Vergleich zur Konkurrenz und der enormen Verfügbarkeit von Zubehör und Tuning-Teilen macht sie zur logischen Wahl für Ein- und Aufsteiger im IPSC-Sport. Schweizer Händler führen die Shadow 2 regelmässig auf Lager, und die Wartezeiten sind mittlerweile kurz. Tuning-Teile von Eemann Tech, CZ Custom oder Cajun Gun Works sind über Schweizer Fachhändler erhältlich. Viele Schweizer IPSC-Schützen schiessen die Shadow 2 im Werkszustand und investieren allenfalls in bessere Griffschalen oder einen leicht angepassten Abzug.
+
+Der Preisguide für den Schweizer Markt 2026 zeigt folgendes Bild. Eine gebrauchte Shadow 2 in gutem Zustand mit sichtbaren Gebrauchsspuren und höherer Schusszahl wird für CHF 900 bis 1100 gehandelt. Exemplare in sehr gutem Zustand mit moderater Nutzung und intaktem Finish erzielen CHF 1100 bis 1400. Neuwertige oder wenig geschossene Exemplare mit Originalverpackung und allem Zubehör liegen bei CHF 1400 bis 1700. Die OR-Version liegt preislich CHF 100 bis 200 über dem Standardmodell. Die Shadow 2 Orange erzielt gebraucht CHF 1800 bis 2500, neuwertig CHF 2500 bis 3000. Neupreise beim Händler liegen für das Standardmodell bei rund CHF 1500 bis 1700.
+
+Beim Kauf einer gebrauchten Shadow 2 sollte man bedenken, dass diese Pistolen oft intensiv im Wettkampf eingesetzt werden. Schusszahlen von 10000 bis 30000 sind keine Seltenheit. Den Lauf auf Abnutzung der Züge und Felder prüfen. Den Abzug im SA-Modus testen und auf den Reset achten, der knackig und kurz sein sollte. Die Schlittenführung auf Spiel prüfen, indem man den Schlitten bei gesicherter Waffe leicht seitlich bewegt. Der Magazintrichter sollte fest sitzen, und die Griffschalen dürfen kein Spiel aufweisen. Fragen nach durchgeführtem Tuning sind wichtig, denn unsachgemässe Modifikationen können Probleme verursachen. Originalteile wie Federn und Abzugsstange sind Verschleissteile und sollten bei hohen Schusszahlen ersetzt worden sein.
+
+Rechtlich ist die CZ Shadow 2 in der Schweiz WES-pflichtig. Der Erwerb erfordert einen Waffenerwerbsschein, der beim kantonalen Waffenbüro beantragt wird. Als halbautomatische Pistole mit Magazinen unter 20 Schuss fällt sie in die Standardkategorie. Der Besitz ist nach Erwerb meldepflichtig, und die Waffe muss sicher aufbewahrt werden. Für den Transport zum Schiessstand gelten die üblichen Vorschriften: Die Waffe muss entladen und getrennt von der Munition transportiert werden.`,
     rechtsstatus: 'wes',
     typischeKaliber: ['9×19mm'],
     tags: ['Pistole', 'CZ', 'Shadow2', 'IPSC', 'Wettkampf'],
@@ -685,29 +541,21 @@ Waffenerwerbsschein (WES) erforderlich.`,
     hersteller: 'Beretta',
     baujahr: '1975',
     kurzbeschreibung: 'Die US-Army Pistole von 1985–2017. Berühmtester Auftritt: "Die Hard", "Lethal Weapon".',
-    inhalt: `## Beretta 92 / M9 — 35 Jahre US-Armeepistole
-Die Beretta 92 wurde 1975 in Italien vorgestellt und gewann 1985 die Ausschreibung der US-Armee als M9 — wo sie bis 2017 über 600'000 Mal im Dienst stand. Sie ersetzte die legendäre Colt M1911 und war die erste 9mm-Dienstpistole des US-Militärs.
+    inhalt: `Die Beretta 92, in der militärischen Variante als M9 bekannt, ist eine der ikonischsten Dienstpistolen des 20. Jahrhunderts. Was diese Pistole besonders macht, ist ihre einzigartige Konstruktion mit offener Schlittenoberseite, dem Schwenkriegel-Verriegelungssystem und dem robusten Aluminiumrahmen. Diese Kombination bietet eine Zuverlässigkeit, die sich in über drei Jahrzehnten Militärdienst bei der US-Armee bewährt hat. Dazu kommt ein markantes, sofort erkennbares Design, das die Beretta 92 zu einer der meistfotografierten und filmisch am häufigsten eingesetzten Pistolen der Welt gemacht hat.
 
-## Technische Daten
-- Kaliber: 9×19mm
-- System: Kurzhub-Rückstosslader, Schwenkriegel-Verriegelung (Walther-Prinzip)
-- Magazin: 15 Schuss (M9), 17 Schuss (92FS Standardmagazin)
-- Lauflänge: 125mm
-- Gesamtlänge: 217mm
-- Gewicht: 950g (leer)
-- Abzug: DA/SA mit Sicherungs-/Entkupplungshebel auf dem Schlitten
+Die Geschichte der Beretta 92 beginnt 1975 in der Beretta-Fabrik in Gardone Val Trompia, Italien. Beretta, einer der ältesten Waffenhersteller der Welt mit einer Geschichte bis ins Jahr 1526, entwickelte die 92 als moderne Dienstpistole auf Basis der Beretta M1951. Das Design übernahm das Schwenkriegel-Verriegelungssystem der Walther P38, kombinierte es aber mit einem Aluminium-Rahmen und einem doppelreihigen Magazin. 1985 gewann die Beretta 92 die kontroverse Ausschreibung der US-Armee und ersetzte die legendäre Colt M1911A1, die seit 1911 im Dienst gestanden hatte. Als M9 wurde sie zur Standard-Dienstpistole aller US-Teilstreitkräfte. Über 600000 Exemplare wurden an das US-Militär geliefert, bevor sie 2017 durch die SIG P320 als M17 und M18 abgelöst wurde. Neben den USA setzen Dutzende von Streitkräften und Polizeieinheiten weltweit die Beretta 92 ein, darunter die italienischen Carabinieri, die französische Gendarmerie und brasilianische Streitkräfte.
 
-## Besonderheiten
-Die Beretta 92 verwendet eine offene Schlitten-Oberseite — ein Beretta-Markenzeichen, das Hülsenauswurf-Störungen fast unmöglich macht. Der Lauf ist fest mit dem Rahmen verbunden (Schwenkriegel), was theoretisch eine höhere Präzision als Browning-Tilting-Barrel ermöglicht. Der Aluminium-Rahmen ist eloxiert und widerstandsfähig.
+Technisch arbeitet die Beretta 92 als Kurzhub-Rückstosslader mit Schwenkriegel-Verriegelung, auch als Walther-Prinzip oder Propeller-Verriegelung bekannt. Anders als beim Browning-System, bei dem der Lauf beim Entriegeln kippt, bleibt der Lauf der Beretta 92 achsparallel. Dies führt theoretisch zu einer besseren Präzision, da der Lauf sich beim Schuss nicht verkantet. Das Kaliber ist 9×19mm Parabellum. Das Magazin fasst 15 Schuss in der militärischen M9-Version und 17 Schuss im zivilen 92FS-Standardmagazin. Die Lauflänge beträgt 125mm bei einer Gesamtlänge von 217mm. Das Gewicht liegt bei 950 Gramm leer. Der DA/SA-Abzug arbeitet mit einem kombinierten Sicherungs- und Entkupplungshebel auf dem Schlitten, der den Hahn sicher ablässt und gleichzeitig als Sicherung fungiert. Das markanteste Merkmal ist die offene Schlittenoberseite, ein Beretta-Markenzeichen, das den Hülsenauswurf extrem zuverlässig macht und Auswurfstörungen praktisch ausschliesst.
 
-## Varianten
-- 92FS: Verbesserte Zivilversion mit Sicherungsnut am Schlitten
-- M9A3: Modernisiert mit FDE-Finish, Gewindlauf und Zubehörschiene
-- 92X Performance: Wettkampfversion, Brigadier-Schlitten
-- Beretta M9A4: Aktuelle Generation mit Optics-Ready-Schlitten
+Die Variantenvielfalt der Beretta 92 ist über die Jahrzehnte gewachsen. Die 92FS ist die verbesserte Zivilversion mit einer Sicherungsnut am Schlitten, die verhindert, dass sich der Schlitten bei einem Bruch nach hinten löst. Die M9A3 ist eine modernisierte Militärversion mit FDE-Finish, Gewindlauf für Schalldämpfer und Zubehörschiene. Die 92X Performance ist die Wettkampfvariante mit schwererem Brigadier-Schlitten, Skeleton-Hammer und verbessertem Abzug. Die Beretta M9A4 ist die aktuelle Generation mit Optics-Ready-Schlitten für Rotpunktvisiere und modularem Griffrücken. Jede dieser Varianten behält das grundlegende 92-Design bei, optimiert aber spezifische Aspekte für den jeweiligen Einsatzzweck.
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+Im Schweizer Kontext ist die Beretta 92 weniger verbreitet als etwa Glock- oder SIG-Pistolen, hat aber eine treue Anhängerschaft. Sie wird vor allem von Sammlern und Liebhabern geschätzt, die den Charakter einer klassischen Ganzmetallpistole mit DA/SA-Abzug bevorzugen. Im Schweizer Schiesssport wird sie gelegentlich im Ordonnanzpistolenschiessen eingesetzt, wobei die 92X Performance auch in IPSC Production eine Nische besetzt. Die Ersatzteilversorgung in der Schweiz ist über den Beretta-Importeur und spezialisierte Händler gewährleistet. Magazine und Zubehör sind gut verfügbar, da die Beretta 92 weltweit eine der meistproduzierten Pistolen ist.
+
+Der Preisguide für den Schweizer Markt 2026 zeigt folgende Richtwerte. Eine Beretta 92FS in gutem Zustand mit normalen Gebrauchsspuren wird für CHF 500 bis 700 gehandelt. Exemplare in sehr gutem Zustand mit wenig Schusszahlen und gepflegtem Finish erzielen CHF 700 bis 950. Neuwertige Exemplare mit Originalverpackung und Zubehör liegen bei CHF 950 bis 1200. Die 92X Performance liegt deutlich höher, gebraucht bei CHF 1200 bis 1600, neuwertig bei CHF 1600 bis 2000. Militärische M9-Exemplare mit nachgewiesener Armeehistorie können bei Sammlern Aufpreise erzielen. Magazine kosten einzeln CHF 30 bis 45.
+
+Beim Kauf einer gebrauchten Beretta 92 sollte man besonders auf den Zustand des Schlittens achten, da die offene Bauweise anfälliger für Korrosion an den Innenflächen sein kann. Den Schwenkriegel auf Abnutzung prüfen, denn er ist ein zentrales Verschleissteil. Die Verriegelungsflächen am Lauf und am Rahmen inspizieren. Der Aluminiumrahmen sollte keine Risse oder tiefe Kratzer aufweisen. Den Sicherungshebel auf beiden Seiten testen, er muss satt und eindeutig einrasten. Bei älteren 92er-Modellen ohne die FS-Sicherungsnut am Schlitten ist besondere Vorsicht geboten. Die Magazinhalterung sollte die Magazine sicher halten und beim Betätigen des Magazinlösers zuverlässig freigeben.
+
+Rechtlich erfordert die Beretta 92 in der Schweiz einen Waffenerwerbsschein (WES). Der Erwerb erfolgt über das kantonale Waffenbüro. Als halbautomatische Pistole mit Magazinen bis 20 Schuss fällt sie in die Standardkategorie des Waffengesetzes. Die Beretta 92 unterliegt keinen besonderen Einschränkungen und kann von allen WES-berechtigten Personen erworben werden. Die Aufbewahrung muss sicher erfolgen, und der Transport zum Schiessstand erfordert die Waffe entladen und getrennt von der Munition.`,
     rechtsstatus: 'wes',
     typischeKaliber: ['9×19mm'],
     tags: ['Pistole', 'Beretta', 'M9', 'US-Army', 'Film'],
@@ -720,8 +568,8 @@ Waffenerwerbsschein (WES) erforderlich.`,
     hersteller: 'Heckler & Koch',
     baujahr: '1993',
     kurzbeschreibung: 'Deutsche Präzision von HK. Polymer-Rahmen mit O-Ring Rückstoßdämpfer. Bei Spezialeinheiten beliebt.',
-    inhalt: `## Heckler & Koch USP — Deutsche Universalpistole
-Die USP (Universelle Selbstladepistole) wurde 1993 von Heckler & Koch als modulare Dienstpistole entwickelt. Sie war die erste Pistole mit integrierter Zubehörschiene (Picatinny) und wurde für das .40 S&W Kaliber optimiert — der damalige Standard bei US-Behörden.
+    inhalt: `## Die Heckler und Koch USP, die Universelle Selbstladepistole, ist ein Meilenstein in der Geschichte der modernen Dienstpistolen. Was die USP besonders macht, ist ihre Kombination aus einem robusten Polymerrahmen mit Stahleinlagen, einem patentierten Rückstoss-Puffersystem und einer beispiellosen Modularität bei den Abzugskonfigurationen. Zehn verschiedene Abzugsvarianten, drei verfügbare Kaliber und eine Reihe von Grössen machen die USP zu einem der vielseitigsten Pistolensysteme, die je entwickelt wurden. Dazu kommt die sprichwörtliche HK-Qualität, die sich in einer Lebensdauer von über 20000 Schuss ohne wesentlichen Verschleiss niederschlägt. 
+Die Entwicklung der USP begann Ende der 1980er-Jahre bei Heckler und Koch in Oberndorf am Neckar. HK erkannte früh, dass der US-Behördenmarkt, damals der grösste Abnehmer von Dienstpistolen, zunehmend das Kaliber .40 S&W bevorzugte. Sie war die erste Pistole mit integrierter Zubehörschiene (Picatinny) und wurde für das .40 S&W Kaliber optimiert — der damalige Standard bei US-Behörden.
 
 ## Technische Daten
 - Kaliber: 9×19mm, .40 S&W, .45 ACP

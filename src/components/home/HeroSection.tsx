@@ -305,13 +305,13 @@ export default function HeroSection() {
             <span className="font-display text-xl font-black md:text-2xl" style={{ color: "#4ade80" }}>
               <CountUp end={stats.haendler} />
             </span>
-            <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-500">{t("stats_dealers")}</span>
+            <span className="text-[11px] font-medium uppercase tracking-wider text-neutral-500">{t("stats_dealers")}</span>
           </div>
           <div className="flex flex-col items-center px-8">
             <span className="font-display text-xl font-black md:text-2xl" style={{ color: "#4ade80" }}>
               <CountUp end={stats.kantone} />
             </span>
-            <span className="text-[10px] font-medium uppercase tracking-wider text-neutral-500">{t("stats_cantons")}</span>
+            <span className="text-[11px] font-medium uppercase tracking-wider text-neutral-500">{t("stats_cantons")}</span>
           </div>
         </div>
       </div>

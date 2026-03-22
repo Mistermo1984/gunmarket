@@ -37,7 +37,7 @@ export default function TrendingSearches() {
         </div>
         <div>
           <h2 className="text-sm font-semibold text-white">Meistgesucht</h2>
-          <p className="text-[10px] text-gray-500">Letzte 7 Tage auf GunMarket.ch</p>
+          <p className="text-[11px] text-gray-500">Letzte 7 Tage auf GunMarket.ch</p>
         </div>
       </div>
 
@@ -62,7 +62,7 @@ export default function TrendingSearches() {
           </svg>
           <div className="text-center">
             <p className="text-xs font-medium text-gray-500">Noch keine Suchdaten</p>
-            <p className="mt-1 text-[10px] text-gray-600">
+            <p className="mt-1 text-[11px] text-gray-600">
               Erscheint sobald User suchen
               <br />
               Tracking läuft ab sofort
@@ -90,13 +90,13 @@ export default function TrendingSearches() {
               href={`/?suche=${encodeURIComponent(s.query)}`}
               className="group flex items-center gap-3 rounded-xl px-3 py-2 transition-colors hover:bg-[#1a2e12]"
             >
-              <span className="w-4 shrink-0 text-center text-[10px] font-bold text-gray-600">
+              <span className="w-4 shrink-0 text-center text-[11px] font-bold text-gray-600">
                 {i + 1}
               </span>
               <span className="flex-1 text-xs font-medium capitalize text-gray-300 transition-colors group-hover:text-white">
                 {s.query}
               </span>
-              <span className="shrink-0 text-[10px] text-gray-600">
+              <span className="shrink-0 text-[11px] text-gray-600">
                 {s.avg_results} Treffer
               </span>
               <div className="h-1.5 w-14 shrink-0 overflow-hidden rounded-full bg-[#0f1a0a]">

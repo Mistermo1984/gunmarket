@@ -88,7 +88,7 @@ interface FilterSidebarProps {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <span className="mb-2 block text-[10px] font-bold uppercase tracking-[0.08em] text-neutral-400">
+    <span className="mb-2 block text-[11px] font-bold uppercase tracking-[0.08em] text-neutral-400">
       {children}
     </span>
   );
@@ -117,7 +117,7 @@ function Pill({
       {label}
       {count != null && count > 0 && (
         <span
-          className={`text-[10px] tabular-nums ${
+          className={`text-[11px] tabular-nums ${
             active ? "text-white/70" : "text-neutral-400"
           }`}
         >
@@ -274,7 +274,7 @@ function CategoryPillWithSubs({
           <button
             key={uk.id}
             onClick={() => onToggleSub(uk.id)}
-            className={`rounded-full border px-2.5 py-1 text-[11px] font-medium transition-all duration-150 ${
+            className={`rounded-full border px-2.5 py-1.5 text-[11px] font-medium transition-all duration-150 min-h-[36px] ${
               filters.unterkategorien.includes(uk.id)
                 ? "border-brand-green bg-brand-green/10 text-brand-green"
                 : "border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300"
@@ -342,7 +342,7 @@ export default function FilterSidebar({
         <div className="flex items-center gap-2">
           <span className="text-sm font-bold text-brand-dark">{t("filter_title")}</span>
           {activeCount > 0 && (
-            <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-brand-green px-1 text-[10px] font-bold text-white">
+            <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-brand-green px-1 text-[11px] font-bold text-white">
               {activeCount}
             </span>
           )}
@@ -527,7 +527,7 @@ export default function FilterSidebar({
             if (filtered.length === 0) return null;
             return (
               <div key={gruppe.gruppe}>
-                <div className="px-3 pt-2.5 pb-0.5 text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+                <div className="px-3 pt-2.5 pb-0.5 text-[11px] font-bold uppercase tracking-wider text-neutral-400">
                   {gruppe.gruppe}
                 </div>
                 {filtered.map((k) => (

@@ -74,12 +74,12 @@ export default function BrandMedianTable() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[#4d8230]/20">
-                <th className="py-2 pr-4 text-left text-[10px] font-semibold uppercase tracking-wider text-gray-500">#</th>
-                <th className="py-2 pr-4 text-left text-[10px] font-semibold uppercase tracking-wider text-gray-500">Marke</th>
-                <th className="py-2 pr-4 text-right text-[10px] font-semibold uppercase tracking-wider text-gray-500">Inserate</th>
-                <th className="py-2 pr-4 text-right text-[10px] font-semibold uppercase tracking-wider text-gray-500">Median</th>
-                <th className="py-2 pr-4 text-right text-[10px] font-semibold uppercase tracking-wider text-gray-500">Ø Preis</th>
-                <th className="py-2 text-right text-[10px] font-semibold uppercase tracking-wider text-gray-500">Spanne</th>
+                <th className="py-2 pr-4 text-left text-[11px] font-semibold uppercase tracking-wider text-gray-500">#</th>
+                <th className="py-2 pr-4 text-left text-[11px] font-semibold uppercase tracking-wider text-gray-500">Marke</th>
+                <th className="py-2 pr-4 text-right text-[11px] font-semibold uppercase tracking-wider text-gray-500">Inserate</th>
+                <th className="py-2 pr-4 text-right text-[11px] font-semibold uppercase tracking-wider text-gray-500">Median</th>
+                <th className="py-2 pr-4 text-right text-[11px] font-semibold uppercase tracking-wider text-gray-500">Ø Preis</th>
+                <th className="py-2 text-right text-[11px] font-semibold uppercase tracking-wider text-gray-500">Spanne</th>
               </tr>
             </thead>
             <tbody>

@@ -197,7 +197,7 @@ export default function PriceHistogramSlider({ minPrice, maxPrice, onChange, fil
       </div>
 
       {/* Price labels under slider */}
-      <div className="flex items-center justify-between mt-0.5 text-[10px] text-neutral-400">
+      <div className="flex items-center justify-between mt-0.5 text-[11px] text-neutral-400">
         <span>CHF {formatPrice(0)}</span>
         <span>CHF {formatPrice(absMax)}</span>
       </div>
@@ -235,7 +235,7 @@ export default function PriceHistogramSlider({ minPrice, maxPrice, onChange, fil
       {(localMin > 0 || (localMax > 0 && localMax < absMax)) && (
         <button
           onClick={() => { setLocalMin(0); setLocalMax(absMax); onChange(0, 0); }}
-          className="text-[10px] text-gray-400 hover:text-[#4d8230] mt-1.5 transition-colors"
+          className="text-[11px] text-gray-400 hover:text-[#4d8230] mt-1.5 transition-colors"
         >
           Zurücksetzen
         </button>

@@ -104,7 +104,7 @@ export default function YouTubeEmbed({ videoId, titel, quelle, start }: YouTubeE
           </div>
         </a>
         <div className="bg-gray-50 border-t border-gray-100 px-4 py-2">
-          <p className="text-[10px] text-gray-400">
+          <p className="text-[11px] text-gray-400">
             Einbettung für dieses Video deaktiviert. Klicke zum Ansehen auf YouTube.
           </p>
         </div>

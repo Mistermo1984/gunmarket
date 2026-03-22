@@ -5,11 +5,11 @@ export const dynamic = "force-dynamic";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     await initializeSchema();
-    const { id } = await params;
+    const { id } = params;
 
     const history = await dbAll(
       "SELECT id, listing_id, preis, recorded_at FROM listing_price_history WHERE listing_id = ? ORDER BY recorded_at ASC",

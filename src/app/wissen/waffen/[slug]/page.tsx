@@ -11,7 +11,7 @@ import ShareButton from '@/components/ui/ShareButton'
 import type { Metadata } from 'next'
 
 interface Props {
-  params: Promise<{ slug: string }>
+  params: { slug: string }
 }
 
 export async function generateStaticParams() {
@@ -19,7 +19,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
+  const { slug } = params
   const waffe = wissenWaffen.find((w) => w.slug === slug)
   if (!waffe) return {}
   return {
@@ -208,7 +208,7 @@ function PreisGuideSection({ priceGuide, titel }: { priceGuide: PriceGuide; tite
 }
 
 export default async function WaffeArtikelPage({ params }: Props) {
-  const { slug } = await params
+  const { slug } = params
   const waffe = wissenWaffen.find((w) => w.slug === slug)
   if (!waffe) notFound()
 

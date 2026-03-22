@@ -8,7 +8,7 @@ import ShareButton from '@/components/ui/ShareButton'
 import type { Metadata } from 'next'
 
 interface Props {
-  params: Promise<{ slug: string }>
+  params: { slug: string }
 }
 
 export async function generateStaticParams() {
@@ -16,7 +16,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
+  const { slug } = params
   const muni = wissenMunition.find((m) => m.slug === slug)
   if (!muni) return {}
   return {
@@ -113,7 +113,7 @@ function renderContent(content: string) {
 }
 
 export default async function MunitionArtikelPage({ params }: Props) {
-  const { slug } = await params
+  const { slug } = params
   const muni = wissenMunition.find((m) => m.slug === slug)
   if (!muni) notFound()
 

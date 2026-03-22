@@ -39,9 +39,9 @@ async function getListingData(id: string): Promise<{ listing: ListingRow; images
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }): Promise<Metadata> {
-  const { id } = await params;
+  const { id } = params;
   const data = await getListingData(id);
 
   if (!data) {
@@ -160,9 +160,9 @@ export default async function InseratLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
-  const { id } = await params;
+  const { id } = params;
 
   return (
     <>

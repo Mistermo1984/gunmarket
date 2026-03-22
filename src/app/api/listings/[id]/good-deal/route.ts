@@ -19,11 +19,11 @@ function getFingerprint(req: NextRequest): { fingerprint: string; ipHash: string
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     await initializeSchema();
-    const { id } = await params;
+    const { id } = params;
     const { fingerprint } = getFingerprint(req);
 
     const listing = await dbGet<{ good_deal_count: number }>(
@@ -52,11 +52,11 @@ export async function GET(
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     await initializeSchema();
-    const { id } = await params;
+    const { id } = params;
     const { fingerprint, ipHash } = getFingerprint(req);
 
     // Check listing exists

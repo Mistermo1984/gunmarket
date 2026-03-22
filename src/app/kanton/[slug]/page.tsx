@@ -143,9 +143,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug } = params;
   const data = KANTON_DATA[slug];
   if (!data) {
     return { title: "Kanton nicht gefunden" };
@@ -166,9 +166,9 @@ export async function generateMetadata({
 export default async function KantonPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }) {
-  const { slug } = await params;
+  const { slug } = params;
   const data = KANTON_DATA[slug];
 
   if (!data) {

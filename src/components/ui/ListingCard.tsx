@@ -136,7 +136,7 @@ export default function ListingCard({ listing, variant = "grid", onFavoriteToggl
 
   function saveSearchState() {
     try {
-      sessionStorage.setItem("lastSearchUrl", window.location.href);
+      sessionStorage.setItem("lastSearchUrl", window.location.pathname + window.location.search);
       sessionStorage.setItem("lastScrollPosition", String(window.scrollY));
     } catch { /* ignore */ }
   }

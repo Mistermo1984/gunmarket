@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import {
   ChevronRight,
@@ -94,6 +94,7 @@ function formatDate(dateStr: string): string {
 
 export default function InseratDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const { data: session } = useSession();
   const { t } = useLocale();
   const id = params.id as string;
@@ -307,18 +308,18 @@ export default function InseratDetailPage() {
       {/* Back link + Breadcrumb */}
       <div className="mx-auto max-w-7xl px-4 py-4">
         <div className="flex items-center gap-2 text-sm">
-          <Link
-            href={backUrl}
+          <button
+            onClick={() => router.push(backUrl)}
             className="flex items-center gap-1 font-medium text-green-700 hover:underline"
           >
             <ArrowLeft size={14} />
             {t("listing_back").replace(/^←\s*/, "")}
-          </Link>
+          </button>
           <span className="text-gray-400">/</span>
           <nav className="flex items-center gap-1.5 text-neutral-500">
-            <Link href={backUrl} className="hover:text-brand-green transition-colors">
+            <button onClick={() => router.push(backUrl)} className="hover:text-brand-green transition-colors">
               {t("breadcrumb_home")}
-            </Link>
+            </button>
             <ChevronRight size={14} className="text-neutral-300" />
             <Link
               href={`/?kategorie=${listing.hauptkategorie}`}

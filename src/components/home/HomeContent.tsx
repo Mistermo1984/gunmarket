@@ -207,8 +207,8 @@ function HomeContentInner() {
   }, []);
 
   const handlePageChange = (page: number) => {
+    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (

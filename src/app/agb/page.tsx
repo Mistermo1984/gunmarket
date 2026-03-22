@@ -11,6 +11,7 @@ const toc = [
   { id: "pflichten", label: "Pflichten der Nutzer" },
   { id: "haftung", label: "Haftungsausschluss" },
   { id: "sperrung", label: "Sperrung und Kündigung" },
+  { id: "drittplattformen", label: "Inhalte von Drittplattformen" },
   { id: "schlussbestimmungen", label: "Schlussbestimmungen" },
 ];
 
@@ -204,7 +205,22 @@ export default function AGBPage() {
         </p>
       </Section>
 
-      <Section id="schlussbestimmungen" title="§ 10 — Schlussbestimmungen">
+      <Section id="drittplattformen" title="§ 10 — Inhalte von Drittplattformen">
+        <p>
+          Gewisse Inserate auf gunmarket.ch werden als Verweise auf Drittplattformen (z.B.
+          gebrauchtwaffen.ch, nextgun.ch) dargestellt. Die Bilder und Inhalte verbleiben auf den
+          Servern der jeweiligen Quellplattformen und werden nicht von gunmarket.ch gespeichert oder
+          gehostet. gunmarket.ch beansprucht kein Eigentum an diesen Inhalten.
+        </p>
+        <p>
+          Zur Entfernung eines Inserats oder bei Fragen zu Drittinhalten:{" "}
+          <a href="mailto:kontakt@gunmarket.ch" className="text-[#4d8230] hover:underline">
+            kontakt@gunmarket.ch
+          </a>
+        </p>
+      </Section>
+
+      <Section id="schlussbestimmungen" title="§ 11 — Schlussbestimmungen">
         <p>
           Es gilt ausschliesslich Schweizer Recht. Gerichtsstand ist der Sitz der Betreiberin.
           Sollten einzelne Bestimmungen dieser AGB unwirksam sein, bleibt die Wirksamkeit der

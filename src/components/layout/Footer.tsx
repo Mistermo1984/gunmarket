@@ -196,6 +196,10 @@ export default function Footer() {
             gemäss Art. 12 WV vom Waffenerwerb ausgeschlossen. Ausländische Personen mit
             Aufenthaltsbewilligung B benötigen für alle Waffenkäufe zwingend einen WES.
           </p>
+          <p className="mt-2 text-center text-[11px] text-neutral-400">
+            Drittinhalte bleiben Eigentum der jeweiligen Quellen. Entfernung:{" "}
+            <a href="mailto:kontakt@gunmarket.ch" className="hover:text-neutral-600">kontakt@gunmarket.ch</a>
+          </p>
         </div>
       </div>
     </footer>

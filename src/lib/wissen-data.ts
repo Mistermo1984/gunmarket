@@ -2249,7 +2249,49 @@ Die Springfield XD richtet sich an Schützen, die eine zuverlässige Polymerrahm
     hersteller: 'SIG',
     baujahr: '1991',
     kurzbeschreibung: 'Schweizer Polizei-Scharfschützengewehr. Standard bei Kantonspolizeien. <1 MOA auf 300m.',
-    inhalt: `SIG_SSG3000_PLACEHOLDER`,
+    inhalt: `<h2>Geschichte & Entwicklung</h2>
+<p>Die SIG SSG 3000 wurde Anfang der 1990er von SIG Sauer als Scharfschützengewehr für Militär und Polizei entwickelt. Sie basiert auf dem Sauer 200 STR und verbindet deutsche Sauer-Präzision mit Schweizer SIG-Qualität. In der Schweiz ist sie das Standard-Präzisionsgewehr vieler Kantonspolizeien. Die Entwicklung fiel in eine Zeit steigender Anforderungen an polizeiliche Präzisionsgewehre durch Geiselnahmen und Terrorbedrohungen. SIG Sauer ist heute in Eckernförde und Exeter ansässig.</p>
+<h2>Technik & Konstruktion</h2>
+<p>Die SSG 3000 verwendet einen <strong>Sechs-Warzen-Verschluss mit 60 Grad Öffnungswinkel</strong> — einer der kürzesten aller Scharfschützengewehre. Der kaltgehämmerte Lauf liefert garantierte <strong>0,5 MOA</strong> ab Werk. Der Matchabzug ist 1–1,8 kg einstellbar und bricht sauber. Der McMillan-Fiberglas-Schaft mit Aluminium-Bettungsblock absorbiert Vibrationen und ist witterungsbeständig.</p>
+<ul>
+<li><strong>Kaliber:</strong> .308 Winchester (7,62x51 mm NATO)</li>
+<li><strong>System:</strong> Repetierbüchse mit 6-Warzen-Verschluss (60 Grad)</li>
+<li><strong>Magazin:</strong> 5 Schuss (abnehmbares Kastenmagazin)</li>
+<li><strong>Lauflänge:</strong> 610 mm</li>
+<li><strong>Gesamtlänge:</strong> 1180 mm</li>
+<li><strong>Gewicht:</strong> 5,9 kg (ohne Optik)</li>
+<li><strong>Abzug:</strong> Match-Abzug, einstellbar 1–1,8 kg</li>
+</ul>
+<h2>Varianten & Modelle</h2>
+<ul>
+<li><strong>SSG 3000:</strong> Standardmodell mit McMillan-Schaft — Basis für Polizei und Militär.</li>
+<li><strong>SSG 3000 Patrol:</strong> Polizeiversion mit klappbarem Hinterschaft und verstellbarer Schaftbacke.</li>
+<li><strong>SSG 3000 Tactical:</strong> Erweitert mit Picatinny-Schiene und Zubehörschienen am Vorderschaft.</li>
+<li><strong>SIG Cross:</strong> Moderner Nachfolger (2020) mit Klappschaft und Chassis-System.</li>
+<li><strong>Sauer S404 Synchro XTC:</strong> Jagdliche Verwandte aus dem Hause Sauer.</li>
+</ul>
+<h2>Kaliber & Ballistik</h2>
+<p>Die SSG 3000 ist auf <strong>.308 Winchester</strong> ausgelegt — das weltweite Standardkaliber für Scharfschützengewehre. Mündungsenergie ca. 3500 Joule mit 168-gr-HPBT-Match, effektive Reichweite bis 800 m. Typische Munition: Federal Gold Medal Match, Lapua Scenar, Swiss P Target. Die garantierte 0,5 MOA bedeutet auf 300 m einen Streukreis unter 5 cm. Mit Swiss-P-Munition erreichen viele SSG 3000 sogar 0,3 MOA.</p>
+<h2>Schweizer Markt & Preisentwicklung</h2>
+<p>Die SSG 3000 geniesst als SIG-Produkt höchstes Vertrauen bei Behörden und Sportschützen. Preise:</p>
+<ul>
+<li><strong>SSG 3000 (Neuwaffe, falls verfügbar):</strong> CHF 3500 – 4500</li>
+<li><strong>SSG 3000 Patrol:</strong> CHF 4000 – 5000</li>
+<li><strong>SIG Cross (Nachfolger):</strong> CHF 2200 – 2800</li>
+</ul>
+<p>Gebrauchte SSG 3000 erzielen CHF 2500–3500. Ehemalige Polizeiwaffen gelegentlich ab CHF 2000. Preise steigen, da die Produktion eingestellt wurde.</p>
+<h2>Pflege, Wartung & Zubehör</h2>
+<ul>
+<li><strong>Laufreinigung:</strong> Nach jedem Schiessen reinigen. Alle 200–300 Schuss Kupferlöser verwenden.</li>
+<li><strong>Verschluss:</strong> 6-Warzen-Verschluss reinigen und leicht ölen.</li>
+<li><strong>Matchabzug:</strong> Nicht selbst zerlegen — bei Problemen Büchsenmacher konsultieren.</li>
+<li><strong>McMillan-Schaft:</strong> Fiberglas ist witterungsbeständig und pflegeleicht.</li>
+<li><strong>Optik:</strong> Montage regelmässig auf festen Sitz prüfen.</li>
+</ul>
+<p>Empfohlenes Zubehör: Schmidt und Bender oder Nightforce Zielfernrohr, Harris-Zweibein, Gewehrauflagesack, Swiss-P-Match-Munition.</p>
+<h2>Fazit & Kaufempfehlung</h2>
+<p>Die SIG SSG 3000 ist eines der besten polizeilichen Scharfschützengewehre überhaupt. Sub-MOA-Präzision, schneller 60-Grad-Verschluss und Schweizer Qualität machen sie zur Legende. Für Schweizer Präzisionsschützen ist sie ausgezeichnet — sofern man ein Exemplar findet. Wer moderner will, greift zum <strong>SIG Cross</strong>. Wer eine SSG 3000 besitzt, sollte sie behalten — der Wert steigt kontinuierlich.</p>
+<p><em>Rechtsstatus Schweiz: Waffenerwerbsschein (WES) erforderlich.</em></p>`,
     rechtsstatus: 'frei',
     typischeKaliber: ['.308 Win'],
     tags: ['Büchse', 'SIG', 'SSG3000', 'Scharfschütze', 'Polizei', 'Schweiz'],

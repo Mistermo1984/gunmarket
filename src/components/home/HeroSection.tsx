@@ -301,15 +301,20 @@ export default function HeroSection() {
       {/* 5. Stats Bar */}
       <div className="relative mt-8 border-t" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
         <div className="mx-auto flex max-w-xs items-center justify-center divide-x divide-white/[0.08] py-4">
-          <div className="flex flex-col items-center px-8">
-            <span className="font-display text-xl font-black md:text-2xl" style={{ color: "#4ade80" }}>
-              <CountUp end={stats.haendler} />
+          <Link href="/" className="flex flex-col items-center px-8 group cursor-pointer">
+            <span className="font-display text-xl font-black md:text-2xl group-hover:scale-105 transition-transform" style={{ color: "#4ade80" }}>
+              <CountUp end={stats.inserate} />+
             </span>
-            <span className="text-[11px] font-medium uppercase tracking-wider text-neutral-500">{t("stats_dealers")}</span>
-          </div>
+            <span className="text-[11px] font-medium uppercase tracking-wider text-neutral-400 group-hover:text-neutral-300 transition-colors flex items-center gap-1">
+              {t("nav_listings")}
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="opacity-60">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </span>
+          </Link>
           <div className="flex flex-col items-center px-8">
             <span className="font-display text-xl font-black md:text-2xl" style={{ color: "#4ade80" }}>
-              <CountUp end={stats.kantone} />
+              26
             </span>
             <span className="text-[11px] font-medium uppercase tracking-wider text-neutral-500">{t("stats_cantons")}</span>
           </div>

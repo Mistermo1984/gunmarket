@@ -337,9 +337,8 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
           box-shadow: 0 2px 6px rgba(0,0,0,.25);
         }
         .gun-cluster-icon { cursor: pointer !important; }
-        .leaflet-marker-icon:not(.marker-cluster):not(.gun-cluster-icon) {
+        .gun-hidden-marker {
           opacity: 0 !important;
-          pointer-events: none !important;
           width: 0 !important;
           height: 0 !important;
         }
@@ -382,8 +381,10 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
         for (const m of markers) {
           if (!m.lat || !m.lng) continue;
           L.circleMarker([m.lat, m.lng], {
-            radius: 4, color: "#16a34a", fillColor: "#16a34a", fillOpacity: 0.6, weight: 1,
-          }).addTo(map);
+            radius: 6, color: "#16a34a", fillColor: "#16a34a", fillOpacity: 0.8, weight: 2,
+          })
+            .on("click", () => window.open(`/inserat/${m.id}`, "_blank"))
+            .addTo(map);
         }
         return;
       }
@@ -414,7 +415,15 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
         try {
           const center = e.layer.getLatLng();
           const count = e.layer.getChildCount();
-          console.log("[MapPanel] clusterclick fired", { lat: center.lat, lng: center.lng, count });
+          if (count === 1) {
+            // Single marker in cluster — navigate to listing
+            const child = e.layer.getAllChildMarkers()[0];
+            const listingId = child?.options?._listingId;
+            if (listingId) {
+              window.open(`/inserat/${listingId}`, "_blank");
+              return;
+            }
+          }
           fetchPanel(
             `${count} Inserate`,
             `/api/listings/nearby?lat=${center.lat}&lng=${center.lng}&radius=15&limit=40`,
@@ -432,7 +441,11 @@ const HomeMapView = forwardRef<MapHandle, HomeMapViewProps>(function HomeMapView
           className: "gun-hidden-marker",
           iconSize: L.point(0, 0),
         });
-        const marker = L.marker([m.lat, m.lng], { icon, _listingId: m.id });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const marker = L.marker([m.lat, m.lng], { icon, _listingId: m.id } as any);
+        marker.on("click", () => {
+          window.open(`/inserat/${m.id}`, "_blank");
+        });
         cluster.addLayer(marker);
       }
 

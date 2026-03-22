@@ -65,6 +65,22 @@ const faqSchema = {
         text: 'Waffen müssen ungeladen und wenn möglich in einem geschlossenen Behältnis transportiert werden. Munition ist getrennt von der Waffe aufzubewahren. Für den Transport zum Schiessstand, Büchsenmacher oder auf die Jagd gelten Ausnahmen.',
       },
     },
+    {
+      '@type': 'Question',
+      name: 'Wie kaufe ich legal eine Waffe in der Schweiz?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Für den Kauf einer Waffe der Kategorie B (Pistolen, Halbautomaten) benötigen Sie einen Waffenerwerbsschein (WES), ausgestellt vom kantonalen Waffenbüro. Waffen der Kategorie C (Repetiergewehre, Einzellader) sind für Personen ab 18 Jahren frei erwerbbar.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Was kostet ein Waffenerwerbsschein in der Schweiz?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Der Waffenerwerbsschein (WES) kostet je nach Kanton zwischen CHF 20 und CHF 50. Er wird beim kantonalen Waffenbüro beantragt und ist 6 Monate gültig (9 Monate für Erbwaffen).',
+      },
+    },
   ],
 };
 

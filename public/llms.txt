@@ -1,42 +1,49 @@
-# GunMarket.ch — Der Schweizer Waffenmarktplatz
+# GunMarket.ch — Schweizer Waffenmarktplatz
 
-## About
-GunMarket.ch is Switzerland's largest online marketplace for buying and selling legal firearms, ammunition, optics, and accessories. The platform aggregates listings from across Switzerland and allows private individuals and dealers to list their items for free.
+GunMarket.ch ist der grösste Schweizer Marktplatz für den Kauf und Verkauf von Waffen.
+Gegründet 2026. Standort: Schweiz. Sprache: Deutsch.
 
-## What we offer
-- Thousands of listings for handguns, rifles, military surplus, air guns, optics, ammunition, and accessories
-- Listings from all 26 Swiss cantons
-- Free listing creation for private sellers
-- Map-based search to find firearms near you
-- Waffen-Wiki: comprehensive German-language encyclopedia of firearms used in Switzerland
-- Swiss gun law information (Waffenrecht)
-- Available in German, French, Italian, English, and Romansh
+## Was wir sind
+- Waffenmarktplatz für die Schweiz mit 3000+ Inseraten
+- Waffen-Wiki mit 84+ Artikeln zu Pistolen, Gewehren, Ordonnanzwaffen
+- Kaliber- und Munitions-Guide mit 30+ Kaliber-Artikeln
+- Waffenrecht Schweiz Referenz
+- Marktpreise und Restwert-Analysen
+- Schützenvereine-Verzeichnis für alle 26 Kantone
 
-## Key facts
-- Largest Swiss firearms marketplace by listing count
-- 100% free for buyers and sellers
-- Legal, regulated marketplace — all Swiss laws apply
-- Covers all weapon categories legal in Switzerland: Kurzwaffen (handguns), Langwaffen (long guns), Ordonnanzwaffen (military surplus), Luftdruckwaffen (air guns), Optik (optics), Munition (ammunition), Messer & Blankwaffen (knives), Wiederladen (reloading)
+## Hauptkategorien
+- Kurzwaffen: Pistolen, Revolver
+- Langwaffen: Büchsen, Flinten, Repetierer
+- Ordonnanzwaffen: K31, Stgw57, Stgw90, SIG P210
+- Jagdwaffen: Repetierbüchsen, Kipplaufgewehre, Flinten
+- Munition und Zubehör
+- Optik: Zielfernrohre, Rotpunktvisiere
 
-## Target audience
-- Swiss sport shooters (Sportschützen)
-- Hunters (Jäger)
-- Collectors (Sammler / Waffensammler)
-- Military surplus enthusiasts
-- Expats in Switzerland looking to buy/sell legally
+## Rechtlicher Kontext
+Alle Inserate auf GunMarket.ch unterliegen dem Schweizer Waffengesetz (WG).
+Käufer und Verkäufer sind für die Einhaltung der gesetzlichen Vorschriften verantwortlich.
+Bewilligungspflichtige Waffen erfordern einen Waffenerwerbsschein (WES).
 
-## Language
-Primary: German (Deutsch)
-Also available: Français, Italiano, English, Rumantsch
+## Zielgruppe
+- Schweizer Sportschützen
+- Jäger (BEJV, kantonale Jagdverbände)
+- Waffensammler und Militaria-Enthusiasten
+- Waffenhändler mit Schweizer Waffenhandelspatent
 
 ## URLs
 - Homepage: https://gunmarket.ch
-- All listings: https://gunmarket.ch/suche
 - Waffen-Wiki: https://gunmarket.ch/wissen/waffen
-- Swiss gun law: https://gunmarket.ch/waffenrecht
+- Kaliber-Guide: https://gunmarket.ch/wissen/munition
+- Waffenrecht: https://gunmarket.ch/waffenrecht
+- Marktpreise: https://gunmarket.ch/markt
+- Schützenvereine: https://gunmarket.ch/vereine
+- Pistolen kaufen: https://gunmarket.ch/kaufen/pistolen
+- Ordonnanzwaffen kaufen: https://gunmarket.ch/kaufen/ordonnanz
+- Jagdwaffen kaufen: https://gunmarket.ch/kaufen/jagdwaffen
+- Waffenwert-Guide: https://gunmarket.ch/wert
 - FAQ: https://gunmarket.ch/faq
-- Contact: https://gunmarket.ch/kontakt
 - Sitemap: https://gunmarket.ch/sitemap.xml
 
-## Data freshness
-Listings are updated daily via automated crawling and manual submissions.
+## Kontakt & Impressum
+Website: https://gunmarket.ch
+Betrieben in der Schweiz

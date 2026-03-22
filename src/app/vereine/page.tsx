@@ -84,6 +84,22 @@ export default function VereinePage() {
           ],
         },
       }) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: 'Schützenvereine Schweiz',
+        description: 'Verzeichnis aller Schweizer Schützenvereine nach Kanton',
+        url: 'https://gunmarket.ch/vereine',
+        numberOfItems: 26,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Schützenvereine Zürich', url: 'https://gunmarket.ch/vereine?kanton=ZH' },
+          { '@type': 'ListItem', position: 2, name: 'Schützenvereine Bern', url: 'https://gunmarket.ch/vereine?kanton=BE' },
+          { '@type': 'ListItem', position: 3, name: 'Schützenvereine Luzern', url: 'https://gunmarket.ch/vereine?kanton=LU' },
+          { '@type': 'ListItem', position: 4, name: 'Schützenvereine St. Gallen', url: 'https://gunmarket.ch/vereine?kanton=SG' },
+          { '@type': 'ListItem', position: 5, name: 'Schützenvereine Aargau', url: 'https://gunmarket.ch/vereine?kanton=AG' },
+          { '@type': 'ListItem', position: 6, name: 'Schützenvereine Graubünden', url: 'https://gunmarket.ch/vereine?kanton=GR' },
+        ],
+      }) }} />
       {/* Hero */}
       <div className="bg-brand-dark py-12">
         <div className="mx-auto max-w-7xl px-4 text-center">

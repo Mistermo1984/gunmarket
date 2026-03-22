@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -37,6 +37,7 @@ import PriceHistory from "@/components/listing/PriceHistory";
 import { apiListingToCard } from "@/lib/listing-helpers";
 import { useLocale } from "@/lib/locale-context";
 import { getKategorieLabel } from "@/lib/kategorie-labels";
+import { wissenWaffen } from "@/lib/wissen-data";
 
 interface ListingData {
   id: string;
@@ -152,6 +153,30 @@ export default function InseratDetailPage() {
   if (images.length === 0 && listing) {
     images.push("/placeholder-weapon.svg");
   }
+
+  // Find matching wiki articles based on listing title, brand, model
+  const wikiMatches = useMemo(() => {
+    if (!listing) return [];
+    const searchTerms = [listing.titel, listing.marke, listing.modell]
+      .filter(Boolean)
+      .map((s) => s.toLowerCase());
+    if (searchTerms.length === 0) return [];
+
+    return wissenWaffen
+      .filter((w) => {
+        const wTitle = w.titel.toLowerCase();
+        const wTags = w.tags.map((t) => t.toLowerCase());
+        const wHersteller = (w.hersteller || "").toLowerCase();
+        return searchTerms.some(
+          (term) =>
+            wTitle.includes(term) ||
+            term.includes(wTitle.split(" ")[0]) ||
+            wTags.some((tag) => term.includes(tag) || tag.includes(term.split(" ")[0])) ||
+            (wHersteller && term.includes(wHersteller))
+        );
+      })
+      .slice(0, 3);
+  }, [listing]);
 
   // Keyboard navigation
   const handleKeyDown = useCallback(
@@ -602,6 +627,31 @@ export default function InseratDetailPage() {
                   </div>
                 </div>
               </div>
+
+              {/* Wiki Link */}
+              {wikiMatches.length > 0 && (
+                <div className="rounded-xl border border-brand-border bg-white p-4 shadow-sm">
+                  <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-brand-dark">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-brand-green">
+                      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                    </svg>
+                    Waffen-Wiki
+                  </h3>
+                  <div className="space-y-2">
+                    {wikiMatches.map((w) => (
+                      <Link
+                        key={w.slug}
+                        href={`/wissen/waffen/${w.slug}`}
+                        className="block rounded-lg border border-brand-border p-3 text-sm transition-colors hover:bg-brand-grey hover:border-brand-green"
+                      >
+                        <span className="font-medium text-brand-dark">{w.titel}</span>
+                        <span className="mt-0.5 block text-xs text-neutral-500">{w.kategorie}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

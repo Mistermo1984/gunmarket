@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Schützenvereine Schweiz | GunMarket.ch",
     description: "Finden Sie Schützenvereine in allen 26 Kantonen der Schweiz.",
+    url: "https://gunmarket.ch/vereine",
+    images: [{ url: "https://gunmarket.ch/opengraph-image", width: 1200, height: 630 }],
   },
 };
 

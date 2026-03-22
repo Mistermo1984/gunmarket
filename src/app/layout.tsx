@@ -115,6 +115,10 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
   alternates: {
     canonical: SITE_URL,
+    languages: {
+      "de-CH": SITE_URL,
+      "x-default": SITE_URL,
+    },
   },
   other: {
     "ai-content-declaration": "https://gunmarket.ch/llms.txt",
@@ -130,6 +134,9 @@ export default function RootLayout({
     <html lang="de-CH">
       <head>
         <link rel="alternate" type="text/plain" title="LLMs.txt" href="/llms.txt" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://img.youtube.com" />
+        <link rel="dns-prefetch" href="https://www.youtube-nocookie.com" />
       </head>
       <body
         className={`${barlowCondensed.variable} ${dmSans.variable} ${dmMono.variable} font-body antialiased`}

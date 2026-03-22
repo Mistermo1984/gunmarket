@@ -221,3 +221,29 @@ input[type="checkbox"] {
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+
+/* Wiki HTML content styling */
+.wiki-prose h2 {
+  @apply mb-3 mt-8 font-display text-xl font-bold uppercase tracking-tight text-brand-dark;
+}
+.wiki-prose h2:first-child {
+  @apply mt-0;
+}
+.wiki-prose h3 {
+  @apply mb-2 mt-6 font-display text-base font-bold text-brand-dark;
+}
+.wiki-prose p {
+  @apply mb-4 text-neutral-600 leading-relaxed;
+}
+.wiki-prose ul {
+  @apply mb-4 space-y-1.5 pl-5;
+}
+.wiki-prose li {
+  @apply list-disc text-neutral-600 leading-relaxed;
+}
+.wiki-prose strong {
+  @apply text-brand-dark font-semibold;
+}
+.wiki-prose em {
+  @apply italic;
+}

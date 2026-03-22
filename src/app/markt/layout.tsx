@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Waffenpreise Schweiz — Marktanalyse & Preisguide | GunMarket.ch",
+  title: "Waffenpreise Schweiz 2026 — Marktanalyse & Preisguide | GunMarket.ch",
   description:
-    "Aktuelle Waffenpreise und Marktdaten für die Schweiz. Durchschnittspreise, Preistrends und Restwertanalyse für Pistolen, Gewehre und Ordonnanzwaffen.",
+    "Aktuelle Waffenpreise für den Schweizer Markt. Durchschnittspreise, Preistrends und Restwertanalyse für Pistolen, Gewehre, Ordonnanz- und Jagdwaffen. Täglich aktualisiert.",
   alternates: {
     canonical: "https://gunmarket.ch/markt",
   },
   openGraph: {
-    title: "Waffenpreise Schweiz — Marktanalyse",
+    title: "Waffenpreise Schweiz 2026 — Marktanalyse",
     description:
-      "Aktuelle Marktdaten: Durchschnittspreise, Trends und Restwert für Schweizer Waffen.",
+      "Aktuelle Waffenpreise für den Schweizer Markt. Durchschnittspreise, Preistrends und Restwertanalyse für Pistolen, Gewehre, Ordonnanz- und Jagdwaffen.",
     url: "https://gunmarket.ch/markt",
     type: "website",
+    images: [{ url: "https://gunmarket.ch/opengraph-image", width: 1200, height: 630 }],
   },
 };
 

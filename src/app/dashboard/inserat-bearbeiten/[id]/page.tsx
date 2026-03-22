@@ -13,9 +13,11 @@ import {
   Camera,
   Trash2,
   AlertTriangle,
+  Pencil,
 } from "lucide-react";
 import { KANTONE, ZUSTAND_OPTIONEN } from "@/lib/constants";
 import CaliberSelect from "@/components/ui/CaliberSelect";
+import ImageEditor from "@/components/ui/ImageEditor";
 
 const MARKEN = [
   "SIG Sauer", "Glock", "Beretta", "CZ", "Walther", "Heckler & Koch",
@@ -84,6 +86,7 @@ export default function InseratBearbeitenPage() {
   const [existingPhotos, setExistingPhotos] = useState<{ id: string; url: string }[]>([]);
   const [newPhotos, setNewPhotos] = useState<string[]>([]);
   const [uploadError, setUploadError] = useState("");
+  const [editingPhoto, setEditingPhoto] = useState<{ type: "existing" | "new"; index: number } | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const loadListing = useCallback(async () => {
@@ -507,6 +510,13 @@ export default function InseratBearbeitenPage() {
                     </div>
                   )}
                   <button
+                    onClick={() => setEditingPhoto({ type: "existing", index: i })}
+                    className="absolute right-10 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-black/60 text-white opacity-0 transition-opacity hover:bg-black/80 group-hover:opacity-100"
+                    title="Bearbeiten"
+                  >
+                    <Pencil size={11} />
+                  </button>
+                  <button
                     onClick={() => removeExisting(photo.id)}
                     className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-white opacity-0 transition-opacity hover:bg-red-600 group-hover:opacity-100"
                   >
@@ -521,6 +531,13 @@ export default function InseratBearbeitenPage() {
                   <div className="absolute left-2 top-2 rounded-md bg-blue-500 px-2 py-0.5 text-[10px] font-bold text-white">
                     Neu
                   </div>
+                  <button
+                    onClick={() => setEditingPhoto({ type: "new", index: i })}
+                    className="absolute right-10 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-black/60 text-white opacity-0 transition-opacity hover:bg-black/80 group-hover:opacity-100"
+                    title="Bearbeiten"
+                  >
+                    <Pencil size={11} />
+                  </button>
                   <button
                     onClick={() => removeNew(i)}
                     className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-white opacity-0 transition-opacity hover:bg-red-600 group-hover:opacity-100"
@@ -588,6 +605,34 @@ export default function InseratBearbeitenPage() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Image editor modal */}
+      {editingPhoto && (
+        <ImageEditor
+          imageUrl={
+            editingPhoto.type === "existing"
+              ? existingPhotos[editingPhoto.index].url
+              : newPhotos[editingPhoto.index]
+          }
+          onSave={(editedUrl) => {
+            if (editingPhoto.type === "existing") {
+              setExistingPhotos((prev) =>
+                prev.map((p, i) =>
+                  i === editingPhoto.index ? { ...p, url: editedUrl } : p
+                )
+              );
+            } else {
+              setNewPhotos((prev) =>
+                prev.map((url, i) =>
+                  i === editingPhoto.index ? editedUrl : url
+                )
+              );
+            }
+            setEditingPhoto(null);
+          }}
+          onCancel={() => setEditingPhoto(null)}
+        />
       )}
     </div>
   );

@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { Upload, X, Crown, Camera, Loader2 } from "lucide-react";
+import { Upload, X, Crown, Camera, Loader2, Pencil } from "lucide-react";
+import ImageEditor from "@/components/ui/ImageEditor";
 
 interface PhotosStepProps {
   photos: string[];
@@ -29,6 +30,7 @@ export default function PhotosStep({ photos, onPhotosChange, onBack, onNext }: P
   const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function processFiles(files: FileList | null) {
@@ -184,6 +186,15 @@ export default function PhotosStep({ photos, onPhotosChange, onBack, onNext }: P
                 )}
               </div>
 
+              {/* Edit button */}
+              <button
+                onClick={() => setEditingIndex(i)}
+                className="absolute right-10 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-black/60 text-white opacity-0 transition-opacity hover:bg-black/80 group-hover:opacity-100"
+                title="Bearbeiten"
+              >
+                <Pencil size={11} />
+              </button>
+
               {/* Remove button */}
               <button
                 onClick={() => removePhoto(i)}
@@ -226,6 +237,18 @@ export default function PhotosStep({ photos, onPhotosChange, onBack, onNext }: P
           Weiter
         </button>
       </div>
+
+      {/* Image editor modal */}
+      {editingIndex !== null && photos[editingIndex] && (
+        <ImageEditor
+          imageUrl={photos[editingIndex]}
+          onSave={(editedUrl) => {
+            onPhotosChange(photos.map((url, i) => (i === editingIndex ? editedUrl : url)));
+            setEditingIndex(null);
+          }}
+          onCancel={() => setEditingIndex(null)}
+        />
+      )}
     </div>
   );
 }

@@ -366,6 +366,13 @@ export default function InseratDetailPage() {
                     className={`h-[400px] w-full object-cover transition-opacity duration-300 ${imageTransition ? "opacity-0" : "opacity-100"}`}
                     loading="eager"
                     decoding="async"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (!target.dataset.fallback) {
+                        target.dataset.fallback = "1";
+                        target.src = "/images/placeholder-waffe.svg";
+                      }
+                    }}
                   />
                 ) : (
                   <div className="flex h-[400px] w-full items-center justify-center bg-gray-100 text-gray-300">
@@ -411,7 +418,20 @@ export default function InseratDetailPage() {
                       }`}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={img} alt={`Bild ${i + 1}`} className="h-full w-full object-cover" loading="lazy" decoding="async" />
+                      <img
+                        src={img}
+                        alt={`Bild ${i + 1}`}
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                        onError={(e) => {
+                          const target = e.currentTarget;
+                          if (!target.dataset.fallback) {
+                            target.dataset.fallback = "1";
+                            target.src = "/images/placeholder-waffe.svg";
+                          }
+                        }}
+                      />
                     </button>
                   ))}
                 </div>

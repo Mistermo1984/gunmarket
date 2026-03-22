@@ -65,6 +65,13 @@ function ImageSlider({ images, alt }: { images: string[]; alt: string }) {
         className="h-full w-full object-contain object-center"
         loading="lazy"
         decoding="async"
+        onError={(e) => {
+          const target = e.currentTarget;
+          if (!target.dataset.fallback) {
+            target.dataset.fallback = "1";
+            target.src = "/images/placeholder-waffe.svg";
+          }
+        }}
       />
 
       {images.length > 1 && (

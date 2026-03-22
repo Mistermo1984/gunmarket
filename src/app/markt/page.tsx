@@ -334,7 +334,7 @@ export default function MarktInsightsPage() {
                     style={{ background: "linear-gradient(135deg, #1e3314 0%, #162810 100%)", border: "1px solid rgba(77,130,48,0.12)" }}>
                     <div className="relative aspect-square overflow-hidden bg-[#0f1a0f]">
                       {imgUrl && (
-                        <img src={imgUrl} alt={listing.titel} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async" />
+                        <img src={imgUrl} alt={listing.titel} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async" onError={(e) => { const t = e.currentTarget; if (!t.dataset.fallback) { t.dataset.fallback = "1"; t.src = "/images/placeholder-waffe.svg"; } }} />
                       )}
                     </div>
                     <div className="p-2">
@@ -562,7 +562,7 @@ export default function MarktInsightsPage() {
                       style={{ background: "linear-gradient(135deg, #1e3314 0%, #162810 100%)", border: "1px solid rgba(77,130,48,0.12)" }}>
                       <div className="relative aspect-square overflow-hidden bg-[#0f1f0a]">
                         {imgUrl ? (
-                          <img src={imgUrl} alt={listing.titel} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async" />
+                          <img src={imgUrl} alt={listing.titel} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" decoding="async" onError={(e) => { const t = e.currentTarget; if (!t.dataset.fallback) { t.dataset.fallback = "1"; t.src = "/images/placeholder-waffe.svg"; } }} />
                         ) : (
                           <div className="flex h-full w-full items-center justify-center text-[#4d8230] opacity-30"><BarChart3 size={32} /></div>
                         )}

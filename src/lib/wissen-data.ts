@@ -2319,26 +2319,36 @@ Die Springfield XD richtet sich an Schützen, die eine zuverlässige Polymerrahm
     hersteller: 'Mauser / Diverse',
     baujahr: '1935',
     kurzbeschreibung: 'Das Standardgewehr der Wehrmacht. Über 14 Millionen produziert. Basis aller modernen Jagdgewehre.',
-    inhalt: `<h2>Geschichte & Entwicklung</h2>
-<p>Der Karabiner 98 kurz (K98k) wurde 1935 als Standard-Infanteriegewehr der Wehrmacht eingeführt und ist das am weitesten verbreitete Repetiergewehr der Geschichte. Über 14 Millionen Stück wurden gefertigt. Das Mauser-98-System ist die Grundlage fast aller modernen Repetierbüchsen.
+    inhalt: `<h2>Geschichte &amp; Entwicklung</h2>
+<p>Der Karabiner 98 kurz, kurz K98k, wurde 1935 als Standard-Infanteriegewehr der deutschen Wehrmacht eingeführt und avancierte zum meistproduzierten Repetiergewehr der Geschichte. Über 14 Millionen Exemplare verliessen die Fertigungslinien zahlreicher Hersteller, darunter Mauser Oberndorf, Berlin-Lübecker Maschinenfabrik, J.P. Sauer &amp; Sohn, Erma und die Steyr-Daimler-Puch AG. Die Ursprünge des Systems reichen bis zum Gewehr 98 zurück, das Paul Mauser 1898 für die preussische Armee entwickelte. Das G98 bewährte sich im Ersten Weltkrieg, erwies sich jedoch mit seiner Lauflänge von 740 mm als sperrig im Grabenkrieg. In der Zwischenkriegszeit wurde der kürzere Karabiner 98b erprobt, bevor die Reichswehr 1935 den K98k mit 600 mm Lauflänge als Kompromiss zwischen Handlichkeit und Präzision einführte. Die Produktion lief bis Kriegsende 1945 und wurde in verschiedenen Qualitätsstufen durchgeführt, wobei die späten Kriegsmodelle ab 1944 deutlich vereinfacht wurden.</p>
 
-## Technische Daten
-- Kaliber: 7,92×57mm Mauser (8mm Mauser)
-- System: Repetierbüchse mit Mauser-Verschluss (2 Verriegelungswarzen + Sicherheitswarze)
-- Magazin: 5 Schuss (internes Kastenmagazin, Ladestreifen)
-- Lauflänge: 600mm
-- Gesamtlänge: 1110mm
-- Gewicht: 3,9 kg
-- Abzug: Militärabzug, ca. 2,5 kg
+<h2>Technik &amp; Konstruktion</h2>
+<p>Das Herzstück des K98k ist der legendäre Mauser-98-Verschluss, der als einer der stärksten und sichersten Repetierverschlüsse aller Zeiten gilt. Der Verschluss verfügt über zwei massive Verriegelungswarzen am Verschlusskopf sowie eine dritte Sicherheitswarze am hinteren Ende des Kammerstängels. Dieses Dreifach-Verriegelungssystem hält Drücke von über 4'000 bar stand, was dem Schützen einen enormen Sicherheitsspielraum bietet. Der Controlled Round Feed (CRF) Mechanismus mit dem grossen Mauserklauenauswerfer greift die Patrone bereits beim Zuführen aus dem Magazin und hält sie während des gesamten Lade- und Verriegelungsvorgangs. Dadurch wird ein sicheres Zuführen auch in extremen Lagen gewährleistet. Die Drei-Lagen-Sicherung am Kammerstängelende erlaubt drei Positionen: Gesichert, Laden (Kammer lässt sich öffnen, Abzug ist blockiert) und Feuer. Das interne Kastenmagazin fasst fünf Patronen im Kaliber 7,92x57mm, die mittels Ladestreifen zugeführt werden. Der Abzug ist ein einfacher Militärabzug mit einem Abzugsgewicht von etwa 2,5 kg. Die Visierung besteht aus einer Kimme mit Schieber, justierbar von 100 bis 2'000 Meter, und einem geschützten Balkenkorn.</p>
 
-## Besonderheiten
-Der Mauser-98-Verschluss mit Controlled Round Feed (CRF) und drei Verriegelungswarzen setzte den Standard für über 100 Jahre Repetierbüchsenbau. Die Drei-Lagen-Sicherung (Sicher/Laden/Feuer) wurde von Winchester, Remington und anderen übernommen. Die Kammerstängel-Konstruktion ist so robust, dass K98k noch heute als Jagdwaffen umgebaut werden.
+<h3>Technische Daten</h3>
+<ul>
+<li><strong>Kaliber:</strong> 7,92x57mm Mauser (8x57mm IS)</li>
+<li><strong>System:</strong> Repetierbüchse, Mauser-98-Verschluss</li>
+<li><strong>Magazinkapazität:</strong> 5 Schuss, internes Kastenmagazin</li>
+<li><strong>Lauflänge:</strong> 600 mm</li>
+<li><strong>Gesamtlänge:</strong> 1'110 mm</li>
+<li><strong>Gewicht:</strong> ca. 3,9 kg</li>
+</ul>
 
-## Sammlerwert
-Standard-K98k: CHF 400–1'500. Seltene Hersteller (Berlin-Lübecker, Steyr "bnz") oder Scharfschützen-Ausführungen (mit ZF41 oder ZF4): CHF 3'000–15'000+.
+<h2>Varianten &amp; Modelle</h2>
+<p>Die Vielfalt der K98k-Varianten ist enorm und macht einen grossen Teil des Sammlerinteresses aus. Die frühen Modelle bis 1940 zeichnen sich durch hohe Fertigungsqualität mit hochglanzblauem Finish und feinem Nussbaumschaft aus. Ab 1942 wurden zunehmend Vereinfachungen eingeführt, darunter Phosphat-Finish statt Brünierung und laminierte Buchenschäfte statt Nussbaum. Die sogenannten Kriegsmodelle ab 1944 verzichten auf den Bajonettansatz und haben grob gefertigte Teile. Scharfschützen-Ausführungen mit ZF41-Zielfernrohr (1,5-fach) oder dem selteneren ZF4 (4-fach) sind besonders begehrt. Daneben existieren Gebirgsjäger-Versionen mit verkürztem Lauf, Fallschirmjäger-Modelle mit abnehmbarem Schaft und zahlreiche Nachkriegsproduktionen aus Jugoslawien (M48), Israel und anderen Ländern. Für Sammler sind die Herstellercodes entscheidend: <em>byf</em> steht für Mauser Oberndorf, <em>bnz</em> für Steyr, <em>ce</em> für Sauer und <em>ar</em> für Erma.</p>
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+<h2>Kaliber &amp; Ballistik</h2>
+<p>Das Standardkaliber 7,92x57mm IS (Infanterie Spitz) ist ein leistungsstarkes Gewehrkaliber, das eine 12,8 g schwere Patrone mit einer Mündungsgeschwindigkeit von rund 760 m/s verschiesst. Die Mündungsenergie beträgt circa 3'700 Joule. Auf 100 Meter erzielt ein gut erhaltener K98k Streukreise von 3 bis 5 cm, was für ein Militärgewehr beachtlich ist. Die effektive Reichweite liegt bei etwa 500 Metern für Punktziele und bis 800 Meter für Flächenziele. Das Kaliber 8x57 IS ist auch heute noch als Jagd- und Sportmunition erhältlich. Hersteller wie Sellier &amp; Bellot, PPU, RWS und Norma bieten verschiedene Laborierungen an. Für den Jagdeinsatz stehen moderne Teilmantel- und Deformationsgeschosse zur Verfügung, die den K98k auch heute noch zu einer brauchbaren Jagdwaffe machen. Beim Schiessen mit Surplus-Munition ist Vorsicht geboten, da korrosive Zündhütchen den Lauf beschädigen können, wenn nicht sofort nach dem Schiessen gereinigt wird.</p>
+
+<h2>Schweizer Markt &amp; Preisentwicklung</h2>
+<p>Der K98k ist auf dem Schweizer Sammlermarkt gut vertreten. Standard-Exemplare in gutem Zustand mit passenden Nummern und normalem Gebrauchszustand werden für CHF 400 bis 800 gehandelt. Modelle in sehr gutem Zustand mit vollständig passendem Schaft, intaktem Finish und scharfen Markierungen erzielen CHF 800 bis 1'500. Neuwertige oder unbenutzte Exemplare, oft aus Lagerbeständen, liegen bei CHF 1'500 bis 2'500. Die wahren Spitzenpreise erzielen jedoch Raritäten: Scharfschützen-Ausführungen mit originalem ZF41 oder ZF4 und passendem Montageblock werden für CHF 3'000 bis 10'000 und mehr gehandelt. Seltene Hersteller wie die Berlin-Lübecker Maschinenfabrik oder bestimmte Jahrgänge der Steyr-Produktion erzielen ebenfalls Aufpreise. Die Preisentwicklung der letzten Jahre zeigt einen stetigen Anstieg, insbesondere bei gut erhaltenen Exemplaren mit vollständiger Nummerngleichheit. Jugoslawische M48-Nachbauten sind als günstige Alternative für CHF 250 bis 500 erhältlich. Israelische Umbauten liegen preislich ähnlich. Beim Kauf ist auf folgende Punkte zu achten: Nummerngleichheit aller Teile, Zustand der Bohrung, Originalität des Schaftes und Vollständigkeit der Markierungen.</p>
+
+<h2>Pflege, Wartung &amp; Zubehör</h2>
+<p>Die Pflege eines K98k ist denkbar einfach und Teil seines zeitlosen Reizes. Nach dem Schiessen sollte der Lauf mit einem Messingputzstock und geeigneten Filzbürsten gereinigt werden. Bei Verwendung korrosiver Surplus-Munition ist heisses Seifenwasser der erste Reinigungsschritt, gefolgt von gründlichem Trocknen und Einölen. Der Verschluss lässt sich werkzeuglos zerlegen und sollte regelmässig von Verbrennungsrückständen befreit werden. Der Holzschaft profitiert von gelegentlicher Behandlung mit Leinöl. Beliebtes Zubehör umfasst originale Trageriemen aus Leder, Bajonette (die allein schon Sammlerstücke sind), Ladestreifen, Mündungskappen und Reinigungsgeräte. Für den Jagdeinsatz können K98k-Systeme mit modernen Zielfernrohrmontagen ausgerüstet werden, wobei Puristensammler davon abraten, da Bohrungen am System den Sammlerwert mindern. Scout-Montagen, die ohne Bohrung auskommen, sind eine werterhaltende Alternative.</p>
+
+<h2>Fazit &amp; Kaufempfehlung</h2>
+<p>Der Mauser K98k ist ein Meilenstein der Waffentechnik, dessen Verschlusssystem die Grundlage für nahezu alle modernen Repetierbüchsen bildet. Für Sammler bietet er ein faszinierendes Feld mit unzähligen Varianten, Herstellern und Geschichten. Für Sportschützen ist er eine solide und zuverlässige Plattform im kraftvollen Kaliber 8x57mm. Und für Jäger, die eine historische Waffe im Revier führen möchten, bleibt der K98k eine durchaus praxistaugliche Option. Beim Kauf sollte man auf Nummerngleichheit, Laufzustand und Originalität achten. Wer ein Exemplar mit nummerngleichem Schaft, scharfen Markierungen und hellem Lauf findet, hält nicht nur ein Stück Geschichte in den Händen, sondern auch eine solide Wertanlage. Der K98k hat in den letzten Jahren stetig an Wert gewonnen, und dieser Trend dürfte angesichts schwindender Bestände anhalten.</p>`,
     rechtsstatus: 'frei',
     typischeKaliber: ['7,92×57mm (8×57mm IS)'],
     tags: ['Historisch', 'Mauser', 'K98', 'WW2', 'Sammler'],
@@ -2355,26 +2365,38 @@ Waffenerwerbsschein (WES) erforderlich.`,
     hersteller: 'Krieghoff / Rheinmetall',
     baujahr: '1942',
     kurzbeschreibung: 'Deutsches Fallschirmjägergewehr WW2. Das fortschrittlichste Gewehr des 2. Weltkriegs. Sehr selten.',
-    inhalt: `## FG 42 — Das Fallschirmjägergewehr
-Das Fallschirmjägergewehr 42 (FG 42) wurde 1942 für die deutschen Fallschirmjäger entwickelt und gilt als eines der innovativsten Gewehre des Zweiten Weltkriegs. Es kombinierte die Feuerkraft eines leichten MG mit dem Gewicht eines Gewehrs — ein Konzept, das seiner Zeit 20 Jahre voraus war.
+    inhalt: `<h2>Geschichte &amp; Entwicklung</h2>
+<p>Das Fallschirmjägergewehr 42, kurz FG 42, entstand aus einer der ungewöhnlichsten Anforderungen des Zweiten Weltkriegs. Nach der verlustreichen Luftlandeschlacht um Kreta im Mai 1941 forderte das Oberkommando der Luftwaffe unter Hermann Göring eine Waffe, die einem einzelnen Fallschirmjäger die Feuerkraft eines leichten Maschinengewehrs bei gleichzeitig geringem Gewicht und kompakten Abmessungen bieten sollte. Das Heereswaffenamt war mit der Entwicklung des Sturmgewehrs 44 beschäftigt und zeigte wenig Interesse, weshalb die Luftwaffe den Auftrag direkt an die Firma Rheinmetall-Borsig vergab. Der Ingenieur Louis Stange entwarf einen revolutionären Gasdrucklader im Vollkaliber 7,92x57mm, der sowohl als Einzelschuss-Präzisionsgewehr als auch als leichtes MG eingesetzt werden konnte. Die erste Serie (Typ I oder Modell E) wurde ab 1942 bei Krieghoff in Suhl gefertigt. Insgesamt wurden nur etwa 7'000 Exemplare in zwei Hauptvarianten produziert, was das FG 42 zu einer der seltensten und begehrtesten Sammlerwaffen der Welt macht.</p>
 
-## Technische Daten
-- Kaliber: 7,92×57mm Mauser
-- System: Gasdrucklader mit Drehkopfverschluss
-- Magazin: 20 Schuss (seitlich eingesteckt)
-- Feuerarten: Einzelschuss und Dauerfeuer
-- Lauflänge: 502mm
-- Gesamtlänge: 940mm
-- Gewicht: 4,5 kg (Typ II)
+<h2>Technik &amp; Konstruktion</h2>
+<p>Die technische Raffinesse des FG 42 war seiner Zeit um Jahrzehnte voraus. Das Gewehr nutzte ein Gasdrucksystem mit langem Gaskolben, der über einen Gaszylinider unter dem Lauf den Verschlussträger antrieb. Die genialste Lösung war das duale Verschlusssystem: Im Einzelschussmodus feuerte die Waffe aus geschlossenem Verschluss, was maximale Präzision beim ersten Schuss gewährleistete. Im Dauerfeuermodus schaltete das System automatisch auf offenen Verschluss um, um eine Selbstentzündung der Patrone durch den heissen Lauf zu verhindern. Der Drehkopfverschluss mit seinen Verriegelungswarzen beeinflusste direkt die spätere Entwicklung des amerikanischen M60-Maschinengewehrs und des Stoner-63-Systems.</p>
+<h3>Technische Daten</h3>
+<ul>
+<li><strong>Kaliber:</strong> 7,92x57mm Mauser</li>
+<li><strong>System:</strong> Gasdrucklader mit Drehkopfverschluss</li>
+<li><strong>Magazin:</strong> 20 Schuss, seitlich eingesteckt (links)</li>
+<li><strong>Feuerarten:</strong> Einzelschuss (geschlossener Verschluss) und Dauerfeuer (offener Verschluss)</li>
+<li><strong>Lauflänge:</strong> 502 mm</li>
+<li><strong>Gesamtlänge:</strong> 940 mm</li>
+<li><strong>Gewicht:</strong> 4,5 kg (Typ II)</li>
+<li><strong>Feuerrate:</strong> ca. 750 Schuss/min</li>
+</ul>
+<p>Das seitlich eingesteckte 20-Schuss-Magazin hielt das Profil der Waffe beim Liegendanschlag niedrig, was für Fallschirmjäger entscheidend war. Ein integriertes Zweibein mit Klappfunktion ermöglichte stabiles MG-Feuer. Das Bajonett konnte unter dem Lauf befestigt werden und diente gleichzeitig als Spike-Bajonett. Der Mündungsfeuerdämpfer reduzierte den Rückstoss des starken 7,92mm-Kalibers, der für eine nur 4,5 kg schwere Waffe erheblich war.</p>
 
-## Besonderheiten
-Das FG 42 feuerte im Einzelschuss aus geschlossenem Verschluss (für Präzision) und im Dauerfeuer aus offenem Verschluss (gegen Selbstentzündung) — zwei verschiedene Systeme in einer Waffe. Das seitliche Magazin hielt das Profil niedrig. Der Drehkopfverschluss und das Gassystem beeinflussten direkt die Entwicklung des M60-MG und der Stoner-63.
+<h2>Varianten &amp; Modelle</h2>
+<p>Es existieren zwei Hauptvarianten des FG 42. Der Typ I (auch Modell E, ab 1942) wurde bei Krieghoff gefertigt und zeichnet sich durch sein geprägtes Stahlblechgehäuse, den steil abgewinkelten Pistolengriff und den Metallschaft aus. Nur wenige hundert Exemplare des Typ I wurden produziert. Der Typ II (auch Modell G, ab 1944) war eine überarbeitete Version mit verbesserter Ergonomie: Der Pistolengriff war weniger steil, der Holzschaft war länger und ergonomischer, und der Verschluss wurde verstärkt. Beide Typen sind extrem selten. In der Nachkriegszeit wurden verschiedene Halbautomatik-Repliken gefertigt, darunter die bekannten Reproduktionen von SMG Guns in den USA, die für Sammler und Sportschützen produziert werden und neue Exemplare für etwa USD 5'000 bis 6'000 anbieten.</p>
 
-## Sammlerwert
-Originale FG 42: CHF 100'000–400'000+ — eine der seltensten und wertvollsten Sammlerwaffen überhaupt (ca. 7'000 produziert).
+<h2>Kaliber &amp; Ballistik</h2>
+<p>Das FG 42 verschiesst die Standard-Infanteriepatrone 7,92x57mm Mauser (8x57mm IS), dieselbe Munition wie der K98k und das MG 42. Die Mündungsgeschwindigkeit beträgt aus dem 502 mm langen Lauf etwa 740 m/s mit einer Mündungsenergie von rund 3'500 Joule. Die Entscheidung, das volle Gewehrkaliber beizubehalten statt ein Zwischenkaliber zu verwenden, war sowohl Stärke als auch Schwäche: Die Feuerkraft und Reichweite waren beeindruckend, doch der Rückstoss im Dauerfeuer war für eine so leichte Waffe kaum beherrschbar. Die effektive Reichweite im Einzelschuss lag bei etwa 600 Metern, im Dauerfeuer reduzierte sich diese auf rund 300 Meter. Interessanterweise hätte ein Zwischenkaliber wie das spätere 7,92x33mm Kurz viele der Rückstossprobleme gelöst, doch die Luftwaffe bestand auf dem vollen Gewehrkaliber, um Kompatibilität mit vorhandenen Beständen zu gewährleisten.</p>
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich. Halbautomatische Repliken erhältlich.`,
+<h2>Schweizer Markt &amp; Preisentwicklung</h2>
+<p>Originale FG 42 gehören zu den absoluten Raritäten auf dem Waffenmarkt und tauchen in der Schweiz nur äusserst selten auf. Weltweit existieren schätzungsweise nur noch wenige hundert Exemplare, und jedes Auftauchen eines Originals ist ein Ereignis in der Sammlerwelt. Originale Typ-I-Exemplare werden international für CHF 200'000 bis 400'000 und mehr gehandelt. Typ-II-Exemplare liegen bei CHF 100'000 bis 250'000, je nach Zustand und Provenienz. In der Schweiz werden FG 42 praktisch nie auf offenen Plattformen gehandelt, sondern wechseln diskret zwischen etablierten Sammlern den Besitzer. Halbautomatische Repliken, wie sie von SMG Guns oder anderen Herstellern angeboten werden, kosten neu etwa CHF 5'000 bis 7'000 und gebraucht CHF 3'500 bis 5'000. Diese Repliken bieten die Möglichkeit, die einzigartige Ergonomie und das Schiessgefühl des FG 42 zu erleben, ohne sechsstellige Beträge investieren zu müssen. Die Preisentwicklung bei Originalen zeigt steil nach oben, da das Angebot naturgemäss nicht wachsen kann.</p>
+
+<h2>Pflege, Wartung &amp; Zubehör</h2>
+<p>Besitzer eines originalen FG 42 sollten die Waffe primär als Sammlerstück betrachten und vom regelmässigen Schiessen absehen, da Ersatzteile praktisch nicht verfügbar sind. Die Lagerung sollte in einem klimatisierten Waffenschrank bei stabiler Luftfeuchtigkeit erfolgen, um Korrosion an den fein bearbeiteten Stahlteilen zu vermeiden. Leichtes Einölen der Metalloberflächen mit säurefreiem Waffenöl ist empfehlenswert. Holzschäfte (Typ II) sollten mit Leinöl gepflegt werden. Für Replik-Besitzer gelten die üblichen Reinigungsschritte: Lauf nach dem Schiessen mit Messingbürste und Lösungsmittel reinigen, Gaskolben und Verschlussgruppe von Verbrennungsrückständen befreien und alle beweglichen Teile leicht ölen. Originales Zubehör wie Trageriemen, Magazine, Bajonette und Reinigungsgeräte sind selbst einzeln wertvolle Sammlerstücke und erzielen Preise von CHF 500 bis mehreren tausend Franken.</p>
+
+<h2>Fazit &amp; Kaufempfehlung</h2>
+<p>Das FG 42 ist eines der faszinierendsten und innovativsten Gewehre der Militärgeschichte. Seine duale Verschlusstechnik, das kompakte Design und die für die Entstehungszeit revolutionäre Konzeption machen es zu einem Meilenstein der Waffentechnik. Als Sammlerstück ist ein originales FG 42 eine Investition der Sonderklasse, die jedoch nur für finanzstarke Sammler infrage kommt. Wer die Faszination des FG 42 ohne sechsstellige Investition erleben möchte, findet in den halbautomatischen Repliken eine erreichbare Alternative. In jedem Fall sollte bei Originalen extreme Vorsicht walten: Fälschungen und zusammengesetzte Exemplare aus verschiedenen Quellen kommen vor, und eine Expertenbegutachtung vor dem Kauf ist unabdingbar. Das FG 42 bleibt ein Monument deutscher Ingenieurskunst und ein Zeugnis der extremen Anforderungen, die der Krieg an die Waffenentwicklung stellte.</p>`,
     rechtsstatus: 'frei',
     typischeKaliber: ['7,92×57mm'],
     tags: ['Historisch', 'WW2', 'Sammler', 'FG42', 'Selten'],
@@ -2389,29 +2411,36 @@ Waffenerwerbsschein (WES) erforderlich. Halbautomatische Repliken erhältlich.`,
     hersteller: 'CZ',
     baujahr: '1954 (452) / 2019 (457)',
     kurzbeschreibung: 'Meistverkauftes KK-Gewehr Europas. Tschechische Qualität zu sehr fairem Preis.',
-    inhalt: `## CZ 452 / CZ 455 / CZ 457 — Kleinkaliber-Referenz
-Die CZ-Kleinkaliber-Baureihe (452 seit 1955, 455 seit 2010, 457 seit 2018) ist die meistverkaufte Kleinkaliber-Repetierbüchse in Europa. Gefertigt in Uherský Brod, Tschechien, bieten sie hervorragende Präzision zu einem vernünftigen Preis — der Einstieg ins Sportgewehr-Schiessen.
+    inhalt: `<h2>Geschichte &amp; Entwicklung</h2>
+<p>Die Geschichte der CZ-Kleinkalibergewehre beginnt in den 1950er-Jahren in der tschechischen Waffenschmiede Ceska zbrojovka in Uhersky Brod (CZUB). Die CZ 452, erstmals 1954 vorgestellt, wurde schnell zum meistverkauften Kleinkalibergewehr Europas und setzte Massstäbe für Präzision und Zuverlässigkeit in ihrer Preisklasse. Die Waffe basiert auf einem soliden Zweiwarzen-Repetierverschluss, der über Jahrzehnte verfeinert wurde. 2010 folgte die CZ 455 als Nachfolgemodell mit modularem Laufwechselsystem, das den Kaliberwechsel zwischen .22 LR, .22 WMR und .17 HMR ermöglichte. Der bisher letzte Entwicklungsschritt kam 2018 mit der CZ 457, die einen komplett überarbeiteten, einstellbaren Abzug und zahlreiche Detailverbesserungen brachte. Die Baureihe hat sich über fast 70 Jahre bewährt und wird in unzähligen Schiessständen, Jagdrevieren und Ausbildungsstätten weltweit eingesetzt. In der Schweiz ist die CZ-Baureihe besonders beliebt, da sie einen kostengünstigen und dennoch hochwertigen Einstieg ins Sportgewehrschiessen bietet.</p>
 
-## Technische Daten
-- Kaliber: .22 LR, .22 WMR, .17 HMR
-- System: Repetierbüchse mit 2-Warzen-Verschluss
-- Magazin: 5 Schuss (abnehmbares Kastenmagazin)
-- Lauflänge: 525mm (Standard), 630mm (Varmint)
-- Gewicht: 2,8–3,5 kg (je nach Modell)
-- Abzug: Einstellbar, ab 0,5 kg (CZ 457)
+<h2>Technik &amp; Konstruktion</h2>
+<p>Alle CZ-Kleinkalibermodelle basieren auf einem Zweiwarzen-Repetierverschluss, der sich durch butterweiche Bedienung und kurzen Schlossweg auszeichnet. Bei der CZ 457 wurde der Verschluss komplett überarbeitet und bietet nun einen noch kürzeren Öffnungswinkel von 60 Grad, was schnelle Repetierfolgen ermöglicht. Der kaltgehämmerte Lauf ist das Herzstück der Präzision: CZ verwendet hochwertige Laufstähle und eine polygonale Profilgebung, die für exzellente Geschossführung sorgt.</p>
+<h3>Technische Daten</h3>
+<ul>
+<li><strong>Kaliber:</strong> .22 LR, .22 WMR, .17 HMR (je nach Modell)</li>
+<li><strong>System:</strong> Repetierbüchse mit Zweiwarzen-Verschluss</li>
+<li><strong>Magazin:</strong> 5 Schuss, abnehmbares Kastenmagazin</li>
+<li><strong>Lauflänge:</strong> 525 mm (Standard), 630 mm (Varmint)</li>
+<li><strong>Gewicht:</strong> 2,8 bis 3,5 kg je nach Modell</li>
+<li><strong>Abzug:</strong> Einstellbar ab 0,5 kg (CZ 457)</li>
+</ul>
+<p>Der einstellbare Abzug der CZ 457 verdient besondere Erwähnung: Er lässt sich werkzeuglos von etwa 0,5 bis 1,5 kg einstellen und bietet einen trockenen, glasklaren Druckpunkt, der an Match-Abzüge heranreicht. Die Schlagbolzenfeder kann zudem in der Vorspannung angepasst werden, was den Abzugscharakter weiter verfeinert. Der Schaft sitzt auf zwei Systembettungsschrauben, die eine gleichmässige Spannung gewährleisten und bei Bedarf nachgezogen werden können. Der Lauf ist bei den meisten Modellen frei schwebend gelagert, was sich positiv auf die Präzision auswirkt.</p>
 
-## Besonderheiten
-Der CZ 457 bietet einen einstellbaren Abzug ab 500g, der an Match-Qualität heranreicht. Der kaltgehämmerte Lauf liefert Sub-MOA-Präzision mit guter Munition. Der Kaliberwechsel (.22 LR auf .17 HMR) ist durch Lauf-/Magazintausch möglich. Die 452 und 455 sind auf dem Gebrauchtmarkt sehr beliebt und wertstabil.
+<h2>Varianten &amp; Modelle</h2>
+<p>Die Modellpalette der CZ 457 ist umfangreich und deckt praktisch jeden Einsatzzweck ab. Die <strong>CZ 457 Lux</strong> ist die klassische Ausführung mit Nussbaumschaft und Standard-Lauf, ideal als Allrounder. Die <strong>CZ 457 Varmint</strong> besitzt einen schweren, dicken Lauf für maximale Präzision und ist in Nussbaum- oder Laminatschaft erhältlich. Die <strong>CZ 457 Training Rifle</strong> ist auf Schiessstand-Einsatz optimiert mit langem Lauf und ergonomischem Schaft. Die <strong>CZ 457 MTR</strong> (Match Target Rifle) ist die Wettkampfversion mit 20-Zoll-Match-Lauf und feinstem Abzug. Die <strong>CZ 457 Jaguar</strong> bietet als ultraleichte Version besondere Eignung für die Jagd. Die <strong>CZ 457 Royal</strong> besticht durch ihren feinen Nussbaumschaft mit Fischhaut-Gravur. Für Synthethikschaft-Freunde gibt es die <strong>CZ 457 Synthetic</strong> mit wetterfestem Kunststoffschaft. Die ältere CZ 452 ist auf dem Gebrauchtmarkt in diversen Ausführungen verfügbar, darunter die beliebte 452 American mit amerikanischem Nussbaumschaft und die 452 Varmint mit Schwerlauf.</p>
 
-## Varianten
-- CZ 457 Lux: Holzschaft, Standard
-- CZ 457 Varmint: Schwerer Lauf, Nussbaum- oder Laminatschaft
-- CZ 457 Training Rifle: Schiessstand-optimiert
-- CZ 457 MTR (Match Target Rifle): Wettkampf mit 20"-Match-Lauf
-- CZ 457 Jaguar: Ultraleicht
+<h2>Kaliber &amp; Ballistik</h2>
+<p>Das Standardkaliber .22 LR (Long Rifle) ist das weltweit meistverbreitete Randfeuerpatronen-Kaliber und ideal für Training, Sport und Kleintiersjagd. Standard-Munition verschiesst ein 2,6 g schweres Geschoss mit rund 330 m/s Mündungsgeschwindigkeit und etwa 140 Joule Mündungsenergie. Hochgeschwindigkeitsmunition erreicht bis zu 400 m/s, während Subsonic-Laborierungen mit Schalldämpfer besonders leise sind. Auf 50 Meter liefern CZ 457 Varmint und MTR Streukreise unter 15 mm mit guter Match-Munition wie Eley Tenex, Lapua Center-X oder SK Rifle Match. Das optionale Kaliber .17 HMR bietet mit seiner flachen Flugbahn und hohen Geschwindigkeit von 780 m/s eine effektive Reichweite bis 200 Meter und eignet sich hervorragend für die Raubwild- und Schädlingsjagd. Das .22 WMR positioniert sich leistungsmässig zwischen .22 LR und .17 HMR und bietet mehr Energie als die .22 LR bei geringeren Kosten als die .17 HMR. Das modulare Laufwechselsystem der CZ 455 und 457 erlaubt den Kaliberwechsel in wenigen Minuten.</p>
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+<h2>Schweizer Markt &amp; Preisentwicklung</h2>
+<p>Die CZ-Kleinkaliber-Baureihe gehört zu den beliebtesten Einstiegsgewehren auf dem Schweizer Markt. Neue CZ 457 Modelle sind beim Fachhändler zu folgenden Preisen erhältlich: Die CZ 457 Lux kostet etwa CHF 450 bis 550, die Varmint CHF 550 bis 650, die MTR CHF 650 bis 750 und die Royal CHF 600 bis 700. Auf dem Gebrauchtmarkt sind CZ 457 Modelle in gutem Zustand für CHF 350 bis 500 zu finden. Ältere CZ 452 Modelle werden für CHF 250 bis 400 gehandelt und bieten ein ausgezeichnetes Preis-Leistungs-Verhältnis. Besonders gefragte 452 Varmint Modelle mit Schwerlauf erzielen bis CHF 450. Die CZ 455 liegt gebraucht bei CHF 300 bis 450. Die Wertstabilität der CZ-Kleinkalibergewehre ist hoch, insbesondere bei gut gepflegten Exemplaren. Magazine kosten CHF 25 bis 35 als Ersatzteil. Insgesamt bietet kein anderer Hersteller ein vergleichbares Preis-Leistungs-Verhältnis im Kleinkaliberbereich.</p>
+
+<h2>Pflege, Wartung &amp; Zubehör</h2>
+<p>Kleinkalibergewehre erfordern eine sorgfältige Pflege, da die .22 LR-Munition durch ihre Wachsbeschichtung und die Bleigeschosse den Lauf stärker verschmutzt als Zentralfeuermunition. Nach jedem Schiesstag sollte der Lauf mit einer Messingbürste und speziellem Kleinkaliberreiniger behandelt werden. Ein Putzstock aus Carbon oder beschichtetem Stahl schont die Laufmündung. Die Kammer sollte mit einem Q-Tip oder Kammerbürste gereinigt werden, da sich dort Rückstände ansammeln, die zu Zuführproblemen führen können. Der Verschluss lässt sich zur Reinigung leicht entnehmen. Beliebtes Zubehör umfasst Zielfernrohre in der Preisklasse CHF 150 bis 400 (empfehlenswert: 3-9x40 oder 4-12x40 für Schiessstand), 11mm-Prismenschienenmontagen, Schalldämpfer (in der Schweiz mit Bewilligung), Schäfte von Boyds oder MDT und Abzugsfedern für die ältere CZ 452. Ersatzmagazine sollte man stets mehrere am Stand haben, da das Befüllen der kleinen 5-Schuss-Magazine zeitaufwändig ist.</p>
+
+<h2>Fazit &amp; Kaufempfehlung</h2>
+<p>Die CZ 452/455/457-Baureihe ist die unangefochtene Referenz im europäischen Kleinkalibermarkt. Für Einsteiger bietet die CZ 457 Lux einen hervorragenden Start ins Sportgewehrschiessen, während ambitionierte Schützen mit der MTR oder Varmint wettkampftaugliche Präzision erhalten. Wer Budget sparen möchte, greift zur gebrauchten CZ 452, die für unter CHF 300 eine unglaubliche Präzision bietet. Die tschechische Fertigung ist durchweg solide, und die Ersatzteilversorgung ist auch für ältere Modelle gesichert. Als Trainingswaffe, Standgewehr oder leichte Jagdbüchse für Kleintier gibt es in dieser Preisklasse kaum etwas Besseres. Einziger Kritikpunkt: Die Kunststoffmagazine der frühen 452er-Modelle können spröde werden und sollten bei Gebrauchtkäufen geprüft werden.</p>`,
     rechtsstatus: 'frei',
     typischeKaliber: ['.22 LR', '.17 HMR'],
     tags: ['KK', 'CZ', 'Kleinkaliber', 'Training'],
@@ -2424,31 +2453,37 @@ Waffenerwerbsschein (WES) erforderlich.`,
     hersteller: 'Tikka',
     baujahr: '2018',
     kurzbeschreibung: 'Finnische .22 LR Büchse im T3x-Design. Gleiches Feeling wie das Hauptgewehr — günstiges Training.',
-    inhalt: `## Tikka T1x — Kleinkaliber mit T3x-Ergonomie
-Die Tikka T1x MTR (Multi Task Rifle) wurde 2018 als Kleinkaliber-Trainingswaffe vorgestellt, die identische Masse und Ergonomie wie die grosse T3x bietet. Sie erlaubt kostengünstiges Training mit .22 LR bei gleicher Handhabung wie die Jagdbüchse.
+    inhalt: `<h2>Geschichte &amp; Entwicklung</h2>
+<p>Die Tikka T1x MTR (Multi Task Rifle) wurde 2018 von der finnischen Tikka-Waffenmanufaktur als Kleinkaliber-Trainingswaffe vorgestellt. Tikka gehört zur SAKO-Gruppe, die wiederum Teil des italienischen Beretta-Konzerns ist, und produziert seit den 1960er-Jahren hochwertige Repetierbüchsen im finnischen Riihimäki. Die T3-Serie, eingeführt 2003, und ihre weiterentwickelte Nachfolgerin T3x von 2016 gelten weltweit als Referenz für das beste Preis-Leistungs-Verhältnis bei Jagd- und Sportbüchsen. Mit der T1x verfolgte Tikka ein kluges Konzept: Die Waffe sollte Jägern und Sportschützen ermöglichen, mit günstiger .22-LR-Munition zu trainieren, ohne sich umgewöhnen zu müssen. Dazu wurden Schaft, Abzug, Ergonomie und Masse so gestaltet, dass sie nahezu identisch mit der grossen T3x sind. Dieses Trainingswaffen-Konzept war nicht neu, doch Tikka setzte es konsequenter um als die Konkurrenz, was der T1x schnell eine treue Fangemeinde verschaffte.</p>
 
-## Geschichte
-Tikka, eine Marke der finnischen SAKO-Gruppe (Beretta-Konzern), produziert seit den 1960er-Jahren Repetierbüchsen. Die T3-Serie (2003) und ihre Nachfolgerin T3x (2016) gelten als beste Preis-Leistungs-Büchsen am Markt. 2018 erweiterte Tikka die Linie nach unten: die T1x sollte Jägern und Sportschützen erlauben, mit günstigem .22-LR-Material zu trainieren — ohne Umgewöhnung, da Schaft, Abzug und Ergonomie identisch mit der T3x sind.
+<h2>Technik &amp; Konstruktion</h2>
+<p>Die Tikka T1x arbeitet mit einem Zylinderverschluss, der sich durch besonders weiche Bedienung auszeichnet. Der kurze Öffnungswinkel und die präzise Führung des Verschlusskörpers in der Hülse sorgen für ein Repetieren, das an die grosse T3x erinnert. Der Lauf ist kaltgehämmert und bietet ab Werk eine Präzision, die typischerweise bei 1 MOA oder besser mit guter Match-Munition liegt. Der frei schwebend gelagerte Lauf berührt den Schaft nicht, was die Streukreise positiv beeinflusst.</p>
+<h3>Technische Daten</h3>
+<ul>
+<li><strong>Kaliber:</strong> .22 LR, .17 HMR</li>
+<li><strong>System:</strong> Repetierbüchse mit Zylinderverschluss</li>
+<li><strong>Magazin:</strong> 10 Schuss (.22 LR), Stahlmagazin</li>
+<li><strong>Lauflänge:</strong> 508 mm (20 Zoll)</li>
+<li><strong>Gesamtlänge:</strong> 990 mm</li>
+<li><strong>Gewicht:</strong> 2,7 kg</li>
+<li><strong>Abzug:</strong> Tikka T3x-Abzug, einstellbar ab 1 kg</li>
+</ul>
+<p>Der Abzug ist der identische T3x-Abzug, einstellbar von etwa 1 bis 2 kg, mit einem sauberen, vorhersehbaren Druckpunkt. Das 10-Schuss-Stahlmagazin ist robust und langlebig, sitzt sicher im Magazinschacht und lässt sich leicht einsetzen und entnehmen. Die Systemmontage erfolgt über eine Standard-Weaver/Picatinny-Schiene, die bereits ab Werk auf der Hülse montiert ist. Der Kunststoffschaft (beim MTR-Modell) bietet die gleiche Griffergonomie und Schaftlänge wie die T3x, was den nahtlosen Wechsel zwischen Trainingswaffe und Jagdgewehr ermöglicht.</p>
 
-## Technische Daten
-- Kaliber: .22 LR, .17 HMR
-- System: Repetierbüchse mit Zylinderverschluss
-- Magazin: 10 Schuss (.22 LR)
-- Lauflänge: 508mm (20")
-- Gesamtlänge: 990mm
-- Gewicht: 2,7 kg
-- Abzug: Tikka T3x-Abzug, einstellbar ab 1 kg
+<h2>Varianten &amp; Modelle</h2>
+<p>Tikka bietet die T1x in mehreren Ausführungen an, die unterschiedliche Einsatzzwecke abdecken. Die <strong>T1x MTR</strong> ist das Standardmodell mit schwarzem Kunststoffschaft und eignet sich ideal als universelle Trainingswaffe. Die <strong>T1x UPR</strong> (Ultimate Precision Rifle) kommt mit einem modularen Chassis-Schaft, verstellbarer Schaftkappe und verstellbarem Kammstück, was sie zur ersten Wahl für Precision-Rimfire-Wettbewerbe macht. Die <strong>T1x Hunter</strong> besitzt einen klassischen Holzschaft aus Nussbaum und richtet sich an Jäger, die eine elegante Kleinkaliberwaffe für die Raubwildjagd suchen. Alle Modelle teilen das identische System und den gleichen Verschluss, unterscheiden sich aber in Schaft und Detailausstattung. Für die .17 HMR-Version existieren dieselben Schaftvarianten, wobei die höhere Leistung des Kalibers die effektive Reichweite auf bis zu 200 Meter erweitert. Aftermarket-Schäfte von Herstellern wie KRG, MDT oder Oryx passen ebenfalls auf die T1x und erweitern die Anpassungsmöglichkeiten erheblich.</p>
 
-## Besonderheiten
-Der Schaft der T1x ist massstäblich identisch mit dem T3x-Schaft — gleiche Griffform, gleiche Länge, gleicher Abzug. So können Jäger und Sportschützen mit günstigem .22 LR trainieren, ohne Umgewöhnung. Das 10-Schuss-Magazin ist aus Stahl. Die Präzision ist ab Werk hervorragend — typisch 1 MOA mit Match-Munition.
+<h2>Kaliber &amp; Ballistik</h2>
+<p>Die T1x ist primär für das Kaliber .22 LR konzipiert, das weltweit meistverbreitete Randfeuerpatronen-Kaliber. Eine Standard-.22-LR-Patrone verschiesst ein Geschoss von etwa 2,6 g mit rund 330 m/s Mündungsgeschwindigkeit und circa 140 Joule Mündungsenergie. Match-Munition wie Eley Tenex, Lapua Midas+ oder SK Rifle Match bietet die besten Streukreise, typischerweise 10 bis 15 mm auf 50 Meter aus der T1x. Für Training und Plinking ist günstigere Munition von CCI, Federal oder Remington völlig ausreichend. Die T1x reagiert dabei erfahrungsgemäss weniger sensibel auf Munitionsunterschiede als manche Konkurrenten, was im Trainingsalltag ein Vorteil ist. Die optionale .17-HMR-Version bietet mit 780 m/s Mündungsgeschwindigkeit und einer sehr flachen Flugbahn eine effektive Reichweite bis 200 Meter und eignet sich hervorragend für die Schädlings- und Raubwildjagd. Die Energieübertragung des kleinen, schnellen .17-HMR-Geschosses ist für Kleintier bis Fuchsgrösse mehr als ausreichend.</p>
 
-## Varianten
-- T1x MTR: Kunststoffschaft (Standard)
-- T1x UPR: Chassis-Schaft, verstellbare Schaftkappe
-- T1x Hunter: Holzschaft
+<h2>Schweizer Markt &amp; Preisentwicklung</h2>
+<p>Die Tikka T1x ist in der Schweiz gut beim Fachhandel erhältlich. Neue Modelle kosten je nach Ausführung zwischen CHF 500 und 850. Die T1x MTR als Standardmodell liegt bei etwa CHF 500 bis 600, die T1x Hunter bei CHF 600 bis 700 und die T1x UPR bei CHF 750 bis 850. Auf dem Gebrauchtmarkt werden T1x Modelle in gutem Zustand für CHF 400 bis 550 gehandelt, wobei die Nachfrage konstant hoch ist und Exemplare schnell den Besitzer wechseln. Im Vergleich zur Konkurrenz positioniert sich die T1x preislich über der CZ 457, bietet dafür aber die einzigartige Kompatibilität mit der T3x-Ergonomie, die für T3x-Besitzer unbezahlbar ist. Ersatzmagazine kosten CHF 35 bis 45 und sollten in mehrfacher Ausführung angeschafft werden. Die Wertstabilität ist sehr gut, der Wertverlust nach dem Neukauf moderat. Besonders die UPR-Version hat in der wachsenden Precision-Rimfire-Szene eine starke Nachfrage und hält ihren Wert entsprechend gut.</p>
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+<h2>Pflege, Wartung &amp; Zubehör</h2>
+<p>Die Pflege der Tikka T1x folgt den üblichen Regeln für Kleinkalibergewehre. Der Lauf sollte nach jedem Schiesstag mit einer Messingbürste und Kleinkaliberreiniger behandelt werden, um Blei- und Wachsrückstände zu entfernen. Ein Putzstock sollte stets von der Kammer aus eingeführt werden, um die Laufmündung nicht zu beschädigen. Der Verschluss lässt sich werkzeuglos zur Reinigung entnehmen. Der Kunststoffschaft erfordert keine besondere Pflege, der Holzschaft der Hunter-Version profitiert von gelegentlicher Ölbehandlung. Empfehlenswertes Zubehör umfasst ein Zielfernrohr im Bereich 3-9x40 bis 6-24x50 für Precision Rimfire, entsprechende Montageringe für die Picatinny-Schiene, einen Trageriemen und eventuell einen Schalldämpfer. Für die UPR-Version bieten sich zusätzlich ein Zweibein und ein Rear-Bag an. Die T1x akzeptiert alle T3x-kompatiblen Aftermarket-Schäfte, was ein riesiges Feld an Individualisierungsmöglichkeiten eröffnet.</p>
+
+<h2>Fazit &amp; Kaufempfehlung</h2>
+<p>Die Tikka T1x ist die ideale Trainingswaffe für jeden T3x-Besitzer und darüber hinaus ein eigenständiges, hochwertiges Kleinkalibergewehr. Das Konzept der identischen Ergonomie zwischen Trainings- und Hauptwaffe ist bestechend und funktioniert in der Praxis hervorragend. Die finnische Fertigungsqualität ist tadellos, die Präzision ab Werk beeindruckend und der Preis angesichts der Leistung fair. Wer bereits eine T3x besitzt und kostengünstig trainieren möchte, kommt an der T1x kaum vorbei. Für Precision-Rimfire-Einsteiger ist die UPR-Version eine ausgezeichnete Wahl. Einziger Kritikpunkt ist die begrenzte Magazinkapazität von 10 Schuss und das Fehlen eines 25-Schuss-Magazins, wie es etwa die Ruger 10/22 bietet. Insgesamt eine durchdachte, hochwertige Waffe, die ihren höheren Preis gegenüber der Konkurrenz durch Qualität und das einzigartige Trainingskonzept rechtfertigt.</p>`,
     rechtsstatus: 'frei',
     typischeKaliber: ['.22 LR', '.17 HMR'],
     tags: ['KK', 'Tikka', 'T1x', 'Training'],
@@ -2461,29 +2496,37 @@ Waffenerwerbsschein (WES) erforderlich.`,
     hersteller: 'Ruger',
     baujahr: '1964',
     kurzbeschreibung: 'Das meistverkaufte .22 LR Halbautomatik-Gewehr. Riesiger Aftermarket. BX-25 Magazin.',
-    inhalt: `## Ruger 10/22 — Die beliebteste Kleinkaliber-Selbstladebüchse
-Die Ruger 10/22 wurde 1964 eingeführt und ist mit über 7 Millionen verkauften Exemplaren die meistverkaufte halbautomatische Kleinkaliber-Büchse aller Zeiten. Ein gigantischer Zubehörmarkt macht sie zur "AR-15 der Kleinkaliber" — fast alles ist austauschbar.
+    inhalt: `<h2>Geschichte &amp; Entwicklung</h2>
+<p>Die Ruger 10/22 wurde 1964 von William B. Ruger und seinem Partner Alexander Sturm bei Sturm, Ruger &amp; Co. in Southport, Connecticut, vorgestellt. Die Waffe war von Anfang an als kostengünstige, zuverlässige und leicht zu bedienende Kleinkaliber-Selbstladebüchse für Einsteiger, Jäger und Sportschützen konzipiert. Das Design wurde massgeblich vom Rotationsmagazin der M1-Garand und dem Masseverschlussprinzip der M1 Carbine inspiriert, jedoch für das schwächere .22 LR-Kaliber vereinfacht. Der Erfolg war überwältigend: Innerhalb weniger Jahre avancierte die 10/22 zum meistverkauften halbautomatischen Kleinkalibergewehr der Welt. Bis heute wurden über 7 Millionen Exemplare produziert, und die Grundkonstruktion hat sich in über 60 Jahren kaum verändert, was für die Genialität des Originalentwurfs spricht. Die 10/22 hat eine eigene Subkultur geschaffen: Ein gewaltiger Aftermarket-Zubehörmarkt bietet alles vom Schaft über den Lauf bis zum Abzug, sodass eine komplette 10/22 ausschliesslich aus Drittanbieter-Teilen aufgebaut werden kann. Man bezeichnet sie daher gerne als die AR-15 der Kleinkaliber.</p>
 
-## Technische Daten
-- Kaliber: .22 LR
-- System: Masseverschluss (Blowback)
-- Magazin: 10 Schuss (Rotationsmagazin), 25 Schuss optional
-- Lauflänge: 470mm (Standard)
-- Gesamtlänge: 940mm
-- Gewicht: 2,3 kg
+<h2>Technik &amp; Konstruktion</h2>
+<p>Die Ruger 10/22 arbeitet mit einem einfachen, aber äusserst zuverlässigen Masseverschluss (Blowback). Der zylindrische Verschlusskörper aus Stahl wird beim Schuss durch den Gasdruck der abgefeuerten Patrone nach hinten getrieben, wobei die Massenträgheit des Verschlusses allein für die Verriegelung sorgt. Dieses Prinzip ist beim schwachen .22-LR-Kaliber absolut ausreichend und garantiert eine lange Lebensdauer ohne komplizierte Verriegelungsmechanismen.</p>
+<h3>Technische Daten</h3>
+<ul>
+<li><strong>Kaliber:</strong> .22 LR</li>
+<li><strong>System:</strong> Halbautomatik, Masseverschluss (Blowback)</li>
+<li><strong>Magazin:</strong> 10 Schuss Rotationsmagazin (Standard), 25 Schuss BX-25 optional</li>
+<li><strong>Lauflänge:</strong> 470 mm (Standard)</li>
+<li><strong>Gesamtlänge:</strong> 940 mm</li>
+<li><strong>Gewicht:</strong> 2,3 kg</li>
+<li><strong>Abzug:</strong> Standard-Abzug ca. 2,7 kg, diverse Aftermarket-Optionen</li>
+</ul>
+<p>Das patentierte Rotationsmagazin ist das Herzstück der 10/22. Es fasst 10 Patronen in einem runden Gehäuse, das beim Repetieren gedreht wird. Dieses System ist extrem zuverlässig und nahezu immun gegen Ladehemmungen, die bei Kastenmagazinen mit Randfeuerpatronen häufiger auftreten. Der Receiver ist aus Aluminiumguss gefertigt und nimmt den Lauf über einen V-Block und zwei Schrauben auf. Diese Konstruktion erlaubt den einfachen Laufwechsel ohne Spezialwerkzeug. Der Abzugsmechanismus ist in einer separaten Abzugsgruppe aus Kunststoff untergebracht, die als komplette Einheit entnommen werden kann.</p>
 
-## Besonderheiten
-Das patentierte Rotationsmagazin fasst 10 Patronen in einem runden Kunststoff-/Metallmagazin und ist extrem zuverlässig. Der Markt für 10/22-Teile ist riesig: Hinterschafte, Vorderschäfte, Läufe, Abzüge, Chassis-Systeme — eine komplette 10/22 kann nur aus Aftermarket-Teilen aufgebaut werden. Die BX-25 Magazine (25 Schuss) sind ebenfalls sehr beliebt.
+<h2>Varianten &amp; Modelle</h2>
+<p>Ruger bietet die 10/22 in einer beeindruckenden Modellvielfalt an. Die <strong>10/22 Carbine</strong> ist das Standardmodell mit Holz- oder Kunststoffschaft und dem klassischen 18,5-Zoll-Lauf. Die <strong>10/22 Takedown</strong> lässt sich werkzeuglos in zwei Teile zerlegen und passt in einen mitgelieferten Rucksack, ideal für Reisen und Camping. Die <strong>10/22 Target</strong> besitzt einen schweren Bull-Barrel-Lauf und einen Laminatschaft für maximale Präzision am Stand. Die <strong>10/22 Competition</strong> bietet einen Match-Lauf mit Mündungsbremse und einen einstellbaren Abzug. Die <strong>10/22 Sporter</strong> zeichnet sich durch einen eleganten Nussbaumschaft mit Fischhautgravur aus. Die <strong>Charger</strong> ist eine Pistolenversion mit kurzem 10-Zoll-Lauf und Picatinny-Schiene. Darüber hinaus existiert ein riesiger Aftermarket: Chassis-Systeme von Magpul, Crazy Ivan oder Promag verwandeln die 10/22 in ein taktisches Gewehr, während Laufhersteller wie Kidd, Volquartsen oder Green Mountain Match-Läufe für wettkampftaugliche Präzision anbieten.</p>
 
-## Varianten
-- 10/22 Carbine: Standard mit Holz- oder Kunststoffschaft
-- 10/22 Takedown: Zerlegbar für Transport
-- 10/22 Target: Schwerer Lauf, Laminatschaft
-- 10/22 Competition: Match-Lauf, einstellbarer Abzug
-- Charger: Pistolenversion mit kurzem Lauf
+<h2>Kaliber &amp; Ballistik</h2>
+<p>Die 10/22 ist ausschliesslich für das Kaliber .22 LR (Long Rifle) kammert, das weltweit günstigste und meistverbreitete Patronenkaliber. Standard-.22-LR-Munition verschiesst ein 2,6 g schweres Bleigeschoss mit etwa 330 m/s Mündungsgeschwindigkeit und rund 140 Joule Mündungsenergie. Hochgeschwindigkeitsmunition (HV) erreicht bis 400 m/s, während Subsonic-Laborierungen unter der Schallgeschwindigkeit bleiben und mit Schalldämpfer besonders leise sind. Die Präzision der Standard-10/22 liegt typischerweise bei 2 bis 3 MOA, was für eine Selbstladebüchse ordentlich ist. Mit einem Aftermarket-Match-Lauf und guter Munition sind Sub-MOA-Streukreise auf 50 Meter erreichbar. Die effektive Reichweite liegt bei etwa 100 Metern für Präzisionsschüsse und bis 150 Meter für die Jagd auf Kleintiere. Für das Training ist die .22 LR unschlagbar günstig: Eine Schachtel mit 50 Patronen kostet in der Schweiz CHF 5 bis 15, was stundenlanges Schiessen zu einem Bruchteil der Kosten von Zentralfeuermunition ermöglicht.</p>
 
-## Rechtsstatus Schweiz
-Waffenerwerbsschein (WES) erforderlich.`,
+<h2>Schweizer Markt &amp; Preisentwicklung</h2>
+<p>Die Ruger 10/22 ist in der Schweiz gut erhältlich, allerdings weniger dominant als in den USA, wo sie absolute Marktführerin ist. Neue Modelle kosten beim Fachhändler je nach Ausführung zwischen CHF 400 und 750. Die Standard-Carbine liegt bei CHF 400 bis 500, die Takedown bei CHF 500 bis 600 und die Target oder Competition bei CHF 600 bis 750. Auf dem Gebrauchtmarkt werden 10/22 Modelle in gutem Zustand für CHF 300 bis 450 gehandelt. Stark modifizierte Exemplare mit Aftermarket-Lauf, Abzug und Schaft können je nach Ausstattung CHF 500 bis über 1'000 erzielen, wobei der Wiederverkaufswert von Aftermarket-Teilen oft nur einen Bruchteil des Neupreises beträgt. Standard-Rotationsmagazine kosten CHF 25 bis 35, die beliebten BX-25-Magazine (25 Schuss) etwa CHF 35 bis 45. Die Verfügbarkeit von Aftermarket-Teilen ist in der Schweiz gut über Online-Händler gewährleistet, wobei Importzölle und Versandkosten die Preise gegenüber den USA erhöhen.</p>
+
+<h2>Pflege, Wartung &amp; Zubehör</h2>
+<p>Die 10/22 ist konstruktionsbedingt pflegeleicht, erfordert aber wie alle .22-LR-Waffen regelmässige Reinigung. Der Verschluss sollte nach jedem Schiesstag entnommen und von Verbrennungsrückständen und Bleiablagerungen befreit werden. Der Lauf wird mit Messingbürste und Kleinkaliberlösungsmittel gereinigt. Besonderes Augenmerk verdient die Kammer, in der sich Blei- und Wachsrückstände ansammeln, die zu Zuführstörungen führen können. Die Abzugsgruppe sollte gelegentlich entnommen und mit Druckluft gereinigt werden. An Zubehör sind die Möglichkeiten nahezu grenzenlos: Aftermarket-Abzüge von Volquartsen oder Kidd reduzieren das Abzugsgewicht auf unter 1 kg und verbessern den Druckpunkt dramatisch. Match-Läufe kosten CHF 200 bis 500 und steigern die Präzision erheblich. Chassis-Systeme wie das Magpul X-22 Hunter oder das MDT-System verwandeln die 10/22 optisch und ergonomisch. Zielfernrohre im Bereich 2-7x bis 4-16x sind für die typischen Einsatzdistanzen ideal. Ein Schalldämpfer macht die ohnehin leise .22 LR flüsterleise.</p>
+
+<h2>Fazit &amp; Kaufempfehlung</h2>
+<p>Die Ruger 10/22 ist ein zeitloser Klassiker, der seinen Ruf als meistverkaufte Kleinkaliber-Halbautomatik redlich verdient hat. Die Zuverlässigkeit des Rotationsmagazins, die einfache Bedienung und der gigantische Aftermarket machen sie zur vielseitigsten .22-LR-Plattform überhaupt. Für Einsteiger ist die Standard-Carbine der perfekte Start, für Bastler und Tuning-Enthusiasten bietet die 10/22 ein unerschöpfliches Spielfeld. Als reine Präzisionswaffe ab Werk ist sie einer CZ 457 oder Tikka T1x unterlegen, kann aber mit Aftermarket-Teilen auf gleiches oder höheres Niveau gebracht werden. Wer eine pflegeleichte, unterhaltsame und vielseitige Plinkingwaffe sucht, macht mit der 10/22 nichts falsch. Einziger Nachteil für Schweizer Schützen: Die in den USA allgegenwärtigen Grosskapazitätsmagazine über 10 Schuss erfordern in der Schweiz einen Waffenerwerbsschein.</p>`,
     rechtsstatus: 'wes',
     typischeKaliber: ['.22 LR'],
     tags: ['KK', 'Ruger', '1022', 'Halbautomatisch'],
@@ -2608,28 +2651,73 @@ Halbautomatische Zivilversionen: WES erforderlich. Vollautomat: Verboten (Ausnah
     hersteller: 'ArmaLite / Colt / Viele',
     baujahr: '1959',
     kurzbeschreibung: 'Das modularste Gewehrsystem der Welt. Hunderte Hersteller. IPSC Rifle-Standard.',
-    inhalt: `## AR-15 / M16 — Die modulare Waffenplattform
-Das AR-15 wurde 1956 von Eugene Stoner bei ArmaLite entwickelt und als M16 ab 1964 zum Standard-Sturmgewehr der US-Streitkräfte. Es ist das meistverkaufte Gewehr in den USA mit geschätzten 20+ Millionen zivilen Exemplaren. Die AR-15-Plattform ist das modularste Waffensystem der Welt.
+    inhalt: `<h2>Geschichte und Entwicklung</h2>
+<p>Die Geschichte der AR-15-Plattform beginnt in den 1950er-Jahren, als die US-Armee ein neues leichtes Infanteriegewehr suchte, das den schweren M14 in Kaliber 7,62x51mm NATO ersetzen sollte. Eugene Stoner, leitender Ingenieur bei der kalifornischen Firma ArmaLite, entwarf 1956 das AR-10 in 7,62mm NATO. Als die Armee ein kleineres Kaliber forderte, entwickelte Stoner gemeinsam mit Robert Fremont und Jim Sullivan das AR-15 in der neuen Patrone .223 Remington (5,56x45mm). ArmaLite verkaufte die Produktionsrechte 1959 an Colt, da das kleine Unternehmen die Massenproduktion nicht stemmen konnte.</p>
+<p>Die US Air Force fuehrte das Gewehr 1962 als M16 ein. Waehrend des Vietnamkriegs traten schwere Zuverlaessigkeitsprobleme auf, hauptsaechlich wegen veraendertem Treibladungspulver und fehlender Reinigungsausruestung. Das verbesserte M16A1 mit verchromter Kammer und neuem Stossbodenhalter loeste die meisten Probleme. Ab den 1990er-Jahren ersetzte der M4 Karabiner mit 14,5-Zoll-Lauf zunehmend das laengere M16. Heute ist die AR-15-Plattform das meistverbreitete Gewehrsystem der westlichen Welt mit ueber 20 Millionen zivilen Exemplaren allein in den USA.</p>
 
-## Technische Daten
-- Kaliber: 5,56×45mm NATO / .223 Rem (auch .300 BLK, 6,5 Grendel, .308 Win bei AR-10)
-- System: Gasdrucklader mit Drehkopfverschluss (Direct Impingement oder Gaskolben)
-- Magazin: 30 Schuss (STANAG-kompatibel)
-- Lauflänge: 254mm (10") bis 508mm (20")
-- Gesamtlänge: variabel (Klappschaft)
-- Gewicht: ab 2,8 kg (leichte Konfigurationen)
+<h2>Technik und Konstruktion</h2>
+<p>Das AR-15 arbeitet als Gasdrucklader mit Drehkopfverschluss. In der urspruenglichen Ausfuehrung nutzt es das <strong>Direct-Impingement-System</strong> (DI): Pulvergas wird ueber ein duennes Gasrohr direkt in den Verschlusstraeger geleitet, wo es den Verschlusskopf entgegen den Verriegelungswarzen drueckt und den Verschluss entriegelt. Dieses System ist leichter und ermoeglicht eine geringere bewegte Masse, was die Praezision foerdert. Der Nachteil ist die erhoehte Verschmutzung im Verschlussbereich.</p>
+<p>Alternative Gaskolben-Systeme (Short-Stroke Piston) werden von Herstellern wie HK (MR223), LWRC, POF und Adams Arms angeboten. Hierbei wird das Gas auf einen separaten Kolben geleitet, der den Verschlusstraeger anstoesst. Das System laeuft sauberer, ist aber schwerer und kann die Praezision leicht beeinflussen.</p>
+<p>Die Modularitaet ist das herausragende Merkmal: Das Gewehr besteht aus <strong>Upper Receiver</strong> (Oberteil mit Lauf, Handschutz, Verschluss) und <strong>Lower Receiver</strong> (Unterteil mit Abzugsgruppe, Schaft, Magazinschacht). Beide Haelften werden mit zwei Pins verbunden und koennen werkzeuglos in Sekunden getrennt werden. Ein Kaliberwechsel ist durch einfachen Upper-Tausch moeglich. Der Lower Receiver gilt in den meisten Laendern als die regulierte Waffe.</p>
+<p>Die Abzugsgruppe ist modular austauschbar. Aftermarket-Abzuege von Geissele, Timney oder TriggerTech bieten Abzugsgewichte von 1,5 bis 4,5 Pfund mit minimalem Vorzugsweg. Der frei schwimmende Handschutz (Free-Float) beruehrt den Lauf nicht und verbessert die Praezision erheblich. M-LOK und KeyMod (zunehmend durch M-LOK ersetzt) sind die verbreiteten Befestigungssysteme fuer Zubehoer.</p>
 
-## Besonderheiten
-Das Direct-Impingement-System leitet Pulvergas direkt in den Verschlussträger — leichter und präziser als Gaskolben, aber verschmutzungsanfälliger. Das obere und untere Gehäuse (Upper/Lower Receiver) werden mit zwei Pins verbunden und können in Sekunden getauscht werden — Kaliberwechsel durch Tausch des Upper. Unendliches Zubehör: Handschutz, Griffe, Schafte, Mündungsgeräte, Optiken.
+<h2>Varianten und Modelle</h2>
+<ul>
+<li><strong>M16A4:</strong> Militaerversion mit 20-Zoll-Lauf, Feuerstoss und Dauerfeuer, Picatinny-Tragegriff-Schiene</li>
+<li><strong>M4A1:</strong> Karabiner mit 14,5-Zoll-Lauf, Teleskopschaft, Dauerfeuer — Standard der US Army</li>
+<li><strong>AR-10:</strong> Groessere Variante in .308 Win / 7,62x51mm NATO, beliebt fuer Praezisionsschiessen und Jagd</li>
+<li><strong>Colt LE6920:</strong> Zivile Referenz-Konfiguration, dem M4 nachempfunden</li>
+<li><strong>Daniel Defense DDM4 V7:</strong> Premium-AR-15 mit kaltgehaemmertem Lauf und DD-eigenem Handschutz</li>
+<li><strong>BCM RECCE-16:</strong> Bravo Company Manufacturing, militaerische Spezifikation, exzellentes Preis-Leistungs-Verhaeltnis</li>
+<li><strong>Aero Precision M4E1:</strong> Beliebtes Einstiegsmodell mit aufgewerteten Features</li>
+<li><strong>LWRC IC-DI / IC-A5:</strong> Hochwertige Gaskolben-Variante, vollstaendig beidhaendig bedienbar</li>
+<li><strong>Ruger AR-556:</strong> Einstiegsmodell mit gutem Preis-Leistungs-Verhaeltnis</li>
+</ul>
 
-## Varianten
-- M16A4: US-Militär Standardgewehr (20" Lauf)
-- M4/M4A1: Verkürzte Karabiner-Version (14,5" Lauf)
-- AR-10: Grössere Version in .308 Win
-- Zivilversionen: Hunderte Hersteller (Daniel Defense, BCM, Aero Precision, etc.)
+<h2>Kaliber und Ballistik</h2>
+<p>Das Standardkaliber <strong>5,56x45mm NATO / .223 Remington</strong> verschiesst ein 55- bis 77-Grain-Geschoss mit einer Muendungsgeschwindigkeit von 940 bis 990 m/s und einer Muendungsenergie von rund 1700 bis 1800 Joule. Auf 100 Meter zeigen gute AR-15 Streukreise unter 1 MOA (2,9 cm). Die effektive Reichweite liegt bei 400 bis 600 Metern je nach Lauflaenge und Munition.</p>
+<p>Weitere verbreitete Kaliber der AR-15-Plattform:</p>
+<ul>
+<li><strong>.300 Blackout (7,62x35mm):</strong> Optimiert fuer kurze Laeufe und Schalldaempfer, Unterschall-Munition verfuegbar. Gleicher Verschlusskopf und Magazine wie 5,56mm, nur Laufwechsel noetig.</li>
+<li><strong>6,5 Grendel:</strong> Bessere Langstreckenballistik als 5,56mm, beliebt fuer Jagd und Praezisionsschiessen bis 800 Meter.</li>
+<li><strong>6mm ARC:</strong> Hornady-Entwicklung fuer militaerische Langstreckenpraezision aus der AR-15-Plattform.</li>
+<li><strong>.458 SOCOM / .50 Beowulf:</strong> Grosskalibrige Varianten fuer maximale Wirkung auf kurze Distanz.</li>
+<li><strong>.308 Win / 7,62x51mm:</strong> Auf der groesseren AR-10-Plattform, fuer Jagd und Langstreckenschiessen.</li>
+</ul>
 
-## Rechtsstatus Schweiz
-Halbautomatische Versionen: WES erforderlich. Grosses Magazin (>10 oder >20 Schuss je nach Kanton): evtl. ABK-pflichtig.`,
+<h2>Schweizer Markt und Preisentwicklung</h2>
+<p>In der Schweiz erfreut sich die AR-15-Plattform wachsender Beliebtheit, insbesondere bei IPSC-Rifle-Schuetzen, Sportschuetzen und Sammlern. Der Erwerb erfordert einen <strong>Waffenerwerbsschein (WES)</strong>. Magazine mit mehr als 10 Schuss bei Halbautomaten unterliegen seit der Waffenrechtsrevision 2019 strengeren Auflagen.</p>
+<p><strong>Neupreise (CHF, Stand 2025/2026):</strong></p>
+<ul>
+<li><em>Einstiegsklasse</em> (Schmeisser, Oberland Arms, SDM): CHF 1200 bis 1800</li>
+<li><em>Mittelklasse</em> (Ruger AR-556, Smith und Wesson M und P15): CHF 1500 bis 2200</li>
+<li><em>Gehoben</em> (Daniel Defense, BCM, LWRC): CHF 2800 bis 4200</li>
+<li><em>Premium</em> (HK MR223, KAC SR-15, LMT): CHF 3500 bis 5500</li>
+</ul>
+<p><strong>Gebrauchtpreise (CHF):</strong></p>
+<ul>
+<li><em>Einstiegsklasse gebraucht</em>: CHF 800 bis 1400</li>
+<li><em>Mittelklasse gebraucht</em>: CHF 1200 bis 1800</li>
+<li><em>Premium gebraucht</em>: CHF 2200 bis 4000</li>
+</ul>
+<p>Die Verfuegbarkeit einzelner Modelle schwankt je nach Importlage. Schweizer Haendler wie Waffen Glaser, Bruenig Indoor, GUNFACTORY und Wyss Waffen fuehren eine gute Auswahl. Europaeische Hersteller wie Schmeisser, Haenel und Oberland Arms sind oft einfacher verfuegbar als US-Marken.</p>
+
+<h2>Pflege, Wartung und Zubehoer</h2>
+<p>Die AR-15 erfordert regelmaessige Reinigung, besonders bei DI-Systemen. Nach jedem Schiessen sollten Verschlusstraeger (Bolt Carrier Group, BCG), Kammer und Lauf gereinigt werden. Ein Carbon-Schaber fuer den Verschlusskopf ist unerlaesslich. Bewaehrte Reinigungsmittel sind Ballistol, Break-Free CLP und Hoppes No. 9.</p>
+<p><strong>Empfohlenes Zubehoer:</strong></p>
+<ul>
+<li><strong>Optiken:</strong> Red Dots (Aimpoint, Holosun, Vortex), LPVOs 1-6x oder 1-8x (Vortex Razor, Leupold, Kahles), Vergroesserungen 3x hinter Red Dot</li>
+<li><strong>Abzuege:</strong> Geissele SSA-E (Mehrzweck), Timney Calvin Elite (Praezision), LaRue MBT-2S (Preis-Leistung)</li>
+<li><strong>Muendungsgeraete:</strong> Kompensatoren fuer IPSC, Muendungsbremsen fuer Praezision, Schalldaempfer-Adapter</li>
+<li><strong>Schaefte:</strong> Magpul CTR/STR, B5 SOPMOD, VLTOR EMOD</li>
+<li><strong>Handschutz:</strong> Free-Float M-LOK von Geissele, BCM, Midwest Industries</li>
+<li><strong>Beleuchtung:</strong> Surefire, Modlite, Cloud Defensive</li>
+</ul>
+<p>Verschleissteile wie Gasringe (alle 5000 Schuss pruefen), Auswerferfeder und Extraktorfeder sollten vorraetig gehalten werden. Der Lauf haelt bei Qualitaetsherstellern 15000 bis 30000 Schuss.</p>
+
+<h2>Fazit und Kaufempfehlung</h2>
+<p>Die AR-15-Plattform ist das vielseitigste Gewehrsystem auf dem Markt. Fuer Schweizer Schuetzen bietet sie unschlagbare Modularitaet: Ein Lower Receiver kann mit verschiedenen Uppers in unterschiedlichen Kalibern bestueckt werden. Fuer <strong>IPSC Rifle</strong> ist die AR-15 der unbestrittene Standard. Fuer Sportschuetzen und Einsteiger bieten Modelle ab CHF 1500 ein hervorragendes Preis-Leistungs-Verhaeltnis.</p>
+<p>Wer Wert auf maximale Zuverlaessigkeit legt, sollte ein Gaskolben-Modell (HK MR223, LWRC) in Betracht ziehen. Fuer Praezisionsschiessen empfiehlt sich ein Modell mit 18- oder 20-Zoll-Lauf und Match-Abzug. Einsteiger sind mit einem Mittelklassemodell von BCM, Ruger oder Daniel Defense gut beraten — diese bieten Qualitaet ohne uebermaessige Ausgaben. Der Gebrauchtmarkt in der Schweiz ist aktiv, und gut gepflegte AR-15 halten ihren Wert gut.</p>`,
     rechtsstatus: 'wes',
     typischeKaliber: ['5,56×45mm', '.223 Remington', '.300 Blackout'],
     tags: ['Sturmgewehr', 'AR15', 'M16', 'USA', 'Modular', 'IPSC'],

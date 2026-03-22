@@ -184,11 +184,18 @@ export default function MeineInseratePage() {
 
               <div className="flex items-center gap-1">
                 <Link
+                  href={`/dashboard/inserat-bearbeiten/${inserat.id}`}
+                  className="rounded-lg p-2 text-neutral-400 transition-colors hover:bg-gray-100 hover:text-brand-dark"
+                  title="Bearbeiten"
+                >
+                  <Pencil size={16} />
+                </Link>
+                <Link
                   href={`/inserat/${inserat.id}`}
                   className="rounded-lg p-2 text-neutral-400 transition-colors hover:bg-gray-100 hover:text-brand-dark"
                   title="Ansehen"
                 >
-                  <Pencil size={16} />
+                  <Eye size={16} />
                 </Link>
                 <button
                   onClick={() => setDeleteId(inserat.id)}

@@ -1,21 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
+import { put } from "@vercel/blob";
 import { initializeSchema, dbGet, dbRun } from "@/lib/db";
 import { v4 as uuidv4 } from "uuid";
-import sharp from "sharp";
-import path from "path";
-import { mkdir } from "fs/promises";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const MAX_IMAGES = 8;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
-const MAX_DIMENSION = 1200;
 
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const listingId = formData.get("listing_id") as string;
-    const files = formData.getAll("images") as File[];
+
+    // Accept both "file" (single) and "images" (multiple) field names
+    const singleFile = formData.get("file") as File | null;
+    const multiFiles = formData.getAll("images") as File[];
+    const files = singleFile ? [singleFile] : multiFiles;
 
     if (!listingId) {
       return NextResponse.json(
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!files || files.length === 0) {
+    if (!files || files.length === 0 || !(files[0] instanceof File)) {
       return NextResponse.json(
         { error: "No images provided" },
         { status: 400 }
@@ -47,8 +47,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    await mkdir(UPLOAD_DIR, { recursive: true });
-
     const uploadedImages: { id: string; url: string; position: number }[] = [];
 
     for (let i = 0; i < files.length; i++) {
@@ -68,16 +66,16 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      const buffer = Buffer.from(await file.arrayBuffer());
       const imageId = uuidv4();
       const ext = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
-      const filename = `${imageId}.${ext}`;
+      const filename = `inserate/${listingId}/${imageId}.${ext}`;
 
-      await sharp(buffer)
-        .resize(MAX_DIMENSION, MAX_DIMENSION, { fit: "inside", withoutEnlargement: true })
-        .toFile(path.join(UPLOAD_DIR, filename));
+      const blob = await put(filename, file, {
+        access: "public",
+        contentType: file.type,
+      });
 
-      const url = `/uploads/${filename}`;
+      const url = blob.url;
       const position = existingCount + i;
       const isMain = existingCount === 0 && i === 0 ? 1 : 0;
 

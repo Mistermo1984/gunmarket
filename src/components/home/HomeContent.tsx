@@ -172,13 +172,13 @@ function HomeContentInner() {
         setTotalPages(data.totalSeiten || 1);
         setLoading(false);
 
-        // Restore scroll position after listings render
+        // Restore scroll position after listings render — wait for DOM
         if (pendingScrollRef.current !== null) {
           const scrollY = pendingScrollRef.current;
           pendingScrollRef.current = null;
-          requestAnimationFrame(() => {
-            window.scrollTo(0, scrollY);
-          });
+          setTimeout(() => {
+            window.scrollTo({ top: scrollY, behavior: "instant" as ScrollBehavior });
+          }, 300);
         }
       })
       .catch(() => setLoading(false));

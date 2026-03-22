@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { initializeSchema, dbAll, dbGet, dbRun } from "@/lib/db";
+import { initializeSchema, dbGet } from "@/lib/db";
 import { wissenWaffen, wissenMunition } from "@/lib/wissen-data";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
     await initializeSchema();
 

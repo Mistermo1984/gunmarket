@@ -22,7 +22,7 @@ import {
   Tag,
   ArrowLeft,
   MessageSquare,
-  Share2,
+
   Flag,
   Loader2,
   ExternalLink,

@@ -68,23 +68,80 @@ export default function ImageEditor({ imageUrl, onSave, onCancel }: ImageEditorP
   const rotate = (deg: number) => setRotation((r) => (r + deg + 360) % 360);
 
   const handleSave = async () => {
+    if (!imgRef.current) {
+      alert("Bild wird noch geladen, bitte warten...");
+      return;
+    }
+
     setSaving(true);
+
     try {
-      const canvas = canvasRef.current!;
-      const blob = await new Promise<Blob | null>((resolve) =>
-        canvas.toBlob(resolve, "image/jpeg", 0.92)
+      // Create a fresh canvas for export at original image resolution
+      const exportCanvas = document.createElement("canvas");
+      const isRotated = rotation % 180 !== 0;
+
+      const imgW = imgRef.current.naturalWidth;
+      const imgH = imgRef.current.naturalHeight;
+
+      // Set canvas size based on rotation
+      exportCanvas.width = isRotated ? imgH : imgW;
+      exportCanvas.height = isRotated ? imgW : imgH;
+
+      const ctx = exportCanvas.getContext("2d")!;
+
+      // White background (avoid transparency issues with JPEG)
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+
+      // Compute the same fit scale used in draw() so offset mapping is correct
+      const fitW = isRotated ? imgH : imgW;
+      const fitH = isRotated ? imgW : imgH;
+      const fit = Math.min(CANVAS_SIZE / fitW, CANVAS_SIZE / fitH);
+
+      ctx.save();
+      ctx.translate(exportCanvas.width / 2, exportCanvas.height / 2);
+      ctx.rotate((rotation * Math.PI) / 180);
+      ctx.scale(zoom, zoom);
+
+      // Map pixel offset from preview canvas to original resolution
+      const scaleRatio = 1 / fit;
+      ctx.drawImage(
+        imgRef.current,
+        -imgW / 2 + offsetX * scaleRatio,
+        -imgH / 2 + offsetY * scaleRatio
       );
+      ctx.restore();
+
+      // Export as blob
+      const blob = await new Promise<Blob | null>((resolve) => {
+        exportCanvas.toBlob(resolve, "image/jpeg", 0.92);
+      });
+
       if (!blob) {
-        setSaving(false);
-        return;
+        throw new Error("Canvas export fehlgeschlagen");
       }
+
+      // Upload to Vercel Blob
       const form = new FormData();
       form.append("file", blob, `edited-${Date.now()}.jpg`);
+
       const res = await fetch("/api/upload", { method: "POST", body: form });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || `Upload fehlgeschlagen (${res.status})`);
+      }
+
       const data = await res.json();
-      if (data.url) onSave(data.url);
-    } catch {
-      // silently fail — user can retry
+
+      if (!data.url) {
+        throw new Error("Keine URL in der Antwort");
+      }
+
+      onSave(data.url);
+    } catch (e: unknown) {
+      console.error("ImageEditor save error:", e);
+      alert(`Fehler beim Speichern: ${e instanceof Error ? e.message : "Unbekannter Fehler"}`);
     } finally {
       setSaving(false);
     }
@@ -257,16 +314,25 @@ export default function ImageEditor({ imageUrl, onSave, onCancel }: ImageEditorP
           </button>
           <button
             onClick={handleSave}
-            disabled={saving || !hasChanges}
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#4d8230] py-3 text-sm font-semibold text-white transition-colors hover:bg-[#5a9a38] disabled:opacity-60"
+            disabled={saving || !hasChanges || !loaded}
+            className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition-all ${
+              saving
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-[#4d8230] text-white hover:bg-[#5a9a38] active:scale-95 disabled:opacity-60"
+            }`}
           >
             {saving ? (
               <>
                 <Loader2 size={16} className="animate-spin" />
-                Speichern...
+                Wird gespeichert...
               </>
             ) : (
-              "Übernehmen"
+              <>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                Übernehmen
+              </>
             )}
           </button>
         </div>
